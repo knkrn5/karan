@@ -12,7 +12,7 @@ function Home() {
         </p>
         <img
           className="mx-auto mb-8 rounded-full  shadow-lg w-[250px]"
-          src="./src/assets/imgs/my_img2.webp"
+          src="/assets/imgs/my_img2.webp"
           // src="/favicons/K.svg"
           alt="my-image"
         />
