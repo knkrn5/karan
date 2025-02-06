@@ -97,8 +97,6 @@ function ResourceCard({ resource }: { resource: Resource }) {
                 <div
                   key={index}
                   className="border-b dark:border-gray-700 last:border-b-0 pb-3 last:pb-0"
-
-
                 >
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                     {t.name}
