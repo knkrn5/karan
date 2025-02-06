@@ -98,9 +98,9 @@ const AboutMe = () => {
         </div>
       </div>
       <p className="font-nunito block text-white font-light relative h-[2em] group-hover:h-[7em] leading-[1.2em] duration-500 overflow-hidden">
-        You’re an enthusiastic learner in finance and technology, building
-        Wealth Psychology, exploring AI chatbots, deploying projects with
-        Docker and PostgreSQL, and writing stock market.
+        I'm a karan, passionate about A.I. and Finance. I specialize in [Your
+        Skills or Expertise], and I'm always excited to collaborate on
+        innovative projects.
       </p>
     </div>
   );
