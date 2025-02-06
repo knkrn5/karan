@@ -6,6 +6,7 @@ import App from "./App";
 import Home from "./components/home/home";
 import ErrorPage from "./pages/errors/errorPage";
 import AboutMe from "./pages/contents/aboutMe";
+import ResourcesInfo from "./pages/resources/resoursesPage";
 
 const root = document.getElementById("root");
 if (!root) throw new Error("Root element not found");
@@ -17,8 +18,10 @@ createRoot(root).render(
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
           <Route path="*" element={<ErrorPage />} />
-          <Route path="/about" element={<AboutMe />} />
+          
+          <Route path="/resources" element={<ResourcesInfo />} />
 
+          <Route path="/about" element={<AboutMe />} />
         </Route>
       </Routes>
     </BrowserRouter>

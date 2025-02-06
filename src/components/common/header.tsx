@@ -132,7 +132,7 @@ export default function MegaMenu1() {
                   </li>
                   <li>
                     <NavLink
-                      to="/about"
+                      to="/resources"
                       className={({ isActive }) =>
                         `flex py-2 text-base font-medium text-black duration-300 hover:text-blue-500 lg:ml-12 lg:inline-flex ${
                           isActive
@@ -141,7 +141,7 @@ export default function MegaMenu1() {
                         }`
                       }
                     >
-                      About
+                      Resources
                     </NavLink>
                   </li>
                   <li>
