@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 function Home() {
   return (
     <section className="h-screen bg-gray-50 dark:bg-slate-900">
@@ -11,24 +13,24 @@ function Home() {
           on innovative projects.
         </p>
         <img
-          className="mx-auto mb-8 rounded-full  shadow-lg w-[250px]"
-          src="/assets/imgs/my_img2.webp"
+          className="mx-auto mb-8 rounded-full  shadow-lg w-[250px] h-[250px]"
+          src="https://res.cloudinary.com/dywuvwqth/image/upload/v1738828129/my%20images/fc5h74scomon1tpso0yk.jpg"
           // src="/favicons/K.svg"
           alt="my-image"
         />
         <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-          <a
-            href="#contact"
+          <Link
+            to="/contact"
             className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
           >
             Contact Me
-          </a>
-          <a
-            href="#about"
+          </Link>
+          <Link
+            to="mailto:mail@karan.email"
             className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
           >
             Email Me
-          </a>
+          </Link>
         </div>
       </div>
     </section>
