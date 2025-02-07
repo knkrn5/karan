@@ -6,7 +6,7 @@ import Footer from "./components/common/footer";
 import Home from "./components/home/home";
 import ErrorPage from "./pages/errors/errorPage";
 import AboutMe from "./pages/about";
-import ResourcesInfo from "./pages/resources/resoursesPage";
+import ResourcesInfo from "./pages/resources/resoursesInfo";
 
 function App() {
   return (
