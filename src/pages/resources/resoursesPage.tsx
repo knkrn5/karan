@@ -6,7 +6,7 @@ import {
   Server,
   FileCode2,
   LucideIcon,
-  Blocks,
+  Braces,
 } from "lucide-react";
 
 type Tool = {
@@ -26,15 +26,33 @@ type Resource = {
 const resources: Resource[] = [
   {
     category: "Database",
-    tool: "Supabase",
+    tools: [
+      {
+        name: "Neon",
+        description: "PostgreSQL database with real-time capabilities",
+      },
+      {
+        name: "MongoDB Atlas",
+        description: "NoSQL database with flexible schema design",
+      },
+    ],
     description: "PostgreSQL database with real-time capabilities",
     icon: Database,
     color: "text-emerald-500",
   },
   {
     category: "Hosting",
-    tool: "Netlify",
-    description: "Modern hosting platform with CI/CD",
+    tools: [
+      {
+        name: "Netlify",
+        description: "Modern hosting platform with CI/CD",
+      },
+
+      {
+        name: "Render",
+        description: "Modern hosting platform with CI/CD",
+      },
+    ],
     icon: Cloud,
     color: "text-blue-500",
   },
@@ -61,19 +79,22 @@ const resources: Resource[] = [
     color: "text-purple-500",
   },
   {
-    category: "Backend",
-    tool: "Node.js",
-    description: "JavaScript runtime environment",
-    icon: Server,
-    color: "text-green-500",
+    category: "API",
+    tools: [
+      {
+        name: "NVIDIA",
+        description: "https://integrate.api.nvidia.com/v1",
+      },
+      {
+        name: "GEMINI",
+        description: "From google import genai",
+      },
+    ],
+    icon: Braces,
+    color: "text-purple-500",
   },
-  {
-    category: "Framework",
-    tool: "React",
-    description: "JavaScript library for building user interfaces",
-    icon: Blocks,
-    color: "text-cyan-500",
-  },
+
+
 ];
 
 function ResourceCard({ resource }: { resource: Resource }) {
