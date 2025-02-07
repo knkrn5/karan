@@ -3,7 +3,6 @@ import {
   Database,
   Cloud,
   Globe2,
-  Server,
   FileCode2,
   LucideIcon,
   Braces,
@@ -45,7 +44,7 @@ const resources: Resource[] = [
     tools: [
       {
         name: "Netlify",
-        description: "Modern hosting platform with CI/CD",
+        description: "Modern Serverless hosting platform with CI/CD",
       },
 
       {
@@ -91,7 +90,7 @@ const resources: Resource[] = [
       },
     ],
     icon: Braces,
-    color: "text-purple-500",
+    color: "text-yellow-500",
   },
 
 
