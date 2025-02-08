@@ -5,8 +5,10 @@ import Header from "./components/common/header";
 import Footer from "./components/common/footer";
 import Home from "./components/home/home";
 import ErrorPage from "./pages/errors/errorPage";
-import AboutMe from "./pages/about";
 import ResourcesInfo from "./pages/resources/resoursesInfo";
+
+import AboutMe from "./pages/about";
+import Contact from "./pages/contact";
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
               <Route path="/resources" element={<ResourcesInfo />} />
 
               <Route path="/about" element={<AboutMe />} />
+              <Route path="/contact" element={<Contact />} />
           </Routes>
         </main>
         <Footer />
