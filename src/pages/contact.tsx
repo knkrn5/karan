@@ -56,7 +56,7 @@ function Contact() {
                 </div>
               </div>
               <div>
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">Email Us</h3>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white">Email Me</h3>
                 <p className="mt-2 text-gray-600 dark:text-gray-300">mail@karan.email</p>
               </div>
             </div>
@@ -68,7 +68,7 @@ function Contact() {
                 </div>
               </div>
               <div>
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">Call Us</h3>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white">Call</h3>
                 <p className="mt-2 text-gray-600 dark:text-gray-300">N/A</p>
               </div>
             </div>
