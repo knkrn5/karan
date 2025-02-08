@@ -2,14 +2,14 @@ import { Link } from "react-router";
 
 function Home() {
   return (
-    <section className="h-screen bg-gray-50 dark:bg-slate-900">
+    <section className="h-screen bg-gray-50 dark:bg-slate-800">
       <div className="max-w-screen-xl px-4 py-16 mx-auto text-center lg:py-32 lg:px-12">
         <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
           Hi, I&apos;m [Karan]
         </h1>
         <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">
           I&apos;m a karan, passionate about A.I. and Finance. I specialize in
-          [Your Skills or Expertise], and I&apos;m always excited to collaborate
+          Web Development, and I&apos;m always excited to collaborate
           on innovative projects.
         </p>
         <img

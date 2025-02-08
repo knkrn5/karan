@@ -10,7 +10,7 @@ function About() {
         </h1>
         <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">
           I&apos;m a karan, passionate about A.I. and Finance. I specialize in
-          [Your Skills or Expertise], and I&apos;m always excited to collaborate
+          Web Development, and I&apos;m always excited to collaborate
           on innovative projects.
         </p>
         <img
