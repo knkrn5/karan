@@ -37,7 +37,7 @@ function Contact() {
         {/* Contact Details Section */}
         <div className="bg-gradient-to-br from-indigo-50 via-purple-100 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-8 rounded-2xl shadow-lg">
           <div className="space-y-8">
-            <div className="flex items-start space-x-6 rounded-2xl p-1 bg-slate-700">
+            <div className="flex items-start space-x-6 rounded-2xl p-1 bg-gray-100 dark:bg-slate-700">
               <div className="flex-shrink-0">
                 <div className="p-4 bg-white dark:bg-gray-700 rounded-lg shadow-md">
                   <MapPin className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
@@ -49,7 +49,7 @@ function Contact() {
               </div>
             </div>
 
-            <div className="flex items-start space-x-6 rounded-2xl p-1 bg-slate-700">
+            <div className="flex items-start space-x-6 rounded-2xl p-1 bg-gray-100 dark:bg-slate-700">
               <div className="flex-shrink-0">
                 <div className="p-4 bg-white dark:bg-gray-700 rounded-lg shadow-md">
                   <Mail className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
@@ -61,7 +61,7 @@ function Contact() {
               </div>
             </div>
 
-            <div className="flex items-start space-x-6 rounded-2xl p-1 bg-slate-700">
+            <div className="flex items-start space-x-6 rounded-2xl p-1 bg-gray-100 dark:bg-slate-700">
               <div className="flex-shrink-0">
                 <div className="p-4 bg-white dark:bg-gray-700 rounded-lg shadow-md">
                   <Phone className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
