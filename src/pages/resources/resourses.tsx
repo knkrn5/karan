@@ -14,18 +14,45 @@ type Tool = {
 };
 
 type Resource = {
-  category: string;
-  tool?: string;
-  tools?: Tool[];
-  description?: string;
+  category: string | string[];
   icon: LucideIcon;
+  tools?: Tool[];
   color: string;
 };
 
+/*   class CreateResource implements Resource {
+    constructor(
+      public category: string | string[],
+      public icon: LucideIcon,
+      public color: string,
+      public tools?: Tool[]
+    ) {}
+  } */
+
+class CreateResourses implements Resource {
+  category: string | string[];
+  icon: LucideIcon;
+  tools?: Tool[];
+  color: string;
+  constructor(
+    category: string | string[],
+    icon: LucideIcon,
+    color: string,
+    tools?: Tool[]
+  ) {
+    this.category = category;
+    this.icon = icon;
+    this.color = color;
+    this.tools = tools;
+  }
+}
+
 const resources: Resource[] = [
-  {
-    category: "Database",
-    tools: [
+  new CreateResourses(
+    "Database",
+    Database,
+    "text-emerald-500",
+    [
       {
         name: "Neon",
         description: "PostgreSQL database with real-time capabilities",
@@ -34,30 +61,30 @@ const resources: Resource[] = [
         name: "MongoDB Atlas",
         description: "NoSQL database with flexible schema design",
       },
-    ],
-    description: "PostgreSQL database with real-time capabilities",
-    icon: Database,
-    color: "text-emerald-500",
-  },
-  {
-    category: "Hosting",
-    tools: [
+    ]
+  ),
+
+  new CreateResourses(
+    "Hosting",
+    Cloud,
+    "text-blue-500",
+    [
       {
         name: "Netlify",
         description: "Modern Serverless hosting platform with CI/CD",
       },
-
       {
         name: "Render",
         description: "Modern hosting platform with CI/CD",
       },
-    ],
-    icon: Cloud,
-    color: "text-blue-500",
-  },
-  {
-    category: "CDN",
-    tools: [
+    ]
+  ),
+
+  new CreateResourses(
+    "CDN",
+    Globe2,
+    "text-orange-500",
+    [
       {
         name: "Cloudflare",
         description: "Global content delivery network for fast asset delivery",
@@ -66,20 +93,26 @@ const resources: Resource[] = [
         name: "Cloudinary",
         description: "Media optimization and delivery platform",
       },
-    ],
-    icon: Globe2,
-    color: "text-orange-500",
-  },
-  {
-    category: "CMS",
-    tool: "Contentful",
-    description: "Headless content management system",
-    icon: FileCode2,
-    color: "text-purple-500",
-  },
-  {
-    category: "API",
-    tools: [
+    ]
+  ),
+
+  new CreateResourses(
+    "CMS",
+    FileCode2,
+    "text-purple-500",
+    [
+      {
+        name: "Contentful",
+        description: "Headless content management system",
+      },
+    ]
+  ),
+
+  new CreateResourses(
+    "API",
+    Braces,
+    "text-yellow-500",
+    [
       {
         name: "NVIDIA",
         description: "https://integrate.api.nvidia.com/v1",
@@ -88,16 +121,12 @@ const resources: Resource[] = [
         name: "GEMINI",
         description: "From google import genai",
       },
-    ],
-    icon: Braces,
-    color: "text-yellow-500",
-  },
-
-
+    ]
+  ),
 ];
 
 function ResourceCard({ resource }: { resource: Resource }) {
-  const { category, tool, tools, description, icon: Icon, color } = resource;
+  const { category, tools, icon: Icon, color } = resource;
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
@@ -111,7 +140,7 @@ function ResourceCard({ resource }: { resource: Resource }) {
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
             {category}
           </p>
-          {tools ? (
+          {tools && (
             <div className="mt-2 space-y-3">
               {tools.map((t: Tool, index: number) => (
                 <div
@@ -127,15 +156,6 @@ function ResourceCard({ resource }: { resource: Resource }) {
                 </div>
               ))}
             </div>
-          ) : (
-            <>
-              <h3 className="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
-                {tool}
-              </h3>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
-                {description}
-              </p>
-            </>
           )}
         </div>
       </div>

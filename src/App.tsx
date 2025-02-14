@@ -5,7 +5,7 @@ import Header from "./components/common/header";
 import Footer from "./components/common/footer";
 import Home from "./components/home/home";
 import ErrorPage from "./pages/errors/errorPage";
-import ResourcesInfo from "./pages/resources/resoursesInfo";
+import ResourcesInfo from "./pages/resources/resourses";
 
 import AboutMe from "./pages/about";
 import Contact from "./pages/contact";
