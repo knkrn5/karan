@@ -7,10 +7,8 @@ function Home() {
         <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
           Hi, I&apos;m [Karan]
         </h1>
-        <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">
-          I&apos;m a karan, passionate about A.I. and Finance. I specialize in
-          Web Development, and I&apos;m always excited to collaborate
-          on innovative projects.
+        <p className="mb-8 text-lg font-serif font-bold text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">
+          I&apos;m a karan, passionate about A.I. and Finance. I love Coding, Coding is Fun, and I&apos;m always excited to collaborate on innovative projects.
         </p>
         <img
           className="mx-auto mb-8 rounded-full  shadow-lg w-[250px] h-[250px]"

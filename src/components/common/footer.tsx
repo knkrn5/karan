@@ -7,7 +7,6 @@ export default function Footer() {
 
   return (
     <footer className="bg-white shadow dark:bg-dark">
-      <hr className=" border-gray-700 sm:mx-auto" />
       <div className=" w-full max-w-screen-xl mx-auto p-4 pb-8">
         <div className="grid grid-cols-[100px_1fr] gap-2">
           <div className="sm:flex sm:items-center sm:justify-between">
