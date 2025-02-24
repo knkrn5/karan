@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Send, Loader2 } from 'lucide-react';
 import axios from 'axios';
 
-// const API_URL = 'https://karan-2222.onrender.com';
-// const API_URL = 'http://localhost:3000';
-const API_URL = import.meta.env.VITE_API_URL;
 
+const API_URL = import.meta.env.VITE_API_URL;
 
 
 import SeeContactInfo from './seeContactInfo';
