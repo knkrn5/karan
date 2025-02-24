@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useThemeContext } from "../../hooks/themeHook";
+// import { useThemeContext } from "../../../contexts/ThemeContext";
 
 export default function ThemeMode() {
-  const [themeMode, setThemeMode] = useState<"light" | "dark" | "system">(
-    "system"
-  );
+  const { themeMode, setThemeMode } = useThemeContext();
 
   useEffect(() => {
     const updateDarkMode = () => {
@@ -149,7 +149,6 @@ export default function ThemeMode() {
           }`}
           role="radio"
           aria-checked={themeMode === theme.name}
-          // aria-checked={themeMode === theme.name ? 'true' : 'false'}
           aria-label={theme.label}
           onClick={theme.onClick}
           type="button"

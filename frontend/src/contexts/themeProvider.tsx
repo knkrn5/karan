@@ -2,12 +2,14 @@
 import React, { useMemo, useState } from "react";
 import { ThemeContext } from "./ThemeContext";
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [themeMode, setActiveTheme] = useState("system");
+type ThemeContextType = {
+  themeMode: "light" | "dark" | "system";
+  setThemeMode: (mode: "light" | "dark" | "system") => void;
+};
 
-  const setThemeMode = (mode: string) => {
-    setActiveTheme(mode);
-  };
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [themeMode, setThemeMode] =
+    useState<ThemeContextType["themeMode"]>("system");
 
   // Memoize the context value
   const contextValue = useMemo(
