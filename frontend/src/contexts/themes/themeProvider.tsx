@@ -1,6 +1,6 @@
 // src/contexts/ThemeProvider.tsx
 import React, { useMemo, useState } from "react";
-import { ThemeContext } from "./themes/ThemeContext";
+import { ThemeContext } from "./ThemeContext";
 
 type ThemeContextType = {
   themeMode: "light" | "dark" | "system";
