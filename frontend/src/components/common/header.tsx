@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ThemeMode from "../partials/ui/themeToggle";
+import ThemeMode from "../partials/themeToggle";
 import { Link, NavLink } from "react-router";
 import { CircleDollarSign, Bot } from "lucide-react";
 

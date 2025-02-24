@@ -1,5 +1,5 @@
-import socialLinks from "../partials/ui/socialLinks";
-import ThemeMode from "../partials/ui/themeToggle";
+import socialLinks from "../partials/socialLinks";
+import ThemeMode from "../partials/themeToggle";
 
 import { Link } from "react-router";
 

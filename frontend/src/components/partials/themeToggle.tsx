@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useThemeContext } from "../../../contexts/ThemeContext";
+import { useThemeContext } from "../../contexts/ThemeContext";
 
 export default function ThemeMode() {
   const { themeMode, setThemeMode } = useThemeContext();
