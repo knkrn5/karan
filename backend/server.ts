@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -12,9 +13,6 @@ const startServer = async () => {
       console.log(`🚀 Server running on port ${port}`);
     });
     
-    app.get("/health", (req, res) => {
-      res.send("OK");
-    });
   } catch (error) {
     console.error("Failed to start server:", error);
     process.exit(1);
@@ -22,3 +20,13 @@ const startServer = async () => {
 };
 
 startServer();
+
+
+app.get("/health", (req: Request, res: Response) => {
+  res.send("health ok :)");
+})
+
+/* app.get('*', (req, res) => {
+  res.redirect(process.env.FRONTEND_URL);
+  // res.redirect('http://localhost:5173');
+}); */

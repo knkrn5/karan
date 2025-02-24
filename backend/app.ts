@@ -1,5 +1,4 @@
 import express from 'express';
-import { Request, Response } from 'express';
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -10,7 +9,6 @@ const app = express();
 const corsOptions = {
     origin: [
       'http://localhost:5173',             // Local frontend (Vite default port)
-      'http://localhost:5000',             // Local frontend (Vite default port)
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
