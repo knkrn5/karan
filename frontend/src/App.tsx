@@ -4,11 +4,11 @@ import { ThemeProvider } from "./contexts/themeProvider";
 import Header from "./components/common/header";
 import Footer from "./components/common/footer";
 import Home from "./components/home/home";
-import ErrorPage from "./pages/errors/errorPage";
-import ResourcesInfo from "./pages/resources/resourses";
+import ErrorPage from "./pages/errors/404-error-page";
+import ResourcesInfo from "./pages/resources/resourses-page";
 
-import AboutMe from "./pages/about";
-import Contact from "./pages/contact";
+import AboutMe from "./pages/about/about-page";
+import Contact from "./pages/contact/contact-page";
 
 function App() {
   return (
