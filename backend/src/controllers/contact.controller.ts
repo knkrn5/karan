@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Contact } from "../models/contact.model.ts";
+import { Contact } from "../models/contact.model.js";
 
 // Adding Contact information
 const contactInfo = async (req: Request, res: Response): Promise<void> => {

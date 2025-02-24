@@ -26,7 +26,7 @@ const corsOptions = {
 
 
 //routes imports
-import contactRoutes from "./src/routes/contact.routes.ts";
+import contactRoutes from "./routes/contact.routes.js";
 
 //routes
 app.use("/api/contact", contactRoutes);

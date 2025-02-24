@@ -1,6 +1,6 @@
 import express from "express";
-import { contactInfo, updateContactMessage, deleteContactMessage } from "../controllers/contact.controller.ts";
-import { contactPostLimiter, contactPutLimiter } from "../middlewares/contact.middleware.ts";
+import { contactInfo, updateContactMessage, deleteContactMessage } from "../controllers/contact.controller.js";
+import { contactPostLimiter, contactPutLimiter } from "../middlewares/contact.middleware.js";
 
 const router = express.Router();
 
