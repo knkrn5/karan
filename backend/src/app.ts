@@ -8,11 +8,12 @@ const app = express();
 // Middleware setup
 const corsOptions = {
     origin: [
-      'http://localhost:5173',             // Local frontend (Vite default port)
+      'http://localhost:5173', 
+      'https://karan-frontend.onrender.com' , 
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
-    optionsSuccessStatus: 200, // Fixes legacy browser issues
+    optionsSuccessStatus: 200, // Fix legacy browser issues
   };
   
   app.use(cors(corsOptions));
