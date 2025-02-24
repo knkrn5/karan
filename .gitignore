@@ -30,5 +30,3 @@ dist-ssr
 
 #other
 tests/
-# backend/
-.gitignore
