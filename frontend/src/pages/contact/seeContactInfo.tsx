@@ -5,7 +5,6 @@ import axios from 'axios';
 import ContactForm from './contactForm';
 import { Loader2, Send, Edit, Save, Trash } from 'lucide-react';
 
-// const API_URL = "https://karan-2222.onrender.com";
 const API_URL = import.meta.env.VITE_API_URL;
 
 interface StatusInfoProps {
