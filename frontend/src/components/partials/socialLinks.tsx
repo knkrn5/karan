@@ -1,12 +1,50 @@
 import { SocialIcon } from "react-social-icons";
 
-function SocialLinks() {
-  const socialUrls = [
-    "https://x.com/ka_r_an5",
-    "https://linkedin.com/in/ka-r-an5",
-    "https://github.com/knkrn5",
-    "https://instagram.com/ka_r_an5",
-    "https://facebook.com/knkrn5/",
+type SocialLinkProps = {
+  title: string;
+  url: string;
+  fgColor: string;
+  bgColor: string;
+  ariaLabel: string;
+};
+
+export default function SocialLinks() {
+  const socialUrls: SocialLinkProps[] = [
+    {
+      title: "X (Twitter)",
+      url: "https://x.com/ka_r_an5",
+      fgColor: "#ffffff",
+      bgColor: "#000000",
+      ariaLabel: "Visit X (Twitter) profile",
+    },
+    {
+      title: "LinkedIn",
+      url: "https://linkedin.com/in/ka-r-an5",
+      fgColor: "#ffffff",
+      bgColor: "#0a66c2",
+      ariaLabel: "Visit LinkedIn profile",
+    },
+    {
+      title: "GitHub",
+      url: "https://github.com/knkrn5",
+      fgColor: "#ffffff",
+      bgColor: "#333333",
+      ariaLabel: "Visit GitHub profile",
+    },
+    {
+      title: "Instagram",
+      url: "https://instagram.com/ka_r_an5",
+      fgColor: "#ffffff",
+      bgColor: "#E4405F",
+      ariaLabel: "Visit Instagram profile",
+    },
+    {
+      title: "Facebook",
+      url: "https://facebook.com/knkrn5/",
+      fgColor: "#ffffff",
+      bgColor: "#1877f2",
+      ariaLabel: "Visit Facebook profile",
+    },
   ];
 
   return (
@@ -15,18 +53,17 @@ function SocialLinks() {
         Contact Me
       </h1>
       <div className="flex space-x-4 ">
-        {socialUrls.map((url) => {
-          const domain = url.split("/")[2];
-          const platformName = domain.split(".")[0];
-          // console.log(platformName);
+        {socialUrls.map((socials) => {
           return (
             <SocialIcon
-              key={url}
-              url={url}
-              arial-label={platformName}
-              title={platformName}
+              key={socials.title}
+              url={socials.url}
+              fgColor={socials.fgColor}
+              bgColor={socials.bgColor}
+              arial-label={socials.ariaLabel}
+              title={socials.title}
               style={{ height: 40, width: 40 }}
-              className="duration-300 transform hover:scale-110"
+              className={"duration-300 transform hover:scale-110"}
             />
           );
         })}
@@ -34,5 +71,3 @@ function SocialLinks() {
     </div>
   );
 }
-
-export default SocialLinks;
