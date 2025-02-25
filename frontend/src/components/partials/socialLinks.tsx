@@ -5,8 +5,8 @@ type SocialLinkProps = {
   platform: keyof typeof iconMap;
   title: string;
   url: string;
-  textColor: string; // Tailwind text color class
-  bgColor: string;   // Tailwind background color class
+  fgColor: string; 
+  bgColor: string;   
   ariaLabel: string;
 };
 
@@ -24,7 +24,7 @@ export default function SocialLinks() {
       platform: "x",
       title: "X (Twitter)",
       url: "https://x.com/ka_r_an5",
-      textColor: "text-white",
+      fgColor: "text-white",
       bgColor: "bg-black",
       ariaLabel: "Visit X (Twitter) profile",
     },
@@ -32,7 +32,7 @@ export default function SocialLinks() {
       platform: "linkedin",
       title: "LinkedIn",
       url: "https://linkedin.com/in/ka-r-an5",
-      textColor: "text-white",
+      fgColor: "text-white",
       bgColor: "bg-blue-600",
       ariaLabel: "Visit LinkedIn profile",
     },
@@ -40,7 +40,7 @@ export default function SocialLinks() {
       platform: "github",
       title: "GitHub",
       url: "https://github.com/knkrn5",
-      textColor: "text-white",
+      fgColor: "text-white",
       bgColor: "bg-gray-800",
       ariaLabel: "Visit GitHub profile",
     },
@@ -48,7 +48,7 @@ export default function SocialLinks() {
       platform: "ig",
       title: "Instagram",
       url: "https://instagram.com/ka_r_an5",
-      textColor: "text-white",
+      fgColor: "text-white",
       bgColor: "bg-orange-500",
       ariaLabel: "Visit Instagram profile",
     },
@@ -56,7 +56,7 @@ export default function SocialLinks() {
       platform: "fb",
       title: "Facebook",
       url: "https://facebook.com/knkrn5/",
-      textColor: "text-white",
+      fgColor: "text-white",
       bgColor: "bg-blue-500",
       ariaLabel: "Visit Facebook profile",
     },
@@ -68,7 +68,7 @@ export default function SocialLinks() {
         Contact Me
       </h1>
       <div className="flex space-x-4">
-        {socialUrls.map(({ platform, title, url, textColor, bgColor, ariaLabel }) => (
+        {socialUrls.map(({ platform, title, url, fgColor, bgColor, ariaLabel }) => (
           <a
             key={title}
             href={url}
@@ -76,7 +76,7 @@ export default function SocialLinks() {
             rel="noopener noreferrer"
             aria-label={ariaLabel}
             title={title}
-            className={`flex items-center justify-center w-10 h-10 rounded-full shadow-lg duration-300 transform hover:scale-110 ${bgColor} ${textColor}`}
+            className={`flex items-center justify-center w-10 h-10 rounded-full shadow-lg duration-300 transform hover:scale-110 ${bgColor} ${fgColor}`}
           >
             {iconMap[platform] ?? <span>{platform.toUpperCase()}</span>}
           </a>
