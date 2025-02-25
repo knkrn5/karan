@@ -1,16 +1,17 @@
-import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaFacebook } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaInstagram, FaFacebook } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 type SocialLinkProps = {
   platform: keyof typeof iconMap;
   title: string;
   url: string;
-  fgColor: string;
-  bgColor: string;
+  textColor: string; // Tailwind text color class
+  bgColor: string;   // Tailwind background color class
   ariaLabel: string;
 };
 
 const iconMap = {
-  x: <FaTwitter size={24} />,
+  x: <FaXTwitter size={24} />,
   linkedin: <FaLinkedin size={24} />,
   github: <FaGithub size={24} />,
   ig: <FaInstagram size={24} />,
@@ -23,40 +24,40 @@ export default function SocialLinks() {
       platform: "x",
       title: "X (Twitter)",
       url: "https://x.com/ka_r_an5",
-      fgColor: "#ffffff",
-      bgColor: "#000000",
+      textColor: "text-white",
+      bgColor: "bg-black",
       ariaLabel: "Visit X (Twitter) profile",
     },
     {
       platform: "linkedin",
       title: "LinkedIn",
       url: "https://linkedin.com/in/ka-r-an5",
-      fgColor: "#ffffff",
-      bgColor: "#0a66c2",
+      textColor: "text-white",
+      bgColor: "bg-blue-600",
       ariaLabel: "Visit LinkedIn profile",
     },
     {
       platform: "github",
       title: "GitHub",
       url: "https://github.com/knkrn5",
-      fgColor: "#ffffff",
-      bgColor: "#333333",
+      textColor: "text-white",
+      bgColor: "bg-gray-800",
       ariaLabel: "Visit GitHub profile",
     },
     {
       platform: "ig",
       title: "Instagram",
       url: "https://instagram.com/ka_r_an5",
-      fgColor: "#ffffff",
-      bgColor: "#E4405F",
+      textColor: "text-white",
+      bgColor: "bg-orange-500",
       ariaLabel: "Visit Instagram profile",
     },
     {
       platform: "fb",
       title: "Facebook",
       url: "https://facebook.com/knkrn5/",
-      fgColor: "#ffffff",
-      bgColor: "#1877f2",
+      textColor: "text-white",
+      bgColor: "bg-blue-500",
       ariaLabel: "Visit Facebook profile",
     },
   ];
@@ -67,7 +68,7 @@ export default function SocialLinks() {
         Contact Me
       </h1>
       <div className="flex space-x-4">
-        {socialUrls.map(({ platform, title, url, fgColor, bgColor, ariaLabel }) => (
+        {socialUrls.map(({ platform, title, url, textColor, bgColor, ariaLabel }) => (
           <a
             key={title}
             href={url}
@@ -75,8 +76,7 @@ export default function SocialLinks() {
             rel="noopener noreferrer"
             aria-label={ariaLabel}
             title={title}
-            className="flex items-center justify-center w-10 h-10 rounded-full duration-300 transform hover:scale-110 shadow-lg"
-            style={{ backgroundColor: bgColor, color: fgColor }}
+            className={`flex items-center justify-center w-10 h-10 rounded-full shadow-lg duration-300 transform hover:scale-110 ${bgColor} ${textColor}`}
           >
             {iconMap[platform] ?? <span>{platform.toUpperCase()}</span>}
           </a>
