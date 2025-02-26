@@ -77,7 +77,7 @@ export default function ContactForm() {
 
       // Reset form
       setFormData({ name: '', email: '', message: '' });
-      setServerMsg({ name: data.data.Name, email: data.data.Email, message: data.data.Message, id: data.data._id });
+      setServerMsg({ name: data.data.name, email: data.data.email, message: data.data.message, id: data.data._id });
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const data = error.response?.data;

@@ -7,9 +7,9 @@ const contactInfo = async (req: Request, res: Response): Promise<void> => {
     const { name, email, message } = req.body;
 
     const contactMsg = await Contact.create({
-      Name: name,
-      Email: email,
-      Message: message,
+      name: name,
+      email: email,
+      message: message,
       status: "unread",
     });
 
@@ -41,7 +41,7 @@ const updateContactMessage = async (
 
     const updatedContact = await Contact.findByIdAndUpdate(
       id,
-      { $set: { Message: message, status: "updated" } },
+      { $set: { message: message, status: "updated" } },
       { new: true }
     );
 

@@ -3,15 +3,15 @@ import mongoose from "mongoose";
 import { Schema } from "mongoose";
 
 const blogSchema = new Schema({
-    Name: {
+    name: {
         type: String,
         required: true
     },
-    Email: {
+    email: {
         type: String,
         required: true
     },
-    Message: {
+    message: {
         type: String,
         required: true
     }
