@@ -1,12 +1,6 @@
-// import React, { useEffect, useState } from 'react';
-import {
-  Database,
-  Cloud,
-  Globe2,
-  FileCode2,
-  LucideIcon,
-  Braces,
-} from "lucide-react";
+import { IconType } from "react-icons";
+import { FaDatabase, FaCloud, FaGlobe, FaFileCode, FaCode, FaCodeBranch   } from "react-icons/fa";
+
 
 type Tool = {
   name: string;
@@ -15,7 +9,7 @@ type Tool = {
 
 type Resource = {
   category: string | string[];
-  icon: LucideIcon;
+  icon: IconType;
   tools?: Tool[];
   color: string;
 };
@@ -31,12 +25,12 @@ type Resource = {
 
 class CreateResourses implements Resource {
   category: string | string[];
-  icon: LucideIcon;
+  icon: IconType;
   tools?: Tool[];
   color: string;
   constructor(
     category: string | string[],
-    icon: LucideIcon,
+    icon: IconType,
     color: string,
     tools?: Tool[]
   ) {
@@ -50,7 +44,7 @@ class CreateResourses implements Resource {
 const resources: Resource[] = [
   new CreateResourses(
     "Database",
-    Database,
+    FaDatabase ,
     "text-emerald-500",
     [
       {
@@ -66,7 +60,7 @@ const resources: Resource[] = [
 
   new CreateResourses(
     "Hosting",
-    Cloud,
+    FaCloud,
     "text-blue-500",
     [
       {
@@ -82,7 +76,7 @@ const resources: Resource[] = [
 
   new CreateResourses(
     "CDN",
-    Globe2,
+    FaGlobe,
     "text-orange-500",
     [
       {
@@ -98,7 +92,7 @@ const resources: Resource[] = [
 
   new CreateResourses(
     "CMS",
-    FileCode2,
+    FaFileCode,
     "text-purple-500",
     [
       {
@@ -110,7 +104,7 @@ const resources: Resource[] = [
 
   new CreateResourses(
     "API",
-    Braces,
+    FaCode,
     "text-yellow-500",
     [
       {
@@ -120,6 +114,18 @@ const resources: Resource[] = [
       {
         name: "GEMINI",
         description: "From google import genai",
+      },
+    ]
+  ),
+
+  new CreateResourses(
+    "Version Control",
+    FaCodeBranch,
+    "text-red-500",
+    [
+      {
+        name: "GITHUB",
+        description: "A code hosting platform for version control",
       },
     ]
   ),
