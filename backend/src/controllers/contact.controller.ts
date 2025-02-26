@@ -4,7 +4,20 @@ import { Contact } from "../models/contact.model.js";
 // Adding Contact information
 const contactInfo = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, email, message } = req.body;
+    const { name = "", email = "", message = "" } = req.body;
+
+    const isFieldEmpty: boolean = [name, email, message].some(
+      (field) => field.trim().length === 0
+    );
+
+    if (isFieldEmpty) {
+      res.status(400).json({
+        success: false,
+        status: "All fields are required",
+        data: req.body,
+      });
+      return;
+    }
 
     const contactMsg = await Contact.create({
       name: name,
@@ -46,7 +59,11 @@ const updateContactMessage = async (
     );
 
     if (!updatedContact) {
-      res.status(404).json({ success: false, status: "Message not found." });
+      res.status(404).json({
+        success: false,
+        status: "Message not found.",
+      });
+      return;
     }
 
     res.status(200).json({
@@ -74,10 +91,22 @@ const deleteContactMessage = async (
   try {
     const { id } = req.body;
 
+    if (!id) {
+      res.status(400).json({
+        success: false,
+        status: "ID is required.",
+      });
+      return;
+    }
+
     const deletedContact = await Contact.findByIdAndDelete(id);
 
     if (!deletedContact) {
-      res.status(404).json({ success: false, status: "Message not found." });
+      res.status(404).json({
+        success: false,
+        status: "Message not found.",
+      });
+      return;
     }
 
     res.status(200).json({
