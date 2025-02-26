@@ -122,7 +122,7 @@ const SeeContactInfo = ({ name, email, message, id, statusInfo, isSuccessBool }:
             : 'shadow-[0_4px_30px_rgba(0,0,255,0.2)]'
         }`}
       >
-        <h5 className="mb-1 text-xl font-extrabold text-gray-900 dark:text-white">{name.toLocaleUpperCase()}</h5>
+        <h5 className="mb-1 text-xl font-extrabold text-gray-900 dark:text-white">{name.toUpperCase()}</h5>
         <p className="text-sm text-gray-500 dark:text-gray-400">{email}</p>
 
         {isEditing ? (
