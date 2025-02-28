@@ -28,7 +28,10 @@ export default function LoginPage() {
 
   // Trigger animation on component mount
   useEffect(() => {
-    setIsVisible(true);
+    setIsVisible(false);
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 10);
   }, []);
 
   const validateloginForm = () => {

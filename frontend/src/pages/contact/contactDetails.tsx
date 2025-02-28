@@ -1,4 +1,9 @@
-import { Mail, Phone, MapPin } from 'lucide-react';
+// import { Mail, Phone, MapPin } from 'lucide-react';
+
+import { IoIosMail } from "react-icons/io";
+import { FaPhone } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
+
 
 export default function contactDetails() {
   return (
@@ -8,7 +13,7 @@ export default function contactDetails() {
         <div className="flex items-start space-x-6 rounded-2xl p-1 bg-gray-100 shadow-sm dark:bg-slate-700">
           <div className="flex-shrink-0">
             <div className="p-4 bg-white dark:bg-gray-700 rounded-lg shadow-md">
-              <MapPin className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+              <FaLocationDot className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
             </div>
           </div>
           <div>
@@ -23,7 +28,7 @@ export default function contactDetails() {
         <div className="flex items-start space-x-6 rounded-2xl p-1 bg-gray-100 shadow-sm dark:bg-slate-700">
           <div className="flex-shrink-0">
             <div className="p-4 bg-white dark:bg-gray-700 rounded-lg shadow-md">
-              <Mail className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+              <IoIosMail className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
             </div>
           </div>
           <div>
@@ -35,7 +40,7 @@ export default function contactDetails() {
         <div className="flex items-start space-x-6 rounded-2xl p-1 bg-gray-100 shadow-sm dark:bg-slate-700">
           <div className="flex-shrink-0">
             <div className="p-4 bg-white dark:bg-gray-700 rounded-lg shadow-md">
-              <Phone className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+              <FaPhone className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
             </div>
           </div>
           <div>

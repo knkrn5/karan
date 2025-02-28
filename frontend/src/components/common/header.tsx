@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router";
 import { CircleDollarSign, Bot } from "lucide-react";
+import { TbMessageChatbot } from "react-icons/tb";
+import { AiOutlineDollarCircle } from "react-icons/ai";
 import AuthButtons from "../../pages/auth/authButtons";
 
 export default function MegaMenu1() {
@@ -96,7 +98,7 @@ export default function MegaMenu1() {
                             className="group flex flex-col gap-4 rounded-lg p-4 duration-200 hover:bg-gray-200 lg:flex-row dark:hover:bg-white/5"
                           >
                             <div className="text-black dark:text-white">
-                              <CircleDollarSign />
+                              <AiOutlineDollarCircle className="h-6 w-6"/>
                             </div>
                             <div>
                               <h3 className="mb-1 text-base font-semibold text-dark duration-200  dark:text-white ">
@@ -114,7 +116,7 @@ export default function MegaMenu1() {
                             className="group flex flex-col gap-4 rounded-lg p-4 duration-200 hover:bg-gray-200 lg:flex-row dark:hover:bg-white/5"
                           >
                             <div className="text-black dark:text-white">
-                              <Bot />
+                              <TbMessageChatbot className="h-6 w-6"/>
                             </div>
                             <div>
                               <h3 className="mb-1 text-base font-semibold text-dark duration-200 dark:text-white ">

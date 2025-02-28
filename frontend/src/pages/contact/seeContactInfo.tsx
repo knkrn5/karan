@@ -3,7 +3,11 @@ import StatusNotifications from '../../components/partials/StatusNotifications';
 import axios from 'axios';
 
 import ContactForm from './contactForm';
-import { Loader2, Send, Edit, Save, Trash } from 'lucide-react';
+
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { FaRegSave, FaRegTrashAlt } from "react-icons/fa";
+import { FiEdit } from "react-icons/fi";
+import { IoIosSend } from "react-icons/io";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -156,19 +160,19 @@ const SeeContactInfo = ({ name, email, message, id, statusInfo, isSuccessBool }:
               >
                 {isLoading.edit ? (
                   <>
-                    <Loader2 className="animate-spin h-4 w-4 mr-2" />
+                    <AiOutlineLoading3Quarters className="animate-spin  h-6 w-6 mr-2" />
                     Saving...
                   </>
                 ) : (
                   <>
                     {isEditing ? (
                       <>
-                        <Save className="h-4 w-4 mr-2" />
+                        <FaRegSave className="h-4 w-4 mr-2" />
                         Save
                       </>
                     ) : (
                       <>
-                        <Edit className="h-4 w-4 mr-2" />
+                        <FiEdit className=" h-6 w-6 mr-2" />
                         Edit
                       </>
                     )}
@@ -183,12 +187,12 @@ const SeeContactInfo = ({ name, email, message, id, statusInfo, isSuccessBool }:
               >
                 {isLoading.delete ? (
                   <>
-                    <Loader2 className="animate-spin h-4 w-4 mr-2" />
+                    <AiOutlineLoading3Quarters className="animate-spin h-4 w-4 mr-2" />
                     Deleting...
                   </>
                 ) : (
                   <>
-                    <Trash className="h-4 w-4 mr-2" />
+                    <FaRegTrashAlt className="h-4 w-4 mr-2" />
                     Delete
                   </>
                 )}
@@ -200,7 +204,7 @@ const SeeContactInfo = ({ name, email, message, id, statusInfo, isSuccessBool }:
               className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-700 bg-white rounded-lg border border-blue-600 duration-300 cursor-pointer focus:ring-4 focus:outline-none hover:bg-blue-700 hover:text-white focus:ring-blue-700 dark:bg-gray-800 dark:text-blue-400 "
               type="button"
             >
-              <Send className="h-4 w-4 mr-2" />
+              <IoIosSend className=" h-6 w-6 mr-2" />
               Resend Message
             </button>
           )}

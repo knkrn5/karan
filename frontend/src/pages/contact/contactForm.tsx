@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Send, Loader2 } from 'lucide-react';
+import { IoIosSend } from "react-icons/io";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import axios from 'axios';
 
 
@@ -196,13 +197,13 @@ export default function ContactForm() {
           >
             {isLoading ? (
               <>
-                <Loader2 className="animate-spin h-5 w-5 mr-2" />
+                <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mr-2" />
                 Sending...
               </>
             ) : (
               <>
                 Send Message
-                <Send className="ml-2 -mr-1 h-5 w-5" />
+                <IoIosSend className="ml-1 -mr-1 h-6 w-6" />
               </>
             )}
           </button>
