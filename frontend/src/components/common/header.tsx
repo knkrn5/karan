@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router";
-import { CircleDollarSign, Bot } from "lucide-react";
 import { TbMessageChatbot } from "react-icons/tb";
 import { AiOutlineDollarCircle } from "react-icons/ai";
 import AuthButtons from "../../pages/auth/authButtons";
