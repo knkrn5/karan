@@ -90,7 +90,7 @@ export default function ContactForm() {
         setServerMsg(data?.data ?? { ...serverMsg, ...JSON.parse(localStorage.getItem('ContactInfoLs') || '{}') });
 
         setIsSuccess(data?.success);
-        setStatus({ error: data?.status || 'An error occurred' });
+        setStatus({ error: data?.status || 'An unexpected error occurred' });
       } else {
         setStatus({ error: 'An unexpected error occurred' });
         setServerMsg({ ...serverMsg, ...JSON.parse(localStorage.getItem('ContactInfoLs') || '{}') });

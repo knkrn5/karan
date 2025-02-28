@@ -21,7 +21,7 @@ const ErrorPage = () => {
 
         {/* Decorative Illustration */}
         <div className="mt-8 flex justify-center">
-          <img src="/svgs/404.svg" alt="404 Error" className="bg-transparent" />
+          <img src="/icons/svgs/404.svg" alt="404 Error" className="bg-transparent" />
         </div>
 
         {/* Back to Button */}
