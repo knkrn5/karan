@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect} from "react";
 import { Link } from "react-router";
 // import { GoogleIcon, GithubIcon } from "../../icons/svgIcons";
 import axios from "axios";
@@ -80,7 +80,6 @@ export default function LoginPage() {
       }
     }
   };
-  
 
   return (
     <>
@@ -94,16 +93,16 @@ export default function LoginPage() {
         </h2>
 
         {/* Social Sign In Buttons */}
-       {/*  <div className="space-y-3 mb-6">
+        {/* <div className="space-y-3 mb-6">
           <button
-            onClick={() => handleSocialLogin("Google")}
+            onClick={}
             className="w-full flex items-center justify-center gap-2 py-2 border rounded-lg text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200"
           >
             <GoogleIcon width={24} height={24} className="mr-2" />
             Sign in with Google
           </button>
           <button
-            onClick={() => handleSocialLogin("GitHub")}
+            onClick={}
             className="w-full flex items-center justify-center gap-2 py-2 border rounded-lg text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200"
           >
             <GithubIcon width={24} height={24} className="mr-2" />
