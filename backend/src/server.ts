@@ -5,6 +5,7 @@ dotenv.config();
 import { app } from "./app.js";
 import connectDB from "./db/indexdb.js";
 
+
 const startServer = async () => {
   try {
     await connectDB();
@@ -22,11 +23,14 @@ const startServer = async () => {
 startServer();
 
 
+
 app.get("/health", (req: Request, res: Response) => {
   res.send("health ok :)");
-})
+});
+
 
 /* app.get('*', (req, res) => {
   // res.redirect(process.env.FRONTEND_URL);
-  res.redirect('http://localhost:5173');
+  // res.redirect('http://localhost:5173');
+  res.send('hii there');
 }); */

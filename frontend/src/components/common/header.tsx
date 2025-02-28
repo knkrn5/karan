@@ -1,7 +1,7 @@
 import { useState } from "react";
-import ThemeMode from "../partials/themeToggle";
 import { Link, NavLink } from "react-router";
 import { CircleDollarSign, Bot } from "lucide-react";
+import AuthButtons from "../../pages/auth/authButtons";
 
 export default function MegaMenu1() {
   const [open, setOpen] = useState(false);
@@ -162,7 +162,7 @@ export default function MegaMenu1() {
               </nav>
             </div>
             <div className="pr-16 max-xs:hidden lg:pr-0">
-              <ThemeMode />
+              <AuthButtons />
             </div>
           </div>
         </div>

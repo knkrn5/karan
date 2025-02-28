@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import StatusNotifications from './StatusNotifications';
+import StatusNotifications from '../../components/partials/StatusNotifications';
 import axios from 'axios';
 
 import ContactForm from './contactForm';
