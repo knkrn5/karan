@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import axios from "axios";
 import StatusNotifications from "../../components/partials/StatusNotifications";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 interface loginFeildDataProps {
   email: string;
@@ -18,6 +19,7 @@ export default function LoginPage() {
   const [isVisible, setIsVisible] = useState(false);
   const [status, setStatus] = useState({});
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [loginFieldErrors, setLoginFieldErrors] = useState<loginFeildDataProps>(
     {
@@ -66,6 +68,8 @@ export default function LoginPage() {
       return;
     }
 
+    setIsLoading(true);
+
     try {
       const response = await axios.post(`${API_URL}/api/v1/auth/user/login`, {
         email,
@@ -81,6 +85,8 @@ export default function LoginPage() {
       } else {
         console.log(error);
       }
+    }finally {
+      setIsLoading(false);
     }
   };
 
@@ -195,9 +201,19 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            className="w-full py-2 text-white bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg transition duration-200"
+            className={`w-full py-2 text-white bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg transition duration-200 flex items-center justify-center ${
+              isLoading ? "opacity-70 cursor-not-allowed" : ""
+            }`}
+            disabled={isLoading}
           >
-            Sign In
+            {isLoading ? (
+              <span className="flex items-center">
+                <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mr-2" />
+                Signing in...
+              </span>
+            ) : (
+              "Sign In"
+            )}
           </button>
         </form>
 
