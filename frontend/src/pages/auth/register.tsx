@@ -109,8 +109,8 @@ export default function Register() {
           "Password must contain at least one special character";
       } else if (!passwordRegex.test(data.password)) {
         errors.password = "Password doesn't meet all requirements";
-      } else if (data.password.length > 25) {
-        errors.password = "Password can max be 25 characters long";
+      } else if (data.password.length > 50) {
+        errors.password = "Password can max be 50 characters long";
       }
 
       // Confirm password validation
@@ -337,7 +337,7 @@ export default function Register() {
             <input
               id="password"
               name="password"
-              maxLength={25}
+              maxLength={50}
               type={showPassword.onePassword ? "text" : "password"}
               placeholder="Password"
               className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
