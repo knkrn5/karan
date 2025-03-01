@@ -1,4 +1,4 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router";
 // import { GoogleIcon, GithubIcon } from "../../icons/svgIcons";
 import axios from "axios";
@@ -139,7 +139,11 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="w-full mt-2 px-4 py-2 border rounded-lg text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className={`w-full mt-2 px-4 py-2 border rounded-lg text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 ${
+                loginFieldErrors.email
+                  ? "border-red-500"
+                  : "border-gray-300 dark:border-gray-600"
+              }`}
             />
             {loginFieldErrors.email && (
               <p className="text-red-600 text-sm mt-1">
@@ -175,7 +179,12 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
-              className="w-full mt-2 px-4 py-2 border rounded-lg text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className={`w-full mt-2 px-4 py-2 border rounded-lg text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 
+                ${
+                  loginFieldErrors.password
+                    ? "border-red-500"
+                    : "border-gray-300 dark:border-gray-600"
+                }`}
             />
             {loginFieldErrors.password && (
               <p className="text-red-600 text-sm mt-1" id="password-error">
