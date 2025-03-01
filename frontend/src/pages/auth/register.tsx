@@ -92,8 +92,8 @@ export default function Register() {
       }
 
       // Password validation
-      const passwordRegex =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      /* const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; */
       if (!data.password) {
         errors.password = "Password is required";
       } else if (data.password.length < 8) {
@@ -107,8 +107,6 @@ export default function Register() {
       } else if (!/(?=.*[@$!%*?&])/.test(data.password)) {
         errors.password =
           "Password must contain at least one special character";
-      } else if (!passwordRegex.test(data.password)) {
-        errors.password = "Password doesn't meet all requirements";
       } else if (data.password.length > 50) {
         errors.password = "Password can max be 50 characters long";
       }
