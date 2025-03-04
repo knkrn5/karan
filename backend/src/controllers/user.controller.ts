@@ -83,8 +83,9 @@ const loginUser = async (req: Request, res: Response): Promise<void> => {
       .status(200)
       .cookie('accessToken', accessToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
         sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000,
       })
       .json({
         success: true,
