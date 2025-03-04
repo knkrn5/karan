@@ -13,8 +13,8 @@ import RegisterPage from "./pages/auth/register";
 import About from "./pages/about/aboutPage";
 import Contact from "./pages/contact/contactPage";
 
-
 function App() {
+
   return (
     <Router>
       <Header />
@@ -26,7 +26,10 @@ function App() {
           <Route path="/resources" element={<ResourcesInfo />} />
 
           <Route element={<AuthLayout />}>
-            <Route path="login" element={<LoginPage />} />
+            <Route
+              path="login"
+              element={<LoginPage />}
+            />
             <Route path="register" element={<RegisterPage />} />
           </Route>
 

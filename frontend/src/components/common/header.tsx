@@ -4,10 +4,17 @@ import { TbMessageChatbot } from "react-icons/tb";
 import { AiOutlineDollarCircle } from "react-icons/ai";
 import AuthButtons from "../../pages/auth/authButtons";
 
+
+/* interface authButtonProps {
+  username: string;
+  isSignedIn: boolean;
+} */
+
 export default function MegaMenu1() {
   const [open, setOpen] = useState(false);
   const [showMegaMenu, setShowMegaMenu] = useState<boolean>(false);
   const [isChecked, setIsChecked] = useState(false);
+
 
   return (
     <header>
@@ -97,7 +104,7 @@ export default function MegaMenu1() {
                             className="group flex flex-col gap-4 rounded-lg p-4 duration-200 hover:bg-gray-200 lg:flex-row dark:hover:bg-white/5"
                           >
                             <div className="text-black dark:text-white">
-                              <AiOutlineDollarCircle className="h-6 w-6"/>
+                              <AiOutlineDollarCircle className="h-6 w-6" />
                             </div>
                             <div>
                               <h3 className="mb-1 text-base font-semibold text-dark duration-200  dark:text-white ">
@@ -115,7 +122,7 @@ export default function MegaMenu1() {
                             className="group flex flex-col gap-4 rounded-lg p-4 duration-200 hover:bg-gray-200 lg:flex-row dark:hover:bg-white/5"
                           >
                             <div className="text-black dark:text-white">
-                              <TbMessageChatbot className="h-6 w-6"/>
+                              <TbMessageChatbot className="h-6 w-6" />
                             </div>
                             <div>
                               <h3 className="mb-1 text-base font-semibold text-dark duration-200 dark:text-white ">
@@ -162,7 +169,7 @@ export default function MegaMenu1() {
                 </ul>
               </nav>
             </div>
-            <div className="pr-16 max-xs:hidden lg:pr-0">
+            <div className="pr-16 lg:pr-0">
               <AuthButtons />
             </div>
           </div>

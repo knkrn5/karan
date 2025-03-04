@@ -1,9 +1,10 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 // import { GoogleIcon, GithubIcon } from "../../icons/svgIcons";
 import axios from "axios";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import StatusNotifications from "../../components/partials/StatusNotifications";
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -22,13 +23,6 @@ interface UserDataErrorProps {
   password: string;
   confirmPassword: string;
 }
-
-/* interface StatusInfoProps {
-  success?: string;
-  info?: string;
-  warning?: string;
-  error?: string;
-} */
 
 export default function Register() {
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -59,12 +53,19 @@ export default function Register() {
     confirmPassword: "",
   });
 
+  const navigate = useNavigate();
+
   // Trigger animation on every mount
   useEffect(() => {
     setIsVisible(false);
     setTimeout(() => {
       setIsVisible(true);
     }, 10);
+
+    if (localStorage.getItem("userData")) {
+      const userData = JSON.parse(localStorage.getItem("userData") || "");
+      setUserData(userData);
+    }
   }, []);
 
   // Validate form fields and return errors
@@ -132,6 +133,7 @@ export default function Register() {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    localStorage.setItem("userData", JSON.stringify(userData));
 
     const formFieldValidation = validateForm(userData);
     setFormFieldsError(formFieldValidation);
@@ -150,12 +152,12 @@ export default function Register() {
       );
       const { data } = response;
       setStatus({ success: data.status });
-      console.log(data.message);
+      navigate("/login");
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.status);
         setStatus({
-          error: error.response?.data.status || "Registration failed",
+          error: error.response?.data.status || error.message,
         });
       } else {
         setStatus({ error: "An unexpected error occurred" });
@@ -250,9 +252,10 @@ export default function Register() {
                 type="text"
                 maxLength={20}
                 placeholder="First name"
+                disabled={isSubmitting}
                 className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   formFieldsError.firstName ? "border border-red-500" : ""
-                }`}
+                } ${isSubmitting ? "disabled:opacity-50 disabled:cursor-not-allowed" : ""}`}
                 value={userData.firstName}
                 onChange={handleChange}
               />
@@ -276,7 +279,13 @@ export default function Register() {
                 maxLength={20}
                 type="text"
                 placeholder="Last Name"
-                className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled={isSubmitting}
+                className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500
+                  ${
+                    isSubmitting
+                      ? "disabled:opacity-50 disabled:cursor-not-allowed"
+                      : ""
+                  }`}
                 value={userData.lastName}
                 onChange={handleChange}
               />
@@ -297,8 +306,13 @@ export default function Register() {
               name="email"
               type="email"
               placeholder="Email"
+              disabled={isSubmitting}
               className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 formFieldsError.email ? "border border-red-500" : ""
+              } ${
+                isSubmitting
+                  ? "disabled:opacity-50 disabled:cursor-not-allowed"
+                  : ""
               }`}
               value={userData.email}
               onChange={handleChange}
@@ -338,16 +352,16 @@ export default function Register() {
               maxLength={50}
               type={showPassword.onePassword ? "text" : "password"}
               placeholder="Password"
+              disabled={isSubmitting}
               className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 formFieldsError.password ? "border border-red-500" : ""
+              } ${
+                isSubmitting
+                  ? "disabled:opacity-50 disabled:cursor-not-allowed"
+                  : ""
               }`}
               value={userData.password}
               onChange={handleChange}
-              aria-required="true"
-              aria-invalid={!!formFieldsError.password}
-              aria-describedby={
-                formFieldsError.password ? "password-error" : undefined
-              }
             />
             {formFieldsError.password && (
               <p className="text-red-600 text-sm mt-1" id="password-error">
@@ -401,8 +415,13 @@ export default function Register() {
               name="confirmPassword"
               type={showPassword.twoPassword ? "text" : "password"}
               placeholder="Confirm Password"
+              disabled={isSubmitting}
               className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 formFieldsError.confirmPassword ? "border border-red-500" : ""
+              } ${
+                isSubmitting
+                  ? "disabled:opacity-50 disabled:cursor-not-allowed"
+                  : ""
               }`}
               aria-label={
                 showPassword.twoPassword

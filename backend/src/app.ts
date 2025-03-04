@@ -1,36 +1,33 @@
-import express from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
+import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+
+/* import dotenv from "dotenv";
+dotenv.config(); */
 
 const app = express();
 
 // Middleware setup
 const corsOptions = {
-  origin: [
-    "https://karan.email",
-    "https://www.karan.email",
-    "https://karan-frontend.onrender.com",
-    "http://localhost:5173",
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: ['https://karan.email', 'https://www.karan.email', 'https://karan-frontend.onrender.com', 'http://localhost:5173'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
   optionsSuccessStatus: 200, // Fix legacy browser issues
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // Handle preflight requests
-app.use(express.json({ limit: "16kb" }));
-app.use(express.urlencoded({ limit: "16kb", extended: true }));
-app.use(express.static("public"));
+app.options('*', cors(corsOptions)); // Handle preflight requests
+app.use(express.json({ limit: '16kb' }));
+app.use(express.urlencoded({ limit: '16kb', extended: true }));
+// app.use(express.static("public"));
 app.use(cookieParser());
 
 //routes imports
-import contactRoutes from "./routes/contact.routes.js";
-import userRoutes from "./routes/user.routes.js";
+import contactRoutes from './routes/contact.routes.js';
+import userRoutes from './routes/user.routes.js';
 
 //routes
-app.use("/api/contact", contactRoutes);
-app.use("/api/v1/auth/user/", userRoutes);
-
+app.use('/api/contact', contactRoutes);
+app.use('/api/v1/auth/user/', userRoutes);
 
 export { app };

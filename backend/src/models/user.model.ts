@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-
+import jwt from "jsonwebtoken";
 
 // Define an interface for the User document
 interface IUser extends mongoose.Document {
@@ -11,6 +11,7 @@ interface IUser extends mongoose.Document {
   createdAt: Date;
   updatedAt: Date;
   comparePassword(enteredPassword: string): Promise<boolean>;
+  createAccessToken(): string;
 }
 
 const userSchema = new mongoose.Schema(
@@ -45,8 +46,19 @@ userSchema.pre("save", async function (next) {
 });
 
 // Method to compare passwords
-userSchema.methods.comparePassword = async function (enteredPassword: string): Promise<boolean> {
+userSchema.methods.comparePassword = async function (
+  enteredPassword: string
+): Promise<boolean> {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-export const User = mongoose.model<IUser>("User", userSchema, "user Infomations");
+userSchema.methods.createAccessToken = function (): string {
+  return jwt.sign(
+    { userId: this._id, email: this.email },
+    process.env.ACCESS_TOKEN_SECRET as string,
+    { expiresIn: "1h" }
+  );
+};
+
+
+export const User = mongoose.model<IUser>("User", userSchema);
