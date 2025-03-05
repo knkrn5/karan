@@ -337,7 +337,6 @@ export default function Register() {
           <button
             type="submit"
             className={`${isSubmitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'} text-white font-semibold py-2 px-4 rounded-lg w-full flex justify-center items-center cursor-pointer`}
-            // disabled={isSubmitting || hasErrors}
           >
             {isSubmitting ? (
               <>
