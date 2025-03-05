@@ -26,19 +26,20 @@ export default function AuthButtons() {
         console.log(data);
 
         if (data.success) {
-          setIsSignedIn(true);
-          console.log('hiiii');
           useProfileStore.getState().setFirstName(data.userdata.firstName);
-        } else {
-          setIsSignedIn(false);
         }
       } catch (error) {
         console.error('Error fetching profile:', error);
-        setIsSignedIn(false);
       }
     }
 
-    getProfile();
+    if (localStorage.getItem('isSuccessLoginedInLs') === 'true') {
+      getProfile();
+      setIsSignedIn(true);
+    } else {
+      axios.post(`${API_URL}/api/v1/auth/user/logout`, {}, { withCredentials: true });
+      setIsSignedIn(false);
+    }
   }, [isSuccessLoginedIn]);
 
   return (
@@ -53,12 +54,7 @@ export default function AuthButtons() {
           </Link>
         </div>
       ) : (
-        <div
-          className="flex items-center justify-center w-8 h-8 bg-gray-500 rounded-full cursor-pointer duration-300 hover:ring-2 hover:ring-blue-600 dark:hover:ring-gray-300"
-          title="profile button"
-          onClick={() => setShowProfile(!showProfile)}
-
-        >
+        <div className="flex items-center justify-center w-8 h-8 bg-gray-500 rounded-full cursor-pointer duration-300 hover:ring-2 hover:ring-blue-600 dark:hover:ring-gray-300" title="profile button" onClick={() => setShowProfile(!showProfile)}>
           <span className="text-white text-lg font-semibold">{letter}</span>
         </div>
       )}

@@ -88,7 +88,7 @@ export default function LoginPage() {
       console.log(data.userdata);
       setStatus({ success: data.status });
       setIsSuccessLoginedIn(true);
-      localStorage.setItem('isSuccessLoginedIn', data.success.toString());
+      localStorage.setItem('isSuccessLoginedInLs', data.success.toString());
       if (isSuccessLoginedIn) {
         navigate('/blog');
       }
@@ -105,7 +105,7 @@ export default function LoginPage() {
     }
   };
 
- /*  if (localStorage.getItem('isSuccessLoginedIn') === 'true') {
+ /*  if (localStorage.getItem('isSuccessLoginedInLs') === 'true') {
     return (
       <>
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 w-full max-w-md transition-all duration-500 ease-out opacity-100 scale-100">

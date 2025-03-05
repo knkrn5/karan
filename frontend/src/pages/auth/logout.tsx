@@ -10,16 +10,18 @@ export default function Logout() {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.post(`${API_URL}/api/v1/auth/user/logout`, {}, { withCredentials: true });
+      const response = await axios.post(`${API_URL}/api/v1/auth/user/logout`, { withCredentials: true });
       console.log(response);
       useProfileStore.getState().setIsSuccessLoginedIn(false);
+      localStorage.removeItem('isSuccessLoginedInLs');
     } catch (error) {
       console.log(error);
     } finally {
       // navigate('/');
-      window.location.reload();
+      // window.location.reload();
     }
   };
+
 
   return (
     <>

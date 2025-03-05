@@ -91,7 +91,7 @@ const loginUser = async (req: Request, res: Response): Promise<void> => {
         success: true,
         message: 'Login successful',
         status: 'Login successful',
-        userdata: null,
+        userdata: loggedInUserInfo,
         accessToken,
       });
   } catch (error: any) {
