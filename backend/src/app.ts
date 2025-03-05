@@ -6,7 +6,7 @@ const app = express();
 
 // ✅ CORS Configuration
 const corsOptions = {
-  origin: ['https://karan.email', 'https://www.karan.email', 'http://localhost:5173'],
+  origin: ['https://karan.email', 'https://www.karan.email', 'https://karan-frontend.onrender.com', 'http://localhost:5173'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
   optionsSuccessStatus: 200, // Fixes legacy browser issues
