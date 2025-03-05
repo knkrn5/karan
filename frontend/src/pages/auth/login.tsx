@@ -28,6 +28,8 @@ export default function LoginPage() {
     password: '',
   });
 
+  const isSuccessLoginedIn = useProfileStore((state) => state.isSuccessLoginedIn);
+
   const navigate = useNavigate();
 
   // Trigger animation on component mount
@@ -100,6 +102,19 @@ export default function LoginPage() {
       setIsLoading(false);
     }
   };
+
+if(!isSuccessLoginedIn){
+  return (
+    <>
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 w-full max-w-md transition-all duration-500 ease-out opacity-100 scale-100">
+        <h2 className="text-2xl font-extrabold text-center text-gray-800 dark:text-gray-100 mb-4">Login</h2>
+        <p className="text-gray-600 dark:text-gray-400 text-center mb-6">
+          You are already logged in.
+        </p>
+      </div>
+    </>
+  )
+}
 
   return (
     <>

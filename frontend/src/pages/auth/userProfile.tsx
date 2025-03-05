@@ -23,12 +23,9 @@ export default function UserProfile() {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        //prettier-ignore
-        const response = await axios.get( `${API_URL}/api/v1/auth/user/profile`,
-          {
-            withCredentials: true, 
-          }
-        );
+        const response = await axios.get(`${API_URL}/api/v1/auth/user/profile`, {
+          withCredentials: true,
+        });
 
         const { data } = response;
         setFirstName(data.userdata.firstName);

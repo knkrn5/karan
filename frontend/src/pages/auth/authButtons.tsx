@@ -7,7 +7,7 @@ import axios from 'axios';
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function AuthButtons() {
-  const [showProfile, setshowProfile] = useState<boolean>(false);
+  const [showProfile, setShowProfile] = useState<boolean>(false);
   const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
 
   const firstName = useProfileStore((state) => state.firstName);
@@ -19,7 +19,7 @@ export default function AuthButtons() {
     async function getProfile() {
       try {
         const response = await axios.get(`${API_URL}/api/v1/auth/user/profile`, {
-          withCredentials: true, 
+          withCredentials: true,
         });
 
         const { data } = response;
@@ -27,7 +27,7 @@ export default function AuthButtons() {
 
         if (data.success) {
           setIsSignedIn(true);
-          console.log("hiiii")
+          console.log('hiiii');
           useProfileStore.getState().setFirstName(data.userdata.firstName);
         } else {
           setIsSignedIn(false);
@@ -56,10 +56,8 @@ export default function AuthButtons() {
         <div
           className="flex items-center justify-center w-8 h-8 bg-gray-500 rounded-full cursor-pointer duration-300 hover:ring-2 hover:ring-blue-600 dark:hover:ring-gray-300"
           title="profile button"
-          onClick={() => {
-            console.log('Profile icon clicked, toggling showProfile');
-            setshowProfile((prev) => !prev);
-          }}
+          onClick={() => setShowProfile(!showProfile)}
+
         >
           <span className="text-white text-lg font-semibold">{letter}</span>
         </div>

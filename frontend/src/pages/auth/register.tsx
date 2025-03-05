@@ -152,7 +152,7 @@ export default function Register() {
       );
       const { data } = response;
       setStatus({ success: data.status });
-      navigate("/login");
+      // navigate("/login");
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.status);
