@@ -1,4 +1,3 @@
-// middlewares/user.middleware.ts
 import jwt from 'jsonwebtoken';
 import { User } from '../models/user.model.js';
 import { Request, Response, NextFunction } from 'express';
@@ -43,25 +42,21 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
     req.user = user;
     next();
   } catch (error: any) {
+    let statusCode = 500;
+    let message = 'Internal server error';
+
     if (error.name === 'TokenExpiredError') {
-      res.status(401).json({
-        success: false,
-        message: 'Token expired',
-        status: 'Token expired',
-        data: null,
-      });
+      statusCode = 401;
+      message = 'Token expired';
     } else if (error.name === 'JsonWebTokenError') {
-      res.status(401).json({
-        success: false,
-        message: 'Invalid token',
-        status: 'Invalid token',
-        data: null,
-      });
+      statusCode = 401;
+      message = 'Invalid token';
     }
-    res.status(500).json({
+
+    res.status(statusCode).json({
       success: false,
-      message: 'Internal server error',
-      status: 'Internal server error',
+      message,
+      status: message,
       data: null,
     });
   }

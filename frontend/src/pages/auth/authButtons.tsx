@@ -33,11 +33,19 @@ export default function AuthButtons() {
       }
     }
 
+    async function handleLogout() {
+      try {
+        await axios.post(`${API_URL}/api/v1/auth/user/logout`, {}, { withCredentials: true });
+      } catch (error) {
+        console.error('Error logging out:', error);
+      }
+    }
+
     if (localStorage.getItem('isSuccessLoginedInLs') === 'true') {
       getProfile();
       setIsSignedIn(true);
     } else {
-      axios.post(`${API_URL}/api/v1/auth/user/logout`, {}, { withCredentials: true });
+      handleLogout();
       setIsSignedIn(false);
     }
   }, [isSuccessLoginedIn]);
