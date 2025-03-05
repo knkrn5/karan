@@ -53,7 +53,7 @@ export default function Register() {
     confirmPassword: "",
   });
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // Trigger animation on every mount
   useEffect(() => {
