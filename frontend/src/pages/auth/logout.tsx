@@ -16,7 +16,7 @@ export default function Logout() {
     } catch (error) {
       console.log(error);
     } finally {
-      navigate('/');
+      // navigate('/');
       window.location.reload();
     }
   };

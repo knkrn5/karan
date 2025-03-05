@@ -29,6 +29,7 @@ export default function LoginPage() {
   });
 
   const isSuccessLoginedIn = useProfileStore((state) => state.isSuccessLoginedIn);
+  const { setIsSuccessLoginedIn } = useProfileStore();
 
   const navigate = useNavigate();
 
@@ -86,8 +87,9 @@ export default function LoginPage() {
       const { data } = response;
       console.log(data.userdata);
       setStatus({ success: data.status });
-      useProfileStore.getState().setIsSuccessLoginedIn(true);
-      if (data.success) {
+      setIsSuccessLoginedIn(true);
+      localStorage.setItem('isSuccessLoginedIn', isSuccessLoginedIn.toString());
+      if (isSuccessLoginedIn) {
         navigate('/blog');
       }
     } catch (error: unknown) {
@@ -103,7 +105,7 @@ export default function LoginPage() {
     }
   };
 
-if(!isSuccessLoginedIn){
+  /* if(!isSuccessLoginedIn){
   return (
     <>
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 w-full max-w-md transition-all duration-500 ease-out opacity-100 scale-100">
@@ -114,7 +116,7 @@ if(!isSuccessLoginedIn){
       </div>
     </>
   )
-}
+} */
 
   return (
     <>
