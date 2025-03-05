@@ -196,7 +196,7 @@ export default function LoginPage() {
             )}
           </div>
 
-          <button type="submit" className={`w-full py-2 text-white bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg transition duration-200 flex items-center justify-center ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`} disabled={isLoading}>
+          <button type="submit" className={`w-full py-2 text-white cursor-pointer bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg transition duration-200 flex items-center justify-center ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`} disabled={isLoading}>
             {isLoading ? (
               <span className="flex items-center">
                 <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mr-2" />
