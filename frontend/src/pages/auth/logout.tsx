@@ -1,12 +1,12 @@
 import { IoLogOut } from 'react-icons/io5';
 import axios from 'axios';
 import { useProfileStore } from '../../stores/auth/authUserProfileStore';
-import { useNavigate } from 'react-router';
+// import { useNavigate } from 'react-router';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Logout() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
