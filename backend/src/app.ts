@@ -5,7 +5,6 @@ import dotenv from 'dotenv';
 
 const app = express();
 dotenv.config({ path: '.env' });
-console.log(process.env.FRONTEND_URL);
 
 // ✅ CORS Configuration
 const corsOptions = {
@@ -33,21 +32,15 @@ import userRoutes from './routes/user.routes.js';
 app.use('/api/contact', contactRoutes);
 app.use('/api/v1/auth/user/', userRoutes);
 
-// Catch-All Route
-app.get('*', (req, res) => {
-  // res.redirect(process.env.FRONTEND_URL || 'http://localhost:5173');
-});
 
 app.get('*', (req, res) => {
-  const frontendUrl ='PRODUCTION'
+  /* const frontendUrl ='PRODUCTION'
     process.env.NODE_ENV === ''
       ? process.env.FRONTEND_URL ?? 'https://karan.email' 
       : 'http://localhost:5173';
 
-  res.redirect(frontendUrl);
+  res.redirect(frontendUrl); */
   res.send('hey. from backend...');
 });
-
-
 
 export { app };
