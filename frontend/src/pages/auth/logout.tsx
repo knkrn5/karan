@@ -25,7 +25,7 @@ export default function Logout() {
       console.log(error);
     } finally {
       // navigate('/');
-      // window.location.reload();
+      window.location.reload();
       setIsLoading(false);
     }
   };
