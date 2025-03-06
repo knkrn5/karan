@@ -130,7 +130,7 @@ const logoutUser = async (req: Request, res: Response): Promise<void> => {
       .clearCookie('accessToken', {
         httpOnly: true,
         secure: true,
-        sameSite: 'strict',
+        sameSite: 'none',
       })
       .json({
         success: true,
