@@ -17,7 +17,7 @@ app.use(express.json({ limit: '16kb' }));
 app.use(express.urlencoded({ limit: '16kb', extended: true }));
 app.use(cookieParser());
 
-// Health Check 
+// Health Check
 app.get('/health', (req, res) => {
   res.send('health ok :)');
 });
@@ -30,10 +30,21 @@ import userRoutes from './routes/user.routes.js';
 app.use('/api/contact', contactRoutes);
 app.use('/api/v1/auth/user/', userRoutes);
 
-// Catch-All Route 
+// Catch-All Route
 app.get('*', (req, res) => {
-  // res.redirect(process.env.FRONTEND_URL || 'http://localhost:5173'); 
-  res.send('hey, from backend');
+  // res.redirect(process.env.FRONTEND_URL || 'http://localhost:5173');
 });
+
+app.get('*', (req, res) => {
+  const frontendUrl ='PRODUCTION'
+    process.env.NODE_ENV === ''
+      ? process.env.FRONTEND_URL ?? 'https://karan.email' 
+      : 'http://localhost:5173';
+
+  res.redirect(frontendUrl);
+  res.send('hey. from backend...');
+});
+
+
 
 export { app };

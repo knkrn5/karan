@@ -125,12 +125,19 @@ const getProfile = async (req: Request, res: Response): Promise<void> => {
 
 const logoutUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    res.status(200).clearCookie('accessToken').json({
-      success: true,
-      message: 'Logout successful',
-      status: 'Logout successful',
-      userdata: null,
-    });
+    res
+      .status(200)
+      .clearCookie('accessToken', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+      })
+      .json({
+        success: true,
+        message: 'Logout successful',
+        status: 'Logout successful',
+        userdata: null,
+      });
   } catch (error: any) {
     res.status(500).json({
       success: false,
