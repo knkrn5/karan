@@ -13,6 +13,7 @@ type Action = {
   setFirstName: (firstName: string) => void;
   setLastName: (lastName: string) => void;
   setMail: (email: string) => void;
+  reset: () => void;
 };
 
 const useProfileStore = create<State & Action>((set) => ({
@@ -27,7 +28,14 @@ const useProfileStore = create<State & Action>((set) => ({
 
   email: '',
   setMail: (email) => set({ email }),
+
+  reset: () =>
+    set({
+      isSuccessLoginedIn: false,
+      firstName: '',
+      lastName: '',
+      email: '',
+    }),
 }));
 
 export { useProfileStore };
-

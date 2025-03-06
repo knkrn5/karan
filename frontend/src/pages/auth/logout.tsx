@@ -16,7 +16,9 @@ export default function Logout() {
       setIsLoading(true);
       const response = await axios.post(`${API_URL}/api/v1/auth/user/logout`, {}, { withCredentials: true });
       console.log(response);
-      useProfileStore.getState().setIsSuccessLoginedIn(false);
+      // Clearing all state in zustand
+      // useProfileStore.getState().setIsSuccessLoginedIn(false);
+      useProfileStore.getState().reset();
       localStorage.removeItem('isSuccessLoginedInLs');
       console.log('calling logout');
     } catch (error) {

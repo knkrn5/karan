@@ -16,38 +16,25 @@ export default function AuthButtons() {
   const letter: string = firstName?.[0]?.toUpperCase() || '';
 
   useEffect(() => {
+    const isSuccessLoginedIn = localStorage.getItem('isSuccessLoginedInLs') === 'true';
+    if (!isSuccessLoginedIn) {
+      return setIsSignedIn(false);
+    }
+
+    setIsSignedIn(true);
     async function getProfile() {
       try {
-        const response = await axios.get(`${API_URL}/api/v1/auth/user/profile`, {
-          withCredentials: true,
-        });
-
-        const { data } = response;
+        const { data } = await axios.get(`${API_URL}/api/v1/auth/user/profile`, { withCredentials: true });
         console.log(data);
 
         if (data.success) {
           useProfileStore.getState().setFirstName(data.userdata.firstName);
         }
       } catch (error) {
-        console.error('Error fetching profile:', error);
+        console.log(error);
       }
     }
-
-    async function handleLogout() {
-      try {
-        await axios.post(`${API_URL}/api/v1/auth/user/logout`, {}, { withCredentials: true });
-      } catch (error) {
-        console.error('Error logging out:', error);
-      }
-    }
-
-    if (localStorage.getItem('isSuccessLoginedInLs') === 'true') {
-      getProfile();
-      setIsSignedIn(true);
-    } else {
-      handleLogout();
-      setIsSignedIn(false);
-    }
+    getProfile();
   }, [isSuccessLoginedIn]);
 
   return (

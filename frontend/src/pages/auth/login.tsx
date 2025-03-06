@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link, } from 'react-router';
 // import { GoogleIcon, GithubIcon } from "../../icons/svgIcons";
 import axios from 'axios';
 import StatusNotifications from '../../components/partials/StatusNotifications';
@@ -28,10 +28,7 @@ export default function LoginPage() {
     password: '',
   });
 
-  const isSuccessLoginedIn = useProfileStore((state) => state.isSuccessLoginedIn);
-  const { setIsSuccessLoginedIn } = useProfileStore();
-
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // Trigger animation on component mount
   useEffect(() => {
@@ -87,11 +84,9 @@ export default function LoginPage() {
       const { data } = response;
       console.log(data.userdata);
       setStatus({ success: data.status });
-      setIsSuccessLoginedIn(true);
       localStorage.setItem('isSuccessLoginedInLs', data.success.toString());
-      if (isSuccessLoginedIn) {
-        navigate('/blog');
-      }
+      useProfileStore.getState().setIsSuccessLoginedIn(true);
+      // navigate('/blog');
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.message);
@@ -105,7 +100,7 @@ export default function LoginPage() {
     }
   };
 
- /*  if (localStorage.getItem('isSuccessLoginedInLs') === 'true') {
+  /*  if (localStorage.getItem('isSuccessLoginedInLs') === 'true') {
     return (
       <>
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 w-full max-w-md transition-all duration-500 ease-out opacity-100 scale-100">
