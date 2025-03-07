@@ -19,7 +19,6 @@ export default function AuthButtons() {
     const isSuccessLoginedInLs = localStorage.getItem('isSuccessLoginedInLs') === 'true';
     if (!isSuccessLoginedInLs) {
       axios.post(`${API_URL}/api/v1/auth/user/logout`, {}, { withCredentials: true }).catch((err) => console.error('Logout error:', err));
-      console.log('logging out');
       return setIsSignedIn(false);
     }
 
@@ -28,7 +27,6 @@ export default function AuthButtons() {
     (async () => {
       try {
         const { data } = await axios.get(`${API_URL}/api/v1/auth/user/profile`, { withCredentials: true });
-        console.log(data);
 
         if (data.success) {
           useProfileStore.getState().setFirstName(data.userdata.firstName);
