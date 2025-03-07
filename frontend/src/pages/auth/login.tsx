@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, } from 'react-router';
+import { Link } from 'react-router';
 // import { GoogleIcon, GithubIcon } from "../../icons/svgIcons";
 import axios from 'axios';
 import StatusNotifications from '../../utils/StatusNotifications.js';
@@ -7,6 +7,7 @@ import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 import { useProfileStore } from '../../stores/auth/authUserProfileStore.js';
+import UserAccount from './userAccount.js';
 
 interface loginFeildDataProps {
   email: string;
@@ -100,16 +101,13 @@ export default function LoginPage() {
     }
   };
 
-  /*  if (localStorage.getItem('isSuccessLoginedInLs') === 'true') {
+  if (localStorage.getItem('isSuccessLoginedInLs') === 'true') {
     return (
       <>
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 w-full max-w-md transition-all duration-500 ease-out opacity-100 scale-100">
-          <h2 className="text-2xl font-extrabold text-center text-gray-800 dark:text-gray-100 mb-4">Login</h2>
-          <p className="text-gray-600 dark:text-gray-400 text-center mb-6">You are already logged in.</p>
-        </div>
+        <UserAccount />
       </>
     );
-  } */
+  }
 
   return (
     <>

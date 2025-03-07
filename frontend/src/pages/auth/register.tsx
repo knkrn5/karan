@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import axios from 'axios';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import StatusNotifications from '../../utils/StatusNotifications';
+import UserAccount from './userAccount';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -181,16 +182,13 @@ export default function Register() {
     }));
   }, []);
 
- /*  if (localStorage.getItem('isSuccessLoginedInLs') === 'true') {
+  if (localStorage.getItem('isSuccessLoginedInLs') === 'true') {
     return (
       <>
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 w-full max-w-md transition-all duration-500 ease-out opacity-100 scale-100">
-          <h2 className="text-2xl font-extrabold text-center text-gray-800 dark:text-gray-100 mb-4">Register</h2>
-          <p className="text-gray-600 dark:text-gray-400 text-center mb-6">You are already logged in.</p>
-        </div>
+        <UserAccount />
       </>
     );
-  } */
+  }
 
   return (
     <>
@@ -334,10 +332,7 @@ export default function Register() {
           </div>
 
           {/* Submit Button */}
-          <button
-            type="submit"
-            className={`${isSubmitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'} text-white font-semibold py-2 px-4 rounded-lg w-full flex justify-center items-center cursor-pointer`}
-          >
+          <button type="submit" className={`${isSubmitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'} text-white font-semibold py-2 px-4 rounded-lg w-full flex justify-center items-center cursor-pointer`}>
             {isSubmitting ? (
               <>
                 <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
