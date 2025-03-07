@@ -18,8 +18,8 @@ export default function AuthButtons() {
   useEffect(() => {
     const isSuccessLoginedInLs = localStorage.getItem('isSuccessLoginedInLs') === 'true';
     if (!isSuccessLoginedInLs) {
-      axios.post(`${API_URL}/api/v1/auth/user/logout`, {}, { withCredentials: true })
-      console.log("logging out")
+      axios.post(`${API_URL}/api/v1/auth/user/logout`, {}, { withCredentials: true }).catch((err) => console.error('Logout error:', err));
+      console.log('logging out');
       return setIsSignedIn(false);
     }
 
@@ -37,7 +37,6 @@ export default function AuthButtons() {
         console.log(error);
       }
     })();
-  
   }, [isSuccessLoginedIn]);
 
   return (
