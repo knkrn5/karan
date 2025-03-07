@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, } from 'react-router';
 // import { GoogleIcon, GithubIcon } from "../../icons/svgIcons";
 import axios from 'axios';
-import StatusNotifications from '../../components/partials/StatusNotifications';
+import StatusNotifications from '../../utils/StatusNotifications.js';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 

@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 // import { GoogleIcon, GithubIcon } from "../../icons/svgIcons";
 import axios from 'axios';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
-import StatusNotifications from '../../components/partials/StatusNotifications';
+import StatusNotifications from '../../utils/StatusNotifications';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
