@@ -108,7 +108,7 @@ export default function ContactForm() {
     } finally {
       setTimeout(() => {
         localStorage.removeItem('contactInfoLs');
-      }, 60 * 1000);
+      }, 15 * 60 * 1000);
     }
   }, [setIsSubmitted]);
 
