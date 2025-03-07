@@ -16,8 +16,10 @@ export default function AuthButtons() {
   const letter: string = firstName?.[0]?.toUpperCase() || '';
 
   useEffect(() => {
-    const isSuccessLoginedIn = localStorage.getItem('isSuccessLoginedInLs') === 'true';
-    if (!isSuccessLoginedIn) {
+    const isSuccessLoginedInLs = localStorage.getItem('isSuccessLoginedInLs') === 'true';
+    if (!isSuccessLoginedInLs) {
+      axios.post(`${API_URL}/api/v1/auth/user/logout`, {}, { withCredentials: true })
+      console.log("logging out")
       return setIsSignedIn(false);
     }
 
