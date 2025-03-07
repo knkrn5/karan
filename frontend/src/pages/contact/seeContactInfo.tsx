@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import StatusNotifications from '../../utils/StatusNotifications';
 import axios from 'axios';
 import { useContactInfoStore } from '../../stores/contact/contantInfoStore';
@@ -32,7 +32,6 @@ const SeeContactInfo = () => {
   const isSuccess = useContactInfoStore((state) => state.isSuccess);
   const statusInfo = useContactInfoStore((state) => state.statusInfo);
   const id = useContactInfoStore((state) => state.contactMsgId);
-  // const isSubmitted = useContactInfoStore((state) => state.isSubmitted);
 
   const { setIsSuccess, setStatusInfo, setContactInfo, setIsSubmitted } = useContactInfoStore();
 
