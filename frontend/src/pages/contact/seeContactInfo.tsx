@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import StatusNotifications from '../../utils/StatusNotifications';
 import axios from 'axios';
 import { useContactInfoStore } from '../../stores/contact/contantInfoStore';
@@ -12,12 +12,11 @@ import { IoIosSend } from 'react-icons/io';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-
 const SeeContactInfo = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isEdited, setIsEdited] = useState<boolean>(true);
   const [isResend, setIsResend] = useState<boolean>(false);
-  const [isRequired, setisRequired] = useState<boolean>(false);
+  const [isRequired, setIsRequired] = useState<boolean>(false);
 
   const [isLoading, setIsLoading] = useState<{
     edit: boolean;
@@ -33,16 +32,17 @@ const SeeContactInfo = () => {
   const isSuccess = useContactInfoStore((state) => state.isSuccess);
   const statusInfo = useContactInfoStore((state) => state.statusInfo);
   const id = useContactInfoStore((state) => state.contactMsgId);
+  // const isSubmitted = useContactInfoStore((state) => state.isSubmitted);
 
-  const { setIsSuccess, setStatusInfo, setContactInfo } = useContactInfoStore();
+  const { setIsSuccess, setStatusInfo, setContactInfo, setIsSubmitted } = useContactInfoStore();
 
   // Editing message
   const handleEdit = async () => {
     if (message.length < 10) {
-      setisRequired(true);
+      setIsRequired(true);
       return;
     }
-    setisRequired(false);
+    setIsRequired(false);
     if (isEditing) {
       try {
         setIsLoading((prev) => ({ ...prev, edit: true }));
@@ -55,12 +55,14 @@ const SeeContactInfo = () => {
 
         const { data } = response;
         setStatusInfo({ success: data.status });
+        setIsSuccess(data.success);
         setIsEdited(data.success);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           setStatusInfo({
             error: error.response?.data?.status || 'An unexpected error occurred.',
           });
+          setIsSuccess(error.response?.data?.success);
           setIsEdited(error.response?.data?.success);
         } else {
           setStatusInfo({ error: 'An unexpected error occurred' });
@@ -104,7 +106,13 @@ const SeeContactInfo = () => {
     }
   };
 
-  //component switching
+  // Handle resend button click
+  const handleResend = () => {
+    setIsResend(true);
+    setIsSubmitted(false);
+  };
+
+  // If resend is true, return ContactForm component
   if (isResend) {
     return <ContactForm />;
   }
@@ -168,7 +176,7 @@ const SeeContactInfo = () => {
               </button>
             </>
           ) : (
-            <button onClick={() => setIsResend(true)} className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-700 bg-white rounded-lg border border-blue-600 duration-300 cursor-pointer focus:ring-4 focus:outline-none hover:bg-blue-700 hover:text-white focus:ring-blue-700 dark:bg-gray-800 dark:text-blue-400 " type="button">
+            <button onClick={handleResend} className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-700 bg-white rounded-lg border border-blue-600 duration-300 cursor-pointer focus:ring-4 focus:outline-none hover:bg-blue-700 hover:text-white focus:ring-blue-700 dark:bg-gray-800 dark:text-blue-400 " type="button">
               <IoIosSend className=" h-6 w-6 mr-2" />
               Resend Message
             </button>
