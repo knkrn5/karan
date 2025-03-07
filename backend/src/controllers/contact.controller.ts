@@ -52,6 +52,14 @@ const updateContactMessage = async (
   try {
     const { id, message } = req.body;
 
+    if (!id) {
+      res.status(400).json({
+        success: false,
+        status: "Invalid ID.",
+      });
+      return;
+    }
+
     const updatedContact = await Contact.findByIdAndUpdate(
       id,
       { $set: { message: message, status: "updated" } },
@@ -94,7 +102,7 @@ const deleteContactMessage = async (
     if (!id) {
       res.status(400).json({
         success: false,
-        status: "ID is required.",
+        status: "Invalid ID.",
       });
       return;
     }

@@ -22,7 +22,8 @@ export default function AuthButtons() {
     }
 
     setIsSignedIn(true);
-    async function getProfile() {
+
+    (async () => {
       try {
         const { data } = await axios.get(`${API_URL}/api/v1/auth/user/profile`, { withCredentials: true });
         console.log(data);
@@ -33,8 +34,8 @@ export default function AuthButtons() {
       } catch (error) {
         console.log(error);
       }
-    }
-    getProfile();
+    })();
+  
   }, [isSuccessLoginedIn]);
 
   return (
