@@ -137,7 +137,7 @@ export default function Register() {
     setStatus({});
 
     try {
-      const response = await axios.post(`${API_URL}/api/v1/auth/user/register`, userData);
+      const response = await axios.post(`${API_URL}/api/v1/auth/register`, userData);
       const { data } = response;
       setStatus({ success: data.message });
       // navigate("/login");

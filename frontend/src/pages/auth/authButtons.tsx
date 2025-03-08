@@ -18,7 +18,7 @@ export default function AuthButtons() {
   useEffect(() => {
     const isSuccessLoginedInLs = localStorage.getItem('isSuccessLoginedInLs') === 'true';
     if (!isSuccessLoginedInLs) {
-      axios.post(`${API_URL}/api/v1/auth/user/logout`, {}, { withCredentials: true }).catch((err) => console.error('Logout error:', err));
+      axios.post(`${API_URL}/api/v1/auth/logout`, {}, { withCredentials: true }).catch((err) => console.error('Logout error:', err));
       return setIsSignedIn(false);
     }
 

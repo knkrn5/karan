@@ -8,6 +8,7 @@ export interface IUser extends mongoose.Document {
   lastName?: string;
   email: string;
   password: string;
+  refreshToken?: string;
   comparePassword(enteredPassword: string): Promise<boolean>;
   createAccessToken(): string;
   createRefreshToken(): string;
@@ -20,6 +21,7 @@ const userSchema = new mongoose.Schema(
     lastName: { type: String },
     email: { type: String, required: true },
     password: { type: String, required: true },
+    refreshToken: { type: String },
   },
   { timestamps: true }
 );

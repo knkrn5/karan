@@ -54,6 +54,26 @@ export class AuthController {
     }
   }
 
+  static async refreshToken(req: Request, res: Response) {
+    try {
+      const { refreshToken } = req.cookies;
+      const {
+        data: { accessToken },
+      } = await AuthService.refreshAccessToken(refreshToken);
+
+      res
+        .status(200)
+        .cookie('accessToken', accessToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: 'none',
+        })
+        .json(new ApiResponse(true, 'Token refreshed successfully', { accessToken }));
+    } catch (error: any) {
+      res.status(500).json(new ApiResponse(false, error.message, null));
+    }
+  }
+
   static async logoutUser(req: Request, res: Response) {
     res
       .status(200)

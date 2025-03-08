@@ -1,7 +1,7 @@
 import { User, IUser } from '../models/user.model.js';
-import { generateAccessToken, generateRefreshToken } from '../utils/jwt.js';
 import { UserDTO } from '../dtos/user.dto.js';
 import { ApiResponse } from '../utils/apiResponse.js';
+import jwt from 'jsonwebtoken';
 
 export class AuthService {
   static async registerUser(
@@ -19,8 +19,13 @@ export class AuthService {
       email,
       password,
     });
+
     const accessToken = user.createAccessToken();
     const refreshToken = user.createRefreshToken();
+
+    // Save refresh token in DB
+    user.refreshToken = refreshToken;
+    await user.save();
 
     const userDTO: UserDTO = {
       _id: user._id.toString(),
@@ -46,6 +51,10 @@ export class AuthService {
     const accessToken = user.createAccessToken();
     const refreshToken = user.createRefreshToken();
 
+    // Update refresh token in DB
+    user.refreshToken = refreshToken;
+    await user.save();
+
     const userDTO: UserDTO = {
       _id: user._id.toString(),
       firstName: user.firstName,
@@ -58,6 +67,23 @@ export class AuthService {
       accessToken,
       refreshToken,
     };
+  }
+
+  static async refreshAccessToken(refreshToken: string) {
+    try {
+      const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string) as {
+        userId: string;
+      };
+
+      const user = await User.findById(decoded.userId);
+      if (!user || user.refreshToken !== refreshToken)
+        throw new ApiResponse(false, 'Invalid refresh token', null);
+
+      const accessToken = user.createAccessToken();
+      return new ApiResponse(true, 'Token refreshed successfully', { accessToken });
+    } catch (error) {
+      throw new ApiResponse(false, 'Refresh token expired', null);
+    }
   }
 
   static async getProfile(userId: string): Promise<UserDTO> {

@@ -30,7 +30,7 @@ import userRoutes from './routes/auth.routes.js';
 
 // Route Definitions
 app.use('/api/contact', contactRoutes);
-app.use('/api/v1/auth/user/', userRoutes);
+app.use('/api/v1/auth/', userRoutes);
 
 
 app.get('*', (req, res) => {
