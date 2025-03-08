@@ -1,6 +1,5 @@
-import { IconType } from "react-icons";
-import { FaDatabase, FaCloud, FaGlobe, FaFileCode, FaCode, FaCodeBranch   } from "react-icons/fa";
-
+import { IconType } from 'react-icons';
+import { FaDatabase, FaCloud, FaGlobe, FaFileCode, FaCode, FaCodeBranch } from 'react-icons/fa';
 
 type Tool = {
   name: string;
@@ -14,26 +13,21 @@ type Resource = {
   color: string;
 };
 
-/*   class CreateResource implements Resource {
-    constructor(
-      public category: string | string[],
-      public icon: LucideIcon,
-      public color: string,
-      public tools?: Tool[]
-    ) {}
-  } */
+/* class CreateResource implements Resource {
+  constructor(
+    public category: string | string[],
+    public icon: LucideIcon,
+    public color: string,
+    public tools?: Tool[]
+  ) {}
+} */
 
 class CreateResourses implements Resource {
   category: string | string[];
   icon: IconType;
   tools?: Tool[];
   color: string;
-  constructor(
-    category: string | string[],
-    icon: IconType,
-    color: string,
-    tools?: Tool[]
-  ) {
+  constructor(category: string | string[], icon: IconType, color: string, tools?: Tool[]) {
     this.category = category;
     this.icon = icon;
     this.color = color;
@@ -42,93 +36,63 @@ class CreateResourses implements Resource {
 }
 
 const resources: Resource[] = [
-  new CreateResourses(
-    "Database",
-    FaDatabase ,
-    "text-emerald-500",
-    [
-      {
-        name: "Neon",
-        description: "PostgreSQL database with real-time capabilities",
-      },
-      {
-        name: "MongoDB Atlas",
-        description: "NoSQL database with flexible schema design",
-      },
-    ]
-  ),
+  new CreateResourses('Database', FaDatabase, 'text-emerald-500', [
+    {
+      name: 'Neon',
+      description: 'PostgreSQL database with real-time capabilities',
+    },
+    {
+      name: 'MongoDB Atlas',
+      description: 'NoSQL database with flexible schema design',
+    },
+  ]),
 
-  new CreateResourses(
-    "Hosting",
-    FaCloud,
-    "text-blue-500",
-    [
-      {
-        name: "Netlify",
-        description: "Modern Serverless hosting platform with CI/CD",
-      },
-      {
-        name: "Render",
-        description: "Modern hosting platform with CI/CD",
-      },
-    ]
-  ),
+  new CreateResourses('Hosting', FaCloud, 'text-blue-500', [
+    {
+      name: 'Netlify',
+      description: 'Modern Serverless hosting platform with CI/CD',
+    },
+    {
+      name: 'Render',
+      description: 'Modern hosting platform with CI/CD',
+    },
+  ]),
 
-  new CreateResourses(
-    "CDN",
-    FaGlobe,
-    "text-orange-500",
-    [
-      {
-        name: "Cloudflare",
-        description: "Global content delivery network for fast asset delivery",
-      },
-      {
-        name: "Cloudinary",
-        description: "Media optimization and delivery platform",
-      },
-    ]
-  ),
+  new CreateResourses('CDN', FaGlobe, 'text-orange-500', [
+    {
+      name: 'Cloudflare',
+      description: 'Global content delivery network for fast asset delivery',
+    },
+    {
+      name: 'Cloudinary',
+      description: 'Media optimization and delivery platform',
+    },
+  ]),
 
-  new CreateResourses(
-    "CMS",
-    FaFileCode,
-    "text-purple-500",
-    [
-      {
-        name: "Contentful",
-        description: "Headless content management system",
-      },
-    ]
-  ),
+  new CreateResourses('CMS', FaFileCode, 'text-purple-500', [
+    {
+      name: 'Contentful',
+      description: 'Headless content management system',
+    },
+  ]),
 
-  new CreateResourses(
-    "API",
-    FaCode,
-    "text-yellow-500",
-    [
-      {
-        name: "NVIDIA",
-        description: "https://integrate.api.nvidia.com/v1",
-      },
-      {
-        name: "GEMINI",
-        description: "From google import genai",
-      },
-    ]
-  ),
+  new CreateResourses('API', FaCode, 'text-yellow-500', [
+    {
+      name: 'NVIDIA',
+      description: 'https://integrate.api.nvidia.com/v1',
+    },
+    {
+      name: 'GEMINI',
+      description: 'From google import genai',
+    },
+  ]),
 
-  new CreateResourses(
-    "Version Control",
-    FaCodeBranch,
-    "text-red-500",
-    [
-      {
-        name: "GITHUB",
-        description: "A code hosting platform for version control",
-      },
-    ]
-  ),
+  new CreateResourses('Version Control', FaCodeBranch, 'text-red-500', [
+    {
+      name: 'GITHUB',
+      description: 'A code hosting platform for version control',
+    },
+  ]),
 ];
 
 function ResourceCard({ resource }: { resource: Resource }) {
@@ -143,9 +107,7 @@ function ResourceCard({ resource }: { resource: Resource }) {
           <Icon className={`w-6 h-6 ${color}`} />
         </div>
         <div className="flex-1">
-          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            {category}
-          </p>
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{category}</p>
           {tools && (
             <div className="mt-2 space-y-3">
               {tools.map((t: Tool, index: number) => (
@@ -153,12 +115,8 @@ function ResourceCard({ resource }: { resource: Resource }) {
                   key={index}
                   className="border-b dark:border-gray-700 last:border-b-0 pb-3 last:pb-0"
                 >
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    {t.name}
-                  </h3>
-                  <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-                    {t.description}
-                  </p>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t.name}</h3>
+                  <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">{t.description}</p>
                 </div>
               ))}
             </div>
@@ -174,12 +132,9 @@ function ResourcesInfo() {
     <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Resources Used
-          </h1>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Resources Used</h1>
           <p className="text-lg text-gray-600 dark:text-gray-300">
-            These are the Essential tools and services used for creating
-            Projects
+            These are the Essential tools and services used for creating Projects
           </p>
         </div>
 

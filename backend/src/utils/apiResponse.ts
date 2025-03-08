@@ -9,4 +9,10 @@ class apiResponse<T> {
   }
 }
 
-export {apiResponse}
+export { apiResponse };
+
+/* class apiResponse<T> {
+  constructor(public success: boolean, public message: string, public data: T) {}
+} */
+
+
