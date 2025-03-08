@@ -74,7 +74,7 @@ export default function ContactForm() {
         const data = error.response?.data;
 
         setIsSuccess(data?.success || false);
-        setStatusInfo({ error: data?.message || 'An unexpected error occurred' });
+        setStatusInfo({ error: data?.message || error.message });
       } else {
         setStatusInfo({ error: 'An unexpected error occurred' });
       }

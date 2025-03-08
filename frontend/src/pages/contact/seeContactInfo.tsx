@@ -90,7 +90,7 @@ const SeeContactInfo = ({id}: {id: string}) => {
       } catch (error) {
         if (axios.isAxiosError(error)) {
           setStatusInfo({
-            error: error.response?.data?.message || 'An unexpected error occurred.',
+            error: error.response?.data?.message || error.message,
           });
           setIsSuccess(!error.response?.data?.success);
         } else {
