@@ -26,7 +26,7 @@ export default function AuthButtons() {
 
     (async () => {
       try {
-        const { data } = await axios.get(`${API_URL}/api/v1/auth/user/profile`, { withCredentials: true });
+        const { data } = await axios.get(`${API_URL}/api/v1/auth/profile`, { withCredentials: true });
 
         if (data.success) {
           useProfileStore.getState().setFirstName(data.data.firstName);

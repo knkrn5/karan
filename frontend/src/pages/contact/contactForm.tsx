@@ -22,14 +22,13 @@ export default function ContactForm() {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [contactMsgId, setContactMsgId] = useState('');
 
   const name = useContactInfoStore((state) => state.name);
   const email = useContactInfoStore((state) => state.email);
   const message = useContactInfoStore((state) => state.message);
   const isSubmitted = useContactInfoStore((state) => state.isSubmitted);
 
-  const { setStatusInfo, setIsSuccess, setContactInfo, setIsSubmitted } = useContactInfoStore();
+  const { setStatusInfo, setIsSuccess, setContactInfo, setIsSubmitted, setContactMsgId } = useContactInfoStore();
 
   // robust email regex
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -96,7 +95,7 @@ export default function ContactForm() {
 
   // component switching
   if (isSubmitted) {
-    return <SeeContactInfo id={contactMsgId} />;
+    return <SeeContactInfo />;
   }
 
   return (

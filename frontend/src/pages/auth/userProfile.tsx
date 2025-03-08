@@ -23,7 +23,7 @@ export default function UserProfile() {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get(`${API_URL}/api/v1/auth/user/profile`, {
+        const response = await axios.get(`${API_URL}/api/v1/auth/profile`, {
           withCredentials: true,
         });
 

@@ -1,4 +1,4 @@
-import axios from 'axios';
+/* import axios from 'axios';
 
 const API = axios.create({
   baseURL: 'http://localhost:5000/api/v1',
@@ -34,3 +34,4 @@ API.interceptors.response.use(
 );
 
 export default API;
+ */

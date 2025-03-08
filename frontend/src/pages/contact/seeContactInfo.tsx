@@ -12,7 +12,7 @@ import { IoIosSend } from 'react-icons/io';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const SeeContactInfo = ({ id }: { id: string }) => {
+const SeeContactInfo = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isEdited, setIsEdited] = useState<boolean>(true);
   const [isResend, setIsResend] = useState<boolean>(false);
@@ -31,6 +31,7 @@ const SeeContactInfo = ({ id }: { id: string }) => {
   const message = useContactInfoStore(state => state.message);
   const isSuccess = useContactInfoStore(state => state.isSuccess);
   const statusInfo = useContactInfoStore(state => state.statusInfo);
+  const id = useContactInfoStore(state => state.contactMsgId);
 
   const { setIsSuccess, setStatusInfo, setContactInfo, setIsSubmitted } = useContactInfoStore();
 

@@ -14,6 +14,7 @@ interface State {
   statusInfo: StatusInfoProps;
   isSuccess: boolean;
   isSubmitted?: boolean;
+  contactMsgId: string;
 }
 
 interface Action {
@@ -24,6 +25,7 @@ interface Action {
   setIsSuccess: (isSuccess: boolean) => void;
   setContactInfo: (info: Partial<State>) => void;
   setIsSubmitted: (isSubmitted: boolean) => void;
+  setContactMsgId: (contactMsgId: string) => void;
   contactMsgReset: () => void;
 }
 
@@ -33,8 +35,9 @@ const useContactInfoStore = create<State & Action>((set) => ({
   message: '',
   statusInfo: {},
   isSuccess: false,
-  contactMsgId: '',
   isSubmitted: false,
+  contactMsgId: '',
+
 
   setName: (name: string) => set({ name }),
   setEmail: (email: string) => set({ email }),
@@ -44,6 +47,7 @@ const useContactInfoStore = create<State & Action>((set) => ({
   setIsSuccess: (isSuccess: boolean) => set({ isSuccess }),
   setStatusInfo: (status: StatusInfoProps) => set({ statusInfo: status }),
   setContactInfo: (info: Partial<State>) => set((state) => ({ ...state, ...info })),
+  setContactMsgId: (contactMsgId: string) => set({ contactMsgId }),
 
   contactMsgReset: () => set({ name: '', email: '', message: '', isSuccess: false, statusInfo: {} }),
 }));
