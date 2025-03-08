@@ -24,6 +24,7 @@ interface Action {
   setIsSuccess: (isSuccess: boolean) => void;
   setContactInfo: (info: Partial<State>) => void;
   setIsSubmitted: (isSubmitted: boolean) => void;
+  contactMsgReset: () => void;
 }
 
 const useContactInfoStore = create<State & Action>((set) => ({
@@ -43,6 +44,8 @@ const useContactInfoStore = create<State & Action>((set) => ({
   setIsSuccess: (isSuccess: boolean) => set({ isSuccess }),
   setStatusInfo: (status: StatusInfoProps) => set({ statusInfo: status }),
   setContactInfo: (info: Partial<State>) => set((state) => ({ ...state, ...info })),
+
+  contactMsgReset: () => set({ name: '', email: '', message: '', isSuccess: false, statusInfo: {} }),
 }));
 
 export { useContactInfoStore };
