@@ -22,14 +22,14 @@ export default function ContactForm() {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  // const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [contactMsgId, setContactMsgId] = useState('');
 
   const name = useContactInfoStore((state) => state.name);
   const email = useContactInfoStore((state) => state.email);
   const message = useContactInfoStore((state) => state.message);
   const isSubmitted = useContactInfoStore((state) => state.isSubmitted);
 
-  const { setStatusInfo, setIsSuccess, setContactInfo, setContactMsgId, setIsSubmitted } = useContactInfoStore();
+  const { setStatusInfo, setIsSuccess, setContactInfo, setIsSubmitted } = useContactInfoStore();
 
   // robust email regex
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -94,27 +94,9 @@ export default function ContactForm() {
     }
   };
 
-  useEffect(() => {
-    // Check for existing contact info in localStorage
-    const storedcontactInfoLs = localStorage.getItem('contactInfoLs');
-    try {
-      if (storedcontactInfoLs) {
-        setIsSubmitted(true);
-      } else {
-        // setIsSubmitted(false);
-      }
-    } catch (error) {
-      console.error('Error parsing stored contact info:', error);
-    } finally {
-      setTimeout(() => {
-        localStorage.removeItem('contactInfoLs');
-      }, 15 * 60 * 1000);
-    }
-  }, [setIsSubmitted]);
-
   // component switching
   if (isSubmitted) {
-    return <SeeContactInfo />;
+    return <SeeContactInfo id={contactMsgId} />;
   }
 
   return (
