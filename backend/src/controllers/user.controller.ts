@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { User } from '../models/user.model.js';
+import { apiResponse } from '../utils/apiResponse.js';
 
 const registerUser = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -9,12 +10,7 @@ const registerUser = async (req: Request, res: Response): Promise<void> => {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      res.status(409).json({
-        success: false,
-        status: 'User already exists',
-        message: 'User already exists',
-        userdata: null,
-      });
+      res.status(409).json(new apiResponse(false, 'User already exists', null));
       return;
     }
 
@@ -31,18 +27,9 @@ const registerUser = async (req: Request, res: Response): Promise<void> => {
       ...newUser, password: undefined,
     } */
 
-    res.status(201).json({
-      success: true,
-      status: 'Accout created successfully',
-      message: 'User created successfully',
-      data: userInfo,
-    });
+    res.status(201).json(new apiResponse(true, 'User created successfully', userInfo));
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      status: 'Failed to create user',
-      message: error.message,
-    });
+    res.status(500).json(new apiResponse(false, 'Failed to create user', null));
   }
 };
 
@@ -53,24 +40,14 @@ const loginUser = async (req: Request, res: Response): Promise<void> => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      res.status(400).json({
-        success: false,
-        message: 'User not found, Sign Up',
-        status: 'User not found, Please Sign Up',
-        userdata: null,
-      });
+      res.status(400).json(new apiResponse(false, 'User not found, please sign up', null));
       return;
     }
 
     const isPasswordMatch = await user.comparePassword(password);
 
     if (!isPasswordMatch) {
-      res.status(400).json({
-        success: false,
-        message: 'Incorrect Password',
-        status: 'Incorrect Password',
-        userdata: null,
-      });
+      res.status(400).json(new apiResponse(false, 'Invalid password', null));
       return;
     }
 
@@ -79,47 +56,27 @@ const loginUser = async (req: Request, res: Response): Promise<void> => {
     // Generating new access token dynamically
     const accessToken = user.createAccessToken();
 
-    res
-      .status(200)
-      .cookie('accessToken', accessToken, {
-        httpOnly: true,
-        secure: true,
-        // sameSite: 'strict',
-        sameSite: 'none',
-        maxAge: 24 * 60 * 60 * 1000,
-      })
-      .json({
-        success: true,
-        message: 'Login successful',
-        status: 'Login successful',
-        userdata: loggedInUserInfo,
-        accessToken,
-      });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: 'Failed to login',
-      status: 'Failed to login',
-      userdata: null,
+    res.status(200).cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: true,
+      // sameSite: 'strict',
+      sameSite: 'none',
+      maxAge: 24 * 60 * 60 * 1000,
     });
+    res.status(200).json({
+      ...new apiResponse(true, 'Login successful', loggedInUserInfo),
+      accessToken,
+    });
+  } catch (error: any) {
+    res.status(500).json(new apiResponse(false, 'Failed to login', null));
   }
 };
 
 const getProfile = async (req: Request, res: Response): Promise<void> => {
   try {
-    res.status(200).json({
-      success: true,
-      message: 'Profile fetched successfully',
-      status: 'Profile fetched successfully',
-      userdata: req.user,
-    });
+    res.status(200).json(new apiResponse(true, 'Profile fetched successfully', req.user));
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: 'Failed to fetch profile',
-      status: 'Failed to fetch profile',
-      userdata: null,
-    });
+    res.status(500).json(new apiResponse(false, 'Failed to fetch profile', null));
   }
 };
 
@@ -132,19 +89,9 @@ const logoutUser = async (req: Request, res: Response): Promise<void> => {
         secure: true,
         sameSite: 'none',
       })
-      .json({
-        success: true,
-        message: 'Logout successful',
-        status: 'Logout successful',
-        userdata: null,
-      });
+      .json(new apiResponse(true, 'Logout successful', null));
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: 'Failed to logout',
-      status: 'Failed to logout',
-      userdata: null,
-    });
+    res.status(500).json(new apiResponse(false, 'Failed to logout', null));
   }
 };
 

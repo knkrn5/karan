@@ -66,7 +66,7 @@ export default function LoginPage() {
     const loginFieldValidation = validateloginForm();
     setLoginFieldErrors(loginFieldValidation);
 
-    if (Object.values(loginFieldValidation).some((error) => error !== '')) {
+    if (Object.values(loginFieldValidation).some(error => error !== '')) {
       console.log('All fields are required');
       return;
     }
@@ -80,18 +80,18 @@ export default function LoginPage() {
           email,
           password,
         },
-        { withCredentials: true },
+        { withCredentials: true }
       );
       const { data } = response;
-      console.log(data.userdata);
-      setStatus({ success: data.status });
+      console.log(data.data);
+      setStatus({ success: data.message });
       localStorage.setItem('isSuccessLoginedInLs', data.success.toString());
       useProfileStore.getState().setIsSuccessLoginedIn(true);
       // navigate('/blog');
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.message);
-        setStatus({ error: error.response?.data.status || error.message });
+        setStatus({ error: error.response?.data.message || error.message });
       } else {
         console.log(error);
         setStatus({ error: 'An unexpected error occurred' });
@@ -111,8 +111,14 @@ export default function LoginPage() {
 
   return (
     <>
-      <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 w-full max-w-md transition-all duration-500 ease-out ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
-        <h2 className="text-2xl font-extrabold text-center text-gray-800 dark:text-gray-100 mb-4">Login</h2>
+      <div
+        className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 w-full max-w-md transition-all duration-500 ease-out ${
+          isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+        }`}
+      >
+        <h2 className="text-2xl font-extrabold text-center text-gray-800 dark:text-gray-100 mb-4">
+          Login
+        </h2>
 
         {/* Social Sign In Buttons */}
         {/* <div className="space-y-3 mb-6">
@@ -142,7 +148,10 @@ export default function LoginPage() {
         {/* Email/Password Sign In */}
         <form className="space-y-5" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-600 dark:text-gray-300"
+            >
               <span className="flex items-center">
                 Email <span className="text-red-500 text-sm ml-1">*</span>
               </span>
@@ -151,21 +160,33 @@ export default function LoginPage() {
               name="email"
               // type="text"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={e => setEmail(e.target.value)}
               placeholder="Enter your email"
               disabled={isLoading}
-              className={`w-full mt-2 px-4 py-2 border rounded-lg text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 ${loginFieldErrors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} ${isLoading ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
+              className={`w-full mt-2 px-4 py-2 border rounded-lg text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 ${
+                loginFieldErrors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+              } ${isLoading ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
             />
-            {loginFieldErrors.email && <p className="text-red-600 text-sm mt-1">{loginFieldErrors.email}</p>}
+            {loginFieldErrors.email && (
+              <p className="text-red-600 text-sm mt-1">{loginFieldErrors.email}</p>
+            )}
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-600 dark:text-gray-300"
+            >
               <span className="flex justify-between items-center">
                 <span className="flex items-center">
                   Password<span className="text-red-500 text-sm ml-1">*</span>
                 </span>
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="focus:outline-none" aria-label={showPassword ? 'Hide password' : 'Show password'}>
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="focus:outline-none"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
                   {!showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
                 </button>
               </span>
@@ -176,11 +197,15 @@ export default function LoginPage() {
               id="password"
               type={showPassword ? 'text' : 'password'}
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
               placeholder="Enter your password"
               disabled={isLoading}
               className={`w-full mt-2 px-4 py-2 border rounded-lg text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 
-                ${loginFieldErrors.password ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} ${isLoading ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
+                ${
+                  loginFieldErrors.password
+                    ? 'border-red-500'
+                    : 'border-gray-300 dark:border-gray-600'
+                } ${isLoading ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
             />
             {loginFieldErrors.password && (
               <p className="text-red-600 text-sm mt-1" id="password-error">
@@ -189,7 +214,13 @@ export default function LoginPage() {
             )}
           </div>
 
-          <button type="submit" className={`w-full py-2 text-white cursor-pointer bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg transition duration-200 flex items-center justify-center ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`} disabled={isLoading}>
+          <button
+            type="submit"
+            className={`w-full py-2 text-white cursor-pointer bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg transition duration-200 flex items-center justify-center ${
+              isLoading ? 'opacity-70 cursor-not-allowed' : ''
+            }`}
+            disabled={isLoading}
+          >
             {isLoading ? (
               <span className="flex items-center">
                 <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mr-2" />

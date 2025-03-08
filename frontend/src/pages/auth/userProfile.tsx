@@ -28,9 +28,9 @@ export default function UserProfile() {
         });
 
         const { data } = response;
-        setFirstName(data.userdata.firstName);
-        setLastName(data.userdata.lastName);
-        setMail(data.userdata.email);
+        setFirstName(data.data.firstName);
+        setLastName(data.data.lastName);
+        setMail(data.data.email);
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }

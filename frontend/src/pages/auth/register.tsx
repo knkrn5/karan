@@ -123,7 +123,7 @@ export default function Register() {
   // Check if the form has any errors
   const hasErrors = useMemo(() => {
     const errors = validateForm(userData);
-    return Object.values(errors).some((error) => error !== '');
+    return Object.values(errors).some(error => error !== '');
   }, [userData, validateForm]);
 
   // Handle form submission
@@ -144,13 +144,13 @@ export default function Register() {
     try {
       const response = await axios.post(`${API_URL}/api/v1/auth/user/register`, userData);
       const { data } = response;
-      setStatus({ success: data.status });
+      setStatus({ success: data.message });
       // navigate("/login");
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.status);
         setStatus({
-          error: error.response?.data.status || error.message,
+          error: error.response?.data.message || error.message,
         });
       } else {
         setStatus({ error: 'An unexpected error occurred' });
@@ -164,19 +164,19 @@ export default function Register() {
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
-      setUserData((prev) => ({ ...prev, [name]: value }));
+      setUserData(prev => ({ ...prev, [name]: value }));
 
       // Clear error for this field when user starts typing
       if (formFieldsError[name as keyof UserDataErrorProps]) {
-        setFormFieldsError((prev) => ({ ...prev, [name]: '' }));
+        setFormFieldsError(prev => ({ ...prev, [name]: '' }));
       }
     },
-    [formFieldsError],
+    [formFieldsError]
   );
 
   // Toggle password visibility
   const togglePasswordVisibility = useCallback((field: 'onePassword' | 'twoPassword') => {
-    setShowPassword((prev) => ({
+    setShowPassword(prev => ({
       ...prev,
       [field]: !prev[field],
     }));
@@ -192,10 +192,18 @@ export default function Register() {
 
   return (
     <>
-      <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 my-4 w-full max-w-md transition-all duration-500 ease-out ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
+      <div
+        className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 my-4 w-full max-w-md transition-all duration-500 ease-out ${
+          isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+        }`}
+      >
         {/* Heading */}
-        <h2 className="text-center text-2xl font-extrabold text-gray-800 dark:text-white mb-2">Create your account</h2>
-        <p className="text-center text-gray-500 dark:text-gray-400 mb-6">Please fill in the details to get started.</p>
+        <h2 className="text-center text-2xl font-extrabold text-gray-800 dark:text-white mb-2">
+          Create your account
+        </h2>
+        <p className="text-center text-gray-500 dark:text-gray-400 mb-6">
+          Please fill in the details to get started.
+        </p>
 
         {/* Social Buttons */}
         {/* <div className=" flex flex-col gap-2 md:flex-row md:gap-4 justify-center mb-4">
@@ -231,7 +239,19 @@ export default function Register() {
               <label htmlFor="firstName" className="mb-1 block text-gray-700 dark:text-gray-300">
                 First Name<span className="text-red-500 ml-1">*</span>
               </label>
-              <input id="firstName" name="firstName" type="text" maxLength={20} placeholder="First name" disabled={isSubmitting} className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${formFieldsError.firstName ? 'border border-red-500' : ''} ${isSubmitting ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`} value={userData.firstName} onChange={handleChange} />
+              <input
+                id="firstName"
+                name="firstName"
+                type="text"
+                maxLength={20}
+                placeholder="First name"
+                disabled={isSubmitting}
+                className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                  formFieldsError.firstName ? 'border border-red-500' : ''
+                } ${isSubmitting ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
+                value={userData.firstName}
+                onChange={handleChange}
+              />
               {formFieldsError.firstName && (
                 <p className="text-red-600 text-sm mt-1" id="firstName-error">
                   {formFieldsError.firstName}
@@ -264,7 +284,18 @@ export default function Register() {
                 Email<span className="text-red-500 text-sm ml-1">*</span>
               </span>
             </label>
-            <input id="email" name="email" type="email" placeholder="Email" disabled={isSubmitting} className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${formFieldsError.email ? 'border border-red-500' : ''} ${isSubmitting ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`} value={userData.email} onChange={handleChange} />
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Email"
+              disabled={isSubmitting}
+              className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                formFieldsError.email ? 'border border-red-500' : ''
+              } ${isSubmitting ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
+              value={userData.email}
+              onChange={handleChange}
+            />
             {formFieldsError.email && (
               <p className="text-red-600 text-sm mt-1" id="email-error">
                 {formFieldsError.email}
@@ -279,12 +310,29 @@ export default function Register() {
                   Password<span className="text-red-500 text-sm ml-1">*</span>
                 </span>
 
-                <button type="button" onClick={() => togglePasswordVisibility('onePassword')} className="focus:outline-none" aria-label={showPassword.onePassword ? 'Hide password' : 'Show password'}>
+                <button
+                  type="button"
+                  onClick={() => togglePasswordVisibility('onePassword')}
+                  className="focus:outline-none"
+                  aria-label={showPassword.onePassword ? 'Hide password' : 'Show password'}
+                >
                   {!showPassword.onePassword ? <FaRegEye /> : <FaRegEyeSlash />}
                 </button>
               </span>
             </label>
-            <input id="password" name="password" maxLength={50} type={showPassword.onePassword ? 'text' : 'password'} placeholder="Password" disabled={isSubmitting} className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${formFieldsError.password ? 'border border-red-500' : ''} ${isSubmitting ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`} value={userData.password} onChange={handleChange} />
+            <input
+              id="password"
+              name="password"
+              maxLength={50}
+              type={showPassword.onePassword ? 'text' : 'password'}
+              placeholder="Password"
+              disabled={isSubmitting}
+              className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                formFieldsError.password ? 'border border-red-500' : ''
+              } ${isSubmitting ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
+              value={userData.password}
+              onChange={handleChange}
+            />
             {formFieldsError.password && (
               <p className="text-red-600 text-sm mt-1" id="password-error">
                 {formFieldsError.password}
@@ -312,18 +360,39 @@ export default function Register() {
           </div>
 
           <div className="flex flex-col mb-6">
-            <label htmlFor="confirmPassword" className="mb-1 block text-gray-700 dark:text-gray-300">
+            <label
+              htmlFor="confirmPassword"
+              className="mb-1 block text-gray-700 dark:text-gray-300"
+            >
               <span className="flex justify-between">
                 <span className="flex items-center">
                   Confirm Password
                   <span className="text-red-500 text-sm ml-1">*</span>
                 </span>
-                <button type="button" onClick={() => togglePasswordVisibility('twoPassword')} className="focus:outline-none">
+                <button
+                  type="button"
+                  onClick={() => togglePasswordVisibility('twoPassword')}
+                  className="focus:outline-none"
+                >
                   {!showPassword.twoPassword ? <FaRegEye /> : <FaRegEyeSlash />}
                 </button>
               </span>
             </label>
-            <input id="confirmPassword" name="confirmPassword" type={showPassword.twoPassword ? 'text' : 'password'} placeholder="Confirm Password" disabled={isSubmitting} className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${formFieldsError.confirmPassword ? 'border border-red-500' : ''} ${isSubmitting ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`} aria-label={showPassword.twoPassword ? 'Hide confirm password' : 'Show confirm password'} value={userData.confirmPassword} onChange={handleChange} />
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type={showPassword.twoPassword ? 'text' : 'password'}
+              placeholder="Confirm Password"
+              disabled={isSubmitting}
+              className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                formFieldsError.confirmPassword ? 'border border-red-500' : ''
+              } ${isSubmitting ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
+              aria-label={
+                showPassword.twoPassword ? 'Hide confirm password' : 'Show confirm password'
+              }
+              value={userData.confirmPassword}
+              onChange={handleChange}
+            />
             {formFieldsError.confirmPassword && (
               <p className="text-red-600 text-sm mt-1" id="confirmPassword-error">
                 {formFieldsError.confirmPassword}
@@ -332,12 +401,33 @@ export default function Register() {
           </div>
 
           {/* Submit Button */}
-          <button type="submit" className={`${isSubmitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'} text-white font-semibold py-2 px-4 rounded-lg w-full flex justify-center items-center cursor-pointer`}>
+          <button
+            type="submit"
+            className={`${
+              isSubmitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+            } text-white font-semibold py-2 px-4 rounded-lg w-full flex justify-center items-center cursor-pointer`}
+          >
             {isSubmitting ? (
               <>
-                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
                 </svg>
                 Processing...
               </>
