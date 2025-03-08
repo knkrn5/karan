@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Contact } from '../models/contact.model.js';
-import { apiResponse } from '../utils/apiResponse.js';
+import { ApiResponse } from '../utils/apiResponse.js';
 
 // Adding Contact information in db
 const contactInfo = async (req: Request, res: Response): Promise<void> => {
@@ -10,7 +10,7 @@ const contactInfo = async (req: Request, res: Response): Promise<void> => {
     const isFieldEmpty: boolean = [name, email, message].some(field => field.trim().length === 0);
 
     if (isFieldEmpty) {
-      res.status(400).json(new apiResponse(false, 'All fields are required', req.body));
+      res.status(400).json(new ApiResponse(false, 'All fields are required', req.body));
       return;
     }
 
@@ -21,11 +21,11 @@ const contactInfo = async (req: Request, res: Response): Promise<void> => {
       status: 'unread',
     });
 
-    res.status(201).json(new apiResponse(true, 'Message sent successfully', contactMsg));
+    res.status(201).json(new ApiResponse(true, 'Message sent successfully', contactMsg));
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
 
-    res.status(500).json(new apiResponse(false, 'Failed to send message', errorMessage));
+    res.status(500).json(new ApiResponse(false, 'Failed to send message', errorMessage));
   }
 };
 
@@ -37,7 +37,7 @@ const updateContactMessage = async (req: Request, res: Response): Promise<void> 
     // prettier-ignore
     if (!id) {
       res.status(400).json(
-        new apiResponse(
+        new ApiResponse(
           false, 
           'Invalid ID.',
           null
@@ -52,15 +52,15 @@ const updateContactMessage = async (req: Request, res: Response): Promise<void> 
     );
 
     if (!updatedContact) {
-      res.status(404).json(new apiResponse(false, 'Message not found.', null));
+      res.status(404).json(new ApiResponse(false, 'Message not found.', null));
       return;
     }
 
-    res.status(200).json(new apiResponse(true, 'Message updated successfully', updatedContact));
+    res.status(200).json(new ApiResponse(true, 'Message updated successfully', updatedContact));
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
 
-    res.status(500).json(new apiResponse(false, 'Failed to update message.', errorMessage));
+    res.status(500).json(new ApiResponse(false, 'Failed to update message.', errorMessage));
   }
 };
 
@@ -70,22 +70,22 @@ const deleteContactMessage = async (req: Request, res: Response): Promise<void> 
     const { id } = req.body;
 
     if (!id) {
-      res.status(400).json(new apiResponse(false, 'Invalid ID.', null));
+      res.status(400).json(new ApiResponse(false, 'Invalid ID.', null));
       return;
     }
 
     const deletedContactMsg = await Contact.findByIdAndDelete(id);
 
     if (!deletedContactMsg) {
-      res.status(404).json(new apiResponse(false, 'Message not found.', null));
+      res.status(404).json(new ApiResponse(false, 'Message not found.', null));
       return;
     }
 
-    res.status(200).json(new apiResponse(true, 'Message deleted successfully', deletedContactMsg));
+    res.status(200).json(new ApiResponse(true, 'Message deleted successfully', deletedContactMsg));
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
 
-    res.status(500).json(new apiResponse(false, 'Failed to delete message.', errorMessage));
+    res.status(500).json(new ApiResponse(false, 'Failed to delete message.', errorMessage));
   }
 };
 

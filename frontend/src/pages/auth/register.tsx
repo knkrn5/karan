@@ -62,10 +62,6 @@ export default function Register() {
       setIsVisible(true);
     }, 10);
 
-    if (localStorage.getItem('userData')) {
-      const userData = JSON.parse(localStorage.getItem('userData') || '');
-      setUserData(userData);
-    }
   }, []);
 
   // Validate form fields and return errors
@@ -129,7 +125,6 @@ export default function Register() {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.setItem('userData', JSON.stringify(userData));
 
     const formFieldValidation = validateForm(userData);
     setFormFieldsError(formFieldValidation);

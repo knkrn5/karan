@@ -26,7 +26,7 @@ app.get('/health', (req, res) => {
 
 // Routes Imports
 import contactRoutes from './routes/contact.routes.js';
-import userRoutes from './routes/user.routes.js';
+import userRoutes from './routes/auth.routes.js';
 
 // Route Definitions
 app.use('/api/contact', contactRoutes);

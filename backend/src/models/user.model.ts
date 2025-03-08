@@ -1,54 +1,37 @@
-import mongoose from "mongoose";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import mongoose, { Types } from 'mongoose';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
-// Define an interface for the User document
-interface IUser extends mongoose.Document {
+export interface IUser extends mongoose.Document {
+  _id: Types.ObjectId;
   firstName: string;
   lastName?: string;
   email: string;
   password: string;
-  createdAt: Date;
-  updatedAt: Date;
   comparePassword(enteredPassword: string): Promise<boolean>;
   createAccessToken(): string;
+  createRefreshToken(): string;
 }
+
 
 const userSchema = new mongoose.Schema(
   {
-    firstName: {
-      type: String,
-      required: true,
-    },
-    lastName: {
-      type: String,
-    },
-    email: {
-      type: String,
-      required: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
+    firstName: { type: String, required: true },
+    lastName: { type: String },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
   },
   { timestamps: true }
 );
 
-// Hash password before saving
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
   const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(this.password, salt);
-  this.password = hashedPassword;
+  this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 
-// Method to compare passwords
-userSchema.methods.comparePassword = async function (
-  enteredPassword: string
-): Promise<boolean> {
+userSchema.methods.comparePassword = async function (enteredPassword: string): Promise<boolean> {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
@@ -56,9 +39,17 @@ userSchema.methods.createAccessToken = function (): string {
   return jwt.sign(
     { userId: this._id, email: this.email },
     process.env.ACCESS_TOKEN_SECRET as string,
-    { expiresIn: "1h" }
+    { expiresIn: '15m' }
   );
 };
 
+userSchema.methods.createRefreshToken = function (): string {
+  return jwt.sign(
+    { userId: this._id },
+    process.env.REFRESH_TOKEN_SECRET as string,
+    { expiresIn: '7d' }
+  );
+};
 
-export const User = mongoose.model<IUser>("User", userSchema);
+export const User = mongoose.model<IUser>('User', userSchema);
+

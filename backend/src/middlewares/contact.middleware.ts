@@ -1,12 +1,12 @@
 import rateLimit from 'express-rate-limit';
-import { apiResponse } from '../utils/apiResponse.js';
+import { ApiResponse } from '../utils/apiResponse.js';
 
 const contactPostLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 3,
   standardHeaders: true,
   legacyHeaders: false,
-  message: new apiResponse(false, 'Too many requests sent...', null),
+  message: new ApiResponse(false, 'Too many requests sent...', null),
 });
 
 const contactPutLimiter = rateLimit({
@@ -14,7 +14,7 @@ const contactPutLimiter = rateLimit({
   max: 2,
   standardHeaders: true,
   legacyHeaders: false,
-  message: new apiResponse(false, 'Too many requests sent...', null),
+  message: new ApiResponse(false, 'Too many requests sent...', null),
 });
 
 export { contactPostLimiter, contactPutLimiter };
