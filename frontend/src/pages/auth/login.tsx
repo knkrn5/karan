@@ -83,7 +83,6 @@ export default function LoginPage() {
         { withCredentials: true }
       );
       const { data } = response;
-      console.log(data.data);
       setStatus({ success: data.message });
       localStorage.setItem('isSuccessLoginedInLs', data.success.toString());
       useProfileStore.getState().setIsSuccessLoginedIn(true);

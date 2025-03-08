@@ -17,11 +17,11 @@ axiosApi.interceptors.response.use(
       return axiosApi.request(error.config);
     }
 
-    if (error.response.status === 403) {
+    /* if (error.response.status === 403) {
       console.log('Refresh token expired. Logging out...');
       await axios.post(`${API_URL}/api/v1/auth/logout`, {}, { withCredentials: true });
       localStorage.setItem('isSuccessLoginedInLs', 'false');
-    }
+    } */
 
     return Promise.reject(error);
   }
