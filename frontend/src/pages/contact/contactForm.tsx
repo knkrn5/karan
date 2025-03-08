@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { IoIosSend } from 'react-icons/io';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import axios from 'axios';
@@ -67,14 +67,14 @@ export default function ContactForm() {
         message: data.data.message,
       });
       setIsSuccess(data.success);
-      setStatusInfo({ success: data.status });
+      setStatusInfo({ success: data.message });
       setContactMsgId(data.data._id);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const data = error.response?.data;
 
         setIsSuccess(data?.success || false);
-        setStatusInfo({ error: data?.status || 'An unexpected error occurred' });
+        setStatusInfo({ error: data?.message || 'An unexpected error occurred' });
       } else {
         setStatusInfo({ error: 'An unexpected error occurred' });
       }

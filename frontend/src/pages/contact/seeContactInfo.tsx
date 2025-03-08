@@ -52,13 +52,13 @@ const SeeContactInfo = ({id}: {id: string}) => {
         });
 
         const { data } = response;
-        setStatusInfo({ success: data.status });
+        setStatusInfo({ success: data.message });
         setIsSuccess(data.success);
         setIsEdited(data.success);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           setStatusInfo({
-            error: error.response?.data?.status || 'An unexpected error occurred.',
+            error: error.response?.data?.message || error.message,
           });
           setIsSuccess(error.response?.data?.success);
           setIsEdited(error.response?.data?.success);
@@ -84,13 +84,13 @@ const SeeContactInfo = ({id}: {id: string}) => {
         setIsLoading((prev) => ({ ...prev, delete: true }));
         const response = await axios.delete(`${API_URL}/api/contact/message`, { data: { id } });
         const { data } = response;
-        setStatusInfo({ success: data.status });
+        setStatusInfo({ success: data.message });
         setIsSuccess(!data.success);
         localStorage.removeItem('contactInfoLs');
       } catch (error) {
         if (axios.isAxiosError(error)) {
           setStatusInfo({
-            error: error.response?.data?.status || 'An unexpected error occurred.',
+            error: error.response?.data?.message || 'An unexpected error occurred.',
           });
           setIsSuccess(!error.response?.data?.success);
         } else {

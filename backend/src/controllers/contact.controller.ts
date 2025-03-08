@@ -1,21 +1,16 @@
-import { Request, Response } from "express";
-import { Contact } from "../models/contact.model.js";
+import { Request, Response } from 'express';
+import { Contact } from '../models/contact.model.js';
+import { apiResponse } from '../utils/apiResponse.js';
 
 // Adding Contact information
 const contactInfo = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name = "", email = "", message = "" } = req.body;
+    const { name = '', email = '', message = '' } = req.body;
 
-    const isFieldEmpty: boolean = [name, email, message].some(
-      (field) => field.trim().length === 0
-    );
+    const isFieldEmpty: boolean = [name, email, message].some((field) => field.trim().length === 0);
 
     if (isFieldEmpty) {
-      res.status(400).json({
-        success: false,
-        status: "All fields are required",
-        data: req.body,
-      });
+      res.status(400).json(new apiResponse(false, 'All fields are required', req.body));
       return;
     }
 
@@ -23,114 +18,64 @@ const contactInfo = async (req: Request, res: Response): Promise<void> => {
       name: name,
       email: email,
       message: message,
-      status: "unread",
+      status: 'unread',
     });
 
-    res.status(201).json({
-      success: true,
-      status: "Message sent successfully",
-      data: contactMsg,
-    });
+    res.status(201).json(new apiResponse(true, 'Message sent successfully', contactMsg));
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "An unknown error occurred.";
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
 
-    res.status(500).json({
-      success: false,
-      status: "Something went wrong.",
-      message: errorMessage,
-      data: req.body,
-    });
+    res.status(500).json(new apiResponse(false, 'Failed to send message', errorMessage));
   }
 };
 
 // Update contact message
-const updateContactMessage = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+const updateContactMessage = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id, message } = req.body;
 
     if (!id) {
-      res.status(400).json({
-        success: false,
-        status: "Invalid ID.",
-      });
+      res.status(400).json( new apiResponse(false, 'Invalid ID.', null));
       return;
     }
 
-    const updatedContact = await Contact.findByIdAndUpdate(
-      id,
-      { $set: { message: message, status: "updated" } },
-      { new: true }
-    );
+    const updatedContact = await Contact.findByIdAndUpdate(id, { $set: { message: message, status: 'updated' } }, { new: true });
 
     if (!updatedContact) {
-      res.status(404).json({
-        success: false,
-        status: "Message not found.",
-      });
+      res.status(404).json(new apiResponse(false, 'Message not found.', null));
       return;
     }
 
-    res.status(200).json({
-      success: true,
-      status: "Message updated successfully",
-      data: updatedContact,
-    });
+    res.status(200).json(new apiResponse(true, 'Message updated successfully', updatedContact));
   } catch (error: unknown) {
-    const errorMessage =
-      error instanceof Error ? error.message : "An unknown error occurred.";
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
 
-    res.status(500).json({
-      success: false,
-      status: "Failed to update message.",
-      message: errorMessage,
-    });
+    res.status(500).json(new apiResponse(false, 'Failed to update message.', errorMessage));
   }
 };
 
 //Delete contact message
-const deleteContactMessage = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+const deleteContactMessage = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.body;
 
     if (!id) {
-      res.status(400).json({
-        success: false,
-        status: "Invalid ID.",
-      });
+      res.status(400).json(new apiResponse(false, 'Invalid ID.', null));
       return;
     }
 
-    const deletedContact = await Contact.findByIdAndDelete(id);
+    const deletedContactMsg = await Contact.findByIdAndDelete(id);
 
-    if (!deletedContact) {
-      res.status(404).json({
-        success: false,
-        status: "Message not found.",
-      });
+    if (!deletedContactMsg) {
+      res.status(404).json(new apiResponse(false, 'Message not found.', null));
       return;
     }
 
-    res.status(200).json({
-      success: true,
-      status: "Message deleted successfully",
-      data: deletedContact,
-    });
+    res.status(200).json(new apiResponse(true, 'Message deleted successfully', deletedContactMsg));
   } catch (error: unknown) {
-    const errorMessage =
-      error instanceof Error ? error.message : "An unknown error occurred.";
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
 
-    res.status(500).json({
-      success: false,
-      status: "Failed to delete message.",
-      message: errorMessage,
-    });
+    res.status(500).json(new apiResponse(false, 'Failed to delete message.', errorMessage));
   }
 };
 
