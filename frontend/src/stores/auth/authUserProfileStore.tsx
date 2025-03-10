@@ -1,8 +1,16 @@
 import { create } from 'zustand';
 
+interface StatusInfoProps {
+  success?: string;
+  info?: string;
+  warning?: string;
+  error?: string;
+}
+
 // Define the Type for Zustand Store
 type State = {
   isSuccessLoginedIn: boolean;
+  statusInfo: StatusInfoProps;
   firstName: string;
   lastName: string;
   email: string;
@@ -10,6 +18,7 @@ type State = {
 
 type Action = {
   setIsSuccessLoginedIn: (value: boolean) => void;
+  setStatusInfo: (status: StatusInfoProps) => void;
   setFirstName: (firstName: string) => void;
   setLastName: (lastName: string) => void;
   setMail: (email: string) => void;
@@ -18,16 +27,19 @@ type Action = {
 
 const useProfileStore = create<State & Action>((set) => ({
   isSuccessLoginedIn: false,
-  setIsSuccessLoginedIn: (value) => set({ isSuccessLoginedIn: value }),
+  setIsSuccessLoginedIn: (value: boolean ) => set({ isSuccessLoginedIn: value }),
+
+  statusInfo: {},
+  setStatusInfo: (message: StatusInfoProps) => set({ statusInfo: message }),
 
   firstName: '',
-  setFirstName: (firstName) => set({ firstName }),
+  setFirstName: (firstName: string) => set({ firstName }),
 
   lastName: '',
-  setLastName: (lastName) => set({ lastName }),
+  setLastName: (lastName: string) => set({ lastName }),
 
   email: '',
-  setMail: (email) => set({ email }),
+  setMail: (email: string) => set({ email }),
 
   reset: () =>
     set({

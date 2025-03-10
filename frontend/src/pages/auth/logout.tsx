@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 // import { useNavigate } from 'react-router';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function Logout() {
   // const navigate = useNavigate();
@@ -14,13 +14,13 @@ export default function Logout() {
   const handleLogout = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.post(`${API_URL}/api/v1/auth/logout`, {}, { withCredentials: true });
+      const response = await axios.post(`${BACKEND_URL}/api/v1/auth/logout`, {}, { withCredentials: true });
       console.log(response);
       // Clearing all state in zustand
       // useProfileStore.getState().setIsSuccessLoginedIn(false);
       useProfileStore.getState().reset();
       localStorage.removeItem('isSuccessLoginedInLs');
-      console.log('calling logout');
+      console.log('logging Out');
     } catch (error) {
       console.log(error);
     } finally {

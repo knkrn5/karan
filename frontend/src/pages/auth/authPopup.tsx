@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-export default function AuthButtons() {
+export default function AuthPopup() {
   const [isLogin, setIsLogin] = useState(true);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-100 to-pink-100 p-4">
+    <div className="flex flex-col items-center justify-center bg-gradient-to-br from-indigo-100 to-pink-100 p-4">
       <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
         {isLogin ? "Welcome Back!" : "Join Us!"}
       </h2>

@@ -25,7 +25,7 @@ export class AuthController {
           secure: true,
           sameSite: 'none',
         })
-        .json(new ApiResponse(true, 'User registered successfully', user));
+        .json(new ApiResponse(true, 'User registered successfully, Please Login', user));
     } catch (error: any) {
       res.status(500).json(new ApiResponse(false, error.message, null));
     }

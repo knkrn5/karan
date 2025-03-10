@@ -45,7 +45,7 @@ const useContactInfoStore = create<State & Action>((set) => ({
   setIsSubmitted: (isSubmitted: boolean) => set({ isSubmitted }),
 
   setIsSuccess: (isSuccess: boolean) => set({ isSuccess }),
-  setStatusInfo: (status: StatusInfoProps) => set({ statusInfo: status }),
+  setStatusInfo: (message: StatusInfoProps) => set({ statusInfo: message }),
   setContactInfo: (info: Partial<State>) => set((state) => ({ ...state, ...info })),
   setContactMsgId: (contactMsgId: string) => set({ contactMsgId }),
 

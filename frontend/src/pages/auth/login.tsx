@@ -20,7 +20,6 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isVisible, setIsVisible] = useState(false);
-  const [status, setStatus] = useState({});
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -28,6 +27,9 @@ export default function LoginPage() {
     email: '',
     password: '',
   });
+
+  const statusInfo = useProfileStore(state => state.statusInfo);
+  const { setIsSuccessLoginedIn, setStatusInfo } = useProfileStore();
 
   // const navigate = useNavigate();
 
@@ -83,17 +85,17 @@ export default function LoginPage() {
         { withCredentials: true }
       );
       const { data } = response;
-      setStatus({ success: data.message });
+      setStatusInfo({ success: data.message });
       localStorage.setItem('isSuccessLoginedInLs', data.success.toString());
-      useProfileStore.getState().setIsSuccessLoginedIn(true);
+      setIsSuccessLoginedIn(true);
       // navigate('/blog');
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.message);
-        setStatus({ error: error.response?.data.message || error.message });
+        setStatusInfo({ error: error.response?.data.message || error.message });
       } else {
         console.log(error);
-        setStatus({ error: 'An unexpected error occurred' });
+        setStatusInfo({ error: 'An unexpected error occurred' });
       }
     } finally {
       setIsLoading(false);
@@ -237,7 +239,7 @@ export default function LoginPage() {
             Sign up
           </Link>
         </p>
-        <StatusNotifications statusInfo={status} />
+        <StatusNotifications statusInfo={statusInfo} />
       </div>
     </>
   );

@@ -1,10 +1,11 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 // import { GoogleIcon, GithubIcon } from "../../icons/svgIcons";
 import axios from 'axios';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import StatusNotifications from '../../utils/StatusNotifications';
-import UserAccount from './userAccount';
+import { useProfileStore } from '../../stores/auth/authUserProfileStore.js';
+
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -26,7 +27,7 @@ interface UserDataErrorProps {
 
 export default function Register() {
   const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isSigningUp, setIsSigningUp] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<{
     onePassword: boolean;
     twoPassword: boolean;
@@ -35,7 +36,7 @@ export default function Register() {
     twoPassword: false,
   });
 
-  const [status, setStatus] = useState({});
+  const [isAccountCreated, setIsAccountCreated] = useState<boolean>(false);
 
   const [userData, setUserData] = useState<UserDataProps>({
     firstName: '',
@@ -53,7 +54,10 @@ export default function Register() {
     confirmPassword: '',
   });
 
-  // const navigate = useNavigate();
+  const statusInfo = useProfileStore(state => state.statusInfo);
+  const { setStatusInfo } = useProfileStore();
+
+  const navigate = useNavigate();
 
   // Trigger animation on every mount
   useEffect(() => {
@@ -61,7 +65,6 @@ export default function Register() {
     setTimeout(() => {
       setIsVisible(true);
     }, 10);
-
   }, []);
 
   // Validate form fields and return errors
@@ -133,25 +136,26 @@ export default function Register() {
       return;
     }
 
-    setIsSubmitting(true);
-    setStatus({});
+    setIsSigningUp(true);
+    setStatusInfo({});
 
     try {
       const response = await axios.post(`${BACKEND_URL}/api/v1/auth/register`, userData);
       const { data } = response;
-      setStatus({ success: data.message });
+      setStatusInfo({ success: data.message });
+      setIsAccountCreated(data.success);
       // navigate("/login");
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.status);
-        setStatus({
+        setStatusInfo({
           error: error.response?.data.message || error.message,
         });
       } else {
-        setStatus({ error: 'An unexpected error occurred' });
+        setStatusInfo({ error: 'An unexpected error occurred' });
       }
     } finally {
-      setIsSubmitting(false);
+      setIsSigningUp(false);
     }
   };
 
@@ -177,12 +181,9 @@ export default function Register() {
     }));
   }, []);
 
-  if (localStorage.getItem('isSuccessLoginedInLs') === 'true') {
-    return (
-      <>
-        <UserAccount />
-      </>
-    );
+
+  if (isAccountCreated || localStorage.getItem('isSuccessLoginedInLs') === 'true') {
+    return navigate ('/login');
   }
 
   return (
@@ -240,10 +241,10 @@ export default function Register() {
                 type="text"
                 maxLength={20}
                 placeholder="First name"
-                disabled={isSubmitting}
+                disabled={isSigningUp}
                 className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   formFieldsError.firstName ? 'border border-red-500' : ''
-                } ${isSubmitting ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
+                } ${isSigningUp ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
                 value={userData.firstName}
                 onChange={handleChange}
               />
@@ -264,9 +265,9 @@ export default function Register() {
                 maxLength={20}
                 type="text"
                 placeholder="Last Name"
-                disabled={isSubmitting}
+                disabled={isSigningUp}
                 className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500
-                  ${isSubmitting ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
+                  ${isSigningUp ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
                 value={userData.lastName}
                 onChange={handleChange}
               />
@@ -284,10 +285,10 @@ export default function Register() {
               name="email"
               type="email"
               placeholder="Email"
-              disabled={isSubmitting}
+              disabled={isSigningUp}
               className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 formFieldsError.email ? 'border border-red-500' : ''
-              } ${isSubmitting ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
+              } ${isSigningUp ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
               value={userData.email}
               onChange={handleChange}
             />
@@ -321,10 +322,10 @@ export default function Register() {
               maxLength={50}
               type={showPassword.onePassword ? 'text' : 'password'}
               placeholder="Password"
-              disabled={isSubmitting}
+              disabled={isSigningUp}
               className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 formFieldsError.password ? 'border border-red-500' : ''
-              } ${isSubmitting ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
+              } ${isSigningUp ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
               value={userData.password}
               onChange={handleChange}
             />
@@ -378,10 +379,10 @@ export default function Register() {
               name="confirmPassword"
               type={showPassword.twoPassword ? 'text' : 'password'}
               placeholder="Confirm Password"
-              disabled={isSubmitting}
+              disabled={isSigningUp}
               className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 formFieldsError.confirmPassword ? 'border border-red-500' : ''
-              } ${isSubmitting ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
+              } ${isSigningUp ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
               aria-label={
                 showPassword.twoPassword ? 'Hide confirm password' : 'Show confirm password'
               }
@@ -399,10 +400,10 @@ export default function Register() {
           <button
             type="submit"
             className={`${
-              isSubmitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+              isSigningUp ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
             } text-white font-semibold py-2 px-4 rounded-lg w-full flex justify-center items-center cursor-pointer`}
           >
-            {isSubmitting ? (
+            {isSigningUp ? (
               <>
                 <svg
                   className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
@@ -442,7 +443,7 @@ export default function Register() {
             Sign in
           </Link>
         </div>
-        <StatusNotifications statusInfo={status} />
+        <StatusNotifications statusInfo={statusInfo} />
       </div>
     </>
   );
