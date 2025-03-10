@@ -6,7 +6,6 @@ import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import StatusNotifications from '../../utils/StatusNotifications';
 import { useProfileStore } from '../../stores/auth/authUserProfileStore.js';
 
-
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 interface UserDataProps {
@@ -181,10 +180,11 @@ export default function Register() {
     }));
   }, []);
 
-
-  if (isAccountCreated || localStorage.getItem('isSuccessLoginedInLs') === 'true') {
-    return navigate ('/login');
-  }
+  useEffect(() => {
+    if (isAccountCreated || localStorage.getItem('isSuccessLoginedInLs') === 'true') {
+      navigate('/login');
+    }
+  }, [isAccountCreated, navigate]);
 
   return (
     <>
