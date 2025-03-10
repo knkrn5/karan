@@ -14,7 +14,7 @@ interface loginFeildDataProps {
   password: string;
 }
 
-const API_URL = import.meta.env.VITE_API_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -75,7 +75,7 @@ export default function LoginPage() {
 
     try {
       const response = await axios.post(
-        `${API_URL}/api/v1/auth/login`,
+        `${BACKEND_URL}/api/v1/auth/login`,
         {
           email,
           password,

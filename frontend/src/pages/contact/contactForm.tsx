@@ -4,7 +4,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import axios from 'axios';
 import { useContactInfoStore } from '../../stores/contact/contantInfoStore';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 import SeeContactInfo from './seeContactInfo';
 
@@ -56,7 +56,7 @@ export default function ContactForm() {
     }
 
     try {
-      const response = await axios.post(`${API_URL}/api/contact/message`, currentFormData);
+      const response = await axios.post(`${BACKEND_URL}/api/contact/message`, currentFormData);
       const { data } = response;
 
       // Store data in zustand store

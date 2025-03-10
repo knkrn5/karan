@@ -1,7 +1,24 @@
+import axios from "axios";
+import { useEffect } from "react";
 import { Link } from "react-router";
 
 function Home() {
+  useEffect(() => {
+    const pingBackend = async () => {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/health`);
+        console.log(res.data); 
+      } catch (error) {
+        console.error("Failed to ping backend:", error);
+      }
+    };
+
+    pingBackend();
+  }, []);
+
   return (
+
+
     <section className="h-screen bg-gray-50 dark:bg-slate-800">
       <div className="max-w-screen-xl px-4 py-16 mx-auto text-center lg:py-32 lg:px-12">
         <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">

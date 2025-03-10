@@ -10,7 +10,7 @@ import { FaRegSave, FaRegTrashAlt } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { IoIosSend } from 'react-icons/io';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const SeeContactInfo = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -47,7 +47,7 @@ const SeeContactInfo = () => {
         setIsLoading(prev => ({ ...prev, edit: true }));
         setStatusInfo({ info: 'Saving changes...' });
 
-        const response = await axios.put(`${API_URL}/api/contact/message`, {
+        const response = await axios.put(`${BACKEND_URL}/api/contact/message`, {
           id,
           message: message,
         });
@@ -83,7 +83,7 @@ const SeeContactInfo = () => {
     if (toDelete) {
       try {
         setIsLoading(prev => ({ ...prev, delete: true }));
-        const response = await axios.delete(`${API_URL}/api/contact/message`, { data: { id } });
+        const response = await axios.delete(`${BACKEND_URL}/api/contact/message`, { data: { id } });
         const { data } = response;
         setStatusInfo({ success: data.message });
         setIsSuccess(!data.success);

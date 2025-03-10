@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import axiosApi from '../../utils/axios.js';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function AuthButtons() {
   const [showProfile, setShowProfile] = useState<boolean>(false);
@@ -20,7 +20,7 @@ export default function AuthButtons() {
     const isSuccessLoginedInLs = localStorage.getItem('isSuccessLoginedInLs') === 'true';
     if (!isSuccessLoginedInLs) {
       axios
-        .post(`${API_URL}/api/v1/auth/logout`, {}, { withCredentials: true })
+        .post(`${BACKEND_URL}/api/v1/auth/logout`, {}, { withCredentials: true })
         .catch(err => console.error('Logout error:', err));
       return setIsSignedIn(false);
     }
@@ -29,7 +29,7 @@ export default function AuthButtons() {
 
     (async () => {
       try {
-        const { data } = await axiosApi.get(`${API_URL}/api/v1/auth/profile`, {
+        const { data } = await axiosApi.get(`${BACKEND_URL}/api/v1/auth/profile`, {
           withCredentials: true,
         });
 

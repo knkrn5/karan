@@ -6,7 +6,7 @@ import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import StatusNotifications from '../../utils/StatusNotifications';
 import UserAccount from './userAccount';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 interface UserDataProps {
   firstName: string;
@@ -137,7 +137,7 @@ export default function Register() {
     setStatus({});
 
     try {
-      const response = await axios.post(`${API_URL}/api/v1/auth/register`, userData);
+      const response = await axios.post(`${BACKEND_URL}/api/v1/auth/register`, userData);
       const { data } = response;
       setStatus({ success: data.message });
       // navigate("/login");

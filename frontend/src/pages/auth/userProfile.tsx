@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useProfileStore } from '../../stores/auth/authUserProfileStore.js';
 import Logout from './logout';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 interface userDataProps {
   firstName: string;
@@ -23,7 +23,7 @@ export default function UserProfile() {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get(`${API_URL}/api/v1/auth/profile`, {
+        const response = await axios.get(`${BACKEND_URL}/api/v1/auth/profile`, {
           withCredentials: true,
         });
 
