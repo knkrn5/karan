@@ -35,7 +35,7 @@ export default function Register() {
     twoPassword: false,
   });
 
-  // const [isAccountCreated, setIsAccountCreated] = useState<boolean>(false);
+  const [isAccountCreated, setIsAccountCreated] = useState<boolean>(false);
 
   const [userData, setUserData] = useState<UserDataProps>({
     firstName: '',
@@ -157,8 +157,8 @@ export default function Register() {
       const response = await axios.post(`${BACKEND_URL}/api/v1/auth/register`, userData);
       const { data } = response;
       setStatusInfo({ success: data.message });
-      // setIsAccountCreated(data.success);
-      navigate('/login');
+      setIsAccountCreated(data.success);
+      // navigate('/login');
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.status);
@@ -195,11 +195,11 @@ export default function Register() {
     }));
   }, []);
 
-  /*  useEffect(() => {
+   useEffect(() => {
     if (isAccountCreated || localStorage.getItem('isSuccessLoginedInLs') === 'true') {
       navigate('/login');
     }
-  }, [isAccountCreated, navigate]); */
+  }, [isAccountCreated, navigate]);
 
   return (
     <>
