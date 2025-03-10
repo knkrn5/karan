@@ -11,8 +11,9 @@ export default defineConfig({
         // target: 'https://karan-2222.onrender.com/',
         target: 'http://localhost:5000/',
         changeOrigin: true,
-        // rewrite: (path) => path.replace(/^\/api/, ''),
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     }
   }
 })
+

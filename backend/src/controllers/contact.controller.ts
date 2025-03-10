@@ -7,7 +7,6 @@ export class ContactController {
   static addContactMessage = async (req: Request, res: Response): Promise<void> => {
     try {
       const { name, email, message } = req.body;
-
       const contactMsg = await ContactService.addContactMessages(name, email, message);
 
       res.status(201).json(new ApiResponse(true, 'Message sent successfully', contactMsg));
