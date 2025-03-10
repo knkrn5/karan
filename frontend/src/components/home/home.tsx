@@ -2,14 +2,22 @@ import axios from "axios";
 import { useEffect } from "react";
 import { Link } from "react-router";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+
 function Home() {
+
   useEffect(() => {
     const pingBackend = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/health`);
+        const res = await axios.get(`${BACKEND_URL}/health`);
         console.log(res.data); 
-      } catch (error) {
-        console.error("Failed to ping backend:", error);
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          console.error("Failed to ping backend:", error.message);
+        }else{
+          console.error("Failed to ping backend:", error);
+        }
       }
     };
 
