@@ -77,11 +77,26 @@ export default function Register() {
     };
 
     // Email validation
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    // const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (!data.email.trim()) {
       errors.email = 'Email is required';
-    } else if (!emailRegex.test(data.email)) {
-      errors.email = 'Invalid email format';
+    } else if (!data.email.includes('@')) {
+      errors.email = 'Email must contain @ symbol';
+    } else if (!data.email.includes('.')) {
+      errors.email = 'Email must contain a domain extension (e.g., .com)';
+    } else if (data.email.indexOf('@') === 0) {
+      errors.email = 'Email must have a username before @ symbol';
+    } else if (data.email.indexOf('@') === data.email.length - 1) {
+      errors.email = 'Email must have a domain after @ symbol';
+    } else if (data.email.split('@')[1] && !data.email.split('@')[1].includes('.')) {
+      errors.email = 'Email domain must include an extension (e.g., .com)';
+    } else if (!/^[a-zA-Z0-9._-]+@/.test(data.email)) {
+      errors.email =
+        'Email username can only contain letters, numbers, periods, underscores, and hyphens';
+    } else if (!/@[a-zA-Z0-9.-]+\./.test(data.email)) {
+      errors.email = 'Email domain can only contain letters, numbers, periods, and hyphens';
+    } else if (!/\.[a-zA-Z]{2,6}$/.test(data.email)) {
+      errors.email = 'Email must end with a valid domain extension (2-6 letters)';
     }
 
     // First name validation
@@ -143,7 +158,7 @@ export default function Register() {
       const { data } = response;
       setStatusInfo({ success: data.message });
       // setIsAccountCreated(data.success);
-      navigate("/login");
+      navigate('/login');
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.status);
@@ -180,7 +195,7 @@ export default function Register() {
     }));
   }, []);
 
- /*  useEffect(() => {
+  /*  useEffect(() => {
     if (isAccountCreated || localStorage.getItem('isSuccessLoginedInLs') === 'true') {
       navigate('/login');
     }

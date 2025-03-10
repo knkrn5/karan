@@ -47,10 +47,27 @@ export default function LoginPage() {
       password: '',
     };
 
+    // Email validation
     if (email.trim().length === 0) {
       loginFieldErrors.email = 'Email is required';
-    } else if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(email)) {
-      loginFieldErrors.email = 'Please enter a valid email';
+    } else if (!email.includes('@')) {
+      loginFieldErrors.email = 'Email must contain @ symbol';
+    } else if (!email.includes('.')) {
+      loginFieldErrors.email = 'Email must contain a domain extension (e.g., .com)';
+    } else if (email.indexOf('@') === 0) {
+      loginFieldErrors.email = 'Email must have a username before @ symbol';
+    } else if (email.indexOf('@') === email.length - 1) {
+      loginFieldErrors.email = 'Email must have a domain after @ symbol';
+    } else if (email.split('@')[1] && !email.split('@')[1].includes('.')) {
+      loginFieldErrors.email = 'Email domain must include an extension (e.g., .com)';
+    } else if (!/^[a-zA-Z0-9._-]+@/.test(email)) {
+      loginFieldErrors.email =
+        'Email username can only contain letters, numbers, periods, underscores, and hyphens';
+    } else if (!/@[a-zA-Z0-9.-]+\./.test(email)) {
+      loginFieldErrors.email =
+        'Email domain can only contain letters, numbers, periods, and hyphens';
+    } else if (!/\.[a-zA-Z]{2,6}$/.test(email)) {
+      loginFieldErrors.email = 'Email must end with a valid domain extension (2-6 letters)';
     }
 
     if (password.trim().length === 0) {
