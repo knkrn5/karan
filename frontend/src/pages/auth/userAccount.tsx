@@ -42,7 +42,7 @@ export default function UserAccount() {
           {/* Reset Password */}
           <button>
             <Link
-              to="/"
+              to=""
               className="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 
               dark:bg-blue-500 dark:hover:bg-blue-600 "
             >
@@ -53,7 +53,7 @@ export default function UserAccount() {
           {/* Delete Account */}
           <button>
             <Link
-              to="/"
+              to=""
               className="text-white bg-red-600 hover:bg-red-700 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 
               dark:bg-red-500 dark:hover:bg-red-600 "
             >

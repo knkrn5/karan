@@ -188,7 +188,7 @@ export function UserAccoutbgSvg() {
             fill="none"
             stroke="url(#accent1)"
             strokeWidth="8"
-            stroke-dasharray="3,7"
+            strokeDasharray="3,7"
           />
           <circle
             cx="450"
@@ -197,7 +197,7 @@ export function UserAccoutbgSvg() {
             fill="none"
             stroke="url(#accent2)"
             strokeWidth="4"
-            stroke-dasharray="1,12"
+            strokeDasharray="1,12"
           />
           <circle
             cx="450"
