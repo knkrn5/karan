@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 // import { GoogleIcon, GithubIcon } from "../../icons/svgIcons";
 import axios from 'axios';
 import StatusNotifications from '../../utils/StatusNotifications.js';
@@ -7,7 +7,6 @@ import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 import { useProfileStore } from '../../stores/auth/authUserProfileStore.js';
-import UserAccount from './userAccount.js';
 
 interface loginFeildDataProps {
   email: string;
@@ -31,7 +30,7 @@ export default function LoginPage() {
   const statusInfo = useProfileStore(state => state.statusInfo);
   const { setIsSuccessLoginedIn, setStatusInfo } = useProfileStore();
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // Trigger animation on component mount
   useEffect(() => {
@@ -105,7 +104,7 @@ export default function LoginPage() {
       setStatusInfo({ success: data.message });
       localStorage.setItem('isSuccessLoginedInLs', data.success.toString());
       setIsSuccessLoginedIn(true);
-      // navigate('/blog');
+      navigate('/profile');
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.message);
@@ -119,13 +118,11 @@ export default function LoginPage() {
     }
   };
 
-  if (localStorage.getItem('isSuccessLoginedInLs') === 'true') {
-    return (
-      <>
-        <UserAccount />
-      </>
-    );
-  }
+  useEffect(() => {
+    if (localStorage.getItem('isSuccessLoginedInLs') === 'true') {
+      navigate('/profile');
+    }
+  }, [navigate]);
 
   return (
     <>

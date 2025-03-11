@@ -1,6 +1,7 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useProfileStore } from '../../stores/auth/authUserProfileStore.js';
 import { AnimatedLetterSvg, UserAccoutbgSvg } from '../../icons/animatedLetterSvg.js';
+import { useEffect } from 'react';
 
 export default function UserAccount() {
   const firstName = useProfileStore(state => state.firstName);
@@ -8,6 +9,14 @@ export default function UserAccount() {
   const email = useProfileStore(state => state.email);
 
   const letter: string = firstName?.[0]?.toUpperCase() || '';
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem('isSuccessLoginedInLs')) {
+      navigate('/login');
+    }
+  }, [navigate]);
 
   return (
     <div
