@@ -12,6 +12,7 @@ import RegisterPage from "./pages/auth/register";
 
 import About from "./pages/about/aboutPage";
 import Contact from "./pages/contact/contactPage";
+import UserAccount from "./pages/auth/userAccount";
 
 function App() {
 
@@ -32,6 +33,8 @@ function App() {
             />
             <Route path="register" element={<RegisterPage />} />
           </Route>
+
+          <Route path="/profile" element={<UserAccount />} />
 
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
