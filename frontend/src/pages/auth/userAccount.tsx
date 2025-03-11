@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router';
 import { useProfileStore } from '../../stores/auth/authUserProfileStore.js';
-import { AnimatedLetterSvg, UserAccoutbgSvg } from '../../icons/animatedLetterSvg.js';
+import { AnimatedLetterSvg, UserAccoutbgSvg } from '../../icons/userAccountSvg.js';
 import { useEffect } from 'react';
 
 export default function UserAccount() {

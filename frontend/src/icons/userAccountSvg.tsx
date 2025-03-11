@@ -132,37 +132,6 @@ export function UserAccoutbgSvg() {
             <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
           </radialGradient>
 
-          {/* <!-- Wave pattern --> */}
-          <pattern
-            id="wavePattern"
-            x="0"
-            y="0"
-            width="200"
-            height="200"
-            patternUnits="userSpaceOnUse"
-          >
-            <path
-              d="M0,100 C50,80 50,120 100,100 C150,80 150,120 200,100"
-              fill="none"
-              stroke="#6366f1"
-              strokeWidth="2"
-              strokeOpacity="0.2"
-            />
-            <path
-              d="M0,150 C50,130 50,170 100,150 C150,130 150,170 200,150"
-              fill="none"
-              stroke="#6366f1"
-              strokeWidth="2"
-              strokeOpacity="0.2"
-            />
-            <path
-              d="M0,50 C50,30 50,70 100,50 C150,30 150,70 200,50"
-              fill="none"
-              stroke="#6366f1"
-              strokeWidth="2"
-              strokeOpacity="0.2"
-            />
-          </pattern>
 
           {/* <!-- Filter for glow --> */}
           <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
