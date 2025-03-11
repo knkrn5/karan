@@ -25,7 +25,7 @@ axiosApi.interceptors.response.use(
         console.log('Failed to refresh token. Logging out...');
         await axiosApi.post('/api/v1/auth/logout');
         localStorage.removeItem('isSuccessLoginedInLs');
-        window.location.href = '/login';
+        window.location.reload();
         return Promise.reject(refreshError);
       }
     }
