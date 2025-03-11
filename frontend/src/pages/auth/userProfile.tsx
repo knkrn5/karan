@@ -42,15 +42,30 @@ export default function UserProfile() {
   return (
     <>
       <div className="flex items-center absolute top-15 right-5 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-lg duration-300 hover:shadow-2xl px-3">
-        <svg width="70" height="70" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="mr-2">
+        <svg
+          width="70"
+          height="70"
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+          className="mr-2"
+        >
           <circle cx="50" cy="50" r="40" fill="#6B7280" />
-          <text x="50%" y="55%" fontSize="40" fontFamily="Arial, sans-serif" fill="white" textAnchor="middle" dominantBaseline="middle">
+          <text
+            x="50%"
+            y="55%"
+            fontSize="40"
+            fontFamily="Arial, sans-serif"
+            fill="white"
+            textAnchor="middle"
+            dominantBaseline="middle"
+          >
             {letter}
           </text>
         </svg>
         <div className="flex-1 mr-6">
           <h2 className="text-lg font-extrabold dark:text-white">
-            {firstName?.charAt(0).toUpperCase() + firstName?.slice(1)} {lastName?.charAt(0).toUpperCase() + lastName?.slice(1)}
+            {firstName?.charAt(0).toUpperCase() + firstName?.slice(1)}{' '}
+            {lastName?.charAt(0).toUpperCase() + lastName?.slice(1)}
           </h2>
           <p className="text-gray-500 font-serif dark:text-gray-400">{email}</p>
         </div>
@@ -59,3 +74,4 @@ export default function UserProfile() {
     </>
   );
 }
+
