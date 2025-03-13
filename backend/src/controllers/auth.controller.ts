@@ -81,15 +81,4 @@ export class AuthController {
       .clearCookie('refreshToken')
       .json(new ApiResponse(true, 'Logout successful', null));
   }
-
-  static async getProfile(req: Request, res: Response) {
-    try {
-      const userId = req.user._id;
-      const user = await AuthService.getProfile(userId);
-
-      res.status(200).json(new ApiResponse(true, 'User profile retrieved', user));
-    } catch (error: any) {
-      res.status(500).json(new ApiResponse(false, error.message, null));
-    }
-  }
 }

@@ -10,7 +10,11 @@ router.post('/register', limiter, AuthController.registerUser);
 router.post('/login', AuthController.loginUser);
 router.post('/logout', AuthController.logoutUser);
 router.post('/refresh-token', AuthController.refreshToken);
-router.get('/profile', verifyToken, AuthController.getProfile);
+
+
+import { ProfileController } from '../controllers/profile.controller.js';
+
+router.get('/profile', verifyToken, ProfileController.getProfile);
 
 /* router.put('/', verifyToken, ProfileController.updateProfile);
 router.delete('/', verifyToken, ProfileController.deleteAccount); */
