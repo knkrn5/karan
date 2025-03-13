@@ -1,9 +1,11 @@
 import { Link, useNavigate } from 'react-router';
 import { useProfileStore } from '../../stores/auth/authUserProfileStore';
 import { AnimatedLetterSvg, UserAccoutbgSvg } from '../../icons/userProfileSvg';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function UserProfile() {
+  const [isVisible, setIsVisible] = useState(false);
+
   const firstName = useProfileStore(state => state.firstName);
   const lastName = useProfileStore(state => state.lastName);
   const email = useProfileStore(state => state.email);
@@ -11,6 +13,14 @@ export default function UserProfile() {
   const letter: string = firstName?.[0]?.toUpperCase() || '';
 
   const navigate = useNavigate();
+
+  // Trigger animation on component mount
+  useEffect(() => {
+    setIsVisible(false);
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 10);
+  }, []);
 
   useEffect(() => {
     if (!localStorage.getItem('isSuccessLoginedInLs')) {
@@ -25,8 +35,10 @@ export default function UserProfile() {
     >
       {/* Card */}
       <div
-        className="mx-auto rounded-lg overflow-hidden w-80 duration-300
-        bg-white dark:bg-gray-900 shadow-lg hover:dark:shadow-gray-700 "
+        className={`mx-auto rounded-lg overflow-hidden w-80 duration-300
+        bg-white dark:bg-gray-900 shadow-lg hover:dark:shadow-gray-700  ${
+          isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+        }`}
       >
         {/* Background SVG */}
         <div className="bg-gray-200 dark:bg-gray-700 ">
