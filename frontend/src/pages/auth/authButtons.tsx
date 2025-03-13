@@ -1,9 +1,9 @@
 import { Link } from 'react-router';
 import { useProfileStore } from '../../stores/auth/authUserProfileStore';
-import UserProfile from './userProfile';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import axiosApi from '../../utils/axios.js';
+import UserAccount from './userAccount.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -61,14 +61,14 @@ export default function AuthButtons() {
       ) : (
         <div
           className="flex items-center justify-center w-8 h-8 bg-gray-500 rounded-full cursor-pointer duration-300 hover:ring-2 hover:ring-blue-600 dark:hover:ring-gray-300"
-          title="profile button"
+          title="Account"
           onClick={() => setShowProfile(!showProfile)}
         >
           <span className="text-white text-lg font-semibold">{letter}</span>
         </div>
       )}
 
-      {showProfile && isSignedIn ? <UserProfile /> : null}
+      {showProfile && isSignedIn ? <UserAccount /> : null}
     </>
   );
 }
