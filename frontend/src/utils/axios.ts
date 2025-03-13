@@ -7,15 +7,13 @@ const axiosApi = axios.create({
   withCredentials: true,
 });
 
-// ✅ Axios Interceptor For Refresh Token
+// This Axios Interceptor is only handling 401 and 403, rest 400 , 500 with go to the catch block of where we have use this axios api
 axiosApi.interceptors.response.use(
   response => response,
   async error => {
-    // ✅ Handle Access Token Expiry (401)
     if (error.response.status === 401 && !error.config._retry) {
       error.config._retry = true;
       try {
-        // ✅ Use axiosApi (not axios)
         await axiosApi.post('/api/v1/auth/refresh-token');
 
         // ✅ Retry the original request with the new token
@@ -45,28 +43,4 @@ axiosApi.interceptors.response.use(
 
 export default axiosApi;
 
-const logoutAxiosApi = axios.create({
-  baseURL: BACKEND_URL,
-  withCredentials: true,
-});
 
-logoutAxiosApi.interceptors.request.use(
-  config => {
-    // ✅ Check if the user is logged in
-    const isSuccessLoginedInLs = localStorage.getItem('isSuccessLoginedInLs');
-
-    // ✅ If token does NOT exist, cancel the request
-    if (!isSuccessLoginedInLs) {
-      return Promise.reject(new axios.Cancel('Request canceled: No token'));
-    }
-
-    // ✅ Otherwise, allow the request
-    return config;
-  },
-  error => {
-    // ✅ Handle any request errors
-    return Promise.reject(error);
-  }
-);
-
-export { logoutAxiosApi };

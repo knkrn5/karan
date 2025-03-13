@@ -76,7 +76,7 @@ const resources: Resource[] = [
     },
   ]),
 
-  new CreateResourses('API', FaCode, 'text-yellow-500', [
+  new CreateResourses('CHATBOT API', FaCode, 'text-yellow-500', [
     {
       name: 'NVIDIA',
       description: 'https://integrate.api.nvidia.com/v1',
