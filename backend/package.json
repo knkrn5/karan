@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "nodemon --exec node --no-warnings --loader ts-node/esm src/server.ts",
-    "pm2": "pm2 start src/ecosystem.config.cjs",
+    "pm2": "pm2-runtime start src/ecosystem.config.cjs",
     "pm2-dev": "pm2 start --name karan-dev --interpreter node --node-args=\"--no-warnings --loader ts-node/esm\" src/server.ts",
     "build": "tsc"
   },
