@@ -1,8 +1,12 @@
 import { Link, useNavigate } from 'react-router';
-// import { useProfileStore } from '../../stores/auth/authUserProfileStore';
 import { AnimatedLetterSvg, UserAccoutbgSvg } from '../../icons/userProfileSvg';
 import { useEffect, useState } from 'react';
 import { useProfileStore } from '../../stores/auth/profileStore';
+import axios from 'axios';
+import { useAuthStore } from '../../stores/auth/authStore';
+// import StatusNotifications from '../../utils/StatusNotifications';
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function UserProfile() {
   const [isVisible, setIsVisible] = useState(false);
@@ -14,6 +18,9 @@ export default function UserProfile() {
   const letter: string = firstName?.[0]?.toUpperCase() || '';
 
   const navigate = useNavigate();
+
+  // const statusInfo = useAuthStore(state => state.statusInfoAuth);
+  const { setStatusInfoAuth } = useAuthStore();
 
   // Trigger animation on component mount
   useEffect(() => {
@@ -28,6 +35,35 @@ export default function UserProfile() {
       navigate('/login');
     }
   }, [navigate]);
+
+  const handleDeleteAccount = async () => {
+    try {
+      const response = await axios.delete(`${BACKEND_URL}/api/v1/profile/delete-account`, {
+        withCredentials: true,
+      });
+      const { data } = response;
+      console.log(response);
+      if (data.success) {
+        setStatusInfoAuth({ success: data.message });
+
+        await axios
+          .post(`${BACKEND_URL}/api/v1/auth/logout`, {}, { withCredentials: true })
+          .then(response => {
+            if (response.status === 200) {
+              useAuthStore.getState().setIsSuccessLoginedIn(false);
+              useProfileStore.getState().resetProfileStore();
+              localStorage.removeItem('isSuccessLoginedInLs');
+              navigate('/login');
+            }
+          });
+      }
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setStatusInfoAuth({ error: error.response?.data.message || error.message });
+      }
+      console.log(error);
+    }
+  };
 
   return (
     <div
@@ -73,7 +109,7 @@ export default function UserProfile() {
           </button>
 
           {/* Delete Account */}
-          <button>
+          <button onClick={handleDeleteAccount}>
             <Link
               to=""
               className="text-white bg-red-600 hover:bg-red-700 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 
@@ -83,6 +119,7 @@ export default function UserProfile() {
             </Link>
           </button>
         </div>
+        {/* <StatusNotifications statusInfo={statusInfo} /> */}
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ export class ProfileController {
     }
   }
 
-  /*   static async deleteAccount(req: Request, res: Response) {
+  static async deleteAccount(req: Request, res: Response) {
     try {
       const userId = req.user._id;
       await ProfileService.deleteAccount(userId);
@@ -22,5 +22,5 @@ export class ProfileController {
     } catch (error: any) {
       res.status(500).json(new ApiResponse(false, error.message, null));
     }
-  } */
+  }
 }

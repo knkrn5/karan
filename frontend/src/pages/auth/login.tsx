@@ -5,8 +5,6 @@ import axios from 'axios';
 import StatusNotifications from '../../utils/StatusNotifications.js';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-
-// import { useProfileStore } from '../../stores/auth/authUserProfileStore.js';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 
 interface loginFeildDataProps {

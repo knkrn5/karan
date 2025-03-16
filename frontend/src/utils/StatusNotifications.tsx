@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react';
 
 import { FaCircleCheck, FaCircleInfo, FaCircleXmark, FaCircleExclamation  } from "react-icons/fa6";
 
-interface StatusProp {
+export interface StatusNotificationsProp {
   success?: string;
   info?: string;
   warning?: string;
   error?: string;
 }
 
-export default function StatusNotifications({ statusInfo }: { statusInfo: StatusProp }) {
-  const [status, setStatus] = useState<StatusProp>({});
+export default function StatusNotifications({ statusInfo }: { statusInfo: StatusNotificationsProp }) {
+  const [status, setStatus] = useState<StatusNotificationsProp>({});
 
   useEffect(() => {
     setStatus(statusInfo); 

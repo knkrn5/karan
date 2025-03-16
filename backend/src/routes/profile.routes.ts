@@ -8,9 +8,8 @@ const router = Router();
 
 
 router.get('/details', verifyToken, ProfileController.getProfile);
+//  router.put('/', verifyToken, ProfileController.updateProfile);
+router.delete('/delete-account', verifyToken, ProfileController.deleteAccount); 
 
-/* router.put('/', verifyToken, ProfileController.updateProfile);
-router.delete('/', verifyToken, ProfileController.deleteAccount); */
-
-export default router;
+export default router;  
 
