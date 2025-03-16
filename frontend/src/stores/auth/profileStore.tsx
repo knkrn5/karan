@@ -8,14 +8,14 @@ interface StatusInfoProps {
 }
 
 type State = {
-  statusInfo: StatusInfoProps;
+  statusInfoProfile: StatusInfoProps;
   firstName: string;
   lastName: string;
   email: string;
 };
 
 type Action = {
-  setStatusInfo: (status: StatusInfoProps) => void;
+  setStatusInfoProfile: (status: StatusInfoProps) => void;
   setFirstName: (firstName: string) => void;
   setLastName: (lastName: string) => void;
   setMail: (email: string) => void;
@@ -23,8 +23,8 @@ type Action = {
 };
 
 const useProfileStore = create<State & Action>(set => ({
-  statusInfo: {},
-  setStatusInfo: (message: StatusInfoProps) => set({ statusInfo: message }),
+  statusInfoProfile: {},
+  setStatusInfoProfile: (message: StatusInfoProps) => set({ statusInfoProfile: message }),
 
   firstName: '',
   setFirstName: (firstName: string) => set({ firstName }),

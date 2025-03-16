@@ -6,7 +6,8 @@ import StatusNotifications from '../../utils/StatusNotifications.js';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
-import { useProfileStore } from '../../stores/auth/authUserProfileStore.js';
+// import { useProfileStore } from '../../stores/auth/authUserProfileStore.js';
+import { useAuthStore } from '../../stores/auth/authStore.js';
 
 interface loginFeildDataProps {
   email: string;
@@ -27,8 +28,8 @@ export default function LoginPage() {
     password: '',
   });
 
-  const statusInfo = useProfileStore(state => state.statusInfo);
-  const { setIsSuccessLoginedIn, setStatusInfo } = useProfileStore();
+  const statusInfo = useAuthStore(state => state.statusInfoAuth);
+  const { setIsSuccessLoginedIn, setStatusInfoAuth } = useAuthStore();
 
   const navigate = useNavigate();
 
@@ -101,17 +102,17 @@ export default function LoginPage() {
         { withCredentials: true }
       );
       const { data } = response;
-      setStatusInfo({ success: data.message });
+      setStatusInfoAuth({ success: data.message });
       localStorage.setItem('isSuccessLoginedInLs', data.success.toString());
       setIsSuccessLoginedIn(true);
       navigate('/profile');
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.message);
-        setStatusInfo({ error: error.response?.data.message || error.message });
+        setStatusInfoAuth({ error: error.response?.data.message || error.message });
       } else {
         console.log(error);
-        setStatusInfo({ error: 'An unexpected error occurred' });
+        setStatusInfoAuth({ error: 'An unexpected error occurred' });
       }
     } finally {
       setIsLoading(false);

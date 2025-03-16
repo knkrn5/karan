@@ -4,7 +4,9 @@ import { Link, useNavigate } from 'react-router';
 import axios from 'axios';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import StatusNotifications from '../../utils/StatusNotifications';
-import { useProfileStore } from '../../stores/auth/authUserProfileStore.js';
+// import { useProfileStore } from '../../stores/auth/authUserProfileStore.js';
+import { useAuthStore } from '../../stores/auth/authStore.js';
+
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -53,8 +55,8 @@ export default function Register() {
     confirmPassword: '',
   });
 
-  const statusInfo = useProfileStore(state => state.statusInfo);
-  const { setStatusInfo } = useProfileStore();
+  const statusInfo = useAuthStore(state => state.statusInfoAuth);
+  const { setStatusInfoAuth } = useAuthStore();
 
   const navigate = useNavigate();
 
@@ -151,22 +153,22 @@ export default function Register() {
     }
 
     setIsSigningUp(true);
-    setStatusInfo({});
+    setStatusInfoAuth({});
 
     try {
       const response = await axios.post(`${BACKEND_URL}/api/v1/auth/register`, userData);
       const { data } = response;
-      setStatusInfo({ success: data.message });
+      setStatusInfoAuth({ success: data.message });
       setIsAccountCreated(data.success);
       // navigate('/login');
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.status);
-        setStatusInfo({
+        setStatusInfoAuth({
           error: error.response?.data.message || error.message,
         });
       } else {
-        setStatusInfo({ error: 'An unexpected error occurred' });
+        setStatusInfoAuth({ error: 'An unexpected error occurred' });
       }
     } finally {
       setIsSigningUp(false);

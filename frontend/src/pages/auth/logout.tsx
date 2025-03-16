@@ -1,8 +1,11 @@
 import { IoLogOut } from 'react-icons/io5';
 import axios from 'axios';
-import { useProfileStore } from '../../stores/auth/authUserProfileStore';
+// import { useProfileStore } from '../../stores/auth/authUserProfileStore';
 import { useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { useProfileStore } from '../../stores/auth/profileStore';
+
+
 // import { useNavigate } from 'react-router';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -18,7 +21,7 @@ export default function Logout() {
       console.log(response);
       // Clearing all state in zustand
       // useProfileStore.getState().setIsSuccessLoginedIn(false);
-      useProfileStore.getState().reset();
+      useProfileStore.getState().resetProfileStore();
       localStorage.removeItem('isSuccessLoginedInLs');
       console.log('logging Out');
     } catch (error) {

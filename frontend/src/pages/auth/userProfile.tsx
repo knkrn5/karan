@@ -1,7 +1,8 @@
 import { Link, useNavigate } from 'react-router';
-import { useProfileStore } from '../../stores/auth/authUserProfileStore';
+// import { useProfileStore } from '../../stores/auth/authUserProfileStore';
 import { AnimatedLetterSvg, UserAccoutbgSvg } from '../../icons/userProfileSvg';
 import { useEffect, useState } from 'react';
+import { useProfileStore } from '../../stores/auth/profileStore';
 
 export default function UserProfile() {
   const [isVisible, setIsVisible] = useState(false);

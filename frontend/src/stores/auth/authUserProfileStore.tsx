@@ -25,7 +25,7 @@ type Action = {
   reset: () => void;
 };
 
-const useProfileStore = create<State & Action>((set) => ({
+const useuserProfileStore = create<State & Action>((set) => ({
   isSuccessLoginedIn: false,
   setIsSuccessLoginedIn: (value: boolean ) => set({ isSuccessLoginedIn: value }),
 
@@ -50,4 +50,4 @@ const useProfileStore = create<State & Action>((set) => ({
     }),
 }));
 
-export { useProfileStore };
+export { useuserProfileStore };

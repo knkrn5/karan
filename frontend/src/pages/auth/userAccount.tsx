@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { useEffect } from 'react';
-import { useProfileStore } from '../../stores/auth/authUserProfileStore.js';
+// import { useProfileStore } from '../../stores/auth/authUserProfileStore.js';
 import Logout from './logout';
 import { Link } from 'react-router';
+import { useProfileStore } from '../../stores/auth/profileStore';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 

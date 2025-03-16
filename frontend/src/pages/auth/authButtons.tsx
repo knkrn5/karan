@@ -1,9 +1,13 @@
 import { Link } from 'react-router';
-import { useProfileStore } from '../../stores/auth/authUserProfileStore';
+// import { useProfileStore } from '../../stores/auth/authUserProfileStore';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import axiosApi from '../../utils/axios.js';
 import UserAccount from './userAccount.js';
+import { useAuthStore } from '../../stores/auth/authStore.js';
+import { useProfileStore } from '../../stores/auth/profileStore.js';
+
+
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -12,7 +16,7 @@ export default function AuthButtons() {
   const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
 
   const firstName = useProfileStore(state => state.firstName);
-  const isSuccessLoginedIn = useProfileStore(state => state.isSuccessLoginedIn);
+  const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
 
   const letter: string = firstName?.[0]?.toUpperCase() || '';
 

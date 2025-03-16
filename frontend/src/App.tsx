@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router";
 
 import Header from "./components/common/header";
 import Footer from "./components/common/footer";
-import Home from "./components/home/home";
+import Home from "./pages/home/home";
 import ErrorPage from "./pages/errors/404-error-page";
 import ResourcesInfo from "./pages/resources/resourses-page";
 
