@@ -27,7 +27,7 @@ export class ProfileService {
         };
       } */
 
-  /* static async deleteAccount(userId: string): Promise<void> {
+  static async deleteAccount(userId: string): Promise<void> {
     await User.findByIdAndDelete(userId);
-  } */
+  }
 }

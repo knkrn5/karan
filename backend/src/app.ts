@@ -28,10 +28,12 @@ app.get('/health', (req, res) => {
 // Routes Imports
 import contactRoutes from './routes/contact.routes.js';
 import userRoutes from './routes/auth.routes.js';
+import profileRoutes from './routes/profile.routes.js';
 
 // Route Definitions
 app.use('/api/contact', contactRoutes);
 app.use('/api/v1/auth/', userRoutes);
+app.use('/api/v1/profile/', profileRoutes);
 
 
 app.get('*', (req, res) => {

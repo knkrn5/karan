@@ -25,7 +25,7 @@ export default function UserAccount() {
   useEffect(() => {
     const fetchUserAccount = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/api/v1/auth/profile`, {
+        const response = await axios.get(`${BACKEND_URL}/api/v1/profile/details`, {
           withCredentials: true,
         });
 

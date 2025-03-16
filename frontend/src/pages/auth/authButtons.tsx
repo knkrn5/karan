@@ -32,7 +32,7 @@ export default function AuthButtons() {
 
     (async () => {
       try {
-        const { data } = await axiosApi.get(`${BACKEND_URL}/api/v1/auth/profile`, {
+        const { data } = await axiosApi.get(`${BACKEND_URL}/api/v1/profile/details`, {
           withCredentials: true,
         });
 
