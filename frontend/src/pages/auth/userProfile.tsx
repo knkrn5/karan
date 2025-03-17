@@ -4,13 +4,15 @@ import { useEffect, useState } from 'react';
 import { useProfileStore } from '../../stores/auth/profileStore';
 import axios from 'axios';
 import { useAuthStore } from '../../stores/auth/authStore';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+
 // import StatusNotifications from '../../utils/StatusNotifications';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function UserProfile() {
   const [isVisible, setIsVisible] = useState(false);
-
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const firstName = useProfileStore(state => state.firstName);
   const lastName = useProfileStore(state => state.lastName);
   const email = useProfileStore(state => state.email);
@@ -22,7 +24,7 @@ export default function UserProfile() {
   // const statusInfo = useAuthStore(state => state.statusInfoAuth);
   const { setStatusInfoAuth } = useAuthStore();
 
-  // Trigger animation on component mount
+  // animation trigger
   useEffect(() => {
     setIsVisible(false);
     setTimeout(() => {
@@ -36,7 +38,15 @@ export default function UserProfile() {
     }
   }, [navigate]);
 
+  //testing unmount====================
+  /* useEffect(() => {
+    return () => {
+      localStorage.clear();
+    };
+  }, []); */
+
   const handleDeleteAccount = async () => {
+    setIsDeleting(true);
     try {
       const response = await axios.delete(`${BACKEND_URL}/api/v1/profile/delete-account`, {
         withCredentials: true,
@@ -62,6 +72,11 @@ export default function UserProfile() {
         setStatusInfoAuth({ error: error.response?.data.message || error.message });
       }
       console.log(error);
+    } finally {
+      setTimeout(() => {
+        setStatusInfoAuth({});
+      }, 5000);
+      setIsDeleting(false);
     }
   };
 
@@ -72,7 +87,7 @@ export default function UserProfile() {
     >
       {/* Card */}
       <div
-        className={`mx-auto rounded-lg overflow-hidden w-80 duration-300
+        className={`mx-auto rounded-lg overflow-hidden w-80 duration-300 
         bg-white dark:bg-gray-900 shadow-lg hover:dark:shadow-gray-700  ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
         }`}
@@ -96,27 +111,29 @@ export default function UserProfile() {
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-col gap-5 md:flex-row justify-center md:gap-4 my-5">
+        <div className="flex md:flex-row justify- px-2 my-5">
           {/* Reset Password */}
-          <button>
-            <Link
-              to=""
-              className="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 
+          <button
+            className="text-white  bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm w-fit px-4 py-2 mx-auto md:px-5 md:py-2.5 
               dark:bg-blue-500 dark:hover:bg-blue-600 "
-            >
-              Reset Password
-            </Link>
+          >
+            Reset Password
           </button>
 
           {/* Delete Account */}
-          <button onClick={handleDeleteAccount}>
-            <Link
-              to=""
-              className="text-white bg-red-600 hover:bg-red-700 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 
-              dark:bg-red-500 dark:hover:bg-red-600 "
-            >
-              Delete Account
-            </Link>
+          <button
+            onClick={handleDeleteAccount}
+            className="text-white bg-red-600 hover:bg-red-700 font-medium rounded-lg text-sm w-fit px-4 py-2 mx-auto md:px-5 md:py-2.5 
+             dark:bg-red-500 dark:hover:bg-red-600 flex items-center justify-center"
+            disabled={isDeleting}
+          >
+            {!isDeleting ? (
+              <span className="flex items-center">
+                <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mr-2" /> Deleting...
+              </span>
+            ) : (
+              'Delete Account'
+            )}
           </button>
         </div>
         {/* <StatusNotifications statusInfo={statusInfo} /> */}
