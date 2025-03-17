@@ -11,7 +11,7 @@ export class AuthService {
     password: string
   ) {
     const existingUser = await User.findOne({ email });
-    if (existingUser) throw new ApiResponse(false, 'User already exists', null);
+    if (existingUser) throw new ApiResponse(409, false, 'User already exists', null);
 
     const user: IUser = await User.create({
       firstName,
@@ -42,10 +42,10 @@ export class AuthService {
 
   static async loginUser(email: string, password: string) {
     const user: IUser | null = await User.findOne({ email });
-    if (!user) throw new ApiResponse(false, 'User not found', null);
+    if (!user) throw new ApiResponse(404, false, 'User not found', null);
 
     const isPasswordMatch = await user.comparePassword(password);
-    if (!isPasswordMatch) throw new ApiResponse(false, 'Incorrect password', null);
+    if (!isPasswordMatch) throw new ApiResponse(401, false, 'Incorrect password', null);
 
     const accessToken = user.createAccessToken();
     const refreshToken = user.createRefreshToken();
@@ -75,12 +75,12 @@ export class AuthService {
 
       const user = await User.findById(decoded.userId);
       if (!user || user.refreshToken !== refreshToken)
-        throw new ApiResponse(false, 'Invalid refresh token', null);
+        throw new ApiResponse(401, false, 'Invalid refresh token', null);
 
       const accessToken = user.createAccessToken();
-      return new ApiResponse(true, 'Token refreshed successfully', { accessToken });
+      return new ApiResponse(200, true, 'Token refreshed successfully', { accessToken });
     } catch (error) {
-      throw new ApiResponse(false, 'Refresh token expired', null);
+      throw new ApiResponse(401, false, 'Refresh token expired', null);
     }
   }
 }

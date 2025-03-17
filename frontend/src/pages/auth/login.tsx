@@ -114,6 +114,9 @@ export default function LoginPage() {
       }
     } finally {
       setIsLoading(false);
+      setTimeout(() => {
+        setStatusInfoAuth({});
+      }, 5000);
     }
   };
 

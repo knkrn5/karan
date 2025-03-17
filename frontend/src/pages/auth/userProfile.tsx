@@ -63,7 +63,7 @@ export default function UserProfile() {
               useAuthStore.getState().setIsSuccessLoginedIn(false);
               useProfileStore.getState().resetProfileStore();
               localStorage.removeItem('isSuccessLoginedInLs');
-              navigate('/login');
+              navigate('/register');
             }
           });
       }
@@ -124,7 +124,7 @@ export default function UserProfile() {
           <button
             onClick={handleDeleteAccount}
             className="text-white bg-red-600 hover:bg-red-700 font-medium rounded-lg text-sm w-fit px-4 py-2 mx-auto md:px-5 md:py-2.5 
-             dark:bg-red-500 dark:hover:bg-red-600 flex items-center justify-center"
+            dark:bg-red-500 dark:hover:bg-red-600 flex items-center justify-center"
             disabled={isDeleting}
           >
             {isDeleting ? (

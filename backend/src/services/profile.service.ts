@@ -5,7 +5,7 @@ import { ApiResponse } from '../utils/apiResponse.js';
 export class ProfileService {
   static async getProfile(userId: string): Promise<UserDTO> {
     const user = await User.findById(userId).select('-password');
-    if (!user) throw new ApiResponse(false, 'User not found', null);
+    if (!user) throw new ApiResponse(404, false, 'User not found', null);
 
     return {
       _id: user._id.toString(),

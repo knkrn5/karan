@@ -1,16 +1,13 @@
 import { create } from 'zustand';
-// import { StatusNotificationsProp } from '../../utils/StatusNotifications';
 
 
 type State = {
-  // statusInfoProfile: StatusNotificationsProp;
   firstName: string;
   lastName: string;
   email: string;
 };
 
 type Action = {
-  // setStatusInfoProfile: (status: StatusNotificationsProp) => void;
   setFirstName: (firstName: string) => void;
   setLastName: (lastName: string) => void;
   setMail: (email: string) => void;
@@ -18,8 +15,6 @@ type Action = {
 };
 
 const useProfileStore = create<State & Action>(set => ({
-/*   statusInfoProfile: {},
-  setStatusInfoProfile: (message: StatusNotificationsProp) => set({ statusInfoProfile: message }), */
 
   firstName: '',
   setFirstName: (firstName: string) => set({ firstName }),

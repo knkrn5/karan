@@ -25,9 +25,9 @@ export class AuthController {
           secure: true,
           sameSite: 'none',
         })
-        .json(new ApiResponse(true, 'User registered successfully, Please Login', user));
+        .json(new ApiResponse(201, true, 'User registered successfully, Please Login', user));
     } catch (error: any) {
-      res.status(500).json(new ApiResponse(false, error.message, null));
+      res.status(500).json(new ApiResponse(500, false, error.message, null));
     }
   }
 
@@ -48,9 +48,19 @@ export class AuthController {
           secure: true,
           sameSite: 'none',
         })
-        .json(new ApiResponse(true, 'Login successful', user));
+        .json(new ApiResponse(200, true, 'Login successful', user));
     } catch (error: any) {
-      res.status(500).json(new ApiResponse(false, error.message, null));
+      if (error instanceof ApiResponse) {
+        if (error.statusCode === 404) {
+          res.status(404).json(new ApiResponse(404,  false, error.message, null));
+        } else if (error.statusCode === 401) {
+          res.status(401).json(new ApiResponse(401, false, error.message, null));
+        } else {
+          res.status(500).json(new ApiResponse(500, false, error.message, null));
+        }
+      } else {
+        res.status(500).json(new ApiResponse(500, false, error.message, null));
+      }
     }
   }
 
@@ -68,9 +78,9 @@ export class AuthController {
           secure: true,
           sameSite: 'none',
         })
-        .json(new ApiResponse(true, 'Token refreshed successfully', { accessToken }));
+        .json(new ApiResponse(200, true, 'Token refreshed successfully', { accessToken }));
     } catch (error: any) {
-      res.status(500).json(new ApiResponse(false, error.message, null));
+      res.status(500).json(new ApiResponse(500, false, error.message, null));
     }
   }
 
@@ -79,6 +89,6 @@ export class AuthController {
       .status(200)
       .clearCookie('accessToken')
       .clearCookie('refreshToken')
-      .json(new ApiResponse(true, 'Logout successful', null));
+      .json(new ApiResponse(200, true, 'Logout successful', null));
   }
 }

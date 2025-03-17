@@ -9,16 +9,16 @@ export class ContactController {
       const { name, email, message } = req.body;
       const contactMsg = await ContactService.addContactMessages(name, email, message);
 
-      res.status(201).json(new ApiResponse(true, 'Message sent successfully', contactMsg));
+      res.status(201).json(new ApiResponse(200, true, 'Message sent successfully', contactMsg));
     } catch (error) {
       if (error instanceof ApiResponse) {
         res.status(400).json(error);
       } else if (error instanceof Error) {
-        res.status(500).json(new ApiResponse(false, 'Failed to send message', error.message));
+        res.status(500).json(new ApiResponse(500, false, 'Failed to send message', error.message));
       } else {
         res
           .status(500)
-          .json(new ApiResponse(false, 'Failed to send message', 'An unknown error occurred.'));
+          .json(new ApiResponse(500, false, 'Failed to send message', 'An unknown error occurred.'));
       }
     }
   };
@@ -27,16 +27,16 @@ export class ContactController {
     try {
       const { id, message } = req.body;
       const updatedContact = await ContactService.updateContactMessages(id, message);
-      res.status(200).json(new ApiResponse(true, 'Message updated successfully', updatedContact));
+      res.status(200).json(new ApiResponse(200, true, 'Message updated successfully', updatedContact));
     } catch (error) {
       if (error instanceof ApiResponse) {
         res.status(400).json(error);
       } else if (error instanceof Error) {
-        res.status(500).json(new ApiResponse(false, 'Failed to update message', error.message));
+        res.status(500).json(new ApiResponse(500, false, 'Failed to update message', error.message));
       } else {
         res
           .status(500)
-          .json(new ApiResponse(false, 'Failed to update message', 'An unknown error occurred.'));
+          .json(new ApiResponse(500, false, 'Failed to update message', 'An unknown error occurred.'));
       }
     }
   }
@@ -45,16 +45,16 @@ export class ContactController {
     try {
       const { id } = req.body;
       const deletedContact = await ContactService.deleteContactMessages(id);
-      res.status(200).json(new ApiResponse(true, 'Message deleted successfully', deletedContact));
+      res.status(200).json(new ApiResponse(200, true, 'Message deleted successfully', deletedContact));
     } catch (error) {
       if (error instanceof ApiResponse) {
         res.status(400).json(error);
       } else if (error instanceof Error) {
-        res.status(500).json(new ApiResponse(false, 'Failed to delete message', error.message));
+        res.status(500).json(new ApiResponse(500, false, 'Failed to delete message', error.message));
       } else {
         res
           .status(500)
-          .json(new ApiResponse(false, 'Failed to delete message', 'An unknown error occurred.'));
+          .json(new ApiResponse(500, false, 'Failed to delete message', 'An unknown error occurred.'));
       }
     }
   }

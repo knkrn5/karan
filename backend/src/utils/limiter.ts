@@ -6,7 +6,7 @@ const limiter = rateLimit({
     max: 5, 
     standardHeaders: true, 
     legacyHeaders: false,
-    message: new ApiResponse(false, 'Too many requests sent...', null),
+    message: new ApiResponse(429, false, 'Too many requests sent...', null),
 });
 
 export { limiter };

@@ -7,7 +7,7 @@ export class conactMiddleware {
     max: 3,
     standardHeaders: true,
     legacyHeaders: false,
-    message: new ApiResponse(false, 'Too many requests sent...', null),
+    message: new ApiResponse(429, false, 'Too many requests sent...', null),
   });
 
   static ContactPutLimiter = rateLimit({
@@ -15,6 +15,6 @@ export class conactMiddleware {
     max: 2,
     standardHeaders: true,
     legacyHeaders: false,
-    message: new ApiResponse(false, 'Too many requests sent...', null),
+    message: new ApiResponse(429, false, 'Too many requests sent...', null),
   });
 }

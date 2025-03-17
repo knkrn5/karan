@@ -8,9 +8,9 @@ export class ProfileController {
       const userId = req.user._id;
       const user = await ProfileService.getProfile(userId);
 
-      res.status(200).json(new ApiResponse(true, 'User profile retrieved', user));
+      res.status(200).json(new ApiResponse(200, true, 'User profile retrieved', user));
     } catch (error: any) {
-      res.status(500).json(new ApiResponse(false, error.message, null));
+      res.status(500).json(new ApiResponse(500,false, error.message, null));
     }
   }
 
@@ -18,9 +18,9 @@ export class ProfileController {
     try {
       const userId = req.user._id;
       await ProfileService.deleteAccount(userId);
-      res.status(200).json(new ApiResponse(true, 'Account deleted successfully', null));
+      res.status(200).json(new ApiResponse(200, true, 'Account deleted successfully', null));
     } catch (error: any) {
-      res.status(500).json(new ApiResponse(false, error.message, null));
+      res.status(500).json(new ApiResponse(500, false, error.message, null));
     }
   }
 }
