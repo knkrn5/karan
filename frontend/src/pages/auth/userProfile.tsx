@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { AnimatedLetterSvg, UserAccoutbgSvg } from '../../icons/userProfileSvg';
 import { useEffect, useState } from 'react';
 import { useProfileStore } from '../../stores/auth/profileStore';
@@ -127,7 +127,7 @@ export default function UserProfile() {
              dark:bg-red-500 dark:hover:bg-red-600 flex items-center justify-center"
             disabled={isDeleting}
           >
-            {!isDeleting ? (
+            {isDeleting ? (
               <span className="flex items-center">
                 <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mr-2" /> Deleting...
               </span>
