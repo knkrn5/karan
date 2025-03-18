@@ -51,7 +51,7 @@ export default function MegaMenu1() {
 
               <nav
                 id="navbarCollapse"
-                className={`absolute right-4 top-full w-full max-w-[300px] rounded-lg bg-gray-200 px-4 py-2 shadow lg:static lg:block lg:w-full lg:max-w-full lg:shadow-none dark:bg-dark-2 dark:bg-slate-700 ${
+                className={`absolute z-10 right-4 top-full w-full max-w-[300px] rounded-lg bg-gray-200 px-4 py-2 shadow lg:static lg:block lg:w-full lg:max-w-full lg:shadow-none dark:bg-dark-2 dark:bg-slate-700 ${
                   !openMenu && 'hidden'
                 }`}
               >
@@ -81,7 +81,7 @@ export default function MegaMenu1() {
                     </button>
                     {/* Modified mega menu div to work on both desktop and mobile */}
                     <div
-                      className={`w-full lg:absolute lg:left-0 lg:top-full lg:w-[780px] lg:rounded-xl lg:shadow-lg dark:shadow-gray-700 z-50 ${
+                      className={`w-full lg:absolute lg:left-0 lg:top-full lg:w-[780px] lg:rounded-xl lg:shadow-lg dark:shadow-gray-700 z-10 ${
                         showMegaMenu ? 'block' : 'hidden'
                       }`}
                       // Only use mouse events for desktop
