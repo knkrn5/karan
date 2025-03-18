@@ -1,24 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router';
 import { TbMessageChatbot } from 'react-icons/tb';
 import { AiOutlineDollarCircle } from 'react-icons/ai';
 import { GoProjectRoadmap } from 'react-icons/go';
 import AuthButtons from '../../pages/auth/authButtons';
 
-/* interface authButtonProps {
-  username: string;
-  isSignedIn: boolean;
-} */
-
 export default function MegaMenu1() {
-  const [open, setOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
   const [showMegaMenu, setShowMegaMenu] = useState<boolean>(false);
   const [isChecked, setIsChecked] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setShowMegaMenu(false);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [showMegaMenu]);
 
   return (
     <header>
       <div className="bg-white dark:bg-dark">
-        <div className=" relative flex items-center justify-between">
+        <div className="relative flex items-center justify-between">
           <div className="w-60 max-w-full px-4">
             <Link to="/" className="flex items-center w-full py-4" title="Home">
               <img src="/favicons/K.svg" className="h-10" alt="Karan Logo" />
@@ -29,7 +32,7 @@ export default function MegaMenu1() {
           </div>
           <div className="flex w-full items-center justify-between px-4">
             <div>
-              <label className="absolute right-4 top-1/2 block -translate-y-1/2  lg:hidden">
+              <label className="absolute right-4 top-1/2 block -translate-y-1/2 lg:hidden">
                 <div className="w-9 h-9 mr-4 cursor-pointer flex flex-col items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
                   <input
                     title="menu"
@@ -38,7 +41,7 @@ export default function MegaMenu1() {
                     checked={isChecked}
                     onChange={() => {
                       setIsChecked(!isChecked);
-                      setOpen(!open);
+                      setOpenMenu(!openMenu);
                     }}
                   />
                   <div className="w-[50%] h-[2px] bg-black rounded-sm transition-all duration-300 origin-left translate-y-[0.45rem] peer-checked:rotate-[-45deg] dark:bg-white" />
@@ -50,7 +53,7 @@ export default function MegaMenu1() {
               <nav
                 id="navbarCollapse"
                 className={`absolute right-4 top-full w-full max-w-[300px] rounded-lg bg-gray-200 px-4 py-2 shadow lg:static lg:block lg:w-full lg:max-w-full lg:shadow-none dark:bg-dark-2 dark:bg-slate-700 ${
-                  !open && 'hidden'
+                  !openMenu && 'hidden'
                 }`}
               >
                 <ul className="block lg:flex">
@@ -77,15 +80,25 @@ export default function MegaMenu1() {
                         </svg>
                       </span>
                     </button>
+                    {/* Modified mega menu div to work on both desktop and mobile */}
                     <div
-                      onMouseEnter={() => setShowMegaMenu(true)}
-                      onMouseLeave={() => setShowMegaMenu(false)}
                       className={`w-full lg:absolute lg:left-0 lg:top-full lg:w-[780px] lg:rounded-xl lg:shadow-lg dark:shadow-gray-700 z-50 ${
                         showMegaMenu ? 'block' : 'hidden'
                       }`}
+                      // Only use mouse events for desktop
+                      onMouseEnter={() => {
+                        if (window.innerWidth >= 1024) {
+                          setShowMegaMenu(true);
+                        }
+                      }}
+                      onMouseLeave={() => {
+                        if (window.innerWidth >= 1024) {
+                          setShowMegaMenu(false);
+                        }
+                      }}
                     >
                       <div className="rounded-b-xl bg-white p-2 lg:p-8 lg:mt-4 dark:bg-dark">
-                        <div className=" flex gap-1 mb-8">
+                        <div className="flex gap-1 mb-8">
                           <div className="text-black dark:text-white">
                             <GoProjectRoadmap className="h-5 w-5" />
                           </div>
@@ -103,13 +116,13 @@ export default function MegaMenu1() {
                           <Link
                             to="https://wealthpsychology.in"
                             target="_blank"
-                            className="group flex flex-col gap-4 rounded-lg p-4 duration-200 bg-gray-100 hover:bg-gray-300 lg:flex-row dark:bg-gray-800 dark:hover:bg-white/5"
+                            className="flex flex-col gap-4 rounded-lg p-4 duration-200 bg-gray-100 hover:bg-gray-300 lg:flex-row dark:bg-gray-800 dark:hover:bg-white/5"
                           >
                             <div className="text-black dark:text-white">
                               <AiOutlineDollarCircle className="h-6 w-6" />
                             </div>
                             <div>
-                              <h3 className="mb-1 text-base font-semibold text-dark duration-200  dark:text-white ">
+                              <h3 className="mb-1 text-base font-semibold text-dark duration-200 dark:text-white">
                                 Wealth Psychology
                               </h3>
                               <p className="text-sm text-gray-800 dark:text-gray-300">
@@ -121,13 +134,13 @@ export default function MegaMenu1() {
                           <Link
                             to="https://explanatorai.site"
                             target="_blank"
-                            className="group flex flex-col gap-4 rounded-lg p-4 duration-200 bg-gray-100 hover:bg-gray-200 lg:flex-row dark:bg-gray-800 dark:hover:bg-white/5"
+                            className="flex flex-col gap-4 rounded-lg p-4 duration-200 bg-gray-100 hover:bg-gray-200 lg:flex-row dark:bg-gray-800 dark:hover:bg-white/5"
                           >
                             <div className="text-black dark:text-white">
                               <TbMessageChatbot className="h-6 w-6" />
                             </div>
                             <div>
-                              <h3 className="mb-1 text-base font-semibold text-dark duration-200 dark:text-white ">
+                              <h3 className="mb-1 text-base font-semibold text-dark duration-200 dark:text-white">
                                 Explanator AI
                               </h3>
                               <p className="text-sm text-gray-800 dark:text-gray-300">
