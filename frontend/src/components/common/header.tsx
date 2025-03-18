@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, NavLink } from 'react-router';
 import { TbMessageChatbot } from 'react-icons/tb';
 import { AiOutlineDollarCircle } from 'react-icons/ai';
+import { GoProjectRoadmap } from 'react-icons/go';
 import AuthButtons from '../../pages/auth/authButtons';
 
 /* interface authButtonProps {
@@ -84,13 +85,18 @@ export default function MegaMenu1() {
                       }`}
                     >
                       <div className="rounded-b-xl bg-white p-2 lg:p-8 lg:mt-4 dark:bg-dark">
-                        <div className="mb-8">
-                          <h4 className="mb-1 text-base font-medium text-dark dark:text-white">
-                            Projects
-                          </h4>
-                          <p className="text-sm text-gray-800 dark:text-gray-300">
-                            These are some of my projects.
-                          </p>
+                        <div className=" flex gap-1 mb-8">
+                          <div className="text-black dark:text-white">
+                            <GoProjectRoadmap className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <h4 className="mb-1 text-base font-medium text-dark dark:text-white">
+                              Projects
+                            </h4>
+                            <p className="text-sm text-gray-800 dark:text-gray-300">
+                              These are some of my projects.
+                            </p>
+                          </div>
                         </div>
 
                         <div className="grid gap-y-2 lg:grid-cols-2 lg:gap-x-5">
