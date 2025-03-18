@@ -1,9 +1,8 @@
-import { useState } from "react";
-import { Link, NavLink } from "react-router";
-import { TbMessageChatbot } from "react-icons/tb";
-import { AiOutlineDollarCircle } from "react-icons/ai";
-import AuthButtons from "../../pages/auth/authButtons";
-
+import { useState } from 'react';
+import { Link, NavLink } from 'react-router';
+import { TbMessageChatbot } from 'react-icons/tb';
+import { AiOutlineDollarCircle } from 'react-icons/ai';
+import AuthButtons from '../../pages/auth/authButtons';
 
 /* interface authButtonProps {
   username: string;
@@ -14,7 +13,6 @@ export default function MegaMenu1() {
   const [open, setOpen] = useState(false);
   const [showMegaMenu, setShowMegaMenu] = useState<boolean>(false);
   const [isChecked, setIsChecked] = useState(false);
-
 
   return (
     <header>
@@ -51,7 +49,7 @@ export default function MegaMenu1() {
               <nav
                 id="navbarCollapse"
                 className={`absolute right-4 top-full w-full max-w-[300px] rounded-lg bg-gray-200 px-4 py-2 shadow lg:static lg:block lg:w-full lg:max-w-full lg:shadow-none dark:bg-dark-2 dark:bg-slate-700 ${
-                  !open && "hidden"
+                  !open && 'hidden'
                 }`}
               >
                 <ul className="block lg:flex">
@@ -59,15 +57,11 @@ export default function MegaMenu1() {
                     <button
                       onClick={() => setShowMegaMenu(!showMegaMenu)}
                       className={`flex w-full items-center justify-between gap-2 py-2 text-base font-medium text-black duration-300 hover:text-primary lg:ml-12 lg:inline-flex lg:w-auto lg:justify-center dark:text-gray-300 dark:hover:text-white ${
-                        showMegaMenu && "text-black underline dark:text-white"
+                        showMegaMenu && 'text-black underline dark:text-white'
                       }`}
                     >
                       Projects
-                      <span
-                        className={`${
-                          showMegaMenu ? "-scale-y-100" : ""
-                        } duration-200`}
-                      >
+                      <span className={`${showMegaMenu ? '-scale-y-100' : ''} duration-200`}>
                         <svg
                           width="20"
                           height="20"
@@ -83,8 +77,10 @@ export default function MegaMenu1() {
                       </span>
                     </button>
                     <div
-                      className={`w-full lg:absolute lg:left-0 lg:top-full lg:w-[780px] lg:rounded-xl lg:shadow-lg dark:shadow-gray-700 ${
-                        showMegaMenu ? "block" : "hidden"
+                      onMouseEnter={() => setShowMegaMenu(true)}
+                      onMouseLeave={() => setShowMegaMenu(false)}
+                      className={`w-full lg:absolute lg:left-0 lg:top-full lg:w-[780px] lg:rounded-xl lg:shadow-lg dark:shadow-gray-700 z-50 ${
+                        showMegaMenu ? 'block' : 'hidden'
                       }`}
                     >
                       <div className="rounded-b-xl bg-white p-2 lg:p-8 lg:mt-4 dark:bg-dark">
@@ -101,7 +97,7 @@ export default function MegaMenu1() {
                           <Link
                             to="https://wealthpsychology.in"
                             target="_blank"
-                            className="group flex flex-col gap-4 rounded-lg p-4 duration-200 hover:bg-gray-200 lg:flex-row dark:hover:bg-white/5"
+                            className="group flex flex-col gap-4 rounded-lg p-4 duration-200 bg-gray-100 hover:bg-gray-300 lg:flex-row dark:bg-gray-800 dark:hover:bg-white/5"
                           >
                             <div className="text-black dark:text-white">
                               <AiOutlineDollarCircle className="h-6 w-6" />
@@ -111,15 +107,15 @@ export default function MegaMenu1() {
                                 Wealth Psychology
                               </h3>
                               <p className="text-sm text-gray-800 dark:text-gray-300">
-                                Teaches about wealth psychology, And Explains
-                                different financial concepts.
+                                Teaches about wealth psychology, And Explains different financial
+                                concepts.
                               </p>
                             </div>
                           </Link>
                           <Link
                             to="https://explanatorai.site"
                             target="_blank"
-                            className="group flex flex-col gap-4 rounded-lg p-4 duration-200 hover:bg-gray-200 lg:flex-row dark:hover:bg-white/5"
+                            className="group flex flex-col gap-4 rounded-lg p-4 duration-200 bg-gray-100 hover:bg-gray-200 lg:flex-row dark:bg-gray-800 dark:hover:bg-white/5"
                           >
                             <div className="text-black dark:text-white">
                               <TbMessageChatbot className="h-6 w-6" />
@@ -129,8 +125,8 @@ export default function MegaMenu1() {
                                 Explanator AI
                               </h3>
                               <p className="text-sm text-gray-800 dark:text-gray-300">
-                                An AI-powered Chatbots website. Different types
-                                of chatbots are available.
+                                An AI-powered Chatbots website. Different types of chatbots are
+                                available.
                               </p>
                             </div>
                           </Link>
@@ -144,8 +140,8 @@ export default function MegaMenu1() {
                       className={({ isActive }) =>
                         `flex py-2 text-base font-medium text-black duration-300 hover:text-blue-500 lg:ml-12 lg:inline-flex ${
                           isActive
-                            ? "text-blue-500 dark:text-blue-500"
-                            : "dark:text-gray-300 dark:hover:text-blue-500"
+                            ? 'text-blue-500 dark:text-blue-500'
+                            : 'dark:text-gray-300 dark:hover:text-blue-500'
                         }`
                       }
                     >
@@ -158,8 +154,8 @@ export default function MegaMenu1() {
                       className={({ isActive }) =>
                         `flex py-2 text-base font-medium text-black duration-300 hover:text-blue-500 lg:ml-12 lg:inline-flex ${
                           isActive
-                            ? "text-blue-500 dark:text-blue-500"
-                            : "dark:text-gray-300 dark:hover:text-blue-500"
+                            ? 'text-blue-500 dark:text-blue-500'
+                            : 'dark:text-gray-300 dark:hover:text-blue-500'
                         }`
                       }
                     >
