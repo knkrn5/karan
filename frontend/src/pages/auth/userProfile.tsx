@@ -52,7 +52,6 @@ export default function UserProfile() {
         withCredentials: true,
       });
       const { data } = response;
-      console.log(response);
       if (data.success) {
         setStatusInfoAuth({ success: data.message });
 
