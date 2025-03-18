@@ -1,5 +1,5 @@
 import { IconType } from 'react-icons';
-import { FaDatabase, FaCloud, FaGlobe, FaFileCode, FaCode, FaCodeBranch } from 'react-icons/fa';
+import { FaDatabase, FaCloud, FaGlobe, FaFileCode, FaCode, FaCodeBranch, FaServer } from 'react-icons/fa';
 
 type Tool = {
   name: string;
@@ -91,6 +91,17 @@ const resources: Resource[] = [
     {
       name: 'GITHUB',
       description: 'A code hosting platform for version control',
+    },
+  ]),
+
+  new CreateResourses('Cloud Providers', FaServer, 'text-cyan-500', [
+    {
+      name: 'AWS',
+      description: 'Amazon’s cloud platform for storage, computing, and more.',
+    },
+    {
+      name: 'AZURE',
+      description: 'Microsoft’s cloud service for storage, AI, and networking.',
     },
   ]),
 ];
