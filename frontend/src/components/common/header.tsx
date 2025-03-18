@@ -8,10 +8,12 @@ import AuthButtons from '../../pages/auth/authButtons';
 export default function MegaMenu1() {
   const [openMenu, setOpenMenu] = useState(false);
   const [showMegaMenu, setShowMegaMenu] = useState<boolean>(false);
-  const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => setShowMegaMenu(false);
+    const handleResize = () => {
+      setShowMegaMenu(false);
+      setOpenMenu(false);
+    };
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -38,9 +40,9 @@ export default function MegaMenu1() {
                     title="menu"
                     className="hidden peer"
                     type="checkbox"
-                    checked={isChecked}
-                    onChange={() => {
-                      setIsChecked(!isChecked);
+                    checked={openMenu}
+                    onClick={() => {
+                      // setIsChecked(!isChecked);
                       setOpenMenu(!openMenu);
                     }}
                   />
