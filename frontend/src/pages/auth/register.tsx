@@ -361,7 +361,10 @@ export default function Register() {
                       /(?=.*\d)/.test(userData.password) && //number
                       /(?=.*[@$!%*?&])/.test(userData.password) //special character
                         ? 'bg-green-500 w-full'
-                        : userData.password.length > 8
+                        : userData.password.length >= 8 &&
+                        /(?=.*[A-Z])/.test(userData.password) && //uppercase
+                        /(?=.*\d)/.test(userData.password) && //number
+                        /(?=.*[@$!%*?&])/.test(userData.password) //special character
                         ? 'bg-yellow-500 w-2/3'
                         : 'bg-red-500 w-1/3'
                     }`}
