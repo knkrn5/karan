@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useLocation } from 'react-router';
 import { TbMessageChatbot } from 'react-icons/tb';
 import { AiOutlineDollarCircle } from 'react-icons/ai';
 import { GoProjectRoadmap } from 'react-icons/go';
@@ -11,6 +11,8 @@ export default function MegaMenu1() {
 
   const menuIconRef = useRef<HTMLDivElement>(null);
   const menubuttonRef = useRef<HTMLUListElement>(null);
+
+  const location = useLocation()
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -28,7 +30,7 @@ export default function MegaMenu1() {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('touchstart', handleClickOutside);
     };
-  }, [showMegaMenu]);
+  }, [showMegaMenu, location]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -47,7 +49,7 @@ export default function MegaMenu1() {
         <div className="relative flex items-center justify-between">
           <div className="w-60 max-w-full px-4">
             <Link to="/" className="flex items-center w-full py-4" title="Home">
-              <img src="/favicons/K.svg" className="h-10" alt="Karan Logo" />
+              <img src="/favicons/K.svg" className="h-10" alt="Karan-Logo" />
               <span className="self-center text-2xl font-extrabold whitespace-nowrap dark:text-white">
                 aran
               </span>
