@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink } from 'react-router';
 import { TbMessageChatbot } from 'react-icons/tb';
 import { AiOutlineDollarCircle } from 'react-icons/ai';
@@ -8,6 +8,27 @@ import AuthButtons from '../../pages/auth/authButtons';
 export default function MegaMenu1() {
   const [openMenu, setOpenMenu] = useState(false);
   const [showMegaMenu, setShowMegaMenu] = useState<boolean>(false);
+
+  const menuIconRef = useRef<HTMLDivElement>(null);
+  const menubuttonRef = useRef<HTMLUListElement>(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent | TouchEvent) {
+      if (menuIconRef.current && !menuIconRef.current.contains(event.target as Node) && !menubuttonRef.current?.contains(event.target as Node)) {
+        setOpenMenu(false);
+        setShowMegaMenu(false);
+      }
+    }
+  
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+  
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [showMegaMenu]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -35,7 +56,10 @@ export default function MegaMenu1() {
           <div className="flex w-full items-center justify-between px-4">
             <div>
               <label className="absolute right-4 top-1/2 block -translate-y-1/2 lg:hidden">
-                <div className="w-9 h-9 mr-4 cursor-pointer flex flex-col items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
+                <div
+                  className="w-9 h-9 mr-4 cursor-pointer flex flex-col items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800"
+                  ref={menuIconRef}
+                >
                   <input
                     title="menu"
                     className="hidden peer"
@@ -55,7 +79,7 @@ export default function MegaMenu1() {
                   !openMenu && 'hidden'
                 }`}
               >
-                <ul className="block lg:flex">
+                <ul className="block lg:flex" ref={menubuttonRef}>
                   <li className="relative">
                     <button
                       onClick={() => setShowMegaMenu(!showMegaMenu)}
