@@ -248,8 +248,8 @@ export default function Register() {
         <form onSubmit={handleSubmit} noValidate>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col mb-4">
-              <label htmlFor="firstName" className="mb-1 block text-gray-700 dark:text-gray-300">
-                First Name<span className="text-red-500 ml-1">*</span>
+              <label htmlFor="firstName" className="mb-1 block text-gray-700 dark:text-gray-300 after:ml-0.5 after:text-red-500 after:content-['*'] ">
+                First Name
               </label>
               <input
                 id="firstName"
@@ -292,8 +292,8 @@ export default function Register() {
 
           <div className="flex flex-col mb-4">
             <label htmlFor="email" className="mb-1 block text-gray-700 dark:text-gray-300">
-              <span className="flex items-center">
-                Email<span className="text-red-500 text-sm ml-1">*</span>
+              <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
+                Email
               </span>
             </label>
             <input
@@ -318,8 +318,8 @@ export default function Register() {
           <div className="flex flex-col mb-6">
             <label htmlFor="password" className="mb-1 block text-gray-700 dark:text-gray-300">
               <span className="flex justify-between items-center">
-                <span className="flex items-center">
-                  Password<span className="text-red-500 text-sm ml-1">*</span>
+                <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
+                  Password
                 </span>
 
                 <button
@@ -380,9 +380,8 @@ export default function Register() {
               className="mb-1 block text-gray-700 dark:text-gray-300"
             >
               <span className="flex justify-between">
-                <span className="flex items-center">
+                <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
                   Confirm Password
-                  <span className="text-red-500 text-sm ml-1">*</span>
                 </span>
                 <button
                   type="button"

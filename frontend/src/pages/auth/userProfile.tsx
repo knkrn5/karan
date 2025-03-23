@@ -38,12 +38,6 @@ export default function UserProfile() {
     }
   }, [navigate]);
 
-  //testing unmount====================
-  /* useEffect(() => {
-    return () => {
-      localStorage.clear();
-    };
-  }, []); */
 
   const handleDeleteAccount = async () => {
     setIsDeleting(true);

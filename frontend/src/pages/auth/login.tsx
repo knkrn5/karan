@@ -169,8 +169,8 @@ export default function LoginPage() {
               htmlFor="email"
               className="block text-sm font-medium text-gray-600 dark:text-gray-300"
             >
-              <span className="flex items-center">
-                Email <span className="text-red-500 text-sm ml-1">*</span>
+              <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
+                Email
               </span>
             </label>
             <input
@@ -195,8 +195,8 @@ export default function LoginPage() {
               className="block text-sm font-medium text-gray-600 dark:text-gray-300"
             >
               <span className="flex justify-between items-center">
-                <span className="flex items-center">
-                  Password<span className="text-red-500 text-sm ml-1">*</span>
+                <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
+                  Password
                 </span>
                 <button
                   type="button"

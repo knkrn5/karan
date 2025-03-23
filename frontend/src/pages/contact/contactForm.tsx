@@ -131,9 +131,9 @@ export default function ContactForm() {
         <div>
           <label
             htmlFor="name"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 after:ml-0.5 after:text-red-500 after:content-['*']"
           >
-            Name<span className="text-red-500">*</span>
+            Name
           </label>
           <input
             type="text"
@@ -152,9 +152,9 @@ export default function ContactForm() {
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 after:ml-0.5 after:text-red-500 after:content-['*']"
           >
-            Email<sup className="text-red-500 text-[12px]">*</sup>
+            Email
           </label>
           <input
             type="text"
@@ -173,9 +173,9 @@ export default function ContactForm() {
         <div>
           <label
             htmlFor="message"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 after:ml-0.5 after:text-red-500 after:content-['*']"
           >
-            Message<span className="text-red-500">*</span>
+            Message
           </label>
           <textarea
             name="message"
