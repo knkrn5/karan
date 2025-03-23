@@ -1,40 +1,99 @@
-import { Link } from "react-router";
+import HeroSectionOne from './heroSectionOne';
+import HeroSectionTwo from './heroSectionTwo';
 
 
 function Home() {
+  class myProjects {
+    img: string;
+    name: string;
+    description: string;
+    bgColor: string;
+    constructor(img: string, name: string, description: string, bgColor: string) {
+      this.img = img;
+      this.name = name;
+      this.description = description;
+      this.bgColor = bgColor;
+    }
+  }
+
+  const projects: myProjects[] = [
+    new myProjects(
+      '/assets/imgs/white-wp.webp',
+      'WealthPsychology: -',
+      `Teaches the principles of financial psychology, and explains different financial concepts.`,
+      'bg-lime-500'
+    ),
+    new myProjects(
+      '/assets/imgs/black-wp.webp',
+      'Mutual Funds: -',
+      `Begin with the basics of how the stock market works, types of stocks,
+        stock exchanges, and basic investing modules.`,
+      'bg-blue-500'
+    ),
+    new myProjects(
+      'https://placehold.co/150x150',
+      'Fundamental Analysis: -',
+      `Begin with the basics of how the stock market works, types of stocks,
+        stock exchanges, and basic investing modules.`,
+      'bg-orange-500'
+    ),
+  ];
 
   return (
+    <>
+      <HeroSectionOne />
 
-    <section className="h-screen bg-gray-50 dark:bg-slate-800">
-      <div className="max-w-screen-xl px-4 py-16 mx-auto text-center lg:py-32 lg:px-12">
-        <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-          Hi, I&apos;m [Karan]
-        </h1>
-        <p className="mb-8 text-lg font-serif font-bold text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">
-          I&apos;m a karan, passionate about A.I. and Finance. I love Coding, Coding is Fun, and I&apos;m always excited to collaborate on innovative projects.
-        </p>
-        <img
-          className="mx-auto mb-8 rounded-full  shadow-lg w-[250px] h-[250px]"
-          src="https://res.cloudinary.com/dywuvwqth/image/upload/v1738828129/my%20images/fc5h74scomon1tpso0yk.jpg"
-          // src="/favicons/K.svg"
-          alt="my-image"
-        />
-        <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-          <Link
-            to="/contact"
-            className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
-          >
-            Contact Me
-          </Link>
-          <Link
-            to="mailto:mail@karan.email"
-            className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
-          >
-            Email Me
-          </Link>
+      {/* Container for the timeline */}
+      <div className="relative mx-auto px-4 py-12 lg:px-[10%] bg-gradient-to-br from-gray-150 via-gray-300 to-gray-150 dark:from-gray-900 dark:via-gray-700 dark:to-gray-900">
+        {/* Vertical center line */}
+        <div className="max-[550px]:hidden block  absolute left-1/2 top-0 h-full w-[5px]  transform -translate-x-1/2 shadow bg-gray-600 shadow-white dark:bg-gray-400 dark:shadow-sky-950 "></div>
+
+        {/* Project list */}
+        <div className="space-y-10">
+          {projects.map((project, index) => (
+            <div
+              key={index}
+              className={`relative flex items-center ${
+                index % 2 === 0 ? 'justify-start' : 'justify-end'
+              }`}
+            >
+              {/* Horizontal Line Connector */}
+              <div
+                className={`absolute top-1/2 w-[200px] h-[5px]  bg-gray-600 dark:bg-gray-400  hidden md:block ${
+                  index % 2 === 0 ? 'right-1/2' : 'left-1/2'
+                } transform -translate-y-1/2`}
+              />
+
+              {/* Project Card */}
+              <div
+                className={`w-[400px] rounded-lg overflow-hidden shadow-[5px_5px_50px_3px_rgba(0,0,0,0.5)] dark:shadow-[5px_5px_50px_3px_rgba(0,0,0,0.5)] ${
+                  project.bgColor
+                }  transform  transition-all duration-300 ease-in-out hover:scale-103 ${
+                  index % 2 === 0 ? 'md:mr-5' : 'md:ml-5'
+                }`}
+              >
+                <div className="flex items-center max-[350px]:flex-col ">
+                  <img alt="Project Image" className="w-48 h-48 object-cover " src={project.img} />
+
+                  <div className=" p-2">
+                    <h2 className="text-lg font-bold mb-2 after:block after:content-[''] after:h-[1px] after:w-full after:bg-black">
+                      {project.name}
+                    </h2>
+                    <p className="text-sm mb-4">{project.description}</p>
+                    <div className="flex space-x-2">
+                      <button className="bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold px-6 py-2 rounded-full shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95">
+                        Visit Project
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-    </section>
+      <HeroSectionTwo />
+    </>
   );
 }
 
