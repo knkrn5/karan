@@ -24,16 +24,15 @@ function Home() {
       'bg-lime-500'
     ),
     new myProjects(
-      '/assets/imgs/black-wp.webp',
+      '/assets/imgs/explanatorai.webp',
       'Explanator AI: -',
       `Include the Chatbots, and custom Datasets of Different models and APIs.`,
       'bg-blue-500'
     ),
     new myProjects(
-      'https://placehold.co/150x150',
-      'Fundamental Analysis: -',
-      `Begin with the basics of how the stock market works, types of stocks,
-        stock exchanges, and basic investing modules.`,
+      '/assets/imgs/coding.webp',
+      'Other Projects: -',
+      `Developing some other projects, and working on some new ideas. Using different technologies.`,
       'bg-orange-500'
     ),
   ];
