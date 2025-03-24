@@ -69,7 +69,7 @@ function Home() {
 
               {/* Project Card */}
               <div
-                className={`w-[400px] rounded-lg overflow-hidden shadow-[6px_6px_12px_#333,-6px_-6px_120px_#444] dark:shadow-[6px_6px_12px_#111111,-6px_-6px_120px_#777] ${
+                className={`w-[400px] rounded-lg overflow-hidden shadow-[6px_6px_12px_#333,-6px_-6px_120px_#444] dark:shadow-[6px_6px_12px_#111111,-6px_-6px_70px_#666] ${
                   project.bgColor
                 }  transform  transition-all duration-300 ease-in-out hover:scale-103 ${
                   index % 2 === 0 ? 'md:mr-5' : 'md:ml-5'
