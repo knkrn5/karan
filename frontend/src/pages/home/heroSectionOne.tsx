@@ -1,4 +1,3 @@
-
 export default function heroSection() {
   return (
     <div className="flex items-center h-[200px] justify-center w-full bg-conic from-white via-gray-600 to-white to-100% dark:from-slate-600 dark:via-slate-900  dark:to-gray-600  dark:to-100%">
@@ -6,9 +5,13 @@ export default function heroSection() {
         <span className="relative inline-block before:absolute before:-inset-1 before:block before:-skew-y-3 before:bg-gray-700 dark:before:bg-slate-900">
           <span className="relative text-gray-200 dark:text-gray-300">Protfolio</span>
         </span>
+        <div className="relative w-[5px] mx-auto before:content-[''] before:absolute before:w-[5px] before:h-25 before:top-1 before:left-1/2 before:-translate-x-1/2 before:bg-gray-500 dark:before:bg-gray-400 dark:before:shadow-sky-950"></div>
+
+
       </div>
     </div>
   );
 }
 
+{/* <div className="w-[5px] h-5 mx-auto bg-gray-200 dark:bg-gray-400"></div> */}
 
