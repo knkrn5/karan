@@ -1,18 +1,19 @@
 import HeroSectionOne from './heroSectionOne';
 import HeroSectionTwo from './heroSectionTwo';
 
-
 function Home() {
   class myProjects {
     img: string;
     name: string;
     description: string;
     bgColor: string;
-    constructor(img: string, name: string, description: string, bgColor: string) {
+    link: string;
+    constructor(img: string, name: string, description: string, bgColor: string, link: string) {
       this.img = img;
       this.name = name;
       this.description = description;
       this.bgColor = bgColor;
+      this.link = link;
     }
   }
 
@@ -21,19 +22,22 @@ function Home() {
       '/assets/imgs/white-wp.webp',
       'WealthPsychology: -',
       `Teaches the principles of financial psychology, and explains different financial concepts.`,
-      'bg-lime-500'
+      'bg-lime-500',
+      'https://wealthpsychology.in'
     ),
     new myProjects(
       '/assets/imgs/explanatorai.webp',
       'Explanator AI: -',
       `Include the Chatbots, and custom Datasets of Different models and APIs.`,
-      'bg-blue-500'
+      'bg-blue-500',
+      'https://explanatorai.site'
     ),
     new myProjects(
       '/assets/imgs/coding.webp',
       'Other Projects: -',
       `Developing some other projects, and working on some new ideas. Using different technologies.`,
-      'bg-orange-500'
+      'bg-orange-500',
+      'https://github.com/knkrn5'
     ),
   ];
 
@@ -79,7 +83,10 @@ function Home() {
                     </h2>
                     <p className="text-sm mb-4">{project.description}</p>
                     <div className="flex space-x-2">
-                      <button className="bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold px-6 py-2 rounded-full cursor-pointer shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95">
+                      <button
+                        onClick={() => window.open(project.link, '_blank')}
+                        className="bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold px-6 py-2 rounded-full cursor-pointer shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95"
+                      >
                         Visit Project
                       </button>
                     </div>
