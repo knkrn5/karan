@@ -1,5 +1,14 @@
 import { IconType } from 'react-icons';
-import { FaDatabase, FaCloud, FaGlobe, FaFileCode, FaCode, FaCodeBranch, FaServer } from 'react-icons/fa';
+import {
+  FaDatabase,
+  FaCloud,
+  FaGlobe,
+  FaFileCode,
+  FaCode,
+  FaCodeBranch,
+  FaServer,
+  FaLock,
+} from 'react-icons/fa';
 
 type Tool = {
   name: string;
@@ -102,6 +111,17 @@ const resources: Resource[] = [
     {
       name: 'AZURE',
       description: 'Microsoft’s cloud service for storage, AI, and networking.',
+    },
+  ]),
+
+  new CreateResourses('Authentication', FaLock, 'text-fuchsia-500', [
+    {
+      name: 'OAuth',
+      description: 'Open standard for authorization, enabling secure API access.',
+    },
+    {
+      name: 'Clerk',
+      description: 'User authentication and management platform for modern apps.',
     },
   ]),
 ];
