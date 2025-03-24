@@ -25,9 +25,8 @@ function Home() {
     ),
     new myProjects(
       '/assets/imgs/black-wp.webp',
-      'Mutual Funds: -',
-      `Begin with the basics of how the stock market works, types of stocks,
-        stock exchanges, and basic investing modules.`,
+      'Explanator AI: -',
+      `Include the Chatbots, and custom Datasets of Different models and APIs.`,
       'bg-blue-500'
     ),
     new myProjects(
@@ -81,7 +80,7 @@ function Home() {
                     </h2>
                     <p className="text-sm mb-4">{project.description}</p>
                     <div className="flex space-x-2">
-                      <button className="bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold px-6 py-2 rounded-full shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95">
+                      <button className="bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold px-6 py-2 rounded-full cursor-pointer shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95">
                         Visit Project
                       </button>
                     </div>
