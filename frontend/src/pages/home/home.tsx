@@ -1,3 +1,4 @@
+import { HomeMetaTags } from '../../components/seo/pagesSeoComponents';
 import HeroSectionOne from './heroSectionOne';
 import HeroSectionTwo from './heroSectionTwo';
 
@@ -43,8 +44,8 @@ function Home() {
 
   return (
     <>
+      <HomeMetaTags />
       <HeroSectionOne />
-
       {/* Container for the timeline */}
       <div className="relative mx-auto px-4 py-12 lg:px-[10%] bg-gradient-to-br from-gray-150 via-gray-300 to-gray-150 dark:from-gray-900 dark:via-gray-700 dark:to-gray-900">
         {/* Vertical center line */}
