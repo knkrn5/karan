@@ -8,7 +8,13 @@ dotenv.config({ path: '.env' });
 
 // ✅ CORS Configuration
 const corsOptions = {
-  origin: ['https://karan.email', 'https://www.karan.email', 'https://karan-frontend.onrender.com', 'http://localhost:5173', 'http://localhost:4173'],
+  origin: [
+    'https://karan.email',
+    'https://www.karan.email',
+    'https://karan-frontend.onrender.com',
+    'http://localhost:5173',
+    'http://localhost:4173',
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,

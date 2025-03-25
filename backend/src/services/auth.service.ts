@@ -83,4 +83,15 @@ export class AuthService {
       throw new ApiResponse(401, false, 'Refresh token expired', null);
     }
   }
+
+  static async authenticateUser(getAccessToken: string, getRefreshToken: string) {
+    if (!getAccessToken || !getRefreshToken) {
+      throw new ApiResponse(401, false, 'user is not logged in', null);
+    }
+
+    return new ApiResponse(200, true, 'user is logged in', {
+      accessToken: !!getAccessToken,
+      refreshToken: !!getRefreshToken,
+    });
+  }
 }

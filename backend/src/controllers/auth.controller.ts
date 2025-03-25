@@ -52,7 +52,7 @@ export class AuthController {
     } catch (error: any) {
       if (error instanceof ApiResponse) {
         if (error.statusCode === 404) {
-          res.status(404).json(new ApiResponse(404,  false, error.message, null));
+          res.status(404).json(new ApiResponse(404, false, error.message, null));
         } else if (error.statusCode === 401) {
           res.status(401).json(new ApiResponse(401, false, error.message, null));
         } else {
@@ -90,5 +90,16 @@ export class AuthController {
       .clearCookie('accessToken')
       .clearCookie('refreshToken')
       .json(new ApiResponse(200, true, 'Logout successful', null));
+  }
+
+  static async authenticateUser(req: Request, res: Response) {
+    try {
+      const { accessToken, refreshToken } = req.cookies;
+      const { data } = await AuthService.authenticateUser(accessToken, refreshToken);
+
+      res.status(200).json(new ApiResponse(200, true, 'User is Logged In', data));
+    } catch (error: any) {
+      res.status(500).json(new ApiResponse(500, false, error.message, null));
+    }
   }
 }

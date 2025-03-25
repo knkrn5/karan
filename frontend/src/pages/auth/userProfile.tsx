@@ -24,6 +24,12 @@ export default function UserProfile() {
   // const statusInfo = useAuthStore(state => state.statusInfoAuth);
   const { setStatusInfoAuth } = useAuthStore();
 
+  useEffect(() => {
+    axios.get(`${BACKEND_URL}/api/v1/auth/authenticateUser`, { 
+      withCredentials: true 
+    }).then(res => console.log(res.data));
+  }, []);
+
   // animation trigger
   useEffect(() => {
     setIsVisible(false);
