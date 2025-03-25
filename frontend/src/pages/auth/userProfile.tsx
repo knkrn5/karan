@@ -5,8 +5,8 @@ import { useProfileStore } from '../../stores/auth/profileStore';
 import axios from 'axios';
 import { useAuthStore } from '../../stores/auth/authStore';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { isAuthenticated } from '../../utils/isAuthenticated';
 
-// import StatusNotifications from '../../utils/StatusNotifications';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -25,17 +25,11 @@ export default function UserProfile() {
   const { setStatusInfoAuth } = useAuthStore();
 
   useEffect(() => {
-    axios.get(`${BACKEND_URL}/api/v1/auth/authenticateUser`, { 
-      withCredentials: true 
-    }).then(res => console.log(res.data))
-    .catch(err => {
-      if(axios.isAxiosError(err)) {
-        console.log("Error: ", err.response?.data.message || err.message);
-      }
-      console.log(err);
-    });
+    isAuthenticated()
+      .then(authRes => console.log(authRes))
+      .catch(error => console.error(error));
   }, []);
-
+  
   // animation trigger
   useEffect(() => {
     setIsVisible(false);

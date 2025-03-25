@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { useEffect } from 'react';
-// import { useProfileStore } from '../../stores/auth/authUserProfileStore.js';
 import Logout from './logout';
 import { Link } from 'react-router';
 import { useProfileStore } from '../../stores/auth/profileStore';
