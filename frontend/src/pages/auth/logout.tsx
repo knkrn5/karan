@@ -22,7 +22,7 @@ export default function Logout() {
       // Clearing all state in zustand
       // useProfileStore.getState().setIsSuccessLoginedIn(false);
       useProfileStore.getState().resetProfileStore();
-      localStorage.removeItem('isSuccessLoginedInLs');
+      // localStorage.removeItem('isSuccessLoginedInLs');
       console.log('logging Out');
     } catch (error) {
       console.log(error);

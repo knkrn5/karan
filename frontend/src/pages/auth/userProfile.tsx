@@ -7,7 +7,6 @@ import { useAuthStore } from '../../stores/auth/authStore';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { isAuthenticated } from '../../utils/isAuthenticated';
 
-
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function UserProfile() {
@@ -21,15 +20,8 @@ export default function UserProfile() {
 
   const navigate = useNavigate();
 
-  // const statusInfo = useAuthStore(state => state.statusInfoAuth);
   const { setStatusInfoAuth } = useAuthStore();
 
-  useEffect(() => {
-    isAuthenticated()
-      .then(authRes => console.log(authRes))
-      .catch(error => console.error(error));
-  }, []);
-  
   // animation trigger
   useEffect(() => {
     setIsVisible(false);
@@ -38,12 +30,21 @@ export default function UserProfile() {
     }, 10);
   }, []);
 
-  useEffect(() => {
+  /*  useEffect(() => {
     if (!localStorage.getItem('isSuccessLoginedInLs')) {
       navigate('/login');
     }
-  }, [navigate]);
+  }, [navigate]); */
 
+  useEffect(() => {
+    isAuthenticated()
+      .then(authRes => {
+        if (!authRes) {
+          navigate('/login');
+        }
+      })
+      .catch(error => console.error(error));
+  }, [navigate]);
 
   const handleDeleteAccount = async () => {
     setIsDeleting(true);

@@ -7,11 +7,19 @@ async function isAuthenticated() {
     const response = await axios.get(`${BACKEND_URL}/api/v1/auth/authenticateUser`, {
       withCredentials: true,
     });
-
-    const { data } = response;
-    return data;
+    return response.data.success;
   } catch (error) {
-    return error;
+    if (axios.isAxiosError(error)) {
+      // More detailed error logging
+      console.error('Authentication Error:', {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message
+      });
+    } else {
+      console.error('Unexpected error during authentication:', error);
+    }
+    return false;
   }
 }
 

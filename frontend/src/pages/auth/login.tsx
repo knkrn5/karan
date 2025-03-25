@@ -6,6 +6,7 @@ import StatusNotifications from '../../utils/StatusNotifications.js';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useAuthStore } from '../../stores/auth/authStore.js';
+import { isAuthenticated } from '../../utils/isAuthenticated.js';
 
 interface loginFeildDataProps {
   email: string;
@@ -15,7 +16,6 @@ interface loginFeildDataProps {
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function LoginPage() {
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isVisible, setIsVisible] = useState(false);
@@ -28,7 +28,7 @@ export default function LoginPage() {
   });
 
   const statusInfo = useAuthStore(state => state.statusInfoAuth);
-  const { setIsSuccessLoginedIn, setStatusInfoAuth } = useAuthStore();
+  const {setIsSuccessLoginedIn, setStatusInfoAuth } = useAuthStore();
 
   const navigate = useNavigate();
 
@@ -102,7 +102,7 @@ export default function LoginPage() {
       );
       const { data } = response;
       setStatusInfoAuth({ success: data.message });
-      localStorage.setItem('isSuccessLoginedInLs', data.success.toString());
+      // localStorage.setItem('isSuccessLoginedInLs', data.success.toString());
       setIsSuccessLoginedIn(true);
       navigate('/profile');
     } catch (error: unknown) {
@@ -121,11 +121,22 @@ export default function LoginPage() {
     }
   };
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (localStorage.getItem('isSuccessLoginedInLs') === 'true') {
       navigate('/profile');
     }
+  }, [navigate]); */
+
+  useEffect(() => {
+    isAuthenticated()
+      .then(authRes => {
+        if (authRes) {
+          navigate('/profile');
+        }
+      })
+      .catch(error => console.error(error));
   }, [navigate]);
+
 
   return (
     <>

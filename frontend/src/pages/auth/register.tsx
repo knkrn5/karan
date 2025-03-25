@@ -5,7 +5,7 @@ import axios from 'axios';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import StatusNotifications from '../../utils/StatusNotifications';
 import { useAuthStore } from '../../stores/auth/authStore.js';
-
+import { isAuthenticated } from '../../utils/isAuthenticated.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -196,10 +196,20 @@ export default function Register() {
     }));
   }, []);
 
-   useEffect(() => {
+/*   useEffect(() => {
     if (isAccountCreated || localStorage.getItem('isSuccessLoginedInLs') === 'true') {
       navigate('/login');
     }
+  }, [isAccountCreated, navigate]); */
+
+  useEffect(() => {
+    isAuthenticated()
+      .then(authRes => {
+        if (isAccountCreated || authRes) {
+          navigate('/login');
+        }
+      })
+      .catch(error => console.error(error));
   }, [isAccountCreated, navigate]);
 
   return (
@@ -248,7 +258,10 @@ export default function Register() {
         <form onSubmit={handleSubmit} noValidate>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col mb-4">
-              <label htmlFor="firstName" className="mb-1 block text-gray-700 dark:text-gray-300 after:ml-0.5 after:text-red-500 after:content-['*'] ">
+              <label
+                htmlFor="firstName"
+                className="mb-1 block text-gray-700 dark:text-gray-300 after:ml-0.5 after:text-red-500 after:content-['*'] "
+              >
                 First Name
               </label>
               <input
@@ -362,9 +375,9 @@ export default function Register() {
                       /(?=.*[@$!%*?&])/.test(userData.password) //special character
                         ? 'bg-green-500 w-full'
                         : userData.password.length >= 8 &&
-                        /(?=.*[A-Z])/.test(userData.password) && //uppercase
-                        /(?=.*\d)/.test(userData.password) && //number
-                        /(?=.*[@$!%*?&])/.test(userData.password) //special character
+                          /(?=.*[A-Z])/.test(userData.password) && //uppercase
+                          /(?=.*\d)/.test(userData.password) && //number
+                          /(?=.*[@$!%*?&])/.test(userData.password) //special character
                         ? 'bg-yellow-500 w-2/3'
                         : 'bg-red-500 w-1/3'
                     }`}

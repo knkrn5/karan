@@ -1,10 +1,11 @@
 import { Link } from 'react-router';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import axiosApi from '../../utils/axios.js';
 import UserAccount from './userAccount.js';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { useProfileStore } from '../../stores/auth/profileStore.js';
+import { isAuthenticated } from '../../utils/isAuthenticated.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -13,20 +14,36 @@ export default function AuthButtons() {
 
   const firstName = useProfileStore(state => state.firstName);
   const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
+  // const [userIsAuthenticated, setUserIsAuthenticated] = useState(isSuccessLoginedIn);
+
+  const setIsSuccessLoginedIn =  useAuthStore(state => state.setIsSuccessLoginedIn);
 
   const letter: string = firstName?.[0]?.toUpperCase() || '';
 
-  const isSuccessLoginedInLs = localStorage.getItem('isSuccessLoginedInLs') === 'true';
+  // const isSuccessLoginedInLs = localStorage.getItem('isSuccessLoginedInLs') === 'true';
+  useEffect(() => {
+    isAuthenticated()
+      .then(authRes => {
+        if (authRes) {
+          setIsSuccessLoginedIn(true);
+        } else {
+          setIsSuccessLoginedIn(false);
+        }
+      })
+      .catch(error => console.error(error));
+  }, [setIsSuccessLoginedIn]);
 
   useEffect(() => {
-    const isSuccessLoginedInLs = localStorage.getItem('isSuccessLoginedInLs') === 'true';
+    /* const isSuccessLoginedInLs = localStorage.getItem('isSuccessLoginedInLs') === 'true';
     if (!isSuccessLoginedInLs) {
       axios
         .post(`${BACKEND_URL}/api/v1/auth/logout`, {}, { withCredentials: true })
         .catch(err => console.error('Logout error:', err));
       localStorage.removeItem('isSuccessLoginedInLs');
       return;
-    }
+    } */
+
+    if (!isSuccessLoginedIn) return;
 
     (async () => {
       try {
@@ -45,7 +62,7 @@ export default function AuthButtons() {
 
   return (
     <>
-      {!isSuccessLoginedInLs ? (
+      {!isSuccessLoginedIn ? (
         <div className="flex items-center md:order-2 space-x-1 md:space-x-2 ">
           <Link
             to="/login"
@@ -70,7 +87,7 @@ export default function AuthButtons() {
         </div>
       )}
 
-      {showProfile && isSuccessLoginedInLs ? <UserAccount /> : null}
+      {showProfile && isSuccessLoginedIn ? <UserAccount /> : null}
     </>
   );
 }
