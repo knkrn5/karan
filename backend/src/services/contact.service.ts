@@ -2,7 +2,7 @@ import { ApiResponse } from '../utils/apiResponse.js';
 import { Contact, IContact } from '../models/contact.model.js';
 
 export class ContactService {
-  static async addContactMessages(name: string, email: string, message: string): Promise<IContact> {
+  static async addContactMessages(name: string, email: string, message: string) {
     const isFieldEmpty: boolean = [name, email, message].some(field => !field.trim());
 
     if (isFieldEmpty) {
@@ -21,10 +21,10 @@ export class ContactService {
       throw new ApiResponse(404, false, 'Failed to send message', null);
     }
 
-    return contactMsg;
+    return new ApiResponse(201, true, 'Message sent successfully', contactMsg);
   }
 
-  static async updateContactMessages(id: string, message: string): Promise<IContact> {
+  static async updateContactMessages(id: string, message: string) {
     if (!id) throw new ApiResponse(401, false, 'Invalid ID.', null);
 
     const updatedContact = await Contact.findByIdAndUpdate(
@@ -35,16 +35,16 @@ export class ContactService {
 
     if (!updatedContact) throw new ApiResponse(404, false, 'Message not found.', null);
 
-    return updatedContact;
+    return new ApiResponse(200, true, 'Message updated successfully', updatedContact);
   }
 
-  static async deleteContactMessages(id: string): Promise<IContact> {
+  static async deleteContactMessages(id: string) {
     if (!id) throw new ApiResponse(404, false, 'Invalid ID.', null);
 
     const deletedContactMsg = await Contact.findByIdAndDelete(id);
 
     if (!deletedContactMsg) throw new ApiResponse(400, false, 'Message not found.', null);
 
-    return deletedContactMsg;
+    return new ApiResponse(200, true, 'Message deleted successfully', deletedContactMsg);
   }
 }

@@ -7,9 +7,9 @@ export class ContactController {
   static addContactMessage = async (req: Request, res: Response): Promise<void> => {
     try {
       const { name, email, message } = req.body;
-      const contactMsg = await ContactService.addContactMessages(name, email, message);
+      const response = await ContactService.addContactMessages(name, email, message);
 
-      res.status(201).json(new ApiResponse(200, true, 'Message sent successfully', contactMsg));
+      res.status(response.statusCode).json(response);
     } catch (error) {
       if (error instanceof ApiResponse) {
         res.status(400).json(error);
@@ -26,8 +26,8 @@ export class ContactController {
   static async updateContactMessages(req: Request, res: Response): Promise<void> {
     try {
       const { id, message } = req.body;
-      const updatedContact = await ContactService.updateContactMessages(id, message);
-      res.status(200).json(new ApiResponse(200, true, 'Message updated successfully', updatedContact));
+      const response = await ContactService.updateContactMessages(id, message);
+      res.status(response.statusCode).json(response);
     } catch (error) {
       if (error instanceof ApiResponse) {
         res.status(400).json(error);
@@ -44,8 +44,9 @@ export class ContactController {
   static async deleteContactMessages(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.body;
-      const deletedContact = await ContactService.deleteContactMessages(id);
-      res.status(200).json(new ApiResponse(200, true, 'Message deleted successfully', deletedContact));
+      const response = await ContactService.deleteContactMessages(id);
+
+      res.status(response.statusCode).json(response);
     } catch (error) {
       if (error instanceof ApiResponse) {
         res.status(400).json(error);

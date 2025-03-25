@@ -33,11 +33,6 @@ export class AuthService {
       email: user.email,
     };
 
-    /* return {
-      user: userDTO,
-      accessToken,
-      refreshToken,
-    }; */
 
     return new ApiResponse(201, true, 'User registered successfully', {
       user: userDTO,
@@ -66,11 +61,6 @@ export class AuthService {
       email: user.email,
     };
 
-    /* return {
-      user: userDTO,
-      accessToken,
-      refreshToken,
-    }; */
 
     return new ApiResponse(200, true, 'User logged in successfully', {
       user: userDTO,
