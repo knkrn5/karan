@@ -27,7 +27,13 @@ export default function UserProfile() {
   useEffect(() => {
     axios.get(`${BACKEND_URL}/api/v1/auth/authenticateUser`, { 
       withCredentials: true 
-    }).then(res => console.log(res.data));
+    }).then(res => console.log(res.data))
+    .catch(err => {
+      if(axios.isAxiosError(err)) {
+        console.log("Error: ", err.response?.data.message || err.message);
+      }
+      console.log(err);
+    });
   }, []);
 
   // animation trigger

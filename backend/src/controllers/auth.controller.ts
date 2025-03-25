@@ -6,26 +6,21 @@ export class AuthController {
   static async registerUser(req: Request, res: Response) {
     try {
       const { firstName, lastName, email, password } = req.body;
-      const { user, accessToken, refreshToken } = await AuthService.registerUser(
-        firstName,
-        lastName,
-        email,
-        password
-      );
+      const response = await AuthService.registerUser(firstName, lastName, email, password);
 
       res
-        .status(201)
-        .cookie('accessToken', accessToken, {
+        .status(response.statusCode)
+        .cookie('accessToken', response.data.accessToken, {
           httpOnly: true,
           secure: true,
           sameSite: 'none',
         })
-        .cookie('refreshToken', refreshToken, {
+        .cookie('refreshToken', response.data.refreshToken, {
           httpOnly: true,
           secure: true,
           sameSite: 'none',
         })
-        .json(new ApiResponse(201, true, 'User registered successfully, Please Login', user));
+        .json(response);
     } catch (error: any) {
       res.status(500).json(new ApiResponse(500, false, error.message, null));
     }
@@ -34,21 +29,21 @@ export class AuthController {
   static async loginUser(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
-      const { user, accessToken, refreshToken } = await AuthService.loginUser(email, password);
+      const response = await AuthService.loginUser(email, password);
 
       res
-        .status(200)
-        .cookie('accessToken', accessToken, {
+        .status(response.statusCode)
+        .cookie('accessToken', response.data.accessToken, {
           httpOnly: true,
           secure: true,
           sameSite: 'none',
         })
-        .cookie('refreshToken', refreshToken, {
+        .cookie('refreshToken', response.data.refreshToken, {
           httpOnly: true,
           secure: true,
           sameSite: 'none',
         })
-        .json(new ApiResponse(200, true, 'Login successful', user));
+        .json(response);
     } catch (error: any) {
       if (error instanceof ApiResponse) {
         if (error.statusCode === 404) {
@@ -67,18 +62,9 @@ export class AuthController {
   static async refreshToken(req: Request, res: Response) {
     try {
       const { refreshToken } = req.cookies;
-      const {
-        data: { accessToken },
-      } = await AuthService.refreshAccessToken(refreshToken);
+      const response = await AuthService.refreshAccessToken(refreshToken);
 
-      res
-        .status(200)
-        .cookie('accessToken', accessToken, {
-          httpOnly: true,
-          secure: true,
-          sameSite: 'none',
-        })
-        .json(new ApiResponse(200, true, 'Token refreshed successfully', { accessToken }));
+      res.status(response.statusCode).json(response);
     } catch (error: any) {
       res.status(500).json(new ApiResponse(500, false, error.message, null));
     }
@@ -94,10 +80,11 @@ export class AuthController {
 
   static async authenticateUser(req: Request, res: Response) {
     try {
-      const { accessToken, refreshToken } = req.cookies;
-      const { data } = await AuthService.authenticateUser(accessToken, refreshToken);
+      const { accessToken, refreshToken } = req.cookies || {};
 
-      res.status(200).json(new ApiResponse(200, true, 'User is Logged In', data));
+      const response = await AuthService.authenticateUser(accessToken, refreshToken);
+
+      res.status(response.statusCode).json(response);
     } catch (error: any) {
       res.status(500).json(new ApiResponse(500, false, error.message, null));
     }

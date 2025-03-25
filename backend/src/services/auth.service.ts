@@ -33,11 +33,17 @@ export class AuthService {
       email: user.email,
     };
 
-    return {
+    /* return {
       user: userDTO,
       accessToken,
       refreshToken,
-    };
+    }; */
+
+    return new ApiResponse(201, true, 'User registered successfully', {
+      user: userDTO,
+      accessToken,
+      refreshToken,
+    });
   }
 
   static async loginUser(email: string, password: string) {
@@ -60,11 +66,17 @@ export class AuthService {
       email: user.email,
     };
 
-    return {
+    /* return {
       user: userDTO,
       accessToken,
       refreshToken,
-    };
+    }; */
+
+    return new ApiResponse(200, true, 'User logged in successfully', {
+      user: userDTO,
+      accessToken,
+      refreshToken,
+    });
   }
 
   static async refreshAccessToken(refreshToken: string) {
