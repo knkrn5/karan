@@ -3,7 +3,6 @@ import { Request, Response, NextFunction } from 'express';
 import { User } from '../models/user.model.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 
-
 declare module 'express' {
   interface Request {
     user?: any;

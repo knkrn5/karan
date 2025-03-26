@@ -6,19 +6,19 @@ export class ProfileController {
   static async getProfile(req: Request, res: Response) {
     try {
       const userId = req.user._id;
-      const user = await ProfileService.getProfile(userId);
+      const response = await ProfileService.getProfile(userId);
 
-      res.status(200).json(new ApiResponse(200, true, 'User profile retrieved', user));
+      res.status(response.statusCode).json(response);
     } catch (error: any) {
-      res.status(500).json(new ApiResponse(500,false, error.message, null));
+      res.status(500).json(new ApiResponse(500, false, error.message, null));
     }
   }
 
   static async deleteAccount(req: Request, res: Response) {
     try {
       const userId = req.user._id;
-      await ProfileService.deleteAccount(userId);
-      res.status(200).json(new ApiResponse(200, true, 'Account deleted successfully', null));
+      const response = await ProfileService.deleteAccount(userId);
+      res.status(response.statusCode).json(response);
     } catch (error: any) {
       res.status(500).json(new ApiResponse(500, false, error.message, null));
     }

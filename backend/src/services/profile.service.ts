@@ -3,16 +3,11 @@ import { UserDTO } from '../dtos/user.dto.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 
 export class ProfileService {
-  static async getProfile(userId: string): Promise<UserDTO> {
+  static async getProfile(userId: string) {
     const user = await User.findById(userId).select('-password');
     if (!user) throw new ApiResponse(404, false, 'User not found', null);
 
-    return {
-      _id: user._id.toString(),
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-    };
+    return new ApiResponse(200, true, 'User profile retrieved', user);
   }
 
   /* static async updateProfile(userId: string, data: Partial<UserDTO>): Promise<UserDTO> {
@@ -27,9 +22,11 @@ export class ProfileService {
         };
       } */
 
-  static async deleteAccount(userId: string): Promise<void> {
+  static async deleteAccount(userId: string) {
     if (!userId) throw new ApiResponse(404, false, 'User ID not found', null);
 
     await User.findByIdAndDelete(userId);
+
+    return new ApiResponse(200, true, 'Account deleted successfully', null);
   }
 }
