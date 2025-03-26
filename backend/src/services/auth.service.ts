@@ -33,7 +33,6 @@ export class AuthService {
       email: user.email,
     };
 
-
     return new ApiResponse(201, true, 'User registered successfully', {
       user: userDTO,
       accessToken,
@@ -61,7 +60,6 @@ export class AuthService {
       email: user.email,
     };
 
-
     return new ApiResponse(200, true, 'User logged in successfully', {
       user: userDTO,
       accessToken,
@@ -86,14 +84,7 @@ export class AuthService {
     }
   }
 
-  static async authenticateUser(getAccessToken: string, getRefreshToken: string) {
-    if (!getAccessToken || !getRefreshToken) {
-      throw new ApiResponse(401, false, 'user is not logged in', null);
-    }
-
-    return new ApiResponse(200, true, 'user is logged in', {
-      accessToken: !!getAccessToken,
-      refreshToken: !!getRefreshToken,
-    });
+  static async authenticateUser(userData: string) {
+    return new ApiResponse(200, true, "request received, user Authenticated", userData);
   }
 }

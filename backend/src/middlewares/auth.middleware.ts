@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { User } from '../models/user.model.js';
-// import { ApiResponse } from '../utils/apiResponse.js';
 
 declare module 'express' {
   interface Request {
@@ -71,8 +70,8 @@ export const isAccessTokenValid = async (
       return;
     }
 
-    // Only verify the token
-    jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as string);
+    const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as string);
+    req.user = decoded; 
 
     next();
   } catch (error: any) {
