@@ -30,12 +30,6 @@ export default function UserProfile() {
     }, 10);
   }, []);
 
-  /*  useEffect(() => {
-    if (!localStorage.getItem('isSuccessLoginedInLs')) {
-      navigate('/login');
-    }
-  }, [navigate]); */
-
   useEffect(() => {
     isAuthenticated()
       .then(authRes => {
@@ -43,7 +37,10 @@ export default function UserProfile() {
           navigate('/login');
         }
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        console.error(error);
+        navigate('/login');
+      });
   }, [navigate]);
 
   const handleDeleteAccount = async () => {
