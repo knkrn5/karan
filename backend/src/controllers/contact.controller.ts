@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { ApiResponse } from '../utils/apiResponse.js';
 import { ContactService } from '../services/contact.service.js';
 
 export class ContactController {
@@ -11,15 +10,11 @@ export class ContactController {
 
       res.status(response.statusCode).json(response);
     } catch (error) {
-      if (error instanceof ApiResponse) {
-        res.status(400).json(error);
-      } else if (error instanceof Error) {
-        res.status(500).json(new ApiResponse(500, false, 'Failed to send message', error.message));
-      } else {
-        res
-          .status(500)
-          .json(new ApiResponse(500, false, 'Failed to send message', 'An unknown error occurred.'));
-      }
+      res.status(500).json({
+        success: false,
+        message: 'Failed to send message',
+        error: error instanceof Error ? error.message : 'An unknown error occurred.',
+      });
     }
   };
 
@@ -29,15 +24,11 @@ export class ContactController {
       const response = await ContactService.updateContactMessages(id, message);
       res.status(response.statusCode).json(response);
     } catch (error) {
-      if (error instanceof ApiResponse) {
-        res.status(400).json(error);
-      } else if (error instanceof Error) {
-        res.status(500).json(new ApiResponse(500, false, 'Failed to update message', error.message));
-      } else {
-        res
-          .status(500)
-          .json(new ApiResponse(500, false, 'Failed to update message', 'An unknown error occurred.'));
-      }
+      res.status(500).json({
+        success: false,
+        message: 'Failed to update message',
+        error: error instanceof Error ? error.message : 'An unknown error occurred.',
+      });
     }
   }
 
@@ -48,13 +39,13 @@ export class ContactController {
 
       res.status(response.statusCode).json(response);
     } catch (error) {
-      if (error instanceof ApiResponse) {
-        res.status(400).json(error);
-      } else if (error instanceof Error) {
-        res.status(500).json(new ApiResponse(500, false, 'Failed to delete message', error.message));
-      } else {
-        res.status(500).json(new ApiResponse(500, false, 'Failed to delete message', 'An unknown error occurred.'));
-      }
+      res
+        .status(500)
+        .json({
+          success: false,
+          message: 'Failed to delete message',
+          error: error instanceof Error ? error.message : 'An unknown error occurred.',
+        });
     }
   }
 }

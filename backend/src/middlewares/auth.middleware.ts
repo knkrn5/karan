@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { User } from '../models/user.model.js';
-import { ApiResponse } from '../utils/apiResponse.js';
+// import { ApiResponse } from '../utils/apiResponse.js';
 
 declare module 'express' {
   interface Request {
@@ -9,20 +9,23 @@ declare module 'express' {
   }
 }
 
-//prettier-ignore
-export const verifyToken = async (req: Request, res: Response, next: NextFunction ): Promise<void> => {
+//verifyToken middleware
+export const verifyToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const accessToken = req.cookies.accessToken;
 
-    /* if (!accessToken) {
+    if (!accessToken) {
       res.status(401).json({
         success: false,
         message: 'Access token is required',
+        data: null,
       });
       return;
-    } */
-
-    if (!accessToken) throw new ApiResponse(401, false, 'Access token is required', null);
+    }
 
     const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as string) as {
       userId: string;
@@ -31,9 +34,10 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
     const user = await User.findById(decoded.userId).select('-password');
 
     if (!user) {
-      res.status(401).json({
+      res.status(404).json({
         success: false,
-        message: 'Invalid access token',
+        message: 'User not found',
+        data: null,
       });
       return;
     }
@@ -47,5 +51,47 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
     if (error.name === 'JsonWebTokenError') message = 'Invalid token';
 
     res.status(401).json({ success: false, message });
+  }
+};
+
+//isAccessTokenValid middleware
+export const isAccessTokenValid = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const accessToken = req.cookies.accessToken;
+
+    if (!accessToken) {
+      res.status(401).json({
+        success: false,
+        message: 'Access token is required',
+      });
+      return;
+    }
+
+    // Only verify the token
+    jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as string);
+
+    next();
+  } catch (error: any) {
+    let message = 'Internal server error';
+    let statusCode = 500;
+
+    if (error.name === 'TokenExpiredError') {
+      message = 'Token expired';
+      statusCode = 401;
+    }
+
+    if (error.name === 'JsonWebTokenError') {
+      message = 'Invalid token';
+      statusCode = 401;
+    }
+
+    res.status(statusCode).json({
+      success: false,
+      message,
+    });
   }
 };

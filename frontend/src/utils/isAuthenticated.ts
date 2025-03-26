@@ -10,7 +10,6 @@ async function isAuthenticated() {
     return response.data.success;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      // More detailed error logging
       console.error('Authentication Error:', {
         status: error.response?.status,
         data: error.response?.data,

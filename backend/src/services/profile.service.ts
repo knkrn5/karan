@@ -1,5 +1,5 @@
 import { User, IUser } from '../models/user.model.js';
-import { UserDTO } from '../dtos/user.dto.js';
+// import { UserDTO } from '../dtos/user.dto.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 
 export class ProfileService {
