@@ -22,6 +22,16 @@ export class ProfileService {
         };
       } */
 
+  static async verifyPassword(userId: string, password: string) {
+    const user = await User.findById(userId);
+    if (!user) throw new ApiResponse(404, false, 'User not found', null);
+
+    const isPasswordMatch = await user.comparePassword(password);
+    if (!isPasswordMatch) throw new ApiResponse(401, false, 'Incorrect password', null);
+
+    return new ApiResponse(200, true, 'Password verified successfully', null);
+  }
+
   static async deleteAccount(userId: string) {
     if (!userId) throw new ApiResponse(404, false, 'User ID not found', null);
 

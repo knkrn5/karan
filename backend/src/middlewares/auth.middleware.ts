@@ -71,7 +71,8 @@ export const isAccessTokenValid = async (
     }
 
     const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as string);
-    req.user = decoded; 
+    req.user = decoded;
+    console.log(decoded);
 
     next();
   } catch (error: any) {

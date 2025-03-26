@@ -9,7 +9,9 @@ const router = Router();
 
 router.get('/details', verifyToken, ProfileController.getProfile);
 //  router.put('/', verifyToken, ProfileController.updateProfile);
+router.post('/verify-password', verifyToken, ProfileController.verifyPassword);
 router.delete('/delete-account', verifyToken, ProfileController.deleteAccount); 
+
 
 export default router;  
 

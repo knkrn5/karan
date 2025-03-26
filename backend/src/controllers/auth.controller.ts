@@ -70,6 +70,8 @@ export class AuthController {
   static async authenticateUser(req: Request, res: Response) {
     try {
       const userData = req.user;
+      const userid =  req.user.userId;
+      console.log("controller user id is ", userid);
       const response = await AuthService.authenticateUser(userData);
       res.status(response.statusCode).json(response);
     } catch (error: any) {

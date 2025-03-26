@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useAuthStore } from '../../stores/auth/authStore';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { isAuthenticated } from '../../utils/isAuthenticated';
+// import StatusNotifications from '../../utils/StatusNotifications';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -15,8 +16,17 @@ export default function UserProfile() {
   const firstName = useProfileStore(state => state.firstName);
   const lastName = useProfileStore(state => state.lastName);
   const email = useProfileStore(state => state.email);
+  const [confirmPassword, setConfirmPassword] = useState<{
+    resetPassword: boolean;
+    deleteAccount: boolean;
+  }>({
+    resetPassword: false,
+    deleteAccount: false,
+  });
 
   const letter: string = firstName?.[0]?.toUpperCase() || '';
+
+  // const statusInfoAuth = useAuthStore(state => state.statusInfoAuth);
 
   const navigate = useNavigate();
 
@@ -44,6 +54,16 @@ export default function UserProfile() {
   }, [navigate]);
 
   const handleDeleteAccount = async () => {
+    setConfirmPassword(prevState => ({
+      ...prevState,
+      deleteAccount: true,
+    }));
+    const deleteConfirm = confirm(
+      'Are you sure you want to delete your account? This action cannot be undone.'
+    );
+    if (!deleteConfirm) {
+      return;
+    }
     setIsDeleting(true);
     try {
       const response = await axios.delete(`${BACKEND_URL}/api/v1/profile/delete-account`, {
@@ -72,7 +92,7 @@ export default function UserProfile() {
     } finally {
       setTimeout(() => {
         setStatusInfoAuth({});
-      }, 5000);
+      }, 10 * 1000);
       setIsDeleting(false);
     }
   };
@@ -85,7 +105,7 @@ export default function UserProfile() {
       {/* Card */}
       <div
         className={`mx-auto rounded-lg overflow-hidden w-80 duration-300 
-        bg-white dark:bg-gray-900 shadow-lg hover:dark:shadow-gray-700  ${
+        bg-white dark:bg-gray-900 shadow-lg hover:dark:shadow-gray-900  ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
         }`}
       >
@@ -105,6 +125,18 @@ export default function UserProfile() {
             {firstName.toUpperCase()} {lastName.toUpperCase()}
           </h2>
           <p className="text-gray-500 dark:text-gray-400 ">{email}</p>
+        </div>
+
+        <div className="flex justify-center">
+          <input
+            className={`w-[90%] max-w-md m-[10px_8px_0_8px] p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 ${
+              confirmPassword.deleteAccount ? 'block' : 'hidden'
+            }`}
+            type="text"
+            name="confirmPassword"
+            id="confirmPassword"
+            placeholder="Confirm Password"
+          />
         </div>
 
         {/* Buttons */}
@@ -133,7 +165,7 @@ export default function UserProfile() {
             )}
           </button>
         </div>
-        {/* <StatusNotifications statusInfo={statusInfo} /> */}
+        {/* <StatusNotifications statusInfo={statusInfoAuth} /> */}
       </div>
     </div>
   );
