@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { User } from '../models/user.model.js';
+import { ApiResponse } from '../utils/apiResponse.js';
+
 
 declare module 'express' {
   interface Request {
@@ -13,13 +15,15 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
   try {
     const accessToken = req.cookies.accessToken;
 
-    if (!accessToken) {
+    /* if (!accessToken) {
       res.status(401).json({
         success: false,
         message: 'Access token is required',
       });
       return;
-    }
+    } */
+
+    if (!accessToken) throw new ApiResponse(401, false, 'Access token is required', null);
 
     const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as string) as {
       userId: string;

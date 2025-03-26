@@ -28,6 +28,8 @@ export class ProfileService {
       } */
 
   static async deleteAccount(userId: string): Promise<void> {
+    if (!userId) throw new ApiResponse(404, false, 'User ID not found', null);
+
     await User.findByIdAndDelete(userId);
   }
 }
