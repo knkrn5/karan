@@ -196,11 +196,6 @@ export default function Register() {
     }));
   }, []);
 
-/*   useEffect(() => {
-    if (isAccountCreated || localStorage.getItem('isSuccessLoginedInLs') === 'true') {
-      navigate('/login');
-    }
-  }, [isAccountCreated, navigate]); */
 
   useEffect(() => {
     isAuthenticated()

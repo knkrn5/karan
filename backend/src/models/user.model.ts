@@ -14,7 +14,6 @@ export interface IUser extends mongoose.Document {
   createRefreshToken(): string;
 }
 
-
 const userSchema = new mongoose.Schema(
   {
     firstName: { type: String, required: true },
@@ -46,12 +45,9 @@ userSchema.methods.createAccessToken = function (): string {
 };
 
 userSchema.methods.createRefreshToken = function (): string {
-  return jwt.sign(
-    { userId: this._id },
-    process.env.REFRESH_TOKEN_SECRET as string,
-    { expiresIn: '7d' }
-  );
+  return jwt.sign({ userId: this._id }, process.env.REFRESH_TOKEN_SECRET as string, {
+    expiresIn: '7d',
+  });
 };
 
 export const User = mongoose.model<IUser>('User', userSchema);
-

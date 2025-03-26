@@ -16,13 +16,16 @@ export default function UserProfile() {
   const firstName = useProfileStore(state => state.firstName);
   const lastName = useProfileStore(state => state.lastName);
   const email = useProfileStore(state => state.email);
-  const [confirmPassword, setConfirmPassword] = useState<{
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [confirmPasswordBool, setConfirmPasswordBool] = useState<{
     resetPassword: boolean;
     deleteAccount: boolean;
   }>({
     resetPassword: false,
     deleteAccount: false,
   });
+
+  const [passwordInputErrror, setPasswordInputErrror] = useState<string>('');
 
   const letter: string = firstName?.[0]?.toUpperCase() || '';
 
@@ -53,47 +56,83 @@ export default function UserProfile() {
       });
   }, [navigate]);
 
-  const handleDeleteAccount = async () => {
-    setConfirmPassword(prevState => ({
-      ...prevState,
-      deleteAccount: true,
-    }));
-    const deleteConfirm = confirm(
-      'Are you sure you want to delete your account? This action cannot be undone.'
-    );
-    if (!deleteConfirm) {
+  // Improved error handling for password validation
+  const validatePassword = async () => {
+    try {
+      await axios.post(
+        `${BACKEND_URL}/api/v1/profile/verify-password`,
+        { password: confirmPassword },
+        { withCredentials: true }
+      );
+      setPasswordInputErrror('');
+      return true;
+    } catch (error) {
+      const errorMessage = axios.isAxiosError(error)
+        ? error.response?.data.message || 'Invalid password'
+        : 'An unexpected error occurred';
+      setPasswordInputErrror(errorMessage);
+      return false;
+    }
+  };
+
+  const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setConfirmPassword(e.target.value);
+  };
+
+  const handleResetPassword = async () => {
+    if (confirmPasswordBool.deleteAccount) {
+      setConfirmPasswordBool(prevState => ({
+        ...prevState,
+        deleteAccount: false,
+      }));
+      setPasswordInputErrror('');
       return;
     }
-    setIsDeleting(true);
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!confirmPasswordBool.deleteAccount) {
+      setConfirmPasswordBool(prev => ({ ...prev, deleteAccount: true }));
+      return;
+    }
+
+    if (!confirmPassword) {
+      return setPasswordInputErrror('Password is required');
+    }
+
+    if (!(await validatePassword())) return;
+
+    if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      setConfirmPasswordBool(prevState => ({
+        ...prevState,
+        deleteAccount: false,
+      }));
+      return;
+    }
+
     try {
+      setIsDeleting(true);
       const response = await axios.delete(`${BACKEND_URL}/api/v1/profile/delete-account`, {
         withCredentials: true,
       });
-      const { data } = response;
-      if (data.success) {
-        setStatusInfoAuth({ success: data.message });
 
-        await axios
-          .post(`${BACKEND_URL}/api/v1/auth/logout`, {}, { withCredentials: true })
-          .then(response => {
-            if (response.status === 200) {
-              useAuthStore.getState().setIsSuccessLoginedIn(false);
-              useProfileStore.getState().resetProfileStore();
-              localStorage.removeItem('isSuccessLoginedInLs');
-              navigate('/register');
-            }
-          });
+      if (response.data.success) {
+        setStatusInfoAuth({ success: response.data.message });
+
+        await axios.post(`${BACKEND_URL}/api/v1/auth/logout`, {}, { withCredentials: true });
+
+        useAuthStore.getState().setIsSuccessLoginedIn(false);
+        useProfileStore.getState().resetProfileStore();
+        localStorage.removeItem('isSuccessLoginedInLs');
+        navigate('/register');
       }
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        setStatusInfoAuth({ error: error.response?.data.message || error.message });
-      }
-      console.log(error);
+    } catch (error) {
+      setStatusInfoAuth({
+        error: axios.isAxiosError(error) ? error.response?.data.message : 'An error occurred',
+      });
     } finally {
-      setTimeout(() => {
-        setStatusInfoAuth({});
-      }, 10 * 1000);
       setIsDeleting(false);
+      setTimeout(() => setStatusInfoAuth({}), 10000);
     }
   };
 
@@ -127,33 +166,43 @@ export default function UserProfile() {
           <p className="text-gray-500 dark:text-gray-400 ">{email}</p>
         </div>
 
-        <div className="flex justify-center">
+        <div
+          className={`flex flex-col m-4 ${confirmPasswordBool.deleteAccount ? 'block' : 'hidden'}`}
+        >
+          <label htmlFor="confirmPassword" className="mt-3 block text-gray-700 dark:text-gray-300">
+            <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
+              Enter Password
+            </span>
+          </label>
           <input
-            className={`w-[90%] max-w-md m-[10px_8px_0_8px] p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 ${
-              confirmPassword.deleteAccount ? 'block' : 'hidden'
-            }`}
-            type="text"
+            type="password"
             name="confirmPassword"
             id="confirmPassword"
             placeholder="Confirm Password"
+            onChange={handlePasswordInput}
+            className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 `}
           />
+          {passwordInputErrror && (
+            <p className="text-red-600 text-sm mt-1">{passwordInputErrror}</p>
+          )}
         </div>
 
         {/* Buttons */}
-        <div className="flex md:flex-row justify- px-2 my-5">
+        <div className="flex flex-col  md:flex-row gap-2 md:gap-0 px-2 my-5">
           {/* Reset Password */}
           <button
-            className="text-white  bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm w-fit px-4 py-2 mx-auto md:px-5 md:py-2.5 
-              dark:bg-blue-500 dark:hover:bg-blue-600 "
+            className="w-fit text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm  px-4 py-2 mx-auto md:px-5 md:py-2.5 dark:bg-blue-500 dark:hover:bg-blue-600"
+            onClick={handleResetPassword}
           >
-            Reset Password
+            {confirmPasswordBool.deleteAccount ? 'Cancel Delete' : 'Reset Password'}
           </button>
 
           {/* Delete Account */}
           <button
+            type="button"
+            aria-label="Delete Account"
             onClick={handleDeleteAccount}
-            className="text-white bg-red-600 hover:bg-red-700 font-medium rounded-lg text-sm w-fit px-4 py-2 mx-auto md:px-5 md:py-2.5 
-            dark:bg-red-500 dark:hover:bg-red-600 flex items-center justify-center"
+            className="text-white bg-red-600 hover:bg-red-700 font-medium rounded-lg text-sm w-fit px-4 py-2 mx-auto md:px-5 md:py-2.5 dark:bg-red-500 dark:hover:bg-red-600 flex items-center justify-center"
             disabled={isDeleting}
           >
             {isDeleting ? (
@@ -161,7 +210,7 @@ export default function UserProfile() {
                 <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mr-2" /> Deleting...
               </span>
             ) : (
-              'Delete Account'
+              `${confirmPasswordBool.deleteAccount ? 'Confirm Delete' : 'Delete Account'}`
             )}
           </button>
         </div>

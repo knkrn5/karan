@@ -9,7 +9,7 @@ declare module 'express' {
 }
 
 //verifyToken middleware
-export const verifyToken = async (
+/* export const verifyToken = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -51,7 +51,7 @@ export const verifyToken = async (
 
     res.status(401).json({ success: false, message });
   }
-};
+}; */
 
 //isAccessTokenValid middleware
 export const isAccessTokenValid = async (
@@ -72,7 +72,6 @@ export const isAccessTokenValid = async (
 
     const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as string);
     req.user = decoded;
-    console.log(decoded);
 
     next();
   } catch (error: any) {

@@ -4,7 +4,7 @@ import { ProfileService } from '../services/profile.service.js';
 export class ProfileController {
   static async getProfile(req: Request, res: Response) {
     try {
-      const userId = req.user._id;
+      const userId = req.user.userId;
       const response = await ProfileService.getProfile(userId);
 
       res.status(response.statusCode).json(response);
@@ -17,7 +17,7 @@ export class ProfileController {
 
   static async verifyPassword(req: Request, res: Response) {
     try {
-      const userId = req.user._id;
+      const userId = req.user.userId;
       const { password } = req.body;
       const response = await ProfileService.verifyPassword(userId, password);
       res.status(response.statusCode).json(response);
@@ -30,7 +30,7 @@ export class ProfileController {
 
   static async deleteAccount(req: Request, res: Response) {
     try {
-      const userId = req.user._id;
+      const userId = req.user.userId;
       const response = await ProfileService.deleteAccount(userId);
       res.status(response.statusCode).json(response);
     } catch (error: any) {

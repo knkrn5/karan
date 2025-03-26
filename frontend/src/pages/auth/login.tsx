@@ -102,7 +102,6 @@ export default function LoginPage() {
       );
       const { data } = response;
       setStatusInfoAuth({ success: data.message });
-      // localStorage.setItem('isSuccessLoginedInLs', data.success.toString());
       setIsSuccessLoginedIn(true);
       navigate('/profile');
     } catch (error: unknown) {
@@ -121,11 +120,6 @@ export default function LoginPage() {
     }
   };
 
-  /*   useEffect(() => {
-    if (localStorage.getItem('isSuccessLoginedInLs') === 'true') {
-      navigate('/profile');
-    }
-  }, [navigate]); */
 
   useEffect(() => {
     isAuthenticated()
