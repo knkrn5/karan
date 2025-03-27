@@ -69,22 +69,40 @@ export class AuthService {
 
   static async refreshAccessToken(refreshToken: string) {
     try {
-      const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string) as {
+      if (!refreshToken) {
+        throw new ApiResponse(400, false, 'Refresh token is required', null);
+      }
+
+      const decoded = jwt.decode(refreshToken) as { userId: string } | null;
+      if (!decoded) {
+        throw new ApiResponse(401, false, 'Invalid refresh token', null);
+      }
+
+      // Verifing the token
+      const verifiedToken = jwt.verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET as string
+      ) as {
         userId: string;
       };
 
-      const user = await User.findById(decoded.userId);
-      if (!user || user.refreshToken !== refreshToken)
+      const user = await User.findById(verifiedToken.userId);
+      if (!user || user.refreshToken !== refreshToken) {
         throw new ApiResponse(401, false, 'Invalid refresh token', null);
+      }
 
+      // Generating new access token
       const accessToken = user.createAccessToken();
       return new ApiResponse(200, true, 'Token refreshed successfully', { accessToken });
-    } catch (error) {
-      throw new ApiResponse(401, false, 'Refresh token expired', null);
+    } catch (error: any) {
+      if (error.name === 'TokenExpiredError') {
+        throw new ApiResponse(401, false, 'Refresh token expired', null);
+      }
+      throw new ApiResponse(401, false, 'Invalid refresh token', null);
     }
   }
 
   static async authenticateUser(userData: string) {
-    return new ApiResponse(200, true, "request received, user Authenticated", userData);
+    return new ApiResponse(200, true, 'request received, user Authenticated', userData);
   }
 }

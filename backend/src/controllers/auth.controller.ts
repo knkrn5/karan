@@ -64,6 +64,15 @@ export class AuthController {
       const { refreshToken } = req.cookies;
       const response = await AuthService.refreshAccessToken(refreshToken);
 
+      const { accessToken } = response.data;
+
+      res.cookie('accessToken', accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'PRODUCTION',
+        sameSite: 'none',
+        maxAge: 15 * 60 * 1000,
+      });
+
       res.status(response.statusCode).json(response);
     } catch (error: any) {
       if (error instanceof ApiResponse) {

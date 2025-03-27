@@ -1,7 +1,6 @@
 
 import { Router } from 'express';
 import { AuthController } from '../controllers/auth.controller.js';
-// import { verifyToken } from '../middlewares/auth.middleware.js';
 import { limiter } from '../utils/limiter.js';
 import { isAccessTokenValid } from '../middlewares/auth.middleware.js';
 
