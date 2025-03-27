@@ -33,7 +33,7 @@ export const isAccessTokenValid = async (
     let statusCode = 500;
 
     if (error.name === 'TokenExpiredError') {
-      message = 'Token expired';
+      message = 'Access Token expired';
       statusCode = 401;
     }
 

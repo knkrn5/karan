@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { ProfileService } from '../services/profile.service.js';
+import { ApiResponse } from '../utils/apiResponse.js';
 
 export class ProfileController {
   static async getProfile(req: Request, res: Response) {
@@ -9,6 +10,10 @@ export class ProfileController {
 
       res.status(response.statusCode).json(response);
     } catch (error: any) {
+      if (error instanceof ApiResponse) {
+        res.status(error.statusCode).json(error);
+        return;
+      }
       res
         .status(500)
         .json({ success: false, message: error.message || 'An unknown error occurred.' });
@@ -22,9 +27,15 @@ export class ProfileController {
       const response = await ProfileService.verifyPassword(userId, password);
       res.status(response.statusCode).json(response);
     } catch (error: any) {
-      res
-        .status(500)
-        .json({ success: false, message: error.message || 'An unknown error occurred.' });
+      if (error instanceof ApiResponse) {
+        res.status(error.statusCode).json(error);
+        return;
+      }
+
+      res.status(500).json({
+        success: false,
+        message: error.message || 'An unknown error occurred.',
+      });
     }
   }
 
@@ -34,6 +45,10 @@ export class ProfileController {
       const response = await ProfileService.deleteAccount(userId);
       res.status(response.statusCode).json(response);
     } catch (error: any) {
+      if (error instanceof ApiResponse) {
+        res.status(error.statusCode).json(error);
+        return;
+      }
       res
         .status(500)
         .json({ success: false, message: error.message || 'An unknown error occurred.' });

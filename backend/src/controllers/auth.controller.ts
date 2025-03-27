@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { AuthService } from '../services/auth.service.js';
+import { ApiResponse } from '../utils/apiResponse.js';
 
 export class AuthController {
   static async registerUser(req: Request, res: Response) {
@@ -21,6 +22,10 @@ export class AuthController {
         })
         .json(response);
     } catch (error: any) {
+      if (error instanceof ApiResponse) {
+        res.status(error.statusCode).json(error);
+        return;
+      }
       res.status(500).json({ success: false, message: error.message, data: null });
     }
   }
@@ -44,7 +49,13 @@ export class AuthController {
         })
         .json(response);
     } catch (error: any) {
-      res.status(error.statusCode || 500).json({ success: false, message: error.message, data: null });
+      if (error instanceof ApiResponse) {
+        res.status(error.statusCode).json(error);
+        return;
+      }
+      res
+        .status(error.statusCode || 500)
+        .json({ success: false, message: error.message, data: null });
     }
   }
 
@@ -55,6 +66,10 @@ export class AuthController {
 
       res.status(response.statusCode).json(response);
     } catch (error: any) {
+      if (error instanceof ApiResponse) {
+        res.status(error.statusCode).json(error);
+        return;
+      }
       res.status(500).json({ success: false, message: error.message, data: null });
     }
   }
@@ -70,7 +85,7 @@ export class AuthController {
   static async authenticateUser(req: Request, res: Response) {
     try {
       const userData = req.user;
-      const userid =  req.user.userId;
+      const userid = req.user.userId;
       const response = await AuthService.authenticateUser(userData);
       res.status(response.statusCode).json(response);
     } catch (error: any) {

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { ContactService } from '../services/contact.service.js';
+import { ApiResponse } from '../utils/apiResponse.js';
 
 export class ContactController {
   // Adding contact message to the db
@@ -9,7 +10,11 @@ export class ContactController {
       const response = await ContactService.addContactMessages(name, email, message);
 
       res.status(response.statusCode).json(response);
-    } catch (error) {
+    } catch (error: any) {
+      if (error instanceof ApiResponse) {
+        res.status(error.statusCode).json(error);
+        return;
+      }
       res.status(500).json({
         success: false,
         message: 'Failed to send message',
@@ -23,7 +28,11 @@ export class ContactController {
       const { id, message } = req.body;
       const response = await ContactService.updateContactMessages(id, message);
       res.status(response.statusCode).json(response);
-    } catch (error) {
+    } catch (error: any) {
+      if (error instanceof ApiResponse) {
+        res.status(error.statusCode).json(error);
+        return;
+      }
       res.status(500).json({
         success: false,
         message: 'Failed to update message',
@@ -38,14 +47,16 @@ export class ContactController {
       const response = await ContactService.deleteContactMessages(id);
 
       res.status(response.statusCode).json(response);
-    } catch (error) {
-      res
-        .status(500)
-        .json({
-          success: false,
-          message: 'Failed to delete message',
-          error: error instanceof Error ? error.message : 'An unknown error occurred.',
-        });
+    } catch (error: any) {
+      if (error instanceof ApiResponse) {
+        res.status(error.statusCode).json(error);
+        return;
+      }
+      res.status(500).json({
+        success: false,
+        message: 'Failed to delete message',
+        error: error instanceof Error ? error.message : 'An unknown error occurred.',
+      });
     }
   }
 }
