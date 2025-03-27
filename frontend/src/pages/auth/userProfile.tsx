@@ -13,9 +13,11 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export default function UserProfile() {
   const [isVisible, setIsVisible] = useState(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
   const firstName = useProfileStore(state => state.firstName);
   const lastName = useProfileStore(state => state.lastName);
   const email = useProfileStore(state => state.email);
+
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [confirmPasswordBool, setConfirmPasswordBool] = useState<{
     resetPassword: boolean;
@@ -42,28 +44,6 @@ export default function UserProfile() {
       setIsVisible(true);
     }, 10);
   }, []);
-
-  /*  useEffect(() => {
-    isAuthenticated()
-      .then(authRes => {
-        if (!authRes) {
-          navigate('/login');
-        }
-      })
-      .catch(error => {
-        console.error(error);
-        navigate('/login');
-      });
-  }, [navigate]); */
-
-  const authStatus = useAuthCheck();
-
-  useEffect(() => {
-    if (authStatus === false) {
-      navigate('/login', { replace: true });
-    }
-  }, [authStatus, navigate]);
-
 
   // error handling for password validation
   const validatePassword = async () => {
@@ -145,6 +125,14 @@ export default function UserProfile() {
     }
   };
 
+  const authStatus = useAuthCheck();
+
+  useEffect(() => {
+    if (authStatus === false) {
+      navigate('/login', { replace: true });
+    }
+  }, [authStatus, navigate]);
+
   return (
     <div
       className="min-h-[calc(100vh-72px)] p-2 flex items-center justify-center transition-all duration-500 
@@ -175,6 +163,8 @@ export default function UserProfile() {
           <p className="text-gray-500 dark:text-gray-400 ">{email}</p>
         </div>
 
+
+        {/*  Password confirm */}
         <div
           className={`flex flex-col m-4 ${confirmPasswordBool.deleteAccount ? 'block' : 'hidden'}`}
         >

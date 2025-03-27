@@ -120,16 +120,6 @@ export default function LoginPage() {
     }
   };
 
-  /*    useEffect(() => {
-    isAuthenticated()
-      .then(authRes => {
-        if (authRes) {
-          navigate('/profile');
-        }
-      })
-      .catch(error => console.error(error));
-  }, [navigate]); */
-
   const authStatus = useAuthCheck();
 
   useEffect(() => {

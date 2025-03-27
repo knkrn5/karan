@@ -1,10 +1,6 @@
-import axios from 'axios';
-import { useEffect } from 'react';
 import Logout from './logout';
 import { Link } from 'react-router';
 import { useProfileStore } from '../../stores/auth/profileStore';
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 interface userDataProps {
   firstName: string;
@@ -17,28 +13,10 @@ export default function UserAccount() {
   const lastName = useProfileStore((state: userDataProps) => state.lastName);
   const email = useProfileStore((state: userDataProps) => state.email);
 
-  const { setFirstName, setLastName, setMail } = useProfileStore();
+  // const { setFirstName, setLastName, setMail } = useProfileStore();
 
   const letter: string = firstName?.[0]?.toUpperCase() || '';
 
-  useEffect(() => {
-    const fetchUserAccount = async () => {
-      try {
-        const response = await axios.get(`${BACKEND_URL}/api/v1/profile/details`, {
-          withCredentials: true,
-        });
-
-        const { data } = response;
-        setFirstName(data.data.firstName);
-        setLastName(data.data.lastName);
-        setMail(data.data.email);
-      } catch (error) {
-        console.error('Error fetching user profile:', error);
-      }
-    };
-
-    fetchUserAccount();
-  }, [setFirstName, setLastName, setMail]);
 
   return (
     <>

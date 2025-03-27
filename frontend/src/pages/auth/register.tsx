@@ -196,16 +196,6 @@ export default function Register() {
     }));
   }, []);
 
-  /* useEffect(() => {
-    isAuthenticated()
-      .then(authRes => {
-        if (isAccountCreated || authRes) {
-          navigate('/login');
-        }
-      })
-      .catch(error => console.error(error));
-  }, [isAccountCreated, navigate]); */
-
   const authStatus = useAuthCheck();
 
   useEffect(() => {

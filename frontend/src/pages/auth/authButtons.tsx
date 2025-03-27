@@ -5,7 +5,8 @@ import axiosApi from '../../utils/axios.js';
 import UserAccount from './userAccount.js';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { useProfileStore } from '../../stores/auth/profileStore.js';
-import { isAuthenticated } from '../../utils/isAuthenticated.js';
+import axios from 'axios';
+import { useAuthCheck } from '../../hooks/authCheckHook.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -14,35 +15,24 @@ export default function AuthButtons() {
 
   const firstName = useProfileStore(state => state.firstName);
   const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
-  // const [userIsAuthenticated, setUserIsAuthenticated] = useState(isSuccessLoginedIn);
 
-  const setIsSuccessLoginedIn =  useAuthStore(state => state.setIsSuccessLoginedIn);
+  const { setFirstName, setLastName, setMail } = useProfileStore();
+
+  const setIsSuccessLoginedIn = useAuthStore(state => state.setIsSuccessLoginedIn);
 
   const letter: string = firstName?.[0]?.toUpperCase() || '';
 
-  // const isSuccessLoginedInLs = localStorage.getItem('isSuccessLoginedInLs') === 'true';
-  useEffect(() => {
-    isAuthenticated()
-      .then(authRes => {
-        if (authRes) {
-          setIsSuccessLoginedIn(true);
-        } else {
-          setIsSuccessLoginedIn(false);
-        }
-      })
-      .catch(error => console.error(error));
-  }, [setIsSuccessLoginedIn]);
+  const authStatus = useAuthCheck();
 
   useEffect(() => {
-    /* const isSuccessLoginedInLs = localStorage.getItem('isSuccessLoginedInLs') === 'true';
-    if (!isSuccessLoginedInLs) {
-      axios
-        .post(`${BACKEND_URL}/api/v1/auth/logout`, {}, { withCredentials: true })
-        .catch(err => console.error('Logout error:', err));
-      localStorage.removeItem('isSuccessLoginedInLs');
-      return;
-    } */
+    if (authStatus === true) {
+      setIsSuccessLoginedIn(true);
+    } else {
+      setIsSuccessLoginedIn(false);
+    }
+  }, [setIsSuccessLoginedIn, authStatus]);
 
+  useEffect(() => {
     if (!isSuccessLoginedIn) return;
 
     (async () => {
@@ -51,14 +41,22 @@ export default function AuthButtons() {
           withCredentials: true,
         });
 
-        if (data.success) {
-          useProfileStore.getState().setFirstName(data.data.firstName);
-        }
+        setFirstName(data.data.firstName);
+        setLastName(data.data.lastName);
+        setMail(data.data.email);
+
       } catch (error) {
         console.log(error);
+        if (axios.isAxiosError(error)) {
+          console.error(
+            error.response?.status
+            // message: error.response?.data?.message || error.message,
+            // details: error.response?.data,
+          );
+        }
       }
     })();
-  }, [isSuccessLoginedIn]);
+  }, [isSuccessLoginedIn, setFirstName, setLastName, setMail]);
 
   return (
     <>

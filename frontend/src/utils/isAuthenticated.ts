@@ -13,11 +13,11 @@ async function isAuthenticated(): Promise<boolean> {
     return data.success;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error('Authentication Error:', {
-        status: error.response?.status,
-        message: error.response?.data?.message || error.message,
-        details: error.response?.data,
-      });
+      console.error(
+        (error.response?.status && error.response?.data) ||
+          error.response?.data?.message ||
+          error.message
+      );
     } else {
       console.error('Unexpected error during authentication:', error);
     }

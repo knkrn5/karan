@@ -17,7 +17,7 @@ export const isAccessTokenValid = async (
     const accessToken = req.cookies.accessToken;
 
     if (!accessToken) {
-      res.status(401).json({
+      res.status(403).json({
         success: false,
         message: 'Access token is required',
       });

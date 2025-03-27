@@ -12,8 +12,8 @@ axiosApi.interceptors.response.use(
   response => response,
   async error => {
     if (error.response.status === 401 && !error.config._retry) {
-      // error.config._retry = true;
-      error.config._retry = false;
+      console.log("Refresh token renewing...");
+      error.config._retry = true;
       try {
         await axiosApi.post('/api/v1/auth/refresh-token');
 
@@ -33,8 +33,7 @@ axiosApi.interceptors.response.use(
     if (error.response.status === 403) {
       console.log('Refresh token expired. Logging out...');
       await axiosApi.post('/api/v1/auth/logout');
-      localStorage.removeItem('isSuccessLoginedInLs');
-      window.location.href = '/login';
+      // window.location.href = '/login';
     }
 
     // Reject other errors
