@@ -5,7 +5,7 @@ import { useProfileStore } from '../../stores/auth/profileStore';
 import axios from 'axios';
 import { useAuthStore } from '../../stores/auth/authStore';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { isAuthenticated } from '../../utils/isAuthenticated';
+import { useAuthCheck } from '../../hooks/authCheckHook';
 // import StatusNotifications from '../../utils/StatusNotifications';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -43,7 +43,7 @@ export default function UserProfile() {
     }, 10);
   }, []);
 
-  useEffect(() => {
+  /*  useEffect(() => {
     isAuthenticated()
       .then(authRes => {
         if (!authRes) {
@@ -54,9 +54,18 @@ export default function UserProfile() {
         console.error(error);
         navigate('/login');
       });
-  }, [navigate]);
+  }, [navigate]); */
 
-  // Improved error handling for password validation
+  const authStatus = useAuthCheck();
+
+  useEffect(() => {
+    if (authStatus === false) {
+      navigate('/login', { replace: true });
+    }
+  }, [authStatus, navigate]);
+
+
+  // error handling for password validation
   const validatePassword = async () => {
     try {
       await axios.post(

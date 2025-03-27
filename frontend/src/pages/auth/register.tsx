@@ -5,7 +5,7 @@ import axios from 'axios';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import StatusNotifications from '../../utils/StatusNotifications';
 import { useAuthStore } from '../../stores/auth/authStore.js';
-import { isAuthenticated } from '../../utils/isAuthenticated.js';
+import { useAuthCheck } from '../../hooks/authCheckHook.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -196,8 +196,7 @@ export default function Register() {
     }));
   }, []);
 
-
-  useEffect(() => {
+  /* useEffect(() => {
     isAuthenticated()
       .then(authRes => {
         if (isAccountCreated || authRes) {
@@ -205,7 +204,16 @@ export default function Register() {
         }
       })
       .catch(error => console.error(error));
-  }, [isAccountCreated, navigate]);
+  }, [isAccountCreated, navigate]); */
+
+  const authStatus = useAuthCheck();
+
+  useEffect(() => {
+    if (isAccountCreated || authStatus === true) {
+      navigate('/login', { replace: true });
+    }
+  }, [isAccountCreated, authStatus, navigate]);
+
 
   return (
     <>

@@ -12,11 +12,12 @@ axiosApi.interceptors.response.use(
   response => response,
   async error => {
     if (error.response.status === 401 && !error.config._retry) {
-      error.config._retry = true;
+      // error.config._retry = true;
+      error.config._retry = false;
       try {
         await axiosApi.post('/api/v1/auth/refresh-token');
 
-        // ✅ Retry the original request with the new token
+        //  Retry the original request with the new token
         const res = await axiosApi.request(error.config);
         return res;
       } catch (refreshError) {
@@ -28,7 +29,7 @@ axiosApi.interceptors.response.use(
       }
     }
 
-    // ✅ Handle Refresh Token Expiry (403)
+    // Handle Refresh Token Expiry (403)
     if (error.response.status === 403) {
       console.log('Refresh token expired. Logging out...');
       await axiosApi.post('/api/v1/auth/logout');
@@ -36,7 +37,7 @@ axiosApi.interceptors.response.use(
       window.location.href = '/login';
     }
 
-    // ✅ Reject other errors
+    // Reject other errors
     return Promise.reject(error);
   }
 );
