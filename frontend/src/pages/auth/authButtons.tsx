@@ -6,7 +6,7 @@ import UserAccount from './userAccount.js';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { useProfileStore } from '../../stores/auth/profileStore.js';
 import axios from 'axios';
-import { useAuthCheck } from '../../hooks/authCheckHook.js';
+// import { useAuthCheck } from '../../hooks/authCheckHook.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -22,17 +22,27 @@ export default function AuthButtons() {
 
   const letter: string = firstName?.[0]?.toUpperCase() || '';
 
-  const authStatus = useAuthCheck();
+  // const authStatus = useAuthCheck();
 
-  useEffect(() => {
+  localStorage.setItem('isSuccessLoginedInLs', String(isSuccessLoginedIn));
+
+  /*  useEffect(() => {
     if (authStatus === true) {
       setIsSuccessLoginedIn(true);
     } else {
       setIsSuccessLoginedIn(false);
     }
-  }, [setIsSuccessLoginedIn, authStatus]);
+  }, [setIsSuccessLoginedIn, authStatus]); */
+
+
 
   useEffect(() => {
+    if (localStorage.getItem('isSuccessLoginedInLs')) {
+      setIsSuccessLoginedIn(true);
+    } else {
+      setIsSuccessLoginedIn(false);
+    }
+
     if (!isSuccessLoginedIn) return;
 
     (async () => {
@@ -45,8 +55,9 @@ export default function AuthButtons() {
         setLastName(data.data.lastName);
         setMail(data.data.email);
 
+        console.log('user details', data.data);
       } catch (error) {
-        console.log(error);
+        console.log('user detail fetching error', error);
         if (axios.isAxiosError(error)) {
           console.error(
             error.response?.status
@@ -56,7 +67,7 @@ export default function AuthButtons() {
         }
       }
     })();
-  }, [isSuccessLoginedIn, setFirstName, setLastName, setMail]);
+  }, [setFirstName, setLastName, setMail, setIsSuccessLoginedIn, isSuccessLoginedIn]);
 
   return (
     <>

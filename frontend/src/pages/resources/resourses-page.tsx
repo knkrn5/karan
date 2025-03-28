@@ -118,8 +118,8 @@ const resources: Resource[] = [
 
   new CreateResourses('Authentication', FaLock, 'text-fuchsia-500', [
     {
-      name: 'OAuth',
-      description: 'Open standard for authorization, enabling secure API access.',
+      name: 'Auth0',
+      description: 'Authentication and user management platform, providing open ID.',
     },
     {
       name: 'Clerk',

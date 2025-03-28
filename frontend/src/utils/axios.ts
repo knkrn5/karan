@@ -12,27 +12,34 @@ axiosApi.interceptors.response.use(
   response => response,
   async error => {
     if (error.response.status === 401 && !error.config._retry) {
-      console.log("Refresh token renewing...");
+      console.log('Refresh token renewing...');
       error.config._retry = true;
       try {
-        await axiosApi.post('/api/v1/auth/refresh-token');
+        const refreshTokenResponse = await axiosApi.post('/api/v1/auth/refresh-token');
+
+        console.log("Refresh token renewed ", refreshTokenResponse.data);
+
+        axiosApi.defaults.headers.common['Authorization'] = `Bearer ${refreshTokenResponse.data.accessToken}`;
+
+        // Update the access token in the local storage
+        localStorage.setItem('accessToken', refreshTokenResponse.data.accessToken);
 
         //  Retry the original request with the new token
         const res = await axiosApi.request(error.config);
         return res;
       } catch (refreshError) {
         console.log('Failed to refresh token. Logging out...');
-        await axiosApi.post('/api/v1/auth/logout');
-        localStorage.removeItem('isSuccessLoginedInLs');
-        window.location.reload();
+        // await axiosApi.post('/api/v1/auth/logout');
+
+        // window.location.reload();
         return Promise.reject(refreshError);
       }
     }
 
     // Handle Refresh Token Expiry (403)
     if (error.response.status === 403) {
-      console.log('Refresh token expired. Logging out...');
-      await axiosApi.post('/api/v1/auth/logout');
+      console.log('Refresh token 403 expired. Logging out...');
+      // await axiosApi.post('/api/v1/auth/logout');
       // window.location.href = '/login';
     }
 
@@ -42,5 +49,3 @@ axiosApi.interceptors.response.use(
 );
 
 export default axiosApi;
-
-
