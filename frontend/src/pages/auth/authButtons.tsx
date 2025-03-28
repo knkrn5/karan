@@ -1,12 +1,10 @@
 import { Link } from 'react-router';
-import { useEffect, useState } from 'react';
-// import axios from 'axios';
-import axiosApi from '../../utils/axios.js';
+import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 import UserAccount from './userAccount.js';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { useProfileStore } from '../../stores/auth/profileStore.js';
-import axios from 'axios';
-// import { useAuthCheck } from '../../hooks/authCheckHook.js';
+import { useAuthCheck } from '../../hooks/authCheckHook.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -22,32 +20,32 @@ export default function AuthButtons() {
 
   const letter: string = firstName?.[0]?.toUpperCase() || '';
 
-  // const authStatus = useAuthCheck();
+  const authStatus = useAuthCheck();
 
-  localStorage.setItem('isSuccessLoginedInLs', String(isSuccessLoginedIn));
+  const AuthButtonsRef = useRef<HTMLDivElement>(null);
+  const userAccountRef = useRef<HTMLDivElement>(null);
 
-  /*  useEffect(() => {
+  useEffect(() => {
     if (authStatus === true) {
       setIsSuccessLoginedIn(true);
     } else {
       setIsSuccessLoginedIn(false);
     }
-  }, [setIsSuccessLoginedIn, authStatus]); */
 
-
+    function outsideClick(event: MouseEvent) {
+      if (showProfile && event.target && !userAccountRef.current?.contains(event.target as Node) && !AuthButtonsRef.current?.contains(event.target as Node)) {
+        setShowProfile(false);
+      }
+    }
+    document.addEventListener('click', outsideClick);
+  }, [setIsSuccessLoginedIn, authStatus, showProfile]);
 
   useEffect(() => {
-    if (localStorage.getItem('isSuccessLoginedInLs')) {
-      setIsSuccessLoginedIn(true);
-    } else {
-      setIsSuccessLoginedIn(false);
-    }
-
     if (!isSuccessLoginedIn) return;
 
     (async () => {
       try {
-        const { data } = await axiosApi.get(`${BACKEND_URL}/api/v1/profile/details`, {
+        const { data } = await axios.get(`${BACKEND_URL}/api/v1/profile/details`, {
           withCredentials: true,
         });
 
@@ -91,12 +89,12 @@ export default function AuthButtons() {
           className="flex items-center justify-center w-8 h-8 bg-gray-500 rounded-full cursor-pointer duration-300 hover:ring-2 hover:ring-blue-600 dark:hover:ring-gray-300"
           title="Account"
           onClick={() => setShowProfile(!showProfile)}
+          ref={AuthButtonsRef}
         >
           <span className="text-white text-lg font-semibold">{letter}</span>
         </div>
       )}
-
-      {showProfile && isSuccessLoginedIn ? <UserAccount /> : null}
+      <div ref={userAccountRef}>{showProfile && isSuccessLoginedIn ? <UserAccount /> : null}</div>
     </>
   );
 }

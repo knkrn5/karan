@@ -18,9 +18,10 @@ export default function UserAccount() {
   const letter: string = firstName?.[0]?.toUpperCase() || '';
 
 
+
   return (
     <>
-      <div className="flex items-center absolute top-15 right-5 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-lg duration-300 hover:shadow-2xl px-3">
+      <div className="flex items-center absolute z-50 top-15 right-5 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-lg duration-300 hover:shadow-2xl px-3">
         <Link to="/profile" className="mr-2 hover:scale-110 duration-300 cursor-pointer">
           <svg width="70" height="70" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <title>Profile</title>
