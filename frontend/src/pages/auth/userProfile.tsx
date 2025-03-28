@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 import { AnimatedLetterSvg, UserAccoutbgSvg } from '../../icons/userProfileSvg';
-import { useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import { useProfileStore } from '../../stores/auth/profileStore';
 import axios from 'axios';
 import { useAuthStore } from '../../stores/auth/authStore';
@@ -31,10 +31,9 @@ export default function UserProfile() {
 
   const letter: string = firstName?.[0]?.toUpperCase() || '';
 
-  // const statusInfoAuth = useAuthStore(state => state.statusInfoAuth);
-
   const navigate = useNavigate();
 
+  // const statusInfoAuth = useAuthStore(state => state.statusInfoAuth);
   const { setStatusInfoAuth } = useAuthStore();
 
   // animation trigger
@@ -125,6 +124,7 @@ export default function UserProfile() {
     }
   };
 
+  
   const authStatus = useAuthCheck();
 
   useEffect(() => {
@@ -162,7 +162,6 @@ export default function UserProfile() {
           </h2>
           <p className="text-gray-500 dark:text-gray-400 ">{email}</p>
         </div>
-
 
         {/*  Password confirm */}
         <div

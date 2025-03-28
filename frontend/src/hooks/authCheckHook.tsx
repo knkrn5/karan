@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import main from '../utils/isAuthenticated';
-// import { isAuthenticated } from '../utils/isAuthenticated';
+// import main from '../utils/isAuthenticated';
+import { isAuthenticated } from '../utils/isAuthenticated';
 
 
 export const useAuthCheck = () => {
@@ -9,7 +9,7 @@ export const useAuthCheck = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const authStatus = await main();
+        const authStatus = await isAuthenticated();
         setIsAuth(authStatus);
       } catch (error) {
         console.error('Authentication check failed', error);

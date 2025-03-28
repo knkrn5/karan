@@ -3,7 +3,7 @@ import axiosApi from './axios';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-async function refreshAccessToken() {
+/* async function refreshAccessToken() {
   try {
     const response = await axiosApi.get(`${BACKEND_URL}/api/v1/auth/authenticateUser`);
     console.log('req sent', response.data);
@@ -18,15 +18,17 @@ async function refreshAccessToken() {
     }
     return null;
   }
-}
+} */
 
 async function isAuthenticated(): Promise<boolean> {
   try {
-    const response = await axios.get(`${BACKEND_URL}/api/v1/auth/authenticateUser`, {
+    const response = await axiosApi.get(`${BACKEND_URL}/api/v1/auth/authenticateUser`, {
       withCredentials: true,
     });
 
     const { data } = response;
+
+    console.log('req received', data);
 
     return data.success;
   } catch (error) {
@@ -37,18 +39,17 @@ async function isAuthenticated(): Promise<boolean> {
     } else {
       console.error('Unexpected error during authentication:', error);
     }
-
     return false;
   }
 }
 
-// export { isAuthenticated };
+export { isAuthenticated };
 
-async function main() {
+/* async function main() {
   await refreshAccessToken(); // This function must complete before proceeding.
   const authenticatedStatus = await isAuthenticated(); // This runs only after fetchUserData() is done.
   console.log('Authenticated:', authenticatedStatus);
   return authenticatedStatus;
 }
 
-export default main;
+export default main; */

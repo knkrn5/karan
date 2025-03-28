@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import UserAccount from './userAccount.js';
 import { useAuthStore } from '../../stores/auth/authStore.js';
@@ -12,10 +12,10 @@ export default function AuthButtons() {
   const [showProfile, setShowProfile] = useState<boolean>(false);
 
   const firstName = useProfileStore(state => state.firstName);
-  const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
 
   const { setFirstName, setLastName, setMail } = useProfileStore();
 
+  const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
   const setIsSuccessLoginedIn = useAuthStore(state => state.setIsSuccessLoginedIn);
 
   const letter: string = firstName?.[0]?.toUpperCase() || '';
@@ -25,20 +25,32 @@ export default function AuthButtons() {
   const AuthButtonsRef = useRef<HTMLDivElement>(null);
   const userAccountRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (authStatus === true) {
+  const updateLoginStatus = useCallback(() => {
+    if (authStatus) {
       setIsSuccessLoginedIn(true);
     } else {
       setIsSuccessLoginedIn(false);
     }
+  }, [authStatus, setIsSuccessLoginedIn]);
 
-    function outsideClick(event: MouseEvent) {
-      if (showProfile && event.target && !userAccountRef.current?.contains(event.target as Node) && !AuthButtonsRef.current?.contains(event.target as Node)) {
+  useEffect(() => {
+    updateLoginStatus();
+
+    /* function outsideClick(event: MouseEvent) {
+      if (
+        showProfile &&
+        event.target &&
+        !userAccountRef.current?.contains(event.target as Node) &&
+        !AuthButtonsRef.current?.contains(event.target as Node)
+      ) {
         setShowProfile(false);
       }
     }
-    document.addEventListener('click', outsideClick);
-  }, [setIsSuccessLoginedIn, authStatus, showProfile]);
+    // document.addEventListener('click', outsideClick);
+    return () => {
+      // document.removeEventListener('click', outsideClick);
+    }; */
+  }, [authStatus, showProfile, updateLoginStatus]);
 
   useEffect(() => {
     if (!isSuccessLoginedIn) return;

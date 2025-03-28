@@ -103,6 +103,6 @@ export class AuthService {
   }
 
   static async authenticateUser(userData: string) {
-    return new ApiResponse(200, true, 'request received, user Authenticated', userData);
+    return new ApiResponse(200, true, ' user Authenticated successfully via service', userData);
   }
 }
