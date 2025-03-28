@@ -20,23 +20,39 @@ export default function AuthButtons() {
 
   const letter: string = firstName?.[0]?.toUpperCase() || '';
 
-  const authStatus = useAuthCheck();
-
   const AuthButtonsRef = useRef<HTMLDivElement>(null);
   const userAccountRef = useRef<HTMLDivElement>(null);
 
+  /*  useEffect(() => {
+    function trackClick(event: MouseEvent) {
+      console.log("Clicked element:", event.target);
+    }
+  
+    document.addEventListener("click", trackClick);
+    return () => document.removeEventListener("click", trackClick);
+  }, []);
+   */
+
+  const authStatus = useAuthCheck();
+  console.log('calling hook', authStatus);
+
   const updateLoginStatus = useCallback(() => {
     if (authStatus) {
+      console.log('calling auth button', authStatus);
       setIsSuccessLoginedIn(true);
-    } else {
-      setIsSuccessLoginedIn(false);
     }
   }, [authStatus, setIsSuccessLoginedIn]);
+
+  /*  useEffect(() => {
+    if (authStatus === false) {
+      updateLoginStatus();
+    }
+  }, [authStatus, updateLoginStatus]);   */
 
   useEffect(() => {
     updateLoginStatus();
 
-    /* function outsideClick(event: MouseEvent) {
+    function outsideClick(event: MouseEvent) {
       if (
         showProfile &&
         event.target &&
@@ -46,10 +62,7 @@ export default function AuthButtons() {
         setShowProfile(false);
       }
     }
-    // document.addEventListener('click', outsideClick);
-    return () => {
-      // document.removeEventListener('click', outsideClick);
-    }; */
+    document.addEventListener('click', outsideClick);
   }, [authStatus, showProfile, updateLoginStatus]);
 
   useEffect(() => {
@@ -65,19 +78,18 @@ export default function AuthButtons() {
         setLastName(data.data.lastName);
         setMail(data.data.email);
 
-        console.log('user details', data.data);
       } catch (error) {
         console.log('user detail fetching error', error);
         if (axios.isAxiosError(error)) {
           console.error(
-            error.response?.status
-            // message: error.response?.data?.message || error.message,
-            // details: error.response?.data,
+            error.response?.data ||
+            error.response?.data?.message
           );
         }
       }
     })();
   }, [setFirstName, setLastName, setMail, setIsSuccessLoginedIn, isSuccessLoginedIn]);
+
 
   return (
     <>
@@ -106,7 +118,12 @@ export default function AuthButtons() {
           <span className="text-white text-lg font-semibold">{letter}</span>
         </div>
       )}
-      <div ref={userAccountRef}>{showProfile && isSuccessLoginedIn ? <UserAccount /> : null}</div>
+      {showProfile && isSuccessLoginedIn && (
+        <div ref={userAccountRef}>
+          {' '}
+          <UserAccount />{' '}
+        </div>
+      )}
     </>
   );
 }

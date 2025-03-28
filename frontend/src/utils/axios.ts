@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { useAuthStore } from '../stores/auth/authStore';
+import { useProfileStore } from '../stores/auth/profileStore';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -39,15 +41,15 @@ axiosApi.interceptors.response.use(
 
         return axiosApi(originalRequest);
       } catch (error) {
-        // If refresh token fails (401 or 403), log out
         if (
           axios.isAxiosError(error) &&
           (error.response?.status === 401 || error.response?.status === 403)
         ) {
           console.log(error.response.data.message, 'logging out...');
-          // window.location.href = '/login';
           await axios.post(`${BACKEND_URL}/api/v1/auth/logout`, {}, { withCredentials: true });
-          // window.location.reload();
+          useAuthStore.getState().resetAuthStore();
+          useProfileStore.getState().resetProfileStore();
+          window.location.href = '/login';
         } else {
           if (error instanceof Error) {
             console.log('unexpected error occured:', error.message);
@@ -56,7 +58,7 @@ axiosApi.interceptors.response.use(
           }
         }
 
-        return Promise.reject(error); 
+        return Promise.reject(error);
       }
     }
 

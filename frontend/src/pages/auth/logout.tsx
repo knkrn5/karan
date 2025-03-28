@@ -23,8 +23,7 @@ export default function Logout() {
     } catch (error) {
       console.log(error);
     } finally {
-      // navigate('/login');
-      // window.location.reload();
+      navigate('/login');
       setIsLoading(false);
     }
   };

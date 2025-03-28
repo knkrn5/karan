@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-// import main from '../utils/isAuthenticated';
 import { isAuthenticated } from '../utils/isAuthenticated';
 
 

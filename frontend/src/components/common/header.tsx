@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router';
+import { Link, NavLink } from 'react-router';
 import { TbMessageChatbot } from 'react-icons/tb';
 import { AiOutlineDollarCircle } from 'react-icons/ai';
 import { GoProjectRoadmap } from 'react-icons/go';
@@ -12,24 +12,27 @@ export default function MegaMenu1() {
   const menuIconRef = useRef<HTMLDivElement>(null);
   const menubuttonRef = useRef<HTMLUListElement>(null);
 
-  const location = useLocation()
-
   // Close menu when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent | TouchEvent) {
-      if (menuIconRef.current && !menuIconRef.current.contains(event.target as Node) && !menubuttonRef.current?.contains(event.target as Node)) {
+      if (
+        openMenu &&
+        menuIconRef.current &&
+        !menuIconRef.current.contains(event.target as Node) &&
+        !menubuttonRef.current?.contains(event.target as Node)
+      ) {
         setOpenMenu(false);
         setShowMegaMenu(false);
       }
     }
-  
+
     document.addEventListener('click', handleClickOutside);
-  
+
     //for unmount
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
-  }, [showMegaMenu, location]);
+  }, [showMegaMenu, openMenu]);
 
   useEffect(() => {
     const handleResize = () => {
