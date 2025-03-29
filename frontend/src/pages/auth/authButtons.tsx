@@ -23,18 +23,7 @@ export default function AuthButtons() {
   const AuthButtonsRef = useRef<HTMLDivElement>(null);
   const userAccountRef = useRef<HTMLDivElement>(null);
 
-  /*  useEffect(() => {
-    function trackClick(event: MouseEvent) {
-      console.log("Clicked element:", event.target);
-    }
-  
-    document.addEventListener("click", trackClick);
-    return () => document.removeEventListener("click", trackClick);
-  }, []);
-   */
-
   const authStatus = useAuthCheck();
-  console.log('calling hook', authStatus);
 
   const updateLoginStatus = useCallback(() => {
     if (authStatus) {
@@ -43,11 +32,6 @@ export default function AuthButtons() {
     }
   }, [authStatus, setIsSuccessLoginedIn]);
 
-  /*  useEffect(() => {
-    if (authStatus === false) {
-      updateLoginStatus();
-    }
-  }, [authStatus, updateLoginStatus]);   */
 
   useEffect(() => {
     updateLoginStatus();
