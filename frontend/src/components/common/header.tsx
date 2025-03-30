@@ -109,7 +109,7 @@ export default function MegaMenu1() {
                     </button>
                     {/* Modified mega menu div to work on both desktop and mobile */}
                     <div
-                      className={`w-full lg:absolute lg:left-0 lg:top-full lg:w-[780px] lg:rounded-xl lg:shadow-lg dark:shadow-gray-700 z-10 ${
+                      className={`w-full lg:absolute lg:left-0 lg:top-full lg:w-[780px] lg:rounded-xl lg:shadow-lg dark:shadow-neutral-900 z-10 ${
                         showMegaMenu ? 'block' : 'hidden'
                       }`}
                       // Only use mouse events for desktop

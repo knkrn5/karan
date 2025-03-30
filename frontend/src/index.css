@@ -4,11 +4,7 @@
 
 @theme {
   --color-dark: #111827; 
-  --color-light: #f9f9f9; 
-
-  --color-primary: "#1E3A8A";   
-  --color-secondary: "#10B981"; 
-  --color-accent: "#F59E0B";    
+  --color-light: #f9f9f9;  
 
 
   /* screen widths */

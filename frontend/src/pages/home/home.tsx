@@ -47,7 +47,7 @@ function Home() {
       <HomeMetaTags />
       <HeroSectionOne />
       {/* Container for the timeline */}
-      <div className="relative mx-auto px-4 py-12 lg:px-[10%] bg-gradient-to-br from-gray-150 via-gray-300 to-gray-150 dark:from-gray-900 dark:via-gray-700 dark:to-gray-900">
+      <div className="relative mx-auto px-4 py-12 lg:px-[10%] bg-gradient-to-br from-gray-150 via-gray-300 to-gray-150 dark:from-gray-900 dark:via-slate-800 dark:to-gray-900">
         {/* Vertical center line */}
         <div className="max-[550px]:hidden block  absolute left-1/2 top-0 h-full w-[5px]  transform -translate-x-1/2 shadow bg-gray-600 shadow-white dark:bg-gray-400 dark:shadow-sky-950 "></div>
 
