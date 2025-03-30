@@ -1,16 +1,15 @@
-import socialLinks from "../partials/socialLinks";
-import ThemeMode from "../partials/themeToggle";
+import socialLinks from '../partials/socialLinks';
+import ThemeMode from '../partials/themeToggle';
 
-import { Link } from "react-router";
+import { Link } from 'react-router';
 
 export default function Footer() {
-
   return (
     <footer className="bg-white shadow dark:bg-dark">
       <div className=" w-full max-w-screen-xl mx-auto p-4 pb-8">
         <div className="grid grid-cols-[100px_1fr] gap-2">
           <div className="sm:flex sm:items-center sm:justify-between">
-              <ThemeMode />
+            <ThemeMode />
           </div>
 
           <div className="justify-self-end">
@@ -21,8 +20,18 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:underline">
+                <Link to="/contact" className="me-4  hover:underline">
                   Contact
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="assets/pdfs/KaranResume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  Resume
                 </Link>
               </li>
             </ul>
