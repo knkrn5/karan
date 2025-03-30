@@ -6,8 +6,8 @@ export default function Resume() {
   }, []);
 
   return (
-    <div className="h-screen p-2 bg-gray-200 text-black dark:bg-slate-800 dark:text-white">
-      Redirecting to Resume
+    <div className="h-screen p-1 bg-gray-200 text-black dark:bg-slate-800 dark:text-white">
+      Redirecting to Resume...
     </div>
   );
 }
