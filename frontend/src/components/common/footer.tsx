@@ -26,9 +26,8 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="assets/pdfs/KaranResume.pdf"
+                  to="/resume"
                   target="_blank"
-                  rel="noopener noreferrer"
                   className="hover:underline"
                 >
                   Resume
