@@ -6,7 +6,7 @@ import { useContactInfoStore } from '../../stores/contact/contantInfoStore';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-import SeeContactInfo from './seeContactInfo';
+import SeeContactMsg from './seeContactMsg';
 
 interface FormDataProp {
   name: string;
@@ -97,10 +97,9 @@ export default function ContactForm() {
       setContactMsgId(data.data._id);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const data = error.response?.data;
 
-        setIsSuccess(data?.success || false);
-        setStatusInfo({ error: data.message || error.message });
+        setIsSuccess(error.response?.data?.success || false);
+        setStatusInfo({ error: error.response?.data?.message || error.message, });
       } else {
         setStatusInfo({ error: 'An unexpected error occurred' });
       }
@@ -122,7 +121,7 @@ export default function ContactForm() {
 
   // component switching
   if (isSubmitted) {
-    return <SeeContactInfo />;
+    return <SeeContactMsg />;
   }
 
   return (

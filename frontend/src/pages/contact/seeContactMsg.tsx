@@ -12,7 +12,7 @@ import { IoIosSend } from 'react-icons/io';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-const SeeContactInfo = () => {
+const SeeContactMsg = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isEdited, setIsEdited] = useState<boolean>(true);
   const [isResend, setIsResend] = useState<boolean>(false);
@@ -221,4 +221,4 @@ const SeeContactInfo = () => {
   );
 };
 
-export default SeeContactInfo;
+export default SeeContactMsg;
