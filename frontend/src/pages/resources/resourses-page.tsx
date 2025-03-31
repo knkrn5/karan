@@ -60,12 +60,16 @@ const resources: Resource[] = [
 
   new CreateResourses('Hosting', FaCloud, 'text-blue-500', [
     {
+      name: 'Render',
+      description: 'Modern hosting platform with CI/CD',
+    },
+    {
       name: 'Netlify',
       description: 'Modern Serverless hosting platform with CI/CD',
     },
     {
-      name: 'Render',
-      description: 'Modern hosting platform with CI/CD',
+      name: 'Vercel',
+      description: 'Serverless hosting platform with CI/CD',
     },
   ]),
 
