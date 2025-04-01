@@ -49,7 +49,7 @@ axiosApi.interceptors.response.use(
           await axios.post(`${BACKEND_URL}/api/v1/auth/logout`, {}, { withCredentials: true });
           useAuthStore.getState().resetAuthStore();
           useProfileStore.getState().resetProfileStore();
-          window.location.href = '/login';
+          // window.location.href = '/login';
         } else {
           if (error instanceof Error) {
             console.log('unexpected error occured:', error.message);

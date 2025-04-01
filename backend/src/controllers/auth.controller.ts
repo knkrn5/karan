@@ -94,9 +94,9 @@ export class AuthController {
   static async authenticateUser(req: Request, res: Response) {
     try {
       const userData = req.user;
-      const userid = req.user.userId;
       const response = await AuthService.authenticateUser(userData);
       res.status(response.statusCode).json(response);
+      console.log(response.data)
     } catch (error: any) {
       res.status(500).json({ success: false, message: error.message, data: null });
     }

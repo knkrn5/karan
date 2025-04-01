@@ -88,7 +88,7 @@ export class AuthService {
 
       const user = await User.findById(verifiedToken.userId);
       if (!user || user.refreshToken !== refreshToken) {
-        throw new ApiResponse(400, false, 'Invalid refresh token', null);
+        throw new ApiResponse(401, false, 'Invalid refresh token', null);
       }
 
       // Generating new access token
@@ -103,6 +103,7 @@ export class AuthService {
   }
 
   static async authenticateUser(userData: string) {
+    if (!userData) throw new ApiResponse(404, false, 'User not found', null);
     return new ApiResponse(200, true, ' user Authenticated successfully via service', userData);
   }
 }

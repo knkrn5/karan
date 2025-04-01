@@ -40,13 +40,13 @@ userSchema.methods.createAccessToken = function (): string {
   return jwt.sign(
     { userId: this._id, email: this.email },
     process.env.ACCESS_TOKEN_SECRET as string,
-    { expiresIn: '15m' }
+    { expiresIn: '10m' }
   );
 };
 
 userSchema.methods.createRefreshToken = function (): string {
   return jwt.sign({ userId: this._id }, process.env.REFRESH_TOKEN_SECRET as string, {
-    expiresIn: '7d',
+    expiresIn: '30m',
   });
 };
 
