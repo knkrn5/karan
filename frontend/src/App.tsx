@@ -27,8 +27,10 @@ function App() {
           <Route path="/resources" element={<ResourcesInfo />} />
 
           <Route element={<AuthLayout />}>
-            <Route path="login" element={<LoginPage />} />
-            <Route path="register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signin" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/signup" element={<RegisterPage />} />
           </Route>
 
           <Route path="/profile" element={<UserProfile />} />
