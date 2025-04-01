@@ -11,9 +11,12 @@ async function isAuthenticated(): Promise<boolean> {
 
     const { data } = response;
 
+    console.log("isAuthenticated: ", data);
+
     return data.success;
   } catch (error) {
     if (axios.isAxiosError(error)) {
+      console.log("isAuthenticated: ", error.response?.status);
       console.error(
         (error.response?.status && error.response?.data) || error.response?.data?.message
       );
