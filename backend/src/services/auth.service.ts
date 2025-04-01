@@ -88,7 +88,7 @@ export class AuthService {
 
       const user = await User.findById(verifiedToken.userId);
       if (!user || user.refreshToken !== refreshToken) {
-        throw new ApiResponse(401, false, 'Invalid refresh token', null);
+        throw new ApiResponse(400, false, 'Invalid refresh token', null);
       }
 
       // Generating new access token
