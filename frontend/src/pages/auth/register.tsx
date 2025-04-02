@@ -5,7 +5,7 @@ import axios from 'axios';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import StatusNotifications from '../../utils/StatusNotifications';
 import { useAuthStore } from '../../stores/auth/authStore.js';
-// import { useAuthCheck } from '../../hooks/authCheckHook.js';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -196,14 +196,6 @@ export default function Register() {
     }));
   }, []);
 
-  /*   const authStatus = useAuthCheck();
-
-  useEffect(() => {
-    if (isAccountCreated || authStatus === true) {
-      navigate('/login', { replace: true });
-    }
-  }, [isAccountCreated, authStatus, navigate]); */
-
   const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
 
   useEffect(() => {
@@ -213,7 +205,12 @@ export default function Register() {
   }, [isAccountCreated, isSuccessLoginedIn, navigate]);
 
   if (isSuccessLoginedIn === null) {
-    return <img src="/favicons/K.svg" alt="logo" className=" animate-pulse duration-700" />;
+    return (
+      <div className="flex justify-center items-center">
+        <img src="/favicons/K.svg" alt="logo" className=" animate-pulse duration-700" />
+        <AiOutlineLoading3Quarters className="absolute animate-spin size-32 text-gray-400 dark:text-gray-700" />
+      </div>
+    );
   }
 
   return (

@@ -5,6 +5,7 @@ import UserAccount from './userAccount.js';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { useProfileStore } from '../../stores/auth/profileStore.js';
 import { useAuthCheck } from '../../hooks/authCheckHook.js';
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -68,6 +69,14 @@ export default function AuthButtons() {
       }
     })();
   }, [setFirstName, setLastName, setMail, setIsSuccessLoginedIn, isSuccessLoginedIn]);
+
+  if (isSuccessLoginedIn === null) {
+    return (
+      <div className="p-2 rounded-xl bg-gray-300 dark:bg-gray-700 ">
+        <AiOutlineLoading3Quarters className='animate-spin text-black dark:text-white' />
+      </div>
+    );
+  }
 
   return (
     <>

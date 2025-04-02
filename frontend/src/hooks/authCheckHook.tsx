@@ -3,7 +3,7 @@ import { isAuthenticated } from '../utils/isAuthenticated';
 
 
 export const useAuthCheck = () => {
-  const [isAuth, setIsAuth] = useState<boolean | null>(null); // Initial state is null
+  const [isAuth, setIsAuth] = useState<boolean | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {

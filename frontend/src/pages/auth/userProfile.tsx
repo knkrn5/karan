@@ -5,7 +5,6 @@ import { useProfileStore } from '../../stores/auth/profileStore';
 import axios from 'axios';
 import { useAuthStore } from '../../stores/auth/authStore';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-// import { useAuthCheck } from '../../hooks/authCheckHook';
 import BrandLoadingPage from '../brandLoadingPage';
 // import StatusNotifications from '../../utils/StatusNotifications';
 
@@ -125,17 +124,6 @@ export default function UserProfile() {
     }
   };
 
-  /* const authStatus = useAuthCheck();
-
-  useEffect(() => {
-    if (authStatus === false) {
-      navigate('/login', { replace: true });
-    }
-  }, [authStatus, navigate]);
-
-  if (authStatus === null) {
-    return <div>Loading...</div>;
-  } */
 
   const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
 

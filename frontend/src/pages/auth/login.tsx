@@ -6,7 +6,6 @@ import StatusNotifications from '../../utils/StatusNotifications.js';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useAuthStore } from '../../stores/auth/authStore.js';
-// import { useAuthCheck } from '../../hooks/authCheckHook.js';
 
 interface loginFeildDataProps {
   email: string;
@@ -120,14 +119,6 @@ export default function LoginPage() {
     }
   };
 
-  /*   const authStatus = useAuthCheck();
-
-  useEffect(() => {
-    if (authStatus === true) {
-      navigate('/profile', { replace: true });
-    }
-  }, [authStatus, navigate]); */
-
   const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
 
   useEffect(() => {
@@ -136,8 +127,21 @@ export default function LoginPage() {
     }
   }, [isSuccessLoginedIn, navigate]);
 
+  /*  if (isSuccessLoginedIn === null) {
+    return;
+    <div>
+      <img src="/favicons/K.svg" alt="logo" className=" animate-pulse duration-700" />
+      <AiOutlineLoading3Quarters className="absolute animate-spin size-32 text-gray-400 dark:text-gray-700" />
+    </div>;
+  } */
+
   if (isSuccessLoginedIn === null) {
-    return <img src="/favicons/K.svg" alt="logo" className=" animate-pulse duration-700" />;
+    return (
+      <div className='flex justify-center items-center'>
+        <img src="/favicons/K.svg" alt="logo" className=" animate-pulse duration-700" />
+        <AiOutlineLoading3Quarters className="absolute animate-spin size-32 text-gray-400 dark:text-gray-700" />
+      </div>
+    );
   }
 
   return (

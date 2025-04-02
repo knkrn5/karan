@@ -32,6 +32,7 @@ function calculateRemainingTime(expirationTimestampSession: number | null): numb
   console.log(date.toLocaleString());
 
   const remainingTime = threeMinBeforeTokenExpiration - currentTime.getTime();
+  console.log(`Token refresh scheduled in ${remainingTime / 1000} seconds.`);
   return remainingTime > 0 ? remainingTime : 0;
 }
 
@@ -42,7 +43,6 @@ async function scheduleTokenRefresh() {
     console.log('No valid session found');
     const isAuth = await isAuthenticated();
     if (!isAuth) {
-      console.log('Authentication failed, not scheduling token refresh');
       return;
     }
   }
@@ -50,7 +50,6 @@ async function scheduleTokenRefresh() {
   const remainingTime = calculateRemainingTime(expirationTimestampSession);
 
   if (remainingTime > 0) {
-    console.log(`Token refresh scheduled in ${remainingTime / 1000} seconds.`);
     setTimeout(async () => {
       console.log('Refreshing token now...');
       await autoRefreshAccessToken();
@@ -61,8 +60,6 @@ async function scheduleTokenRefresh() {
     const refreshResult = await autoRefreshAccessToken();
     if (refreshResult !== null) {
       scheduleTokenRefresh();
-    } else {
-      console.log('Token refresh failed, not scheduling further refreshes');
     }
   }
 }
