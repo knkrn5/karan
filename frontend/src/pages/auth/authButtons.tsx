@@ -5,7 +5,7 @@ import UserAccount from './userAccount.js';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { useProfileStore } from '../../stores/auth/profileStore.js';
 import { useAuthCheck } from '../../hooks/authCheckHook.js';
-import { SmallBoxSkeletonLaoding } from '../../components/skeletonLoadings.js';
+import { AuthButtonsSkeletonLoading } from '../../components/skeletonLoadings.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -81,7 +81,7 @@ export default function AuthButtons() {
   ]);
 
   if (isSuccessLoginedIn === null) {
-    return <SmallBoxSkeletonLaoding />;
+    return <AuthButtonsSkeletonLoading />;
   }
 
   return (

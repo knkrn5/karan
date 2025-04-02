@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useAuthStore } from '../../stores/auth/authStore';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import BrandLoadingPage from '../brandLoadingPage';
-import { SmallBoxSkeletonLaoding } from '../../components/skeletonLoadings';
+import { TwoSmallLinesSkeletonLoading } from '../../components/skeletonLoadings';
 // import StatusNotifications from '../../utils/StatusNotifications';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -164,7 +164,7 @@ export default function UserProfile() {
         {/* User Info */}
         {isFetchingProfileData ? (
           <div className='w-fit mx-auto m-2'>
-            <SmallBoxSkeletonLaoding />
+            <TwoSmallLinesSkeletonLoading />
           </div>
         ) : (
           <div className="text-center mt-2">
