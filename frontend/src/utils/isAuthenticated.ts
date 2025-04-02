@@ -68,7 +68,7 @@ scheduleTokenRefresh();
 
 async function isAuthenticated(): Promise<boolean> {
   try {
-    // await new Promise((resolve) => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const response = await axiosApi.get(`${BACKEND_URL}/api/v1/auth/authenticateUser`, {
       withCredentials: true,
