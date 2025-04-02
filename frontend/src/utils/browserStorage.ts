@@ -7,7 +7,6 @@ function clearBrowserStorage(exceptions: string[] = ['session', 'currentTheme'])
     savedItems[key] = localStorage.getItem(key);
   });
 
-  console.log(savedItems);
 
   // Clearing all localStorage
   localStorage.clear();

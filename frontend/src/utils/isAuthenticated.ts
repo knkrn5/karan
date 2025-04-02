@@ -41,18 +41,15 @@ async function scheduleTokenRefresh() {
 
   if (!expirationTimestampSession) {
     console.log('No valid session found');
-    const isAuth = await isAuthenticated();
-    if (!isAuth) {
-      return;
-    }
+    return;
   }
 
   const remainingTime = calculateRemainingTime(expirationTimestampSession);
 
   //pro-active call before the token expires
   if (remainingTime > 0) {
+    console.log('schecided auto refresh');
     setTimeout(async () => {
-      console.log('Refreshing token now...');
       await autoRefreshAccessToken();
       scheduleTokenRefresh();
     }, remainingTime);
@@ -65,10 +62,9 @@ async function scheduleTokenRefresh() {
   }
 }
 
-scheduleTokenRefresh();
-
 async function isAuthenticated(): Promise<boolean> {
   clearBrowserStorage();
+
   try {
     // await new Promise((resolve) => setTimeout(resolve, 3000));
 
@@ -79,6 +75,8 @@ async function isAuthenticated(): Promise<boolean> {
     const { data } = response;
 
     localStorage.setItem('session', JSON.stringify(data.data.exp));
+
+    scheduleTokenRefresh();
 
     return data.success;
   } catch (error) {

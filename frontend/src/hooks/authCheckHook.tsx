@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { isAuthenticated } from '../utils/isAuthenticated';
-
+import { useAuthStore } from '../stores/auth/authStore';
 
 export const useAuthCheck = () => {
   const [isAuth, setIsAuth] = useState<boolean | null>(null);
+  const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -17,7 +18,7 @@ export const useAuthCheck = () => {
     };
 
     checkAuth();
-  }, []);
+  }, [isSuccessLoginedIn]);
 
   return isAuth;
 };
