@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useAuthStore } from '../../stores/auth/authStore';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 // import { useAuthCheck } from '../../hooks/authCheckHook';
+import BrandLoadingPage from '../brandLoadingPage';
 // import StatusNotifications from '../../utils/StatusNotifications';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -145,7 +146,7 @@ export default function UserProfile() {
   }, [isSuccessLoginedIn, navigate]);
 
   if (isSuccessLoginedIn === null) {
-    return <div>Loading...</div>;
+    return <BrandLoadingPage />;
   }
 
   return (

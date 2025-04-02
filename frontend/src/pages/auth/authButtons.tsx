@@ -26,12 +26,10 @@ export default function AuthButtons() {
   const authStatus = useAuthCheck();
 
   const updateLoginStatus = useCallback(() => {
-    if (authStatus) {
-      return setIsSuccessLoginedIn(true);
+    if (authStatus === null) {
+      return;
     }
-    if (!authStatus) {
-      return setIsSuccessLoginedIn(false);
-    }
+    setIsSuccessLoginedIn(authStatus); //this will set based on authStatus true/false
   }, [authStatus, setIsSuccessLoginedIn]);
 
   useEffect(() => {

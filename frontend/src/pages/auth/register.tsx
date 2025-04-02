@@ -212,6 +212,10 @@ export default function Register() {
     }
   }, [isAccountCreated, isSuccessLoginedIn, navigate]);
 
+  if (isSuccessLoginedIn === null) {
+    return <img src="/favicons/K.svg" alt="logo" className=" animate-pulse duration-700" />;
+  }
+
   return (
     <>
       <div

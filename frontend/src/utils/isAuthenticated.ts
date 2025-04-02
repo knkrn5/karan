@@ -71,6 +71,8 @@ scheduleTokenRefresh();
 
 async function isAuthenticated(): Promise<boolean> {
   try {
+    // await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const response = await axiosApi.get(`${BACKEND_URL}/api/v1/auth/authenticateUser`, {
       withCredentials: true,
     });
@@ -83,8 +85,8 @@ async function isAuthenticated(): Promise<boolean> {
     return data.success;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log('isAuthenticated checking: ', error.response?.status);
       console.error(
+        'isAuthenticated checking: ',
         (error.response?.status && error.response?.data) || error.response?.data?.message
       );
     } else {
