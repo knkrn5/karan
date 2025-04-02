@@ -20,21 +20,21 @@ function Home() {
 
   const projects: myProjects[] = [
     new myProjects(
-      '/assets/imgs/white-wp.webp',
+      'https://res.cloudinary.com/dywuvwqth/image/upload/v1743429589/karan.email/rinkpptt11gjweedg7mx.png',
       'WealthPsychology: -',
       `Teaches the principles of financial psychology, and explains different financial concepts.`,
       'bg-lime-500',
       'https://wealthpsychology.in'
     ),
     new myProjects(
-      '/assets/imgs/explanatorai.webp',
+      'https://res.cloudinary.com/dywuvwqth/image/upload/v1743587227/karan.email/m8yyptura5kuao1nzugt.jpg',
       'Explanator AI: -',
       `Include the Chatbots, and custom Datasets of Different models and APIs.`,
       'bg-blue-500',
       'https://explanatorai.site'
     ),
     new myProjects(
-      '/assets/imgs/coding.webp',
+      'https://res.cloudinary.com/dywuvwqth/image/upload/v1743587228/karan.email/vrqkgi7qwemhcttfsvvl.jpg',
       'Other Projects: -',
       `Developing some other projects, and working on some new ideas. Using different technologies.`,
       'bg-orange-500',
