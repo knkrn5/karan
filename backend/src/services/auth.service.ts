@@ -75,7 +75,7 @@ export class AuthService {
 
       const decoded = jwt.decode(refreshToken) as { userId: string } | null;
       if (!decoded) {
-        throw new ApiResponse(401, false, 'Invalid refresh token', null);
+        throw new ApiResponse(401, false, 'Invalid refresh token decoding', null);
       }
 
       // Verifing the token
@@ -88,16 +88,27 @@ export class AuthService {
 
       const user = await User.findById(verifiedToken.userId);
       if (!user || user.refreshToken !== refreshToken) {
-        throw new ApiResponse(401, false, 'Invalid refresh token', null);
+        throw new ApiResponse(401, false, 'Invalid refresh token comparing', null);
       }
 
       // Generating new access token
       const accessToken = user.createAccessToken();
       return new ApiResponse(200, true, 'Token refreshed successfully', { accessToken });
     } catch (error: any) {
+      console.error('JWT Error:', error.name, error.message); // Log for debugging
+
       if (error.name === 'TokenExpiredError') {
         throw new ApiResponse(401, false, 'Refresh token expired', null);
       }
+
+      if (error.name === 'JsonWebTokenError') {
+        throw new ApiResponse(400, false, 'Malformed refresh token', null);
+      }
+
+      if (error.name === 'NotBeforeError') {
+        throw new ApiResponse(401, false, 'Refresh token not active yet', null);
+      }
+
       throw new ApiResponse(401, false, 'Invalid refresh token', null);
     }
   }
