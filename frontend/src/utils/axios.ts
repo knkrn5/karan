@@ -17,7 +17,6 @@ axiosApi.interceptors.response.use(
 
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true; //to prevent infinite loop
-      console.log('Refresh token renewing...');
 
       try {
         const refreshTokenResponse = await axios.post(
@@ -26,7 +25,7 @@ axiosApi.interceptors.response.use(
           { withCredentials: true }
         );
 
-        console.log('Refresh token renewed', refreshTokenResponse.data);
+        console.log('Access token renewed', refreshTokenResponse.data);
 
         //** this is only needed if my logic to refresh the accesstoken is stored any storage that can be accessed from forontend js */
         /* // Seting new access token in headers for future requests

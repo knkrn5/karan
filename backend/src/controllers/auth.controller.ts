@@ -62,8 +62,8 @@ export class AuthController {
   static async refreshToken(req: Request, res: Response) {
     try {
       const { refreshToken } = req.cookies;
-      console.log(refreshToken)
-      
+      console.log(refreshToken);
+
       const response = await AuthService.refreshAccessToken(refreshToken);
 
       const { accessToken } = response.data;
@@ -87,9 +87,19 @@ export class AuthController {
 
   static async logoutUser(req: Request, res: Response) {
     res
+      .clearCookie('accessToken', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        path: '/',
+      })
+      .clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        path: '/',
+      })
       .status(200)
-      .clearCookie('accessToken')
-      .clearCookie('refreshToken')
       .json({ success: true, message: 'Logout successful', data: null });
   }
 
