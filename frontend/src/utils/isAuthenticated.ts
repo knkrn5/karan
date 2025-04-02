@@ -10,7 +10,6 @@ async function autoRefreshAccessToken() {
       {},
       { withCredentials: true }
     );
-    console.log('access token refreshed automatically');
     await isAuthenticated();
     return response;
   } catch (error) {
@@ -49,6 +48,7 @@ async function scheduleTokenRefresh() {
 
   const remainingTime = calculateRemainingTime(expirationTimestampSession);
 
+  //pro-active call before the token expires
   if (remainingTime > 0) {
     setTimeout(async () => {
       console.log('Refreshing token now...');
@@ -56,7 +56,7 @@ async function scheduleTokenRefresh() {
       scheduleTokenRefresh();
     }, remainingTime);
   } else {
-    console.log('Token is already expired, refreshing now...');
+    //re-active call if the token is already expired
     const refreshResult = await autoRefreshAccessToken();
     if (refreshResult !== null) {
       scheduleTokenRefresh();
@@ -77,7 +77,6 @@ async function isAuthenticated(): Promise<boolean> {
     const { data } = response;
 
     localStorage.setItem('session', JSON.stringify(data.data.exp));
-    console.log('session storage set');
 
     return data.success;
   } catch (error) {
