@@ -124,7 +124,6 @@ export default function UserProfile() {
     }
   };
 
-
   const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
 
   useEffect(() => {
