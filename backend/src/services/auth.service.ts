@@ -105,10 +105,6 @@ export class AuthService {
         throw new ApiResponse(400, false, 'Malformed refresh token', null);
       }
 
-      if (error.name === 'NotBeforeError') {
-        throw new ApiResponse(401, false, 'Refresh token not active yet', null);
-      }
-
       throw new ApiResponse(401, false, 'Invalid refresh token', null);
     }
   }

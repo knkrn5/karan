@@ -49,6 +49,7 @@ axiosApi.interceptors.response.use(
           await axios.post(`${BACKEND_URL}/api/v1/auth/logout`, {}, { withCredentials: true });
           useAuthStore.getState().resetAuthStore();
           useProfileStore.getState().resetProfileStore();
+          localStorage.removeItem('session');
           // window.location.href = '/login';
         } else {
           if (error instanceof Error) {

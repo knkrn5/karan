@@ -20,10 +20,11 @@ export default function Logout() {
       useAuthStore.getState().resetAuthStore();
       useProfileStore.getState().resetProfileStore();
       console.log('logging Out');
+      localStorage.removeItem('session');
+      navigate('/login');
     } catch (error) {
       console.log(error);
     } finally {
-      navigate('/login');
       setIsLoading(false);
     }
   };

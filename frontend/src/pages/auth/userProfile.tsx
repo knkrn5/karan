@@ -135,12 +135,12 @@ export default function UserProfile() {
 
   return (
     <div
-      className="min-h-[calc(100vh-72px)] p-2 flex items-center justify-center transition-all duration-500 
+      className="min-h-[calc(100vh-72px)] p-2 flex items-center justify-center  
       bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white"
     >
       {/* Card */}
       <div
-        className={`mx-auto rounded-lg overflow-hidden w-80 duration-300 
+        className={`mx-auto rounded-lg overflow-hidden w-80 
         bg-white dark:bg-gray-900 shadow-lg hover:dark:shadow-gray-900  ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
         }`}
