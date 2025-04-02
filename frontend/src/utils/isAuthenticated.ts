@@ -11,9 +11,7 @@ async function autoRefreshAccessToken() {
       { withCredentials: true }
     );
     console.log('access token refreshed automatically');
-    const isAuth = await isAuthenticated();
-    console.log('isAuthenticated called', isAuth);
-    console.log(response);
+    await isAuthenticated();
     return response;
   } catch (error) {
     console.log(error);
