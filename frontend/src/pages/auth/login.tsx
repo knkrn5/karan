@@ -127,17 +127,9 @@ export default function LoginPage() {
     }
   }, [isSuccessLoginedIn, navigate]);
 
-  /*  if (isSuccessLoginedIn === null) {
-    return;
-    <div>
-      <img src="/favicons/K.svg" alt="logo" className=" animate-pulse duration-700" />
-      <AiOutlineLoading3Quarters className="absolute animate-spin size-32 text-gray-400 dark:text-gray-700" />
-    </div>;
-  } */
-
   if (isSuccessLoginedIn === null) {
     return (
-      <div className='flex justify-center items-center'>
+      <div className="flex justify-center items-center">
         <img src="/favicons/K.svg" alt="logo" className=" animate-pulse duration-700" />
         <AiOutlineLoading3Quarters className="absolute animate-spin duration-1000 size-32 text-gray-400 dark:text-gray-700" />
       </div>

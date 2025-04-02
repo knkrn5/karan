@@ -26,13 +26,13 @@ function calculateRemainingTime(expirationTimestampSession: number | null): numb
   const currentTime = new Date();
 
   const threeMinBeforeTokenExpiration = tokenExpirationTime.getTime() - 3 * 60 * 1000;
-  console.log('token expiration:-', tokenExpirationTime);
+/*   console.log('token expiration:-', tokenExpirationTime);
   console.log('three min before', threeMinBeforeTokenExpiration);
   const date = new Date(threeMinBeforeTokenExpiration);
-  console.log(date.toLocaleString());
+  console.log(date.toLocaleString()); */
 
   const remainingTime = threeMinBeforeTokenExpiration - currentTime.getTime();
-  console.log(`Token refresh scheduled in ${remainingTime / 1000} seconds.`);
+  // console.log(`Token refresh scheduled in ${remainingTime / 1000} seconds.`);
   return remainingTime > 0 ? remainingTime : 0;
 }
 
@@ -68,7 +68,7 @@ scheduleTokenRefresh();
 
 async function isAuthenticated(): Promise<boolean> {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    // await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const response = await axiosApi.get(`${BACKEND_URL}/api/v1/auth/authenticateUser`, {
       withCredentials: true,
