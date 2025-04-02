@@ -12,7 +12,7 @@ async function autoRefreshAccessToken() {
       { withCredentials: true }
     );
     console.log('access token refreshed automatically');
-    isAuthenticated();
+    await isAuthenticated();
     console.log('isAuthenticated called');
     return response;
   } catch (error) {
@@ -20,81 +20,48 @@ async function autoRefreshAccessToken() {
   }
 }
 
-const isSession = JSON.parse(localStorage.getItem('session') || 'null');
-const tokenExpirationTime = new Date(isSession * 1000);
-const currentTime = new Date();
-
-console.log('token expiration:-', tokenExpirationTime);
-const fiveMinBeforeTokenExpiration = tokenExpirationTime.getTime() - 5 * 60 * 1000;
-console.log('five min before', fiveMinBeforeTokenExpiration);
-const date = new Date(fiveMinBeforeTokenExpiration);
-console.log(date.toUTCString());
-console.log(date.toLocaleString());
-
-const remainingTime = fiveMinBeforeTokenExpiration - currentTime.getTime();
-console.log('remainingTime', remainingTime);
-
-setTimeout(autoRefreshAccessToken, remainingTime);
-
-/* setInterval(() => {
+function calculateRemainingTime() {
   const isSession = JSON.parse(localStorage.getItem('session') || 'null');
+
+  if (!isSession) {
+    console.log('No valid session found');
+    return;
+  }
+
   const tokenExpirationTime = new Date(isSession * 1000);
-  const fiveMinBeforeTokenExpiration = tokenExpirationTime.getTime() - 5 * 60 * 1000;
   const currentTime = new Date();
-  const remainingTime = fiveMinBeforeTokenExpiration - currentTime.getTime();
+
+  console.log('token expiration:-', tokenExpirationTime);
+  const threeMinBeforeTokenExpiration = tokenExpirationTime.getTime() - 3 * 60 * 1000;
+  console.log('three min before', threeMinBeforeTokenExpiration);
+  const date = new Date(threeMinBeforeTokenExpiration);
+  console.log(date.toUTCString());
+  console.log(date.toLocaleString());
+
+  const remainingTime = threeMinBeforeTokenExpiration - currentTime.getTime();
   console.log('remainingTime', remainingTime);
-}, 2000); */
-
-async function checkSession() {
-  try {
-    const response = await axiosApi.get(`${BACKEND_URL}/api/v1/auth/authenticateUser`, {
-      withCredentials: true,
-    });
-    const { data } = response;
-    console.log('isAuthenticated checking: ', data.data);
-    localStorage.setItem('session', JSON.stringify(data.data.exp));
-    return true;
-  } catch (error) {
-    console.error('Error checking session:', error);
-    return false;
-  }
+  return remainingTime > 0 ? remainingTime : 0;
 }
 
-//refresh accesstoken 5 min before
-async function refreshAccessToken() {
-  const isSession = JSON.parse(localStorage.getItem('session') || 'null');
-  try {
-    if (!isSession) {
-      const response = await checkSession();
-      if (!response) {
-        return null;
-      }
-    }
+async function scheduleTokenRefresh() {
+  const remainingTime = calculateRemainingTime();
 
-    /*  const tokenExpirationTime = new Date(isSession * 1000);
-    console.log('10 min', tokenExpirationTime);
-    const currentTime = new Date();
-    // Check if the current time is 5 minutes less than the expiration time
-    if (currentTime.getTime() >= tokenExpirationTime.getTime() - 5 * 60 * 1000) {
-      console.log('Token is about to expire, refreshing the token...');
-      const response = await axiosApi.post(
-        `${BACKEND_URL}/api/v1/auth/refresh-token`,
-        {},
-        { withCredentials: true }
-      );
-      console.log('access token refreshed');
-      return response.data.accessToken;
-    } else {
-      console.log('Token is still valid');
-    } */
-  } catch (error) {
-    console.error('Error refreshing access token:', error);
-    return null;
+  if (remainingTime !== undefined && remainingTime > 0) {
+    console.log(`Token refresh scheduled in ${remainingTime / 1000} seconds.`);
+    setTimeout(async () => {
+      console.log('Refreshing token now...');
+      await autoRefreshAccessToken();
+      scheduleTokenRefresh();
+    }, remainingTime);
+  } else {
+    console.log('Token is already expired, refreshing now...');
+    autoRefreshAccessToken();
+    // scheduleTokenRefresh();
   }
 }
+scheduleTokenRefresh();
 
 async function isAuthenticated(): Promise<boolean> {
-  refreshAccessToken();
   try {
     const response = await axiosApi.get(`${BACKEND_URL}/api/v1/auth/authenticateUser`, {
       withCredentials: true,
@@ -122,3 +89,9 @@ async function isAuthenticated(): Promise<boolean> {
 }
 
 export { isAuthenticated };
+
+/* setInterval(() => {
+  console.log('remainingTime function', remainingTime);
+  // const timeLeft = new Date(remainingTime);
+  // console.log(timeLeft.toLocaleString());
+}, 1000); */

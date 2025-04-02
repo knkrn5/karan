@@ -27,7 +27,6 @@ export default function AuthButtons() {
 
   const updateLoginStatus = useCallback(() => {
     if (authStatus) {
-      console.log('calling auth button', authStatus);
       setIsSuccessLoginedIn(true);
     }
   }, [authStatus, setIsSuccessLoginedIn]);
