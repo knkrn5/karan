@@ -1,5 +1,6 @@
 import axios from 'axios';
 import axiosApi from './axios';
+import clearBrowserStorage from './browserStorage';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -25,7 +26,7 @@ function calculateRemainingTime(expirationTimestampSession: number | null): numb
   const currentTime = new Date();
 
   const threeMinBeforeTokenExpiration = tokenExpirationTime.getTime() - 3 * 60 * 1000;
-/*   console.log('token expiration:-', tokenExpirationTime);
+  /*   console.log('token expiration:-', tokenExpirationTime);
   console.log('three min before', threeMinBeforeTokenExpiration);
   const date = new Date(threeMinBeforeTokenExpiration);
   console.log(date.toLocaleString()); */
@@ -67,6 +68,7 @@ async function scheduleTokenRefresh() {
 scheduleTokenRefresh();
 
 async function isAuthenticated(): Promise<boolean> {
+  clearBrowserStorage();
   try {
     // await new Promise((resolve) => setTimeout(resolve, 3000));
 
@@ -82,7 +84,7 @@ async function isAuthenticated(): Promise<boolean> {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error(
-        'isAuthenticated checking: ',
+        'isAuthenticated: ',
         (error.response?.status && error.response?.data) || error.response?.data?.message
       );
     } else {
