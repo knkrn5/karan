@@ -3,7 +3,7 @@ import axiosApi from './axios';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-async function timetest() {
+async function autoRefreshAccessToken() {
   console.log('function to call the  refresh-token remaining time function');
   try {
     const response = await axiosApi.post(
@@ -12,7 +12,9 @@ async function timetest() {
       { withCredentials: true }
     );
     console.log('access token refreshed automatically');
-    return response.data.accessToken;
+    isAuthenticated();
+    console.log('isAuthenticated called');
+    return response;
   } catch (error) {
     console.log(error);
   }
@@ -32,16 +34,16 @@ console.log(date.toLocaleString());
 const remainingTime = fiveMinBeforeTokenExpiration - currentTime.getTime();
 console.log('remainingTime', remainingTime);
 
-setTimeout(timetest, remainingTime);
+setTimeout(autoRefreshAccessToken, remainingTime);
 
-setInterval(() => {
+/* setInterval(() => {
   const isSession = JSON.parse(localStorage.getItem('session') || 'null');
   const tokenExpirationTime = new Date(isSession * 1000);
   const fiveMinBeforeTokenExpiration = tokenExpirationTime.getTime() - 5 * 60 * 1000;
   const currentTime = new Date();
   const remainingTime = fiveMinBeforeTokenExpiration - currentTime.getTime();
   console.log('remainingTime', remainingTime);
-}, 2000);
+}, 2000); */
 
 async function checkSession() {
   try {

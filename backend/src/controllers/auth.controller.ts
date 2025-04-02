@@ -62,6 +62,7 @@ export class AuthController {
   static async refreshToken(req: Request, res: Response) {
     try {
       const { refreshToken } = req.cookies;
+      console.log(refreshToken)
       const response = await AuthService.refreshAccessToken(refreshToken);
 
       const { accessToken } = response.data;
@@ -96,7 +97,6 @@ export class AuthController {
       const userData = req.user;
       const response = await AuthService.authenticateUser(userData);
       res.status(response.statusCode).json(response);
-      console.log(response.data)
     } catch (error: any) {
       res.status(500).json({ success: false, message: error.message, data: null });
     }
