@@ -27,10 +27,12 @@ export default function AuthButtons() {
 
   const updateLoginStatus = useCallback(() => {
     if (authStatus) {
-      setIsSuccessLoginedIn(true);
+      return setIsSuccessLoginedIn(true);
+    }
+    if (!authStatus) {
+      return setIsSuccessLoginedIn(false);
     }
   }, [authStatus, setIsSuccessLoginedIn]);
-
 
   useEffect(() => {
     updateLoginStatus();
@@ -60,19 +62,14 @@ export default function AuthButtons() {
         setFirstName(data.data.firstName);
         setLastName(data.data.lastName);
         setMail(data.data.email);
-
       } catch (error) {
         console.log('user detail fetching error', error);
         if (axios.isAxiosError(error)) {
-          console.error(
-            error.response?.data ||
-            error.response?.data?.message
-          );
+          console.error(error.response?.data || error.response?.data?.message);
         }
       }
     })();
   }, [setFirstName, setLastName, setMail, setIsSuccessLoginedIn, isSuccessLoginedIn]);
-
 
   return (
     <>

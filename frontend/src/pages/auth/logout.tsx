@@ -1,6 +1,6 @@
 import { IoLogOut } from 'react-icons/io5';
 import axios from 'axios';
-import { useNavigate } from 'react-router';
+// import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useProfileStore } from '../../stores/auth/profileStore';
@@ -9,7 +9,7 @@ import { useAuthStore } from '../../stores/auth/authStore';
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function Logout() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleLogout = async () => {
@@ -21,7 +21,7 @@ export default function Logout() {
       useProfileStore.getState().resetProfileStore();
       console.log('logging Out');
       localStorage.removeItem('session');
-      navigate('/login');
+      // navigate('/login');
     } catch (error) {
       console.log(error);
     } finally {

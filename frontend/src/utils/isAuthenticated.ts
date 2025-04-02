@@ -78,7 +78,7 @@ async function isAuthenticated(): Promise<boolean> {
     const { data } = response;
 
     localStorage.setItem('session', JSON.stringify(data.data.exp));
-    console.log('session storage set new one');
+    console.log('session storage set');
 
     return data.success;
   } catch (error) {
@@ -90,6 +90,7 @@ async function isAuthenticated(): Promise<boolean> {
     } else {
       console.error('Unexpected error during authentication:', error);
     }
+    localStorage.removeItem('session');
     return false;
   }
 }

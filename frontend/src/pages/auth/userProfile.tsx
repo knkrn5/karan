@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router';
 import { AnimatedLetterSvg, UserAccoutbgSvg } from '../../icons/userProfileSvg';
-import {  useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useProfileStore } from '../../stores/auth/profileStore';
 import axios from 'axios';
 import { useAuthStore } from '../../stores/auth/authStore';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { useAuthCheck } from '../../hooks/authCheckHook';
+// import { useAuthCheck } from '../../hooks/authCheckHook';
 // import StatusNotifications from '../../utils/StatusNotifications';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -124,14 +124,29 @@ export default function UserProfile() {
     }
   };
 
-  
-  const authStatus = useAuthCheck();
+  /* const authStatus = useAuthCheck();
 
   useEffect(() => {
     if (authStatus === false) {
       navigate('/login', { replace: true });
     }
   }, [authStatus, navigate]);
+
+  if (authStatus === null) {
+    return <div>Loading...</div>;
+  } */
+
+  const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
+
+  useEffect(() => {
+    if (isSuccessLoginedIn === false) {
+      navigate('/login', { replace: true });
+    }
+  }, [isSuccessLoginedIn, navigate]);
+
+  if (isSuccessLoginedIn === null) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div
@@ -140,7 +155,7 @@ export default function UserProfile() {
     >
       {/* Card */}
       <div
-        className={`mx-auto rounded-lg overflow-hidden w-80 
+        className={`mx-auto rounded-lg overflow-hidden max-w-[480px] w-80 
         bg-white dark:bg-gray-900 shadow-lg hover:dark:shadow-gray-900  ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
         }`}
@@ -186,7 +201,7 @@ export default function UserProfile() {
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-col  md:flex-row gap-2 md:gap-0 px-2 my-5">
+        <div className="flex flex-col  sm:flex-row gap-2 sm:gap-0 px-2 my-5">
           {/* Reset Password */}
           <button
             className="w-fit text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm  px-4 py-2 mx-auto md:px-5 md:py-2.5 dark:bg-blue-500 dark:hover:bg-blue-600"

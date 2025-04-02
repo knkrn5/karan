@@ -8,7 +8,7 @@ interface StatusInfoProps {
 }
 
 type State = {
-  isSuccessLoginedIn: boolean;
+  isSuccessLoginedIn: boolean | null;
   statusInfoAuth: StatusInfoProps;
 };
 
@@ -19,7 +19,7 @@ type Action = {
 };
 
 const useAuthStore = create<State & Action>(set => ({
-  isSuccessLoginedIn: false,
+  isSuccessLoginedIn: null,
   setIsSuccessLoginedIn: (value: boolean) => set({ isSuccessLoginedIn: value }),
 
   statusInfoAuth: {},

@@ -6,7 +6,7 @@ import StatusNotifications from '../../utils/StatusNotifications.js';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useAuthStore } from '../../stores/auth/authStore.js';
-import { useAuthCheck } from '../../hooks/authCheckHook.js';
+// import { useAuthCheck } from '../../hooks/authCheckHook.js';
 
 interface loginFeildDataProps {
   email: string;
@@ -120,14 +120,25 @@ export default function LoginPage() {
     }
   };
 
-  const authStatus = useAuthCheck();
+  /*   const authStatus = useAuthCheck();
 
   useEffect(() => {
     if (authStatus === true) {
       navigate('/profile', { replace: true });
     }
-  }, [authStatus, navigate]);
+  }, [authStatus, navigate]); */
 
+  const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
+
+  useEffect(() => {
+    if (isSuccessLoginedIn === true) {
+      navigate('/profile', { replace: true });
+    }
+  }, [isSuccessLoginedIn, navigate]);
+
+  if (isSuccessLoginedIn === null) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
