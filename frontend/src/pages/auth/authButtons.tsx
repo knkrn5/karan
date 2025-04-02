@@ -14,7 +14,7 @@ export default function AuthButtons() {
 
   const firstName = useProfileStore(state => state.firstName);
 
-  const { setFirstName, setLastName, setMail } = useProfileStore();
+  const { setFirstName, setLastName, setMail, setIsFetchingProfileData } = useProfileStore();
 
   const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
   const setIsSuccessLoginedIn = useAuthStore(state => state.setIsSuccessLoginedIn);
@@ -53,6 +53,7 @@ export default function AuthButtons() {
     if (!isSuccessLoginedIn) return;
 
     (async () => {
+      setIsFetchingProfileData(true);
       try {
         const { data } = await axios.get(`${BACKEND_URL}/api/v1/profile/details`, {
           withCredentials: true,
@@ -66,9 +67,18 @@ export default function AuthButtons() {
         if (axios.isAxiosError(error)) {
           console.error(error.response?.data || error.response?.data?.message);
         }
+      } finally {
+        setIsFetchingProfileData(false);
       }
     })();
-  }, [setFirstName, setLastName, setMail, setIsSuccessLoginedIn, isSuccessLoginedIn]);
+  }, [
+    setFirstName,
+    setLastName,
+    setMail,
+    setIsSuccessLoginedIn,
+    isSuccessLoginedIn,
+    setIsFetchingProfileData,
+  ]);
 
   if (isSuccessLoginedIn === null) {
     return <SmallBoxSkeletonLaoding />;

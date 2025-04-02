@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useAuthStore } from '../../stores/auth/authStore';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import BrandLoadingPage from '../brandLoadingPage';
+import { SmallBoxSkeletonLaoding } from '../../components/skeletonLoadings';
 // import StatusNotifications from '../../utils/StatusNotifications';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -26,6 +27,8 @@ export default function UserProfile() {
     resetPassword: false,
     deleteAccount: false,
   });
+
+  const isFetchingProfileData = useProfileStore(state => state.isFetchingProfileData);
 
   const [passwordInputErrror, setPasswordInputErrror] = useState<string>('');
 
@@ -159,12 +162,18 @@ export default function UserProfile() {
         </div>
 
         {/* User Info */}
-        <div className="text-center mt-2">
-          <h2 className="text-xl font-extrabold ">
-            {firstName.toUpperCase()} {lastName.toUpperCase()}
-          </h2>
-          <p className="text-gray-500 dark:text-gray-400 ">{email}</p>
-        </div>
+        {isFetchingProfileData ? (
+          <div className='w-fit mx-auto m-2'>
+            <SmallBoxSkeletonLaoding />
+          </div>
+        ) : (
+          <div className="text-center mt-2">
+            <h2 className="text-xl font-extrabold ">
+              {firstName.toUpperCase()} {lastName.toUpperCase()}
+            </h2>
+            <p className="text-gray-500 dark:text-gray-400 ">{email}</p>
+          </div>
+        )}
 
         {/*  Password confirm */}
         <div
