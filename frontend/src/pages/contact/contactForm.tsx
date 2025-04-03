@@ -35,7 +35,6 @@ export default function ContactForm() {
 
   useEffect(() => {
     if (profileEmail) {
-      console.log(profileEmail);
       setEmail(profileEmail);
     }
   }, [profileEmail, setEmail]);
