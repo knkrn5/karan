@@ -1,6 +1,13 @@
+import { useEffect, useState } from 'react';
 import { BlogSkeletonLoading } from './blogSkeletonLoading';
 
 export default function BlogPage() {
+  const [isFetchingBlogPosts, setIsFetchingBlogPosts] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsFetchingBlogPosts(true);
+  }, [isFetchingBlogPosts]);
+
   return (
     <div className="realtive flex flex-col gap-4 py-4 px-2 items-center bg-gray-200 dark:bg-gray-800 ">
       {/* Search & Category Filter */}
@@ -55,13 +62,19 @@ export default function BlogPage() {
       </div>
 
       {/* Main Content Section */}
-      <div className="min-h-screen flex justify-evenly flex-wrap gap-4 w-full max-w-[900px] p-4 rounded-xl   text-gray-900 dark:text-gray-200">
+      <div className=" w-full max-w-[900px] text-gray-900 dark:text-gray-200">
         {/* card prototype */}
-        <BlogSkeletonLoading />
-        <BlogSkeletonLoading />
-        <BlogSkeletonLoading />
-        <BlogSkeletonLoading />
-        <BlogSkeletonLoading />
+        {isFetchingBlogPosts ? (
+          <div className="min-h-screen  flex justify-evenly flex-wrap gap-4 w-full p-4 ">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <BlogSkeletonLoading key={i} />
+            ))}
+          </div>
+        ) : (
+          <div className="min-h-screen  flex justify-evenly flex-wrap gap-4 w-full p-4">
+            content{' '}
+          </div>
+        )}
       </div>
     </div>
   );
