@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoIosSend } from 'react-icons/io';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import axios from 'axios';
@@ -7,6 +7,7 @@ import { useContactInfoStore } from '../../stores/contact/contantInfoStore';
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 import SeeContactMsg from './seeContactMsg';
+import { useProfileStore } from '../../stores/auth/profileStore';
 
 interface FormDataProp {
   name: string;
@@ -28,8 +29,16 @@ export default function ContactForm() {
   const message = useContactInfoStore(state => state.message);
   const isSubmitted = useContactInfoStore(state => state.isSubmitted);
 
-  const { setStatusInfo, setIsSuccess, setContactInfo, setIsSubmitted, setContactMsgId } =
+  const { setStatusInfo, setIsSuccess, setContactInfo, setEmail, setIsSubmitted, setContactMsgId } =
     useContactInfoStore();
+  const profileEmail = useProfileStore(state => state.email);
+
+  useEffect(() => {
+    if (profileEmail) {
+      console.log(profileEmail);
+      setEmail(profileEmail);
+    }
+  }, [profileEmail, setEmail]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,9 +106,8 @@ export default function ContactForm() {
       setContactMsgId(data.data._id);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-
         setIsSuccess(error.response?.data?.success || false);
-        setStatusInfo({ error: error.response?.data?.message || error.message, });
+        setStatusInfo({ error: error.response?.data?.message || error.message });
       } else {
         setStatusInfo({ error: 'An unexpected error occurred' });
       }
