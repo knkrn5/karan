@@ -20,9 +20,9 @@ export default function BlogPage() {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -36,7 +36,7 @@ export default function BlogPage() {
             id="blog-category"
             className="w-full p-2 pr-10 rounded-lg shadow-2xl border border-gray-400 hover:shadow-xl focus:shadow-xl bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 outline-none appearance-none"
           >
-            <option value="All-Category" selected className="text-gray-400 dark:text-gray-400">
+            <option value="All-Category" className="text-gray-400 dark:text-gray-400">
               All Category
             </option>
             <option value="ai">AI</option>
