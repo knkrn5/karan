@@ -62,7 +62,7 @@ function Home() {
             >
               {/* Horizontal Line Connector */}
               <div
-                className={`absolute top-1/2 w-[220px] h-[5px]  bg-gray-600 dark:bg-gray-400  hidden md:block ${
+                className={`absolute top-1/2 w-[50%] h-[5px]  bg-gray-600 dark:bg-gray-400  hidden md:block ${
                   index % 2 === 0 ? 'right-1/2' : 'left-1/2'
                 } transform -translate-y-1/2`}
               />
