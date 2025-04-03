@@ -95,8 +95,6 @@ export class AuthService {
       const accessToken = user.createAccessToken();
       return new ApiResponse(200, true, 'Token refreshed successfully', { accessToken });
     } catch (error: any) {
-      console.error('JWT Error:', error.name, error.message); // Log for debugging
-
       if (error.name === 'TokenExpiredError') {
         throw new ApiResponse(401, false, 'Refresh token expired', null);
       }
