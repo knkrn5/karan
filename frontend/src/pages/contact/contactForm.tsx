@@ -29,15 +29,25 @@ export default function ContactForm() {
   const message = useContactInfoStore(state => state.message);
   const isSubmitted = useContactInfoStore(state => state.isSubmitted);
 
-  const { setStatusInfo, setIsSuccess, setContactInfo, setEmail, setIsSubmitted, setContactMsgId } =
-    useContactInfoStore();
+  const {
+    setStatusInfo,
+    setIsSuccess,
+    setContactInfo,
+    setName,
+    setEmail,
+    setIsSubmitted,
+    setContactMsgId,
+  } = useContactInfoStore();
+
+  const profileName = useProfileStore(state => state.firstName);
   const profileEmail = useProfileStore(state => state.email);
 
   useEffect(() => {
-    if (profileEmail) {
+    if (profileName && profileEmail) {
+      setName(profileName);
       setEmail(profileEmail);
     }
-  }, [profileEmail, setEmail]);
+  }, [profileName, setName, profileEmail, setEmail]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
