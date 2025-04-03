@@ -35,7 +35,7 @@ export function CardSkeletonLoadingOne() {
 
 export function CardSkeletonLoadingTwo() {
   return (
-    <div className="h-80 w-64 flex flex-col gap-3 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 bg-gray-100 dark:bg-gray-800 overflow-hidden">
+    <div className="h-80 w-64 flex flex-col gap-3 rounded-xl shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gray-100 dark:bg-gray-800 overflow-hidden">
       <div className="w-full h-40 rounded-t-xl bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
       <div className="p-2 space-y-1">
         <div className="w-3/4 h-7 rounded-md bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
