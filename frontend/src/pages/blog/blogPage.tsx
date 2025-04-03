@@ -9,7 +9,7 @@ export default function BlogPage() {
   }, [isFetchingBlogPosts]);
 
   return (
-    <div className="realtive flex flex-col gap-4 py-4 px-2 items-center bg-gray-200 dark:bg-gray-800 ">
+    <div className="realtive flex flex-col gap-4 py-4 px-1 items-center bg-gray-200 dark:bg-gray-800 ">
       {/* Search & Category Filter */}
       <div className="relative flex  gap-3">
         <div className="relative">

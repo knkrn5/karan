@@ -83,7 +83,7 @@ async function isAuthenticated(): Promise<boolean> {
     if (axios.isAxiosError(error)) {
       console.error(
         'isAuthenticated: ',
-        (error.response?.status && error.response?.data) || error.response?.data?.message
+        ( error.response?.data) || error.response?.data?.message
       );
     } else {
       console.error('Unexpected error during authentication:', error);

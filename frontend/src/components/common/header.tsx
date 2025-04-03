@@ -71,7 +71,7 @@ export default function MegaMenu1() {
                     checked={openMenu}
                     onChange={() => setOpenMenu(!openMenu)}
                   />
-                  <div className="w-[50%] h-[2px] bg-black rounded-sm transition-all duration-300 origin-left translate-y-[0.45rem] peer-checked:rotate-[-45deg] dark:bg-white" />
+                  <div className="w-[50%] h-[2px] bg-black rounded-md transition-all duration-300 origin-left translate-y-[0.45rem] peer-checked:rotate-[-45deg] dark:bg-white" />
                   <div className="w-[50%] h-[2px] bg-black rounded-md transition-all duration-300 origin-center peer-checked:hidden dark:bg-white" />
                   <div className="w-[50%] h-[2px] bg-black rounded-md transition-all duration-300 origin-left -translate-y-[0.45rem] peer-checked:rotate-[45deg] dark:bg-white" />
                 </div>
