@@ -137,7 +137,7 @@ function ResourceCard({ resource }: { resource: Resource }) {
 
   return (
     <>
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
         <div className="flex items-start space-x-4">
           <div
             className={`p-3 rounded-lg bg-gray-50 dark:bg-gray-700 ${color} bg-opacity-10 dark:bg-opacity-20`}
