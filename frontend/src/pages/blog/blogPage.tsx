@@ -1,3 +1,5 @@
+import { BlogSkeletonLoading } from './blogSkeletonLoading';
+
 export default function BlogPage() {
   return (
     <div className="realtive flex flex-col gap-4 py-4 px-2 items-center bg-gray-200 dark:bg-gray-800 ">
@@ -53,18 +55,13 @@ export default function BlogPage() {
       </div>
 
       {/* Main Content Section */}
-      <div className="min-h-screen w-full max-w-[800px] p-4 rounded-xl   text-gray-900 dark:text-gray-200">
+      <div className="min-h-screen flex justify-evenly flex-wrap gap-4 w-full max-w-[900px] p-4 rounded-xl   text-gray-900 dark:text-gray-200">
         {/* card prototype */}
-        <div className="h-80 w-64 flex flex-col gap-3 rounded-xl shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gray-100 dark:bg-gray-800 overflow-hidden">
-          <div className="w-full h-40 rounded-t-xl bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
-          <div className="p-2 space-y-1">
-            <div className="w-3/4 h-7 rounded-md bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
-            <div className="w-full h-4 mt-2 rounded-md bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
-            <div className="w-full h-4 rounded-md bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
-            <div className="w-3/4 h-4 rounded-md bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
-            <div className="w-1/2 h-4 rounded-md bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
-          </div>
-        </div>
+        <BlogSkeletonLoading />
+        <BlogSkeletonLoading />
+        <BlogSkeletonLoading />
+        <BlogSkeletonLoading />
+        <BlogSkeletonLoading />
       </div>
     </div>
   );
