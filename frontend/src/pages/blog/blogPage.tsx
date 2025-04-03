@@ -55,13 +55,14 @@ export default function BlogPage() {
       {/* Main Content Section */}
       <div className="min-h-screen w-full max-w-[800px] p-4 rounded-xl   text-gray-900 dark:text-gray-200">
         {/* card prototype */}
-        <div className="h-80 w-2xs flex flex-col gap-2 rounded-xl shadow-2xl hover:shadow-2xl bg-gray-100 dark:bg-gray-700 animate-pulse">
-          <div className="w-full h-40 rounded-t-xl bg-slate-900 "></div>
+        <div className="h-80 w-64 flex flex-col gap-3 rounded-xl shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gray-100 dark:bg-gray-800 overflow-hidden">
+          <div className="w-full h-40 rounded-t-xl bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
           <div className="p-2 space-y-1">
-            <div className="w-full h-10 rounded bg-gray-800 animate-pulse"></div>
-            <div className="w-full mt-2 h-5 rounded bg-gray-800 animate-pulse"></div>
-            <div className="w-full h-5 rounded bg-gray-800 animate-pulse"></div>
-            <div className="w-1/2 h-4 rounded bg-gray-800 animate-pulse"></div>
+            <div className="w-3/4 h-7 rounded-md bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
+            <div className="w-full h-4 mt-2 rounded-md bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
+            <div className="w-full h-4 rounded-md bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
+            <div className="w-3/4 h-4 rounded-md bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
+            <div className="w-1/2 h-4 rounded-md bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
           </div>
         </div>
       </div>
