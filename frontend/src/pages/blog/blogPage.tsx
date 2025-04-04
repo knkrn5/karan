@@ -75,7 +75,7 @@ export default function BlogPage() {
             ))}
           </div>
         ) : (
-          <div className="min-h-screen  flex justify-evenly flex-wrap gap-4 w-full p-4">
+          <div className=" flex justify-evenly flex-wrap gap-4 w-full p-4 space-y-4 max-sm:space-y-1 ">
             {blogPosts
               .filter((post: BlogPostPropsType) => {
                 const title = post?.title || '';
