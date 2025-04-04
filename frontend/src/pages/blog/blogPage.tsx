@@ -1,65 +1,69 @@
 import { useEffect, useState } from 'react';
 import { BlogSkeletonLoading } from './blogSkeletonLoading';
+import axios from 'axios';
+import BlogPaginaton from './blogPaginaton';
+import { useSearchParams } from 'react-router';
+import BlogSearchAndCategory from './blogSearchAndCategory';
+
+export interface BlogPostPropsType {
+  title: string;
+  category: string;
+  excerpt: string;
+  featuredImage: {
+    fields: {
+      file: {
+        url: string;
+        fileName: string;
+      };
+    };
+  };
+}
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function BlogPage() {
-  const [isFetchingBlogPosts, setIsFetchingBlogPosts] = useState<boolean>(false);
+  const [isFetchingBlogPosts, setIsFetchingBlogPosts] = useState<boolean>(true);
+  const [blogPosts, setBlogPosts] = useState<BlogPostPropsType[]>([]);
+  const [NumberOfPosts, setNumberOfPosts] = useState<{ start: number; end: number }>({
+    start: 0,
+    end: 6,
+  });
+
+  const [searchOrCategoryValue, setSearchOrCategoryValue] = useState<string>('');
+
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    setIsFetchingBlogPosts(true);
-  }, [isFetchingBlogPosts]);
+    const fetchBlogPosts = async () => {
+      try {
+        // setIsFetchingBlogPosts(true);
+        const res = await axios.get(`${BACKEND_URL}/api/blog/blog-posts`);
+        const fetchedBlogPosts = res.data.data.map(
+          (posts: { fields: BlogPostPropsType }) => posts.fields
+        );
+
+        setBlogPosts(fetchedBlogPosts);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsFetchingBlogPosts(false);
+      }
+    };
+
+    fetchBlogPosts();
+  }, [NumberOfPosts.start, NumberOfPosts.end]);
+
+  useEffect(() => {
+    const startNumber = searchParams.get('startNumber') || '0';
+    const endNumber = searchParams.get('endNumber') || '6';
+
+    setNumberOfPosts({ start: Number(startNumber), end: Number(endNumber) });
+  }, [searchParams]);
 
   return (
-    <div className="realtive flex flex-col gap-4 py-4 px-1 items-center bg-gray-200 dark:bg-gray-800 ">
+    <div className="realtive flex flex-col gap-3 py-4 px-1 items-center bg-gray-200 dark:bg-gray-800 ">
       {/* Search & Category Filter */}
-      <div className="relative flex  gap-3">
-        <div className="relative">
-          <input
-            type="text"
-            title="search"
-            placeholder="Search Blog"
-            className="w-full p-2 sm:pr-30 rounded-lg duration-300 shadow-2xl border border-gray-400 hover:shadow-xl focus:shadow-xl bg-gray-100 dark:bg-gray-700  text-gray-900 dark:text-gray-200 outline-none"
-          />
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 my-auto size-8 text-gray-700 dark:text-gray-300">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-          </div>
-        </div>
-        <div className="relative">
-          <select
-            name="category"
-            title="category"
-            id="blog-category"
-            className="w-full p-2 pr-10 rounded-lg shadow-2xl border border-gray-400 hover:shadow-xl focus:shadow-xl bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 outline-none appearance-none"
-          >
-            <option value="All-Category" className="text-gray-400 dark:text-gray-400">
-              All Category
-            </option>
-            <option value="ai">AI</option>
-            <option value="finance">Finance</option>
-          </select>
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
-            <svg
-              className="fill-current h-4 w-4"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-            >
-              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-            </svg>
-          </div>
-        </div>
-      </div>
+      <BlogSearchAndCategory setSearchOrCategoryValue={setSearchOrCategoryValue} />
 
       {/* Main Content Section */}
       <div className=" w-full max-w-[900px] text-gray-900 dark:text-gray-200">
@@ -72,8 +76,59 @@ export default function BlogPage() {
           </div>
         ) : (
           <div className="min-h-screen  flex justify-evenly flex-wrap gap-4 w-full p-4">
-            content{' '}
+            {blogPosts
+              .filter((post: BlogPostPropsType) => {
+                const title = post?.title || '';
+                const category = post?.category || '';
+                if (searchOrCategoryValue === '' || searchOrCategoryValue === 'All-Category')
+                  return true;
+                return (
+                  title.toLowerCase().includes(searchOrCategoryValue.toLowerCase()) ||
+                  category.toLowerCase().includes(searchOrCategoryValue.toLowerCase())
+                );
+              })
+              .slice(NumberOfPosts.start, NumberOfPosts.end)
+              .map((post: BlogPostPropsType, i: number) => (
+                <div key={i}>
+                  <div
+                    className="h-80 w-full sm:w-64 flex flex-col rounded-xl shadow-2xl shadow-neutral-600 dark:shadow-neutral-900 hover:-translate-y-1 transition-transform duration-300 overflow-hidden cursor-pointer bg-gray-200 dark:bg-gray-900"
+                    title={post?.title ? post.title : 'No title available'}
+                  >
+                    <img
+                      title={post?.title || 'blog-post image'}
+                      src={post.featuredImage?.fields.file?.url}
+                      alt={post.featuredImage?.fields.file?.fileName}
+                      loading="lazy"
+                      className="w-full h-40 rounded-t-xl bg-gray-200 dark:bg-gray-700 "
+                    ></img>
+                    <div className=" bg-gray-200 dark:bg-gray-900">
+                      <h2 className=" rounded-md p-1 font-extrabold hover:text-blue-500 ">
+                        {post.title}
+                      </h2>
+                      <div className="w-full h-full px-1 rounded-b-md  ">
+                        {post.excerpt ? (
+                          post.title.length > 90 ? (
+                            post.excerpt.split(' ').slice(0, 7).join(' ') + '...'
+                          ) : (
+                            post.excerpt.split(' ').slice(0, 15).join(' ') + '...'
+                          )
+                        ) : (
+                          <span className="text-gray-500 dark:text-gray-400 italic">
+                            No excerpt available
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
           </div>
+        )}
+      </div>
+      <div>
+        {/* Pagination */}
+        {blogPosts.length > 6 && (
+          <BlogPaginaton blogPosts={blogPosts} setNumberOfPosts={setNumberOfPosts} />
         )}
       </div>
     </div>
