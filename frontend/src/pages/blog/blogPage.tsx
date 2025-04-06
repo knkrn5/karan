@@ -6,12 +6,6 @@ import { useNavigate, useSearchParams } from 'react-router';
 import BlogSearchAndCategory from './blogSearchAndCategory';
 import type { Document } from '@contentful/rich-text-types';
 
-/* export type BlogPostPropsType = {
-  title: string;
-  slug: string;
-  publishedDate: string;
-  content: Document;
-}; */
 
 export interface BlogPostPropsType {
   title: string;
