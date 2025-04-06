@@ -47,6 +47,9 @@ export default function SoloBlogPost() {
     };
 
     fetchBlogPosts();
+
+    // Scroll page to very top
+    scrollTo(0, 0);
   }, []);
 
   const soloPost = blogPosts.find(post => post?.slug === slug);
@@ -90,7 +93,7 @@ export default function SoloBlogPost() {
                       day: 'numeric',
                     })}
                 </p>
-                <div className="prose dark:prose-invert">
+                <div className="prose dark:prose-invert min-h-screen">
                   {soloPost.content ? (
                     (() => {
                       // Create a proper Document object from the content

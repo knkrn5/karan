@@ -34,7 +34,7 @@ const options: Options = {
         <img
           src={target.fields.file.url}
           alt={target.fields.title || 'Asset'}
-          className="rich-asset w-[450px] my-4 rounded"
+          className=" w-[450px] my-4 rounded"
         />
       );
     },
