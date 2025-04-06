@@ -16,6 +16,8 @@ import Resume from './pages/about/resume';
 import Contact from './pages/contact/contactPage';
 import UserProfile from './pages/auth/userProfile';
 
+import SoloBlogPost from './pages/blog/soloBlogPost';
+
 function App() {
   return (
     <Router>
@@ -27,6 +29,7 @@ function App() {
 
           <Route path="/resources" element={<ResourcesInfo />} />
           <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/post/:slug" element={<SoloBlogPost />} />
 
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<LoginPage />} />

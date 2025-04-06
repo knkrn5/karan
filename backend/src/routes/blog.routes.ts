@@ -5,5 +5,4 @@ const router = Router();
 
 router.get('/blog-posts', BlogController.getBlogPosts);
 
-
 export default router;

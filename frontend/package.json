@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@contentful/rich-text-react-renderer": "^16.0.1",
     "@reduxjs/toolkit": "^2.6.0",
+    "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.0.2",
     "axios": "^1.7.9",
     "react": "^18.3.1",

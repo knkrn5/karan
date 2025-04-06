@@ -1,9 +1,10 @@
-import { createClient } from 'contentful';
+// import { createClient } from 'contentful';
+import * as contentful from 'contentful';
 import dotenv from 'dotenv';
 import { ApiResponse } from '../utils/apiResponse.js';
 dotenv.config();
 
-var client = createClient({
+var client = contentful.createClient({
   space:
     process.env.CONTENTFUL_SPACE_ID ||
     (() => {

@@ -3,6 +3,7 @@ import type { BlogPostPropsType } from './blogPage';
 import { useSearchParams } from 'react-router';
 
 const POSTS_PER_PAGE = 6;
+const PER_PAGINATION = 3;
 
 export default function BlogPaginaton({
   blogPosts,
@@ -11,49 +12,49 @@ export default function BlogPaginaton({
   blogPosts: BlogPostPropsType[];
   setNumberOfPosts: React.Dispatch<React.SetStateAction<{ start: number; end: number }>>;
 }): JSX.Element {
-  const [currentPage, setCurrentPage] = useState<number | string>(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [startPagination, setStartPagination] = useState<number>(0);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  //   const totalPages = Math.ceil(blogPosts.length / POSTS_PER_PAGE);
+  const totalPages = Math.ceil(blogPosts.length / POSTS_PER_PAGE);
 
   const handleBlogPagination = (e: React.MouseEvent<HTMLElement>) => {
     const id = (e.currentTarget as HTMLElement).id;
+    let newStart = 0;
+    let newEnd = POSTS_PER_PAGE;
 
-    setNumberOfPosts(prev => {
-      let newStart = prev.start;
-      let newEnd = prev.end;
-
-      if (id === 'previous') {
-        if (prev.start === 0) return prev;
-        newStart = prev.start - POSTS_PER_PAGE;
-        newEnd = prev.end - POSTS_PER_PAGE;
-      } else if (id === 'next') {
-        if (prev.end >= blogPosts.length) return prev;
-        newStart = prev.start + POSTS_PER_PAGE;
-        newEnd = prev.end + POSTS_PER_PAGE;
-      } else {
-        const pageNumber = parseInt(id, 10);
-        newStart = (pageNumber - 1) * POSTS_PER_PAGE;
-        newEnd = newStart + POSTS_PER_PAGE;
+    if (id === 'previous') {
+      if (currentPage <= 1) return;
+      newStart = Math.max(0, Number(searchParams.get('startNumber')) - POSTS_PER_PAGE);
+      newEnd = newStart + POSTS_PER_PAGE;
+      if ((currentPage - 1) % PER_PAGINATION === 0) {
+        setStartPagination(prev => Math.max(prev - PER_PAGINATION, 0));
       }
+      setCurrentPage(prev => prev - 1);
+    } else if (id === 'next') {
+      if (currentPage >= totalPages) return;
+      newStart = Number(searchParams.get('startNumber')) + POSTS_PER_PAGE;
+      newEnd = newStart + POSTS_PER_PAGE;
+      if ((currentPage + 1) % PER_PAGINATION === 1) {
+        setStartPagination(prev => prev + PER_PAGINATION);
+      }
+      setCurrentPage(prev => prev + 1);
+    } else {
+      const pageNumber = parseInt(id, 10);
+      newStart = (pageNumber - 1) * POSTS_PER_PAGE;
+      newEnd = newStart + POSTS_PER_PAGE;
+      setCurrentPage(pageNumber);
+    }
 
-      setSearchParams({ startNumber: String(newStart), endNumber: String(newEnd) });
-      scrollTo({ top: 0, behavior: 'smooth' });
-      return { start: newStart, end: newEnd };
-    });
+    setSearchParams({ startNumber: String(newStart), endNumber: String(newEnd) });
+    setNumberOfPosts({ start: newStart, end: newEnd });
+    scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   useEffect(() => {
-    const startPage = searchParams.get('startNumber') || '0';
-    if (startPage === '0') {
-      setCurrentPage(1);
-    } else if (startPage === '6') {
-      setCurrentPage(2);
-    } else if (startPage === '12') {
-      setCurrentPage(3);
-    } else if (startPage >= '18') {
-      setCurrentPage('next');
-    }
+    const start = Number(searchParams.get('startNumber') || '0');
+    const page = Math.floor(start / POSTS_PER_PAGE) + 1;
+    setCurrentPage(page);
   }, [searchParams]);
 
   return (
@@ -73,29 +74,32 @@ export default function BlogPaginaton({
           Previous
         </li>
 
-        {Array.from({ length: 3 }, (_, i) => {
-          const pageNum = i + 1;
-          return (
-            <li
-              key={pageNum}
-              id={String(pageNum)}
-              className={`flex items-center justify-center px-4 h-10 leading-tight border border-gray-300 hover:bg-gray-200 hover:text-gray-700 dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer ${
-                currentPage === pageNum
-                  ? 'text-black dark:text-white bg-gray-200 dark:bg-gray-700'
-                  : 'text-gray-500 bg-white dark:bg-gray-800 dark:text-gray-400'
-              }`}
-              onClick={handleBlogPagination}
-            >
-              {pageNum}
-            </li>
-          );
-        })}
+        {Array.from({ length: totalPages })
+          .slice(startPagination, startPagination + PER_PAGINATION)
+          .map((_, i: number) => {
+            const pageNum = i + startPagination + 1;
+            return (
+              <li
+                key={pageNum}
+                id={String(pageNum)}
+                className={`flex items-center justify-center px-4 h-10 leading-tight border border-gray-300 hover:bg-gray-200 hover:text-gray-700 dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer ${
+                  currentPage === pageNum
+                    ? 'text-black dark:text-white bg-gray-200 dark:bg-gray-700'
+                    : 'text-gray-500 bg-white dark:bg-gray-800 dark:text-gray-400'
+                }`}
+                onClick={handleBlogPagination}
+              >
+                {pageNum}
+              </li>
+            );
+          })}
+
         <li
           id="next"
-          className={`flex items-center justify-center px-4 h-10 leading-tight border border-gray-300 rounded-e-lg hover:bg-gray-200 hover:text-gray-700 dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer ${
-            currentPage === 'next'
-              ? 'text-black dark:text-white bg-gray-200 dark:bg-gray-700'
-              : 'text-gray-500 bg-white dark:bg-gray-800 dark:text-gray-400'
+          className={`flex items-center justify-center px-4 h-10 leading-tight border border-gray-300 rounded-e-lg hover:bg-gray-200 hover:text-gray-700 dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:text-white ${
+            currentPage === totalPages
+              ? 'cursor-not-allowed opacity-50 bg-white dark:bg-gray-800 dark:text-gray-400  '
+              : 'text-gray-500 bg-white dark:bg-gray-800 dark:text-gray-400 cursor-pointer'
           }`}
           onClick={handleBlogPagination}
         >

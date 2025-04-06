@@ -1,11 +1,14 @@
 export default function BlogSearchAndCategory({
+  setNumberOfPosts,
   setSearchOrCategoryValue,
 }: {
+  setNumberOfPosts: React.Dispatch<React.SetStateAction<{ start: number; end: number }>>;
   setSearchOrCategoryValue: React.Dispatch<React.SetStateAction<string>>;
 }) {
   function handleblogSearch(
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>
   ) {
+    setNumberOfPosts({ start: 0, end: 6 });
     setSearchOrCategoryValue(e.target.value);
   }
   return (
@@ -16,7 +19,7 @@ export default function BlogSearchAndCategory({
           title="search"
           placeholder="Search Blog"
           onChange={handleblogSearch}
-          className="w-full p-2 sm:pr-30 rounded-lg duration-300 shadow-2xl border border-gray-400 hover:shadow-xl focus:shadow-xl bg-gray-100 dark:bg-gray-700  text-gray-900 dark:text-gray-200 outline-none"
+          className="w-full p-2 sm:pr-30 rounded-lg duration-300 transition-shadow shadow-2xl border border-gray-400 hover:shadow-xl focus:shadow-xl bg-gray-100 dark:bg-gray-700  text-gray-900 dark:text-gray-200 outline-none"
         />
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 my-auto size-8 text-gray-700 dark:text-gray-300">
           <svg

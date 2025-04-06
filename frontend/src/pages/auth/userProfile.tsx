@@ -50,6 +50,7 @@ export default function UserProfile() {
   // error handling for password validation
   const validatePassword = async () => {
     try {
+      setIsDeleting(true);
       await axios.post(
         `${BACKEND_URL}/api/v1/profile/verify-password`,
         { password: confirmPassword },
@@ -63,6 +64,8 @@ export default function UserProfile() {
         : 'An unexpected error occurred';
       setPasswordInputErrror(errorMessage);
       return false;
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -163,7 +166,7 @@ export default function UserProfile() {
 
         {/* User Info */}
         {isFetchingProfileData ? (
-          <div className='w-fit mx-auto m-2'>
+          <div className="w-fit mx-auto m-2">
             <TwoSmallLinesSkeletonLoading />
           </div>
         ) : (
