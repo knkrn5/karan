@@ -27,23 +27,14 @@ export default function BlogPaginaton({
       if (currentPage <= 1) return;
       newStart = Math.max(0, Number(searchParams.get('startNumber')) - POSTS_PER_PAGE);
       newEnd = newStart + POSTS_PER_PAGE;
-      if ((currentPage - 1) % PER_PAGINATION === 0) {
-        setStartPagination(prev => Math.max(prev - PER_PAGINATION, 0));
-      }
-      setCurrentPage(prev => prev - 1);
     } else if (id === 'next') {
       if (currentPage >= totalPages) return;
       newStart = Number(searchParams.get('startNumber')) + POSTS_PER_PAGE;
       newEnd = newStart + POSTS_PER_PAGE;
-      if ((currentPage + 1) % PER_PAGINATION === 1) {
-        setStartPagination(prev => prev + PER_PAGINATION);
-      }
-      setCurrentPage(prev => prev + 1);
     } else {
       const pageNumber = parseInt(id, 10);
       newStart = (pageNumber - 1) * POSTS_PER_PAGE;
       newEnd = newStart + POSTS_PER_PAGE;
-      setCurrentPage(pageNumber);
     }
 
     setSearchParams({ startNumber: String(newStart), endNumber: String(newEnd) });
@@ -58,7 +49,7 @@ export default function BlogPaginaton({
   }, [searchParams]);
 
 
-  //pagination update on reload
+  //pagination update on reload and on pagination click
   useEffect(() => {
     const newStartPagination = Math.floor((currentPage - 1) / PER_PAGINATION) * PER_PAGINATION;
     setStartPagination(newStartPagination);
