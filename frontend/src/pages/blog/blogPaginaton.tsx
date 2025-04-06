@@ -52,10 +52,17 @@ export default function BlogPaginaton({
   };
 
   useEffect(() => {
-    const start = Number(searchParams.get('startNumber') || '0');
-    const page = Math.floor(start / POSTS_PER_PAGE) + 1;
-    setCurrentPage(page);
+    const startNumberOnUrl = Number(searchParams.get('startNumber') || '0');
+    const rightNowOnThisPage = Math.floor(startNumberOnUrl / POSTS_PER_PAGE) + 1;
+    setCurrentPage(rightNowOnThisPage);
   }, [searchParams]);
+
+
+  //pagination update on reload
+  useEffect(() => {
+    const newStartPagination = Math.floor((currentPage - 1) / PER_PAGINATION) * PER_PAGINATION;
+    setStartPagination(newStartPagination);
+  }, [currentPage]);
 
   return (
     <nav aria-label="Page navigation example" className="px-2">
