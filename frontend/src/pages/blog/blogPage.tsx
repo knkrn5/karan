@@ -6,12 +6,12 @@ import { useNavigate, useSearchParams } from 'react-router';
 import BlogSearchAndCategory from './blogSearchAndCategory';
 import type { Document } from '@contentful/rich-text-types';
 
-
 export interface BlogPostPropsType {
   title: string;
   slug: string;
   publishedDate: string;
   category: string;
+  tags: string;
   excerpt: string;
   featuredImage: {
     fields: {
@@ -75,10 +75,12 @@ export default function BlogPage() {
   const filteredBlogPosts = blogPosts.filter((post: BlogPostPropsType) => {
     const title = post?.title || '';
     const category = post?.category || '';
+    const tags = post?.tags || '';
     if (searchOrCategoryValue === '' || searchOrCategoryValue === 'All-Category') return true;
     return (
       title.toLowerCase().includes(searchOrCategoryValue.toLowerCase()) ||
-      category.toLowerCase().includes(searchOrCategoryValue.toLowerCase())
+      category.toLowerCase().includes(searchOrCategoryValue.toLowerCase()) ||
+      tags.toLowerCase().includes(searchOrCategoryValue.toLowerCase())
     );
   });
 

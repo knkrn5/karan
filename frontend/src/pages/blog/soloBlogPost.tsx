@@ -50,16 +50,12 @@ export default function SoloBlogPost() {
   }, []);
 
   const soloPost = blogPosts.find(post => post?.slug === slug);
-  console.log('Solo post:', soloPost);
+  console.log(soloPost?.category);
+  console.log(soloPost?.category.includes('ana'));
 
   return (
     <>
       <div className="min-h-screen  p-4 text-black dark:text-white bg-gray-200 dark:bg-gray-800">
-        {/*  {blogPosts.map((post: BlogPostPropsType, i: number) => (
-          <div key={i} className="mb-16">
-            {documentToReactComponents(post?.content, options)}
-          </div>
-        ))} */}
         <div className="max-w-3xl mx-auto mb-4">
           <div className="rounded-lg shadow-2xl dark:shadow-neutral-900 bg-gray-100 dark:bg-gray-900 p-4">
             {isLoading ? (
@@ -107,8 +103,6 @@ export default function SoloBlogPost() {
                           ? (soloPost.content.content as TopLevelBlock[])
                           : [],
                       };
-
-                      console.log('Document to render:', document);
 
                       try {
                         return documentToReactComponents(document, options);

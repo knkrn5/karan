@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { BLOCKS, Block, Inline } from '@contentful/rich-text-types';
+import { BLOCKS, Block, Inline, INLINES } from '@contentful/rich-text-types';
 import { Options } from '@contentful/rich-text-react-renderer';
 
 interface EmbeddedAsset {
@@ -30,7 +30,13 @@ const options: Options = {
   renderNode: {
     [BLOCKS.EMBEDDED_ASSET]: (node: Block | Inline) => {
       const target = (node as unknown as EmbeddedAsset).data.target;
-      return <img src={target.fields.file.url} alt={target.fields.title || 'Asset'} className='rich-asset w-[450px] my-4 rounded' />;
+      return (
+        <img
+          src={target.fields.file.url}
+          alt={target.fields.title || 'Asset'}
+          className="rich-asset w-[450px] my-4 rounded"
+        />
+      );
     },
     [BLOCKS.HEADING_1]: (_node: Block | Inline, children: ReactNode) => (
       <h1 className="text-3xl font-bold mb-4">{children}</h1>
@@ -66,7 +72,7 @@ const options: Options = {
       </blockquote>
     ),
     [BLOCKS.HR]: () => <hr className="-my-200 w-full border-gray-800 dark:border-gray-400" />,
-    hyperlink: (node: Block | Inline) => {
+    [INLINES.HYPERLINK]: (node: Block | Inline) => {
       const data = (node as unknown as HyperlinkNode).data;
       const content = (node as unknown as HyperlinkNode).content;
       const url = data.uri;
