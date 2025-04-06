@@ -50,8 +50,6 @@ export default function SoloBlogPost() {
   }, []);
 
   const soloPost = blogPosts.find(post => post?.slug === slug);
-  console.log(soloPost?.category);
-  console.log(soloPost?.category.includes('ana'));
 
   return (
     <>
