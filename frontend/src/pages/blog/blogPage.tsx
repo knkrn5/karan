@@ -35,6 +35,8 @@ export default function BlogPage() {
     start: 0,
     end: 6,
   });
+  const [error, setError] = useState<string | null>(null);
+
 
   const [searchOrCategoryValue, setSearchOrCategoryValue] = useState<string>('');
 
@@ -45,7 +47,8 @@ export default function BlogPage() {
   useEffect(() => {
     const fetchBlogPosts = async () => {
       try {
-        // setIsFetchingBlogPosts(true);
+        setIsFetchingBlogPosts(true);
+        setError(null);
         const res = await axios.get(`${BACKEND_URL}/api/blog/blog-posts`);
         const fetchedBlogPosts = res.data.data.map(
           (posts: { fields: BlogPostPropsType }) => posts.fields
@@ -54,6 +57,7 @@ export default function BlogPage() {
         setBlogPosts(fetchedBlogPosts);
       } catch (error) {
         console.log(error);
+        setError('Failed to load blog posts. Please try again later.');
       } finally {
         setIsFetchingBlogPosts(false);
       }
@@ -103,6 +107,18 @@ export default function BlogPage() {
             {Array.from({ length: 6 }).map((_, i) => (
               <BlogSkeletonLoading key={i} />
             ))}
+          </div>
+        ) : error ? (
+          <div className="flex flex-col justify-center items-center text-center h-[70vh]">
+            <h2 className="text-2xl font-bold mb-2">No Posts Found</h2>
+            <p className="text-red-500">{error}</p>
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded cursor-pointer"
+            >
+              Go Back
+            </button>
           </div>
         ) : filteredBlogPosts.length === 0 ? (
           <div className="min-h-[70vh] flex justify-center items-center w-full p-4">

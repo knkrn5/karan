@@ -62,22 +62,25 @@ export default function SoloBlogPost() {
             {isLoading ? (
               <SoloBlogPostSkeletonLoadingTwo />
             ) : error ? (
-              <div className="text-center py-8">
+              <div className="flex flex-col justify-center items-center text-center h-[70vh]">
+                <h2 className="text-2xl font-bold mb-2">No Posts Found</h2>
                 <p className="text-red-500">{error}</p>
                 <button
                   type="button"
                   onClick={() => navigate(-1)}
-                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded cursor-pointer"
                 >
                   Go Back
                 </button>
               </div>
             ) : !soloPost ? (
               <div className="text-center py-8">
+                <h2 className="text-2xl font-bold mb-2">No Posts Found</h2>
                 <p>Blog post not found</p>
                 <button
+                  type="button"
                   onClick={() => navigate(-1)}
-                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded cursor-pointer"
                 >
                   Go Back
                 </button>

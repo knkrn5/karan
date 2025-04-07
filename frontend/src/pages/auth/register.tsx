@@ -216,7 +216,7 @@ export default function Register() {
   return (
     <>
       <div
-        className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 my-4 w-full max-w-md transition-all duration-500 ease-out ${
+        className={`bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-8 my-4 w-full max-w-md transition-all duration-500 ease-out ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
         }`}
       >
