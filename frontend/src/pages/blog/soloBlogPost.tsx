@@ -58,16 +58,16 @@ export default function SoloBlogPost() {
   return (
     <>
       <BlogMetaTags
-        title={soloPost?.title || 'custom_title'}
-        excerpt={soloPost?.excerpt?.split(' ').slice(0, 20).join(' ') || 'custom_excerpt'}
-        tags={soloPost?.tags || 'custom_tags'}
+        title={soloPost?.title || 'blog post - karan.email'}
+        excerpt={soloPost?.excerpt?.split(' ').slice(0, 20).join(' ')  || 'personal blog posts'}
+        tags={soloPost?.tags || 'blog, post, content, karan.email, writing'}
         slug={window.location.href}
         featuredImage={
           soloPost?.featuredImage || {
             fields: {
               file: {
-                url: 'custom_img',
-                fileName: 'default.jpg',
+                url: '/favicons/K.svg',
+                fileName: 'logo',
               },
             },
           }

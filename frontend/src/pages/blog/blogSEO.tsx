@@ -29,21 +29,22 @@ export function BlogMetaTags({ title, excerpt, tags, slug, featuredImage }: Blog
   );
 }
 
+
 {
   /* <BlogMetaTags
-  title={soloPost?.title || 'custom_title'}
-  excerpt={soloPost?.excerpt?.split(' ').slice(0, 20).join(' ') || 'custom_excerpt'}
-  tags={soloPost?.tags || 'custom_tags'}
-  slug={window.location.href}
-  featuredImage={
-    soloPost?.featuredImage || {
-      fields: {
-        file: {
-          url: 'custom_img',
-          fileName: 'default.jpg',
-        },
+title={soloPost?.title || 'blog post - karan.email'}
+excerpt={soloPost?.excerpt?.split(' ').slice(0, 20).join(' ')  || 'personal blog posts'}
+tags={soloPost?.tags || 'blog, post, content, karan.email, writing'}
+slug={window.location.href}
+featuredImage={
+  soloPost?.featuredImage || {
+    fields: {
+      file: {
+        url: '/favicons/K.svg',
+        fileName: 'logo',
       },
-    }
+    },
   }
-/>; */
+}
+/> */
 }
