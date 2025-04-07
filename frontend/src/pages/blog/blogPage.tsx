@@ -9,8 +9,8 @@ import type { Document } from '@contentful/rich-text-types';
 export interface BlogPostPropsType {
   title: string;
   slug: string;
-  publishedDate: string;
-  category: string;
+  publishedDate?: string;
+  category?: string;
   tags: string;
   excerpt: string;
   featuredImage: {
@@ -21,7 +21,7 @@ export interface BlogPostPropsType {
       };
     };
   };
-  content: {
+  content?: {
     content: Document;
   };
 }
@@ -36,7 +36,6 @@ export default function BlogPage() {
     end: 6,
   });
   const [error, setError] = useState<string | null>(null);
-
 
   const [searchOrCategoryValue, setSearchOrCategoryValue] = useState<string>('');
 

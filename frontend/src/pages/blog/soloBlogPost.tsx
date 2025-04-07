@@ -9,6 +9,7 @@ import options from '../../utils/contentfulNodetypeOptions';
 import { IoIosArrowBack } from 'react-icons/io';
 import { CiShare2 } from 'react-icons/ci';
 import { Document, TopLevelBlock, BLOCKS } from '@contentful/rich-text-types';
+import { BlogMetaTags } from './blogSEO';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -56,6 +57,22 @@ export default function SoloBlogPost() {
 
   return (
     <>
+      <BlogMetaTags
+        title={soloPost?.title || 'custom_title'}
+        excerpt={soloPost?.excerpt?.split(' ').slice(0, 20).join(' ') || 'custom_excerpt'}
+        tags={soloPost?.tags || 'custom_tags'}
+        slug={window.location.href}
+        featuredImage={
+          soloPost?.featuredImage || {
+            fields: {
+              file: {
+                url: 'custom_img',
+                fileName: 'default.jpg',
+              },
+            },
+          }
+        }
+      />
       <div className="min-h-screen  p-4 text-black dark:text-white bg-gray-200 dark:bg-gray-800">
         <div className="max-w-3xl mx-auto mb-4">
           <div className="rounded-lg shadow-2xl dark:shadow-neutral-900 bg-gray-100 dark:bg-gray-900 p-4">
