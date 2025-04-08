@@ -2,6 +2,8 @@ import { User, IUser } from '../models/user.model.js';
 import { UserDTO } from '../dtos/user.dto.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
+import { generateOTPEmailTemplate } from '../utils/emailTemplates.js';
 
 export class AuthService {
   static async registerUser(
@@ -38,6 +40,40 @@ export class AuthService {
       accessToken,
       refreshToken,
     });
+  }
+
+  static async sendOTPVerificationEmail() {
+    const otp = Math.floor(100000 + Math.random() * 900000);
+
+    try {
+      const sendOTPEmail = async () => {
+        const transporter = nodemailer.createTransport({
+          host: 'smtp.zoho.in', // or smtp.zoho.com if you're using the global version
+          port: 465,
+          secure: true, // true for 465, false for 587
+          auth: {
+            user: process.env.EMAIL_FROM,
+            pass: process.env.EMAIL_PASS,
+          },
+        });
+
+        const mailOptions = {
+          from: `"karan.email" <${process.env.EMAIL_FROM}>`,
+          to: 'xkaranx5@gmail.com', // or req.body.email
+          subject: 'Your Karan.email OTP Code is:',
+          text: `Your verification code is: ${otp}`, // fallback plain text
+          html: generateOTPEmailTemplate(otp),
+        };
+
+        await transporter.sendMail(mailOptions);
+      };
+
+      await sendOTPEmail(); // 🔥 You need to actually call it here
+
+      return new ApiResponse(200, true, 'Email sent successfully', null);
+    } catch (error: any) {
+      return new ApiResponse(500, false, error.message, null);
+    }
   }
 
   static async loginUser(email: string, password: string) {
