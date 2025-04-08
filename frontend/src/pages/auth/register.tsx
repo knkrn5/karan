@@ -1,8 +1,9 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router';
 // import { GoogleIcon, GithubIcon } from "../../icons/svgIcons";
-import axios from 'axios';
-import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+import axios, { AxiosError } from 'axios';
+import { FaRegEye, FaRegEyeSlash, FaRegSave } from 'react-icons/fa';
+import { CiEdit } from 'react-icons/ci';
 import StatusNotifications from '../../utils/StatusNotifications';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
@@ -13,14 +14,7 @@ interface UserDataProps {
   firstName: string;
   lastName?: string;
   email: string;
-  password: string;
-  confirmPassword: string;
-}
-
-interface UserDataErrorProps {
-  firstName: string;
-  lastName?: string;
-  email: string;
+  otp: string;
   password: string;
   confirmPassword: string;
 }
@@ -36,20 +30,30 @@ export default function Register() {
     twoPassword: false,
   });
 
-  const [isAccountCreated, setIsAccountCreated] = useState<boolean>(false);
+  const [registrationVerification, setRegistrationVerification] = useState<{
+    isAccountCreated: boolean;
+    isOptSent: boolean;
+    isOptVerified: boolean;
+  }>({
+    isAccountCreated: false,
+    isOptSent: false,
+    isOptVerified: false,
+  });
 
   const [userData, setUserData] = useState<UserDataProps>({
     firstName: '',
     lastName: '',
     email: '',
+    otp: '',
     password: '',
     confirmPassword: '',
   });
 
-  const [formFieldsError, setFormFieldsError] = useState<UserDataErrorProps>({
+  const [formFieldsError, setFormFieldsError] = useState<UserDataProps>({
     firstName: '',
     lastName: '',
     email: '',
+    otp: '',
     password: '',
     confirmPassword: '',
   });
@@ -68,77 +72,153 @@ export default function Register() {
   }, []);
 
   // Validate form fields and return errors
-  const validateForm = useCallback((data: UserDataProps): UserDataErrorProps => {
-    const errors: UserDataErrorProps = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-    };
+  const validateForm = useCallback(
+    (data: UserDataProps): UserDataProps => {
+      const errors: UserDataProps = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        otp: '',
+        password: '',
+        confirmPassword: '',
+      };
 
-    // Email validation
-    // const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    if (!data.email.trim()) {
-      errors.email = 'Email is required';
-    } else if (!data.email.includes('@')) {
-      errors.email = 'Email must contain @ symbol';
-    } else if (!data.email.includes('.')) {
-      errors.email = 'Email must contain a domain extension (e.g., .com)';
-    } else if (data.email.indexOf('@') === 0) {
-      errors.email = 'Email must have a username before @ symbol';
-    } else if (data.email.indexOf('@') === data.email.length - 1) {
-      errors.email = 'Email must have a domain after @ symbol';
-    } else if (data.email.split('@')[1] && !data.email.split('@')[1].includes('.')) {
-      errors.email = 'Email domain must include an extension (e.g., .com)';
-    } else if (!/^[a-zA-Z0-9._-]+@/.test(data.email)) {
-      errors.email =
-        'Email username can only contain letters, numbers, periods, underscores, and hyphens';
-    } else if (!/@[a-zA-Z0-9.-]+\./.test(data.email)) {
-      errors.email = 'Email domain can only contain letters, numbers, periods, and hyphens';
-    } else if (!/\.[a-zA-Z]{2,6}$/.test(data.email)) {
-      errors.email = 'Email must end with a valid domain extension (2-6 letters)';
-    }
+      // First name validation
+      if (!data.firstName.trim()) {
+        errors.firstName = 'First name is required';
+      }
 
-    // First name validation
-    if (!data.firstName.trim()) {
-      errors.firstName = 'First name is required';
-    }
+      // Email validation
+      // const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+      if (!data.email.trim()) {
+        errors.email = 'Email is required';
+      } else if (!data.email.includes('@')) {
+        errors.email = 'Email must contain @ symbol';
+      } else if (!data.email.includes('.')) {
+        errors.email = 'Email must contain a domain extension (e.g., .com)';
+      } else if (data.email.indexOf('@') === 0) {
+        errors.email = 'Email must have a username before @ symbol';
+      } else if (data.email.indexOf('@') === data.email.length - 1) {
+        errors.email = 'Email must have a domain after @ symbol';
+      } else if (data.email.split('@')[1] && !data.email.split('@')[1].includes('.')) {
+        errors.email = 'Email domain must include an extension (e.g., .com)';
+      } else if (!/^[a-zA-Z0-9._-]+@/.test(data.email)) {
+        errors.email =
+          'Email username can only contain letters, numbers, periods, underscores, and hyphens';
+      } else if (!/@[a-zA-Z0-9.-]+\./.test(data.email)) {
+        errors.email = 'Email domain can only contain letters, numbers, periods, and hyphens';
+      } else if (!/\.[a-zA-Z]{2,6}$/.test(data.email)) {
+        errors.email = 'Email must end with a valid domain extension (2-6 letters)';
+      }
 
-    // Password validation
-    /* const passwordRegex =
+      // opt validation
+      if (!data.otp.trim() && registrationVerification.isOptSent) {
+        errors.otp = 'OTP is required';
+      }
+
+      // Password validation
+      /* const passwordRegex =
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; */
-    if (!data.password) {
-      errors.password = 'Password is required';
-    } else if (data.password.length < 8) {
-      errors.password = 'Password must be at least 8 characters long';
-    } else if (!/(?=.*[A-Z])/.test(data.password)) {
-      errors.password = 'Password must contain at least one uppercase letter';
-    } else if (!/(?=.*[a-z])/.test(data.password)) {
-      errors.password = 'Password must contain at least one lowercase letter';
-    } else if (!/(?=.*\d)/.test(data.password)) {
-      errors.password = 'Password must contain at least one number';
-    } else if (!/(?=.*[@$!%*?&])/.test(data.password)) {
-      errors.password = 'Password must contain at least one special character';
-    } else if (data.password.length > 50) {
-      errors.password = 'Password can max be 50 characters long';
-    }
+      if (registrationVerification.isOptVerified) {
+        if (!data.password) {
+          errors.password = 'Password is required';
+        } else if (data.password.length < 8) {
+          errors.password = 'Password must be at least 8 characters long';
+        } else if (!/(?=.*[A-Z])/.test(data.password)) {
+          errors.password = 'Password must contain at least one uppercase letter';
+        } else if (!/(?=.*[a-z])/.test(data.password)) {
+          errors.password = 'Password must contain at least one lowercase letter';
+        } else if (!/(?=.*\d)/.test(data.password)) {
+          errors.password = 'Password must contain at least one number';
+        } else if (!/(?=.*[@$!%*?&])/.test(data.password)) {
+          errors.password = 'Password must contain at least one special character';
+        } else if (data.password.length > 50) {
+          errors.password = 'Password can max be 50 characters long';
+        }
+      }
 
-    // Confirm password validation
-    if (!data.confirmPassword) {
-      errors.confirmPassword = 'Please confirm your password';
-    } else if (data.password !== data.confirmPassword) {
-      errors.confirmPassword = 'Passwords do not match';
-    }
+      // Confirm password validation
+      if (registrationVerification.isOptVerified) {
+        if (!data.confirmPassword) {
+          errors.confirmPassword = 'Please confirm your password';
+        } else if (data.password !== data.confirmPassword) {
+          errors.confirmPassword = 'Passwords do not match';
+        }
+      }
 
-    return errors;
-  }, []);
+      return errors;
+    },
+    [registrationVerification.isOptSent, registrationVerification.isOptVerified]
+  );
 
   // Check if the form has any errors
   const hasErrors = useMemo(() => {
     const errors = validateForm(userData);
     return Object.values(errors).some(error => error !== '');
   }, [userData, validateForm]);
+
+  async function verifyUser(email: string) {
+    try {
+      const res = await axios.post(`${BACKEND_URL}/api/v1/auth/verify-user`, { email: email });
+      setStatusInfoAuth({ error: res.data.message });
+      console.log(res.data);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+
+  async function sendOpt(userEmail: string) {
+    try {
+      const res = await axios.post(
+        `${BACKEND_URL}/api/v1/auth/send-otp`,
+        { email: userEmail },
+        { withCredentials: true }
+      );
+      console.log(res.data);
+      setRegistrationVerification(prev => ({ ...prev, isOptSent: true }));
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+
+  async function verifyOpt(otp: string) {
+    try {
+      const res = await axios.post(
+        `${BACKEND_URL}/api/v1/auth/verify-otp`,
+        { enteredOTP: otp },
+        { withCredentials: true }
+      );
+
+      console.log('Verify OTP response:', res.data);
+
+      if (res.data.success) {
+        setRegistrationVerification(prev => {
+          const newState = { ...prev, isOptVerified: true };
+          console.log('Setting isOptVerified to true:', newState);
+          return newState;
+        });
+        setStatusInfoAuth({ success: res.data.message });
+        return true;
+      } else {
+        setStatusInfoAuth({ error: res.data.message || 'OTP verification failed' });
+        return false;
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data);
+        setStatusInfoAuth({ error: error.response?.data.message || error.message });
+      } else {
+        console.log(error);
+      }
+      return false;
+    } finally {
+      setIsSigningUp(false);
+    }
+  }
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
@@ -154,23 +234,50 @@ export default function Register() {
     setIsSigningUp(true);
     setStatusInfoAuth({});
 
-    try {
-      const response = await axios.post(`${BACKEND_URL}/api/v1/auth/register`, userData);
-      const { data } = response;
-      setStatusInfoAuth({ success: data.message });
-      setIsAccountCreated(data.success);
-      // navigate('/login');
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        console.log(error.response?.data.status);
-        setStatusInfoAuth({
-          error: error.response?.data.message || error.message,
-        });
-      } else {
-        setStatusInfoAuth({ error: 'An unexpected error occurred' });
+    if (!registrationVerification.isAccountCreated) {
+      const verifyUserRes = await verifyUser(userData.email);
+      if (verifyUserRes) {
+        setIsSigningUp(false);
+        return;
       }
-    } finally {
+    }
+
+    if (!registrationVerification.isOptSent) {
+      const otpRes = await sendOpt(userData.email);
       setIsSigningUp(false);
+      if (otpRes) {
+        setStatusInfoAuth({ success: 'OTP sent successfully' });
+      }
+      return;
+    }
+
+    if (registrationVerification.isOptSent && !registrationVerification.isOptVerified) {
+      const verifyResult = await verifyOpt(userData.otp);
+      setIsSigningUp(false);
+      if (!verifyResult) {
+        return;
+      }
+      return;
+    }
+
+    if (registrationVerification.isOptVerified) {
+      try {
+        const response = await axios.post(`${BACKEND_URL}/api/v1/auth/register`, userData);
+        const { data } = response;
+        setStatusInfoAuth({ success: data.message });
+        setRegistrationVerification(prev => ({ ...prev, isAccountCreated: true }));
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.response?.data.status);
+          setStatusInfoAuth({
+            error: error.response?.data.message || error.message,
+          });
+        } else {
+          setStatusInfoAuth({ error: 'An unexpected error occurred' });
+        }
+      } finally {
+        setIsSigningUp(false);
+      }
     }
   };
 
@@ -181,7 +288,7 @@ export default function Register() {
       setUserData(prev => ({ ...prev, [name]: value }));
 
       // Clear error for this field when user starts typing
-      if (formFieldsError[name as keyof UserDataErrorProps]) {
+      if (formFieldsError[name as keyof UserDataProps]) {
         setFormFieldsError(prev => ({ ...prev, [name]: '' }));
       }
     },
@@ -199,10 +306,10 @@ export default function Register() {
   const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
 
   useEffect(() => {
-    if (isAccountCreated || isSuccessLoginedIn === true) {
+    if (registrationVerification.isAccountCreated || isSuccessLoginedIn === true) {
       navigate('/login', { replace: true });
     }
-  }, [isAccountCreated, isSuccessLoginedIn, navigate]);
+  }, [isSuccessLoginedIn, navigate, registrationVerification.isAccountCreated]);
 
   if (isSuccessLoginedIn === null) {
     return (
@@ -306,8 +413,26 @@ export default function Register() {
 
           <div className="flex flex-col mb-4">
             <label htmlFor="email" className="mb-1 block text-gray-700 dark:text-gray-300">
-              <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
-                Email
+              <span className="flex justify-between items-center">
+                <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
+                  Email
+                </span>
+                <button
+                  type="button"
+                  disabled={!registrationVerification.isOptSent}
+                  onClick={() => {
+                    setRegistrationVerification(prev => ({
+                      ...prev,
+                      isOptSent: false,
+                      isOptVerified: false,
+                    }));
+                    setStatusInfoAuth({});
+                  }}
+                  className="focus:outline-none"
+                  aria-label={showPassword.onePassword ? 'Hide password' : 'Show password'}
+                >
+                  {registrationVerification.isOptSent ? <CiEdit /> : <FaRegSave />}
+                </button>
               </span>
             </label>
             <input
@@ -315,7 +440,11 @@ export default function Register() {
               name="email"
               type="email"
               placeholder="Email"
-              disabled={isSigningUp}
+              disabled={
+                isSigningUp ||
+                registrationVerification.isOptSent ||
+                registrationVerification.isOptVerified
+              }
               className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 formFieldsError.email ? 'border border-red-500' : ''
               } ${isSigningUp ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
@@ -329,104 +458,152 @@ export default function Register() {
             )}
           </div>
 
-          <div className="flex flex-col mb-6">
-            <label htmlFor="password" className="mb-1 block text-gray-700 dark:text-gray-300">
-              <span className="flex justify-between items-center">
-                <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
-                  Password
-                </span>
+          {/* password section */}
+          {registrationVerification.isOptVerified ? (
+            <div>
+              {/* enter password */}
+              <div className="flex flex-col mb-6">
+                <label htmlFor="password" className="mb-1 block text-gray-700 dark:text-gray-300">
+                  <span className="flex justify-between items-center">
+                    <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
+                      Password
+                    </span>
 
-                <button
-                  type="button"
-                  onClick={() => togglePasswordVisibility('onePassword')}
-                  className="focus:outline-none"
-                  aria-label={showPassword.onePassword ? 'Hide password' : 'Show password'}
-                >
-                  {!showPassword.onePassword ? <FaRegEye /> : <FaRegEyeSlash />}
-                </button>
-              </span>
-            </label>
-            <input
-              id="password"
-              name="password"
-              maxLength={50}
-              type={showPassword.onePassword ? 'text' : 'password'}
-              placeholder="Password"
-              disabled={isSigningUp}
-              className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                formFieldsError.password ? 'border border-red-500' : ''
-              } ${isSigningUp ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
-              value={userData.password}
-              onChange={handleChange}
-            />
-            {formFieldsError.password && (
-              <p className="text-red-600 text-sm mt-1" id="password-error">
-                {formFieldsError.password}
-              </p>
-            )}
-            {userData.password && !formFieldsError.password && (
-              <div className="mt-2">
-                <p className="text-sm text-gray-600 dark:text-gray-400">Password strength:</p>
-                <div className="h-2 w-full bg-gray-200 rounded-full mt-1">
-                  <div
-                    className={`h-full rounded-full ${
-                      userData.password.length > 12 &&
-                      /(?=.*[A-Z])/.test(userData.password) && //uppercase
-                      /(?=.*\d)/.test(userData.password) && //number
-                      /(?=.*[@$!%*?&])/.test(userData.password) //special character
-                        ? 'bg-green-500 w-full'
-                        : userData.password.length >= 8 &&
+                    <button
+                      type="button"
+                      onClick={() => togglePasswordVisibility('onePassword')}
+                      className="focus:outline-none"
+                      aria-label={showPassword.onePassword ? 'Hide password' : 'Show password'}
+                    >
+                      {!showPassword.onePassword ? <FaRegEye /> : <FaRegEyeSlash />}
+                    </button>
+                  </span>
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  maxLength={50}
+                  type={showPassword.onePassword ? 'text' : 'password'}
+                  placeholder="Password"
+                  disabled={isSigningUp}
+                  className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    formFieldsError.password ? 'border border-red-500' : ''
+                  } ${isSigningUp ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
+                  value={userData.password}
+                  onChange={handleChange}
+                />
+                {formFieldsError.password && (
+                  <p className="text-red-600 text-sm mt-1" id="password-error">
+                    {formFieldsError.password}
+                  </p>
+                )}
+                {userData.password && !formFieldsError.password && (
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Password strength:</p>
+                    <div className="h-2 w-full bg-gray-200 rounded-full mt-1">
+                      <div
+                        className={`h-full rounded-full ${
+                          userData.password.length > 12 &&
                           /(?=.*[A-Z])/.test(userData.password) && //uppercase
                           /(?=.*\d)/.test(userData.password) && //number
                           /(?=.*[@$!%*?&])/.test(userData.password) //special character
-                        ? 'bg-yellow-500 w-2/3'
-                        : 'bg-red-500 w-1/3'
-                    }`}
-                  ></div>
-                </div>
+                            ? 'bg-green-500 w-full'
+                            : userData.password.length >= 8 &&
+                              /(?=.*[A-Z])/.test(userData.password) && //uppercase
+                              /(?=.*\d)/.test(userData.password) && //number
+                              /(?=.*[@$!%*?&])/.test(userData.password) //special character
+                            ? 'bg-yellow-500 w-2/3'
+                            : 'bg-red-500 w-1/3'
+                        }`}
+                      ></div>
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
 
-          <div className="flex flex-col mb-6">
-            <label
-              htmlFor="confirmPassword"
-              className="mb-1 block text-gray-700 dark:text-gray-300"
-            >
-              <span className="flex justify-between">
-                <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
-                  Confirm Password
-                </span>
-                <button
-                  type="button"
-                  onClick={() => togglePasswordVisibility('twoPassword')}
-                  className="focus:outline-none"
+              {/* confirm password */}
+              <div className="flex flex-col mb-6">
+                <label
+                  htmlFor="confirmPassword"
+                  className="mb-1 block text-gray-700 dark:text-gray-300"
                 >
-                  {!showPassword.twoPassword ? <FaRegEye /> : <FaRegEyeSlash />}
-                </button>
-              </span>
-            </label>
-            <input
-              id="confirmPassword"
-              name="confirmPassword"
-              type={showPassword.twoPassword ? 'text' : 'password'}
-              placeholder="Confirm Password"
-              disabled={isSigningUp}
-              className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                formFieldsError.confirmPassword ? 'border border-red-500' : ''
-              } ${isSigningUp ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
-              aria-label={
-                showPassword.twoPassword ? 'Hide confirm password' : 'Show confirm password'
-              }
-              value={userData.confirmPassword}
-              onChange={handleChange}
-            />
-            {formFieldsError.confirmPassword && (
-              <p className="text-red-600 text-sm mt-1" id="confirmPassword-error">
-                {formFieldsError.confirmPassword}
-              </p>
-            )}
-          </div>
+                  <span className="flex justify-between">
+                    <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
+                      Confirm Password
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => togglePasswordVisibility('twoPassword')}
+                      className="focus:outline-none"
+                    >
+                      {!showPassword.twoPassword ? <FaRegEye /> : <FaRegEyeSlash />}
+                    </button>
+                  </span>
+                </label>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type={showPassword.twoPassword ? 'text' : 'password'}
+                  placeholder="Confirm Password"
+                  disabled={isSigningUp}
+                  className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    formFieldsError.confirmPassword ? 'border border-red-500' : ''
+                  } ${isSigningUp ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
+                  aria-label={
+                    showPassword.twoPassword ? 'Hide confirm password' : 'Show confirm password'
+                  }
+                  value={userData.confirmPassword}
+                  onChange={handleChange}
+                />
+                {formFieldsError.confirmPassword && (
+                  <p className="text-red-600 text-sm mt-1" id="confirmPassword-error">
+                    {formFieldsError.confirmPassword}
+                  </p>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div>
+              {/* OTP field */}
+              <div className="flex flex-col mb-6">
+                <label
+                  htmlFor="confirmPassword"
+                  className="mb-1 block text-gray-700 dark:text-gray-300"
+                >
+                  <span className="flex justify-between">
+                    <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
+                      Enter OTP
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => togglePasswordVisibility('twoPassword')}
+                      className="focus:outline-none"
+                    >
+                      {!showPassword.twoPassword ? <FaRegEye /> : <FaRegEyeSlash />}
+                    </button>
+                  </span>
+                </label>
+                <input
+                  id="otp"
+                  name="otp"
+                  type="number"
+                  placeholder="OTP"
+                  disabled={!registrationVerification.isOptSent}
+                  className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none  ${
+                    formFieldsError.otp ? 'border border-red-500' : ''
+                  } ${isSigningUp ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
+                  aria-label="Enter OTP"
+                  value={userData.otp}
+                  onChange={handleChange}
+                />
+                {formFieldsError.otp && (
+                  <p className="text-red-600 text-sm mt-1" id="confirmPassword-error">
+                    {formFieldsError.otp}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Submit Button */}
           <button
@@ -461,7 +638,11 @@ export default function Register() {
               </>
             ) : (
               <>
-                Sign Up
+                {!registrationVerification.isOptSent
+                  ? 'Send OTP'
+                  : registrationVerification.isOptSent && !registrationVerification.isOptVerified
+                  ? 'Verify OPT'
+                  : 'Sign Up'}
                 <i className="fas fa-arrow-right ml-2"></i>
               </>
             )}
