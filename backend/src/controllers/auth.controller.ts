@@ -6,7 +6,6 @@ export class AuthController {
   static async verifyUser(req: Request, res: Response) {
     try {
       const { email } = req.body;
-      console.log(email);
       const response = await AuthService.verifyUser(email);
       res.status(response.statusCode).json(response);
     } catch (error: any) {
@@ -23,7 +22,6 @@ export class AuthController {
       const { email } = req.body;
       const response = await AuthService.sendOTPVerificationEmail(email);
 
-      console.log('otp', response.data);
       res
         .status(response.statusCode)
         .cookie('otp', response.data, {
@@ -46,7 +44,6 @@ export class AuthController {
     try {
       const { enteredOTP } = req.body;
       const { otp } = req.cookies;
-      console.log('enter', enteredOTP, 'stored', otp);
       const response = await AuthService.verifyOTP(enteredOTP, otp);
       res.status(response.statusCode).json(response);
     } catch (error: any) {

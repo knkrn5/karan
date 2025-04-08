@@ -2,7 +2,8 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router';
 // import { GoogleIcon, GithubIcon } from "../../icons/svgIcons";
 import axios, { AxiosError } from 'axios';
-import { FaRegEye, FaRegEyeSlash, FaRegSave } from 'react-icons/fa';
+import { FaRegEye, FaRegEyeSlash, FaRegSave, FaRegCheckCircle } from 'react-icons/fa';
+import { FaRepeat } from 'react-icons/fa6';
 import { CiEdit } from 'react-icons/ci';
 import StatusNotifications from '../../utils/StatusNotifications';
 import { useAuthStore } from '../../stores/auth/authStore.js';
@@ -419,6 +420,7 @@ export default function Register() {
                 </span>
                 <button
                   type="button"
+                  title="edit email"
                   disabled={!registrationVerification.isOptSent}
                   onClick={() => {
                     setRegistrationVerification(prev => ({
@@ -428,7 +430,7 @@ export default function Register() {
                     }));
                     setStatusInfoAuth({});
                   }}
-                  className="focus:outline-none"
+                  className="focus:outline-none cursor-pointer"
                   aria-label={showPassword.onePassword ? 'Hide password' : 'Show password'}
                 >
                   {registrationVerification.isOptSent ? <CiEdit /> : <FaRegSave />}
@@ -445,7 +447,7 @@ export default function Register() {
                 registrationVerification.isOptSent ||
                 registrationVerification.isOptVerified
               }
-              className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed ${
                 formFieldsError.email ? 'border border-red-500' : ''
               } ${isSigningUp ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
               value={userData.email}
@@ -576,10 +578,12 @@ export default function Register() {
                     </span>
                     <button
                       type="button"
-                      onClick={() => togglePasswordVisibility('twoPassword')}
-                      className="focus:outline-none"
+                      title="resend otp"
+                      disabled={!registrationVerification.isOptSent}
+                      onClick={() => {}}
+                      className="focus:outline-none cursor-pointer disabled:cursor-not-allowed"
                     >
-                      {!showPassword.twoPassword ? <FaRegEye /> : <FaRegEyeSlash />}
+                      {!registrationVerification.isOptSent ? <FaRegCheckCircle /> : <FaRepeat />}
                     </button>
                   </span>
                 </label>
@@ -589,9 +593,9 @@ export default function Register() {
                   type="number"
                   placeholder="OTP"
                   disabled={!registrationVerification.isOptSent}
-                  className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none  ${
+                  className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none  ${
                     formFieldsError.otp ? 'border border-red-500' : ''
-                  } ${isSigningUp ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
+                  }`}
                   aria-label="Enter OTP"
                   value={userData.otp}
                   onChange={handleChange}
