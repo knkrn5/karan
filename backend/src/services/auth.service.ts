@@ -42,13 +42,14 @@ export class AuthService {
     });
   }
 
-  static async sendOTPVerificationEmail() {
+  static async sendOTPVerificationEmail(email: string) {
+    if (!email) throw new ApiResponse(400, false, 'email is required', null);
     const otp = Math.floor(100000 + Math.random() * 900000);
 
     try {
       const sendOTPEmail = async () => {
         const transporter = nodemailer.createTransport({
-          host: 'smtp.zoho.in', // or smtp.zoho.com if you're using the global version
+          host: 'smtp.zoho.in',
           port: 465,
           secure: true, // true for 465, false for 587
           auth: {
@@ -59,7 +60,7 @@ export class AuthService {
 
         const mailOptions = {
           from: `"karan.email" <${process.env.EMAIL_FROM}>`,
-          to: 'xkaranx5@gmail.com', // or req.body.email
+          to: email, 
           subject: 'Your Karan.email OTP Code is:',
           text: `Your verification code is: ${otp}`, // fallback plain text
           html: generateOTPEmailTemplate(otp),
@@ -68,7 +69,7 @@ export class AuthService {
         await transporter.sendMail(mailOptions);
       };
 
-      await sendOTPEmail(); // 🔥 You need to actually call it here
+      await sendOTPEmail();
 
       return new ApiResponse(200, true, 'Email sent successfully', null);
     } catch (error: any) {

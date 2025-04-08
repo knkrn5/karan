@@ -32,7 +32,8 @@ export class AuthController {
 
   static async sendOTPVerificationEmail(req: Request, res: Response) {
     try {
-      const response = await AuthService.sendOTPVerificationEmail();
+      const { email } = req.body;
+      const response = await AuthService.sendOTPVerificationEmail(email);
       res.status(response.statusCode).json(response);
     } catch (error: any) {
       if (error instanceof ApiResponse) {
