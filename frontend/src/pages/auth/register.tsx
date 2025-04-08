@@ -315,6 +315,7 @@ export default function Register() {
     if (registrationVerification.isAccountCreated || isSuccessLoginedIn === true) {
       navigate('/login', { replace: true });
     }
+
   }, [isSuccessLoginedIn, navigate, registrationVerification.isAccountCreated]);
 
   if (isSuccessLoginedIn === null) {
@@ -435,7 +436,7 @@ export default function Register() {
                     }));
                     setStatusInfoAuth({});
                   }}
-                  className="focus:outline-none cursor-pointer"
+                  className="focus:outline-none cursor-pointer disabled:cursor-not-allowed"
                   aria-label={showPassword.onePassword ? 'Hide password' : 'Show password'}
                 >
                   {registrationVerification.isOptSent ? <CiEdit /> : <FaRegSave />}
