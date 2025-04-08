@@ -50,12 +50,7 @@ export class AuthService {
   }
 
   static async verifyOTP(enteredOTP: number, storedOTP: number) {
-    if (!enteredOTP) {
-      throw new ApiResponse(404, false, 'Entered OTP is missing', null);
-    }
-    if (!storedOTP) {
-      throw new ApiResponse(404, false, 'Stored OTP is missing', null);
-    }
+    if (!enteredOTP || !storedOTP) throw new ApiResponse(404, false, ' OTP not found', null);
 
     if (enteredOTP !== storedOTP) throw new ApiResponse(401, false, 'Incorrect OTP', null);
 

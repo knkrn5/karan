@@ -177,9 +177,9 @@ export default function Register() {
         { email: userEmail },
         { withCredentials: true }
       );
-      console.log(res.data);
+      // console.log(res.data);
       setRegistrationVerification(prev => ({ ...prev, isOptSent: true }));
-      return true;
+      return res.data.success;
     } catch (error) {
       console.log(error);
       return false;
@@ -206,6 +206,11 @@ export default function Register() {
         return true;
       } else {
         setStatusInfoAuth({ error: res.data.message || 'OTP verification failed' });
+        setFormFieldsError(prev => ({
+          ...prev,
+          otp: res.data.message || 'OTP verification failed',
+        }));
+
         return false;
       }
     } catch (error) {
