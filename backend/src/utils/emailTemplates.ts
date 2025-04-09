@@ -12,7 +12,7 @@ export function generateOTPEmailTemplate(otp: number, reason: string): string {
           <div style="max-width: 600px; margin: 20px auto; padding: 0; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
             <!-- Header -->
             <div style="background-color: #2d89ef; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
-              <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 600;">KARAN</h1>
+              <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 600; font-family: 'Times New Roman', serif;">KARAN</h1>
             </div>
             
             <!-- Content -->
