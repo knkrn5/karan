@@ -15,8 +15,15 @@ interface loginFeildDataProps {
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
+  const [loginFormFieldData, setLoginFormFieldData] = useState<{
+    email: string;
+    password: string;
+  }>({
+    email: '',
+    password: '',
+  });
   const [isVisible, setIsVisible] = useState(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -46,35 +53,47 @@ export default function LoginPage() {
     };
 
     // Email validation
-    if (email.trim().length === 0) {
+    if (loginFormFieldData.email.trim().length === 0) {
       loginFieldErrors.email = 'Email is required';
-    } else if (!email.includes('@')) {
+    } else if (!loginFormFieldData.email.includes('@')) {
       loginFieldErrors.email = 'Email must contain @ symbol';
-    } else if (!email.includes('.')) {
+    } else if (!loginFormFieldData.email.includes('.')) {
       loginFieldErrors.email = 'Email must contain a domain extension (e.g., .com)';
-    } else if (email.indexOf('@') === 0) {
+    } else if (loginFormFieldData.email.indexOf('@') === 0) {
       loginFieldErrors.email = 'Email must have a username before @ symbol';
-    } else if (email.indexOf('@') === email.length - 1) {
+    } else if (loginFormFieldData.email.indexOf('@') === loginFormFieldData.email.length - 1) {
       loginFieldErrors.email = 'Email must have a domain after @ symbol';
-    } else if (email.split('@')[1] && !email.split('@')[1].includes('.')) {
+    } else if (
+      loginFormFieldData.email.split('@')[1] &&
+      !loginFormFieldData.email.split('@')[1].includes('.')
+    ) {
       loginFieldErrors.email = 'Email domain must include an extension (e.g., .com)';
-    } else if (!/^[a-zA-Z0-9._-]+@/.test(email)) {
+    } else if (!/^[a-zA-Z0-9._-]+@/.test(loginFormFieldData.email)) {
       loginFieldErrors.email =
         'Email username can only contain letters, numbers, periods, underscores, and hyphens';
-    } else if (!/@[a-zA-Z0-9.-]+\./.test(email)) {
+    } else if (!/@[a-zA-Z0-9.-]+\./.test(loginFormFieldData.email)) {
       loginFieldErrors.email =
         'Email domain can only contain letters, numbers, periods, and hyphens';
-    } else if (!/\.[a-zA-Z]{2,6}$/.test(email)) {
+    } else if (!/\.[a-zA-Z]{2,6}$/.test(loginFormFieldData.email)) {
       loginFieldErrors.email = 'Email must end with a valid domain extension (2-6 letters)';
     }
 
-    if (password.trim().length === 0) {
+    if (loginFormFieldData.password.trim().length === 0) {
       loginFieldErrors.password = 'Password is required';
-    } else if (password.length < 8) {
+    } else if (loginFormFieldData.password.length < 8) {
       loginFieldErrors.password = 'Password must be at least 8 characters';
     }
 
     return loginFieldErrors;
+  };
+
+  const handleInputChnage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setLoginFormFieldData(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
+    setStatusInfoAuth({});
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -94,8 +113,8 @@ export default function LoginPage() {
       const response = await axios.post(
         `${BACKEND_URL}/api/v1/auth/login`,
         {
-          email,
-          password,
+          email: loginFormFieldData.email,
+          password: loginFormFieldData.password,
         },
         { withCredentials: true }
       );
@@ -186,8 +205,8 @@ export default function LoginPage() {
             <input
               name="email"
               // type="text"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
+              value={loginFormFieldData.email}
+              onChange={e => handleInputChnage(e)}
               placeholder="Enter your email"
               disabled={isLoading}
               className={`w-full mt-2 px-4 py-2 border rounded-lg text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 ${
@@ -223,8 +242,8 @@ export default function LoginPage() {
               name="password"
               id="password"
               type={showPassword ? 'text' : 'password'}
-              value={password}
-              onChange={e => setPassword(e.target.value)}
+              value={loginFormFieldData.password}
+              onChange={e => handleInputChnage(e)}
               placeholder="Enter your password"
               disabled={isLoading}
               className={`w-full mt-2 px-4 py-2 border rounded-lg text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 
