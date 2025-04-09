@@ -445,6 +445,7 @@ export default function Register() {
                   title="edit email"
                   disabled={!registrationVerification.isOptSent}
                   onClick={() => {
+                    setUserData(prev => ({ ...prev, otp: '' }));
                     setRegistrationVerification(prev => ({
                       ...prev,
                       isOptSent: false,
