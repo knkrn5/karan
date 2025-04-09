@@ -54,6 +54,7 @@ export const isAccessTokenValid = async (
   }
 };
 
+
 //***************auth limiters***********************/
 //registration limiter
 export const registrationLimiter = rateLimit({
@@ -61,14 +62,19 @@ export const registrationLimiter = rateLimit({
   max: 5,
   standardHeaders: true,
   legacyHeaders: false,
-  message: new ApiResponse(429, false, 'Too many requests sent. Please try after 15 min', null),
+  message: new ApiResponse(429, false, 'Too many requests sent. Please try after 15 minutes', null),
 });
 
 //sendOpt limiter
 export const sendOtpLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
+  windowMs: 2 * 60 * 1000,
   max: 3,
   standardHeaders: true,
   legacyHeaders: false,
-  message: new ApiResponse(429, false, 'Too many OTP requests sent, Please try after 15 min', null),
+  message: new ApiResponse(
+    429,
+    false,
+    'Too many OTP requests sent, Please try after 2 minutes',
+    null
+  ),
 });

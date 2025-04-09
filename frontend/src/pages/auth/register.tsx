@@ -186,6 +186,7 @@ export default function Register() {
         { withCredentials: true }
       );
       // console.log(res.data);
+
       setRegistrationVerification(prev => ({ ...prev, isOptSent: true }));
       setStatusInfoAuth({ success: res.data.message });
       return res.data.success;
