@@ -174,7 +174,7 @@ export default function Register() {
     try {
       const res = await axios.post(
         `${BACKEND_URL}/api/v1/auth/send-otp`,
-        { email: userEmail },
+        { email: userEmail, reason: 'registration' },
         { withCredentials: true }
       );
       // console.log(res.data);
@@ -592,7 +592,7 @@ export default function Register() {
                       className="focus:outline-none cursor-pointer disabled:cursor-not-allowed"
                     >
                       {!registrationVerification.isOptSent ? (
-                        <FaRegCheckCircle className="animate-spin" />
+                        <FaRegCheckCircle />
                       ) : (
                         <FaRepeat />
                       )}

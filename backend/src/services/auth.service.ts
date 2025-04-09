@@ -15,7 +15,7 @@ export class AuthService {
     return new ApiResponse(200, true, 'User already exists, Please Login', null);
   }
 
-  static async sendOTPVerificationEmail(email: string) {
+  static async sendOTPVerificationEmail(email: string, reason: string) {
     if (!email) throw new ApiResponse(400, false, 'email is required', null);
 
     const otp = Math.floor(100000 + Math.random() * 900000);
@@ -41,7 +41,7 @@ export class AuthService {
           to: email,
           subject: 'Your Karan.email OTP Code is:',
           text: `Your verification code is: ${otp}`, // fallback plain text
-          html: generateOTPEmailTemplate(otp),
+          html: generateOTPEmailTemplate(otp, reason),
         };
 
         await transporter.sendMail(mailOptions);
