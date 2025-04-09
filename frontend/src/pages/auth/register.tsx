@@ -155,6 +155,11 @@ export default function Register() {
     [registrationVerification.isOptSent, registrationVerification.isOptVerified]
   );
 
+  // Checking the formfield has data not to reload
+  const formFieldsHasData = useMemo(() => {
+    return Object.values(userData).some(value => value.trim() !== '');
+  }, [userData]);
+
   // Check if the form has any errors
   const hasErrors = useMemo(() => {
     const errors = validateForm(userData);
@@ -326,13 +331,13 @@ export default function Register() {
       event.returnValue = '';
     }
 
-    if (registrationVerification.isOptSent) {
+    if (formFieldsHasData) {
       window.addEventListener('beforeunload', beforeUnloadHandler);
       return () => {
         window.removeEventListener('beforeunload', beforeUnloadHandler);
       };
     }
-  }, [registrationVerification.isOptSent]);
+  }, [formFieldsHasData]);
 
   if (isSuccessLoginedIn === null) {
     return (
@@ -357,26 +362,6 @@ export default function Register() {
         <p className="text-center text-gray-500 dark:text-gray-400 mb-6">
           Please fill in the details to get started.
         </p>
-
-        {/* Social Buttons */}
-        {/* <div className=" flex flex-col gap-2 md:flex-row md:gap-4 justify-center mb-4">
-          <button
-            type="button"
-            className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-semibold py-2 px-4 rounded flex items-center"
-            aria-label="Sign up with Google"
-          >
-            <GoogleIcon width={24} height={24} className="mr-2" />
-            Google
-          </button>
-          <button
-            type="button"
-            className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-semibold py-2 px-4 rounded flex items-center"
-            aria-label="Sign up with Github"
-          >
-            <GithubIcon width={24} height={24} className="mr-2" />
-            Github
-          </button>
-        </div> */}
 
         {/* Divider */}
         <div className="flex items-center my-4">
