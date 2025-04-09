@@ -585,10 +585,17 @@ export default function Register() {
                       type="button"
                       title="resend otp"
                       disabled={!registrationVerification.isOptSent}
-                      onClick={() => {}}
+                      onClick={async () => {
+                        await sendOpt(userData.email);
+                        setStatusInfoAuth({ info: 'OTP resend successfully' });
+                      }}
                       className="focus:outline-none cursor-pointer disabled:cursor-not-allowed"
                     >
-                      {!registrationVerification.isOptSent ? <FaRegCheckCircle /> : <FaRepeat />}
+                      {!registrationVerification.isOptSent ? (
+                        <FaRegCheckCircle className="animate-spin" />
+                      ) : (
+                        <FaRepeat />
+                      )}
                     </button>
                   </span>
                 </label>

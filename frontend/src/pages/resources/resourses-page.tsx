@@ -56,6 +56,10 @@ const resources: Resource[] = [
       name: 'MongoDB Atlas',
       description: 'NoSQL database with flexible schema design',
     },
+    {
+      name: 'Uptash redis',
+      description: 'Redis database with real-time capabilities',
+    },
   ]),
 
   new CreateResourses('Hosting', FaCloud, 'text-blue-500', [
