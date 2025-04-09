@@ -57,7 +57,7 @@ const resources: Resource[] = [
       description: 'NoSQL database with flexible schema design',
     },
     {
-      name: 'Uptash redis',
+      name: 'Uptash Redis',
       description: 'Redis database with real-time capabilities',
     },
   ]),
