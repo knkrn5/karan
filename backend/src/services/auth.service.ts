@@ -18,6 +18,11 @@ export class AuthService {
   static async sendOTPVerificationEmail(email: string, reason: string) {
     if (!email) throw new ApiResponse(400, false, 'email is required', null);
 
+    const existingOtp = await redisClient.get(email);
+    if (existingOtp) {
+      await redisClient.del(email);
+    }
+
     const otp = Math.floor(100000 + Math.random() * 900000);
 
     await redisClient.set(email, otp, {

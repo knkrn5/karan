@@ -41,6 +41,9 @@ export default function Register() {
     isOptVerified: false,
   });
 
+  const [isResendingOtp, setIsResendingOtp] = useState<boolean>(false);
+  // const [resendCooldown, setResendCooldown] = useState<number>(0);
+
   const [userData, setUserData] = useState<UserDataProps>({
     firstName: '',
     lastName: '',
@@ -317,6 +320,20 @@ export default function Register() {
     }
   }, [isSuccessLoginedIn, navigate, registrationVerification.isAccountCreated]);
 
+  useEffect(() => {
+    function beforeUnloadHandler(event: BeforeUnloadEvent) {
+      event.preventDefault();
+      event.returnValue = '';
+    }
+
+    if (registrationVerification.isOptSent) {
+      window.addEventListener('beforeunload', beforeUnloadHandler);
+      return () => {
+        window.removeEventListener('beforeunload', beforeUnloadHandler);
+      };
+    }
+  }, [registrationVerification.isOptSent]);
+
   if (isSuccessLoginedIn === null) {
     return (
       <div className="flex justify-center items-center">
@@ -478,8 +495,9 @@ export default function Register() {
 
                     <button
                       type="button"
+                      title={!showPassword.onePassword ? 'show password' : 'hide password'}
                       onClick={() => togglePasswordVisibility('onePassword')}
-                      className="focus:outline-none"
+                      className="focus:outline-none cursor-pointer"
                       aria-label={showPassword.onePassword ? 'Hide password' : 'Show password'}
                     >
                       {!showPassword.onePassword ? <FaRegEye /> : <FaRegEyeSlash />}
@@ -540,8 +558,9 @@ export default function Register() {
                     </span>
                     <button
                       type="button"
+                      title={!showPassword.twoPassword ? 'show password' : 'hide password'}
                       onClick={() => togglePasswordVisibility('twoPassword')}
-                      className="focus:outline-none"
+                      className="focus:outline-none cursor-pointer"
                     >
                       {!showPassword.twoPassword ? <FaRegEye /> : <FaRegEyeSlash />}
                     </button>
@@ -586,12 +605,23 @@ export default function Register() {
                       title="resend otp"
                       disabled={!registrationVerification.isOptSent}
                       onClick={async () => {
-                        await sendOpt(userData.email);
-                        setStatusInfoAuth({ info: 'OTP resend successfully' });
+                        try {
+                          setStatusInfoAuth({});
+                          setIsResendingOtp(true);
+                          await sendOpt(userData.email);
+                          setStatusInfoAuth({ info: 'OTP resend successfully' });
+                        } catch (error) {
+                          console.log(error);
+                          setStatusInfoAuth({ error: 'Failed to resend OTP' });
+                        } finally {
+                          setIsResendingOtp(false);
+                        }
                       }}
                       className="focus:outline-none cursor-pointer disabled:cursor-not-allowed"
                     >
-                      {!registrationVerification.isOptSent ? (
+                      {isResendingOtp ? (
+                        <AiOutlineLoading3Quarters className="animate-spin" />
+                      ) : !registrationVerification.isOptSent ? (
                         <FaRegCheckCircle />
                       ) : (
                         <FaRepeat />
