@@ -3,11 +3,13 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { app } from './app.js';
-import connectDB from './db/indexdb.js';
+import connectMongoDB from './db/mongoDB.js';
+// import { connectRedisDB } from './db/uptashRedisDB.js';
 
 const startServer = async () => {
   try {
-    await connectDB();
+    await connectMongoDB();
+    // await connectRedisDB();
     const port = process.env.PORT || 5000;
     app.listen(port, () => {
       console.log(`🚀 Server running on port ${port}`);
@@ -17,6 +19,5 @@ const startServer = async () => {
     process.exit(1);
   }
 };
-
 
 startServer();

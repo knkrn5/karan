@@ -4,6 +4,7 @@ import { ApiResponse } from '../utils/apiResponse.js';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import { generateOTPEmailTemplate } from '../utils/emailTemplates.js';
+import { redisClient } from '../db/uptashRedisDB.js';
 
 export class AuthService {
   static async verifyUser(email: string) {
@@ -18,6 +19,11 @@ export class AuthService {
     if (!email) throw new ApiResponse(400, false, 'email is required', null);
 
     const otp = Math.floor(100000 + Math.random() * 900000);
+
+    await redisClient.set(email, otp, {
+      EX: 300, // Expires in 300 seconds (5 minutes)
+    });
+
     try {
       const sendOTPEmail = async () => {
         const transporter = nodemailer.createTransport({
@@ -43,16 +49,22 @@ export class AuthService {
 
       await sendOTPEmail();
 
-      return new ApiResponse(200, true, 'Email sent successfully', otp);
+      return new ApiResponse(200, true, 'Email sent successfully', null);
     } catch (error: any) {
       return new ApiResponse(500, false, error.message, null);
     }
   }
 
-  static async verifyOTP(enteredOTP: number, storedOTP: number) {
-    if (!enteredOTP || !storedOTP) throw new ApiResponse(404, false, ' OTP not found', null);
+  static async verifyOTP(enteredOTP: number, email: string) {
+    if (!enteredOTP) throw new ApiResponse(404, false, 'OTP not found', null);
 
-    if (enteredOTP !== storedOTP) throw new ApiResponse(401, false, 'Incorrect OTP', null);
+    const storedOTP = await redisClient.get(email);
+
+    if (!storedOTP) throw new ApiResponse(404, false, 'OTP expired, Please resend OTP', null);
+
+    if (Number(enteredOTP) !== Number(storedOTP)) {
+      throw new ApiResponse(401, false, 'Incorrect OTP, Please Enter Valid OTP', null);
+    }
 
     return new ApiResponse(200, true, 'OTP verified successfully', null);
   }

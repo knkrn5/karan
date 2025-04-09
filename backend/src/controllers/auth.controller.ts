@@ -22,15 +22,7 @@ export class AuthController {
       const { email } = req.body;
       const response = await AuthService.sendOTPVerificationEmail(email);
 
-      res
-        .status(response.statusCode)
-        .cookie('otp', response.data, {
-          httpOnly: true,
-          secure: true,
-          sameSite: 'none',
-          maxAge: 5 * 60 * 1000,
-        })
-        .json(response);
+      res.status(response.statusCode).json(response);
     } catch (error: any) {
       if (error instanceof ApiResponse) {
         res.status(error.statusCode).json(error);
@@ -42,9 +34,8 @@ export class AuthController {
 
   static async verifyOTP(req: Request, res: Response) {
     try {
-      const { enteredOTP } = req.body;
-      const { otp } = req.cookies;
-      const response = await AuthService.verifyOTP(enteredOTP, otp);
+      const { enteredOTP, userEmail } = req.body;
+      const response = await AuthService.verifyOTP(enteredOTP, userEmail);
       res.status(response.statusCode).json(response);
     } catch (error: any) {
       if (error instanceof ApiResponse) {

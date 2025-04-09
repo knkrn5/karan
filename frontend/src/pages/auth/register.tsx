@@ -186,11 +186,11 @@ export default function Register() {
     }
   }
 
-  async function verifyOpt(otp: string) {
+  async function verifyOpt(email: string, otp: string) {
     try {
       const res = await axios.post(
         `${BACKEND_URL}/api/v1/auth/verify-otp`,
-        { enteredOTP: otp },
+        { userEmail: email, enteredOTP: otp },
         { withCredentials: true }
       );
 
@@ -258,7 +258,7 @@ export default function Register() {
     }
 
     if (registrationVerification.isOptSent && !registrationVerification.isOptVerified) {
-      const verifyResult = await verifyOpt(userData.otp);
+      const verifyResult = await verifyOpt(userData.email, userData.otp);
       setIsSigningUp(false);
       if (!verifyResult) {
         return;
@@ -315,7 +315,6 @@ export default function Register() {
     if (registrationVerification.isAccountCreated || isSuccessLoginedIn === true) {
       navigate('/login', { replace: true });
     }
-
   }, [isSuccessLoginedIn, navigate, registrationVerification.isAccountCreated]);
 
   if (isSuccessLoginedIn === null) {
