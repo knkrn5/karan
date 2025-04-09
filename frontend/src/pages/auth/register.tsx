@@ -598,7 +598,8 @@ export default function Register() {
                         try {
                           setStatusInfoAuth({});
                           setIsResendingOtp(true);
-                          await sendOpt(userData.email);
+                          const res = await sendOpt(userData.email);
+                          if (!res) return;
                           setStatusInfoAuth({ info: 'OTP resend successfully' });
                         } catch (error) {
                           if (error instanceof AxiosError) {

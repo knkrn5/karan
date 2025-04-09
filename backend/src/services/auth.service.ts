@@ -7,6 +7,7 @@ import { generateOTPEmailTemplate } from '../utils/emailTemplates.js';
 import { redisClient } from '../db/uptashRedisDB.js';
 
 export class AuthService {
+  //verify existing user
   static async verifyUser(email: string) {
     if (!email) throw new ApiResponse(400, false, 'email is required', null);
     const existingUser = await User.findOne({ email });
@@ -15,6 +16,7 @@ export class AuthService {
     return new ApiResponse(200, true, 'User already exists, Please Login', null);
   }
 
+  //sending opt
   static async sendOTPVerificationEmail(email: string, reason: string) {
     if (!email) throw new ApiResponse(400, false, 'email is required', null);
 
@@ -62,6 +64,7 @@ export class AuthService {
     }
   }
 
+  //verifing opt
   static async verifyOTP(enteredOTP: number, email: string) {
     if (!enteredOTP) throw new ApiResponse(404, false, 'OTP not found', null);
 
@@ -116,6 +119,7 @@ export class AuthService {
     });
   }
 
+  //loginning in user
   static async loginUser(email: string, password: string) {
     const user: IUser | null = await User.findOne({ email });
     if (!user) throw new ApiResponse(404, false, 'User not found', null);
@@ -143,6 +147,7 @@ export class AuthService {
     });
   }
 
+  //refreshing access token
   static async refreshAccessToken(refreshToken: string) {
     try {
       if (!refreshToken) {
@@ -183,6 +188,7 @@ export class AuthService {
     }
   }
 
+  //validating user authentication
   static async authenticateUser(userData: string) {
     if (!userData) throw new ApiResponse(404, false, 'User not found', null);
     return new ApiResponse(200, true, ' user Authenticated successfully via service', userData);
