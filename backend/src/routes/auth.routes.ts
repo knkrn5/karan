@@ -1,15 +1,18 @@
 import { Router } from 'express';
 import { AuthController } from '../controllers/auth.controller.js';
-import { limiter } from '../utils/limiter.js';
-import { isAccessTokenValid } from '../middlewares/auth.middleware.js';
+import {
+  isAccessTokenValid,
+  registrationLimiter,
+  sendOtpLimiter,
+} from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
-router.post('/register', limiter, AuthController.registerUser);
+router.post('/register', registrationLimiter, AuthController.registerUser);
 router.post('/login', AuthController.loginUser);
 
 router.post('/verify-user', AuthController.verifyUser);
-router.post('/send-otp', AuthController.sendOTPVerificationEmail);
+router.post('/send-otp', sendOtpLimiter, AuthController.sendOTPVerificationEmail);
 router.post('/verify-otp', AuthController.verifyOTP);
 
 router.post('/logout', AuthController.logoutUser);

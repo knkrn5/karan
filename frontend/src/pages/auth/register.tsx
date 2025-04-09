@@ -187,9 +187,16 @@ export default function Register() {
       );
       // console.log(res.data);
       setRegistrationVerification(prev => ({ ...prev, isOptSent: true }));
+      setStatusInfoAuth({ success: res.data.message });
       return res.data.success;
     } catch (error) {
-      console.log(error);
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data);
+        setStatusInfoAuth({ error: error.response?.data.message || error.message });
+      } else {
+        // console.log(error);
+        setStatusInfoAuth({ error: 'Unexpected error Occured' });
+      }
       return false;
     }
   }
@@ -254,11 +261,8 @@ export default function Register() {
     }
 
     if (!registrationVerification.isOptSent) {
-      const otpRes = await sendOpt(userData.email);
+      await sendOpt(userData.email);
       setIsSigningUp(false);
-      if (otpRes) {
-        setStatusInfoAuth({ success: 'OTP sent successfully' });
-      }
       return;
     }
 
@@ -298,12 +302,14 @@ export default function Register() {
       const { name, value } = e.target;
       setUserData(prev => ({ ...prev, [name]: value }));
 
-      // Clear error for this field when user starts typing
+      // Clearing error field when user starts typing
       if (formFieldsError[name as keyof UserDataProps]) {
         setFormFieldsError(prev => ({ ...prev, [name]: '' }));
       }
+
+      setStatusInfoAuth({});
     },
-    [formFieldsError]
+    [formFieldsError, setStatusInfoAuth]
   );
 
   // Toggle password visibility
@@ -383,8 +389,8 @@ export default function Register() {
                 type="text"
                 maxLength={20}
                 placeholder="First name"
-                disabled={isSigningUp}
-                className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                disabled={isSigningUp || registrationVerification.isOptSent}
+                className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed ${
                   formFieldsError.firstName ? 'border border-red-500' : ''
                 } ${isSigningUp ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
                 value={userData.firstName}
@@ -407,9 +413,9 @@ export default function Register() {
                 maxLength={20}
                 type="text"
                 placeholder="Last Name"
-                disabled={isSigningUp}
-                className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500
-                  ${isSigningUp ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
+                disabled={isSigningUp || registrationVerification.isOptSent}
+                className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed
+                `}
                 value={userData.lastName}
                 onChange={handleChange}
               />
@@ -594,8 +600,9 @@ export default function Register() {
                           await sendOpt(userData.email);
                           setStatusInfoAuth({ info: 'OTP resend successfully' });
                         } catch (error) {
-                          console.log(error);
-                          setStatusInfoAuth({ error: 'Failed to resend OTP' });
+                          if (error instanceof AxiosError) {
+                            console.log(error.response?.data);
+                          }
                         } finally {
                           setIsResendingOtp(false);
                         }

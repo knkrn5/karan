@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
+import rateLimit from 'express-rate-limit';
+import { ApiResponse } from '../utils/apiResponse.js';
 
 declare module 'express' {
   interface Request {
@@ -51,3 +53,22 @@ export const isAccessTokenValid = async (
     });
   }
 };
+
+//***************auth limiters***********************/
+//registration limiter
+export const registrationLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: new ApiResponse(429, false, 'Too many requests sent. Please try after 15 min', null),
+});
+
+//sendOpt limiter
+export const sendOtpLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 3,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: new ApiResponse(429, false, 'Too many OTP requests sent, Please try after 15 min', null),
+});

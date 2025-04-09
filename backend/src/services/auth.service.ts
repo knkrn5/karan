@@ -54,7 +54,7 @@ export class AuthService {
 
       await sendOTPEmail();
 
-      return new ApiResponse(200, true, 'Email sent successfully', null);
+      return new ApiResponse(200, true, 'OTP Email sent successfully', null);
     } catch (error: any) {
       return new ApiResponse(500, false, error.message, null);
     }
