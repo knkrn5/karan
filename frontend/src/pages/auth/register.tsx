@@ -202,12 +202,9 @@ export default function Register() {
         { withCredentials: true }
       );
 
-      console.log('Verify OTP response:', res.data);
-
       if (res.data.success) {
         setRegistrationVerification(prev => {
           const newState = { ...prev, isOptVerified: true };
-          console.log('Setting isOptVerified to true:', newState);
           return newState;
         });
         setStatusInfoAuth({ success: res.data.message });
