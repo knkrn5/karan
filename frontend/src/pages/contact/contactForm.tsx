@@ -8,6 +8,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 import SeeContactMsg from './seeContactMsg';
 import { useProfileStore } from '../../stores/auth/profileStore';
+import { useAuthCheck } from '../../hooks/authCheckHook';
 
 interface FormDataProp {
   name: string;
@@ -49,17 +50,25 @@ export default function ContactForm() {
     }
   }, [profileName, setName, profileEmail, setEmail]);
 
+  const isAuthenticated = useAuthCheck();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // store form data in an object
+    if (!isAuthenticated) {
+      alert('Please log in to send a message.');
+      setIsLoading(false);
+      return;
+    }
+
+    // storing form data in an object
     const currentFormData = { name, email, message };
 
     /*     // robust email regex
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/; */
 
-    // Calculate errors synchronously
+    // Calculating errors synchronously
     const formFieldErrors = {
       name: !name.trim()
         ? 'Name is required'
