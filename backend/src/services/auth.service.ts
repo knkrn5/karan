@@ -65,7 +65,8 @@ export class AuthService {
   }
 
   //verifing opt
-  static async verifyOTP(enteredOTP: number, email: string) {
+  static async verifyOTP(email: string, enteredOTP: number) {
+    if (!email) throw new ApiResponse(404, false, 'Email is required', null);
     if (!enteredOTP) throw new ApiResponse(404, false, 'OTP not found', null);
 
     const storedOTP = await redisClient.get(email);

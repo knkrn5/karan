@@ -1,41 +1,89 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-export async function verifyExistingUser(email: string) {
+interface ApiResponseTypes<T> {
+  statusCode: number;
+  success: boolean;
+  message: string;
+  data: T;
+}
+
+// === VERIFY EXISTING USER ===
+export async function verifyExistingUser(userEmail: string): Promise<ApiResponseTypes<null>> {
   try {
-    const verifyExistingUserRes = await axios.post(`${BACKEND_URL}/api/v1/auth/verify-user`, {
-      email: email,
-    });
-    return verifyExistingUserRes;
+    const response = await axios.post<ApiResponseTypes<null>>(
+      `${BACKEND_URL}/api/v1/auth/verify-user`,
+      { email: userEmail }
+    );
+    return response.data;
   } catch (error) {
-    return error;
+    if (error instanceof AxiosError) {
+      console.error('Verify User Error:', error.response?.data);
+      return error.response?.data;
+    }
+    // Handling non-Axios or unexpected error and Fallback response
+    console.error('Unexpected error verifying user:', error);
+    return {
+      statusCode: 500,
+      success: false,
+      message: 'Unexpected error occurred',
+      data: null,
+    };
   }
 }
 
-export async function sendOpt(userEmail: string) {
+// === SEND OTP ===
+export async function sendOtp(
+  userEmail: string,
+  purpose: string
+): Promise<ApiResponseTypes<string | number | null>> {
   try {
-    const sendOptRes = await axios.post(
+    const response = await axios.post(
       `${BACKEND_URL}/api/v1/auth/send-otp`,
-      { email: userEmail, reason: 'registration' },
+      { email: userEmail, reason: purpose },
       { withCredentials: true }
     );
-    return sendOptRes;
+    return response.data;
   } catch (error) {
-    return error;
+    if (error instanceof AxiosError) {
+      return error.response?.data;
+    }
+    // Handling non-Axios or unexpected error
+    return {
+      statusCode: 500,
+      success: false,
+      message: 'Unexpected error occurred',
+      data: null,
+    };
   }
 }
 
-export async function verifyOpt(email: string, otp: string) {
+// === VERIFY OTP ===
+export async function verifyOtp(
+  userEmail: string,
+  enteredOTP: string
+): Promise<ApiResponseTypes<null>> {
   try {
-    const verifyOptRes = await axios.post(
+    const response = await axios.post<ApiResponseTypes<null>>(
       `${BACKEND_URL}/api/v1/auth/verify-otp`,
-      { userEmail: email, enteredOTP: otp },
+      { email: userEmail, otp: enteredOTP },
       { withCredentials: true }
     );
-
-    return verifyOptRes;
+    return response.data;
   } catch (error) {
-    return error;
+    if (error instanceof AxiosError) {
+      console.error('Verify OTP Error:', error.response?.data);
+      return error.response?.data;
+    }
+
+    // Handling non-Axios or unexpected error
+    console.error('Unexpected error verifying OTP:', error);
+    return {
+      statusCode: 500,
+      success: false,
+      message: 'Unexpected error occurred',
+      data: null,
+    };
   }
 }

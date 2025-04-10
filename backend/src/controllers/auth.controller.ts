@@ -34,8 +34,8 @@ export class AuthController {
 
   static async verifyOTP(req: Request, res: Response) {
     try {
-      const { enteredOTP, userEmail } = req.body;
-      const response = await AuthService.verifyOTP(enteredOTP, userEmail);
+      const { email, otp } = req.body;
+      const response = await AuthService.verifyOTP(email, otp);
       res.status(response.statusCode).json(response);
     } catch (error: any) {
       if (error instanceof ApiResponse) {

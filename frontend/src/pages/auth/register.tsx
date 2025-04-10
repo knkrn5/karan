@@ -8,6 +8,7 @@ import { CiEdit } from 'react-icons/ci';
 import StatusNotifications from '../../utils/StatusNotifications';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { verifyExistingUser, sendOtp, verifyOtp } from '../../utils/auth.utils.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -166,79 +167,6 @@ export default function Register() {
     return Object.values(errors).some(error => error !== '');
   }, [userData, validateForm]);
 
-  async function verifyUser(email: string) {
-    try {
-      const res = await axios.post(`${BACKEND_URL}/api/v1/auth/verify-user`, { email: email });
-      setStatusInfoAuth({ error: res.data.message });
-      console.log(res.data);
-      return true;
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
-  }
-
-  async function sendOpt(userEmail: string) {
-    try {
-      const res = await axios.post(
-        `${BACKEND_URL}/api/v1/auth/send-otp`,
-        { email: userEmail, reason: 'registration' },
-        { withCredentials: true }
-      );
-      // console.log(res.data);
-
-      setRegistrationVerification(prev => ({ ...prev, isOptSent: true }));
-      setStatusInfoAuth({ success: res.data.message });
-      return res.data.success;
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error.response?.data);
-        setStatusInfoAuth({ error: error.response?.data.message || error.message });
-      } else {
-        // console.log(error);
-        setStatusInfoAuth({ error: 'Unexpected error Occured' });
-      }
-      return false;
-    }
-  }
-
-  async function verifyOpt(email: string, otp: string) {
-    try {
-      const res = await axios.post(
-        `${BACKEND_URL}/api/v1/auth/verify-otp`,
-        { userEmail: email, enteredOTP: otp },
-        { withCredentials: true }
-      );
-
-      if (res.data.success) {
-        setRegistrationVerification(prev => {
-          const newState = { ...prev, isOptVerified: true };
-          return newState;
-        });
-        setStatusInfoAuth({ success: res.data.message });
-        return true;
-      } else {
-        setStatusInfoAuth({ error: res.data.message || 'OTP verification failed' });
-        setFormFieldsError(prev => ({
-          ...prev,
-          otp: res.data.message || 'OTP verification failed',
-        }));
-
-        return false;
-      }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error.response?.data);
-        setStatusInfoAuth({ error: error.response?.data.message || error.message });
-      } else {
-        console.log(error);
-      }
-      return false;
-    } finally {
-      setIsSigningUp(false);
-    }
-  }
-
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -253,29 +181,50 @@ export default function Register() {
     setIsSigningUp(true);
     setStatusInfoAuth({});
 
+    //verifing existing user
     if (!registrationVerification.isAccountCreated) {
-      const verifyUserRes = await verifyUser(userData.email);
-      if (verifyUserRes) {
-        setIsSigningUp(false);
-        return;
+      const response = await verifyExistingUser(userData.email);
+      if (response.success) {
+        setStatusInfoAuth({ error: response.message });
+        return response.success;
       }
     }
 
+    //sending OTP
     if (!registrationVerification.isOptSent) {
-      await sendOpt(userData.email);
-      setIsSigningUp(false);
-      return;
-    }
+      const response = await sendOtp(userData.email, 'registration');
 
-    if (registrationVerification.isOptSent && !registrationVerification.isOptVerified) {
-      const verifyResult = await verifyOpt(userData.email, userData.otp);
-      setIsSigningUp(false);
-      if (!verifyResult) {
-        return;
+      if (response.success) {
+        setRegistrationVerification(prev => ({ ...prev, isOptSent: true }));
+        setStatusInfoAuth({ success: response.message });
+      } else {
+        setStatusInfoAuth({ error: response.message });
       }
-      return;
+
+      setIsSigningUp(false);
+      return response.success;
     }
 
+    //verifing OTP
+    if (registrationVerification.isOptSent && !registrationVerification.isOptVerified) {
+      const response = await verifyOtp(userData.email, userData.otp);
+
+      if (response.success) {
+        setRegistrationVerification(prev => ({ ...prev, isOptVerified: true }));
+        setStatusInfoAuth({ success: response.message });
+      } else {
+        setStatusInfoAuth({ error: response.message });
+        setFormFieldsError(prev => ({
+          ...prev,
+          otp: response.message,
+        }));
+      }
+
+      setIsSigningUp(false);
+      return response.success;
+    }
+
+    //registering user
     if (registrationVerification.isOptVerified) {
       try {
         const response = await axios.post(`${BACKEND_URL}/api/v1/auth/register`, userData);
@@ -598,7 +547,7 @@ export default function Register() {
                         try {
                           setStatusInfoAuth({});
                           setIsResendingOtp(true);
-                          const res = await sendOpt(userData.email);
+                          const res = await sendOtp(userData.email, 'registration');
                           if (!res) return;
                           setStatusInfoAuth({ info: 'OTP resend successfully' });
                         } catch (error) {
