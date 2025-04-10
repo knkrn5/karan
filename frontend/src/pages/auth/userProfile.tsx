@@ -65,10 +65,6 @@ export default function UserProfile() {
         isOtpSent: false,
         isOtpVerified: false,
       }));
-      setConfirmationsBool(prevState => ({
-        ...prevState,
-        deleteAccount: false,
-      }));
       setPasswordInputErrror('');
       setStatusInfoAuth({});
       setIsDeleting(false);

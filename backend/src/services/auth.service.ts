@@ -58,7 +58,7 @@ export class AuthService {
 
       const OPTttl = await redisClient.ttl(email);
 
-      return new ApiResponse(200, true, 'OTP Email sent successfully', OPTttl);
+      return new ApiResponse(200, true, 'OTP Emailed successfully', OPTttl);
     } catch (error: any) {
       return new ApiResponse(500, false, error.message, null);
     }
