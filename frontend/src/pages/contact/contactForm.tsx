@@ -158,7 +158,7 @@ export default function ContactForm() {
             maxLength={30}
             value={name}
             onChange={handleChange}
-            disabled={isLoading}
+            disabled={isLoading || profileName !== ''}
             className="mt-1 p-3 bg-white block w-full outline-none rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
             placeholder="Name"
           />
@@ -179,7 +179,7 @@ export default function ContactForm() {
             maxLength={50}
             value={email}
             onChange={handleChange}
-            disabled={isLoading}
+            disabled={isLoading || profileEmail !== ''}
             className="mt-1 p-3 bg-white block w-full outline-none rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
             placeholder="Email"
           />
