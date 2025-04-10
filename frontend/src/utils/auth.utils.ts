@@ -88,6 +88,28 @@ export async function verifyOtp(
   }
 }
 
-
 // === VERIFY PASSWORD ===
+export async function verifyPassword(password: string): Promise<ApiResponseTypes<null>> {
+  try {
+    const response = await axios.post<ApiResponseTypes<null>>(
+      `${BACKEND_URL}/api/v1/profile/verify-password`,
+      { password },
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.error('Verify Password Error:', error.response?.data);
+      return error.response?.data;
+    }
 
+    // Handling non-Axios or unexpected error
+    console.error('Unexpected error verifying password:', error);
+    return {
+      statusCode: 500,
+      success: false,
+      message: 'Unexpected error occurred',
+      data: null,
+    };
+  }
+}

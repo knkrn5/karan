@@ -9,7 +9,6 @@ const router = Router();
 
 router.get('/details', isAccessTokenValid, ProfileController.getProfile);
 //  router.put('/', isAccessTokenValid, ProfileController.updateProfile);
-router.post('/verify-password', isAccessTokenValid, ProfileController.verifyPassword);
 router.delete('/delete-account', isAccessTokenValid, ProfileController.deleteAccount); 
 
 

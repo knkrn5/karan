@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth.service.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 
 export class AuthController {
+  //verify existing user
   static async verifyUser(req: Request, res: Response) {
     try {
       const { email } = req.body;
@@ -17,6 +18,7 @@ export class AuthController {
     }
   }
 
+  //sending opt
   static async sendOTPVerificationEmail(req: Request, res: Response) {
     try {
       const { email, reason } = req.body;
@@ -32,6 +34,7 @@ export class AuthController {
     }
   }
 
+  //verifing opt
   static async verifyOTP(req: Request, res: Response) {
     try {
       const { email, otp } = req.body;
@@ -46,6 +49,7 @@ export class AuthController {
     }
   }
 
+  //registering user
   static async registerUser(req: Request, res: Response) {
     try {
       const { firstName, lastName, email, password } = req.body;
@@ -74,6 +78,7 @@ export class AuthController {
     }
   }
 
+  //loginning in user
   static async loginUser(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
@@ -101,6 +106,7 @@ export class AuthController {
     }
   }
 
+  //refreshing access token
   static async refreshToken(req: Request, res: Response) {
     try {
       const { refreshToken } = req.cookies;
@@ -144,6 +150,7 @@ export class AuthController {
       .json({ success: true, message: 'Logout successful', data: null });
   }
 
+  //validating user authentication
   static async authenticateUser(req: Request, res: Response) {
     try {
       const userData = req.user;
@@ -151,6 +158,26 @@ export class AuthController {
       res.status(response.statusCode).json(response);
     } catch (error: any) {
       res.status(500).json({ success: false, message: error.message, data: null });
+    }
+  }
+
+  //verifing password
+  static async verifyPassword(req: Request, res: Response) {
+    try {
+      const userId = req.user.userId;
+      const { password } = req.body;
+      const response = await AuthService.verifyPassword(userId, password);
+      res.status(response.statusCode).json(response);
+    } catch (error: any) {
+      if (error instanceof ApiResponse) {
+        res.status(error.statusCode).json(error);
+        return;
+      }
+
+      res.status(500).json({
+        success: false,
+        message: error.message || 'An unknown error occurred.',
+      });
     }
   }
 }

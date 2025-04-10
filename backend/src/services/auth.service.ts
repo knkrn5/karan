@@ -28,7 +28,7 @@ export class AuthService {
     const otp = Math.floor(100000 + Math.random() * 900000);
 
     await redisClient.set(email, otp, {
-      EX: 300, // Expires in 300 seconds (5 minutes)
+      EX: 300, // IN SECONDS
     });
 
     try {
@@ -84,6 +84,8 @@ export class AuthService {
     return new ApiResponse(200, true, 'OTP verified successfully', null);
   }
 
+
+  //registering user
   static async registerUser(
     firstName: string,
     lastName: string | undefined,
@@ -193,5 +195,16 @@ export class AuthService {
   static async authenticateUser(userData: string) {
     if (!userData) throw new ApiResponse(404, false, 'User not found', null);
     return new ApiResponse(200, true, ' user Authenticated successfully via service', userData);
+  }
+
+  //verifing password
+  static async verifyPassword(userId: string, password: string) {
+    const user = await User.findById(userId);
+    if (!user) throw new ApiResponse(404, false, 'User not found', null);
+
+    const isPasswordMatch = await user.comparePassword(password);
+    if (!isPasswordMatch) throw new ApiResponse(401, false, 'Incorrect password', null);
+
+    return new ApiResponse(200, true, 'Password verified successfully', null);
   }
 }

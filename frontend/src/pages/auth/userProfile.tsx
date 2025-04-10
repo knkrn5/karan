@@ -52,7 +52,7 @@ export default function UserProfile() {
     try {
       setIsDeleting(true);
       await axios.post(
-        `${BACKEND_URL}/api/v1/profile/verify-password`,
+        `${BACKEND_URL}/api/v1/auth/verify-password`,
         { password: confirmPassword },
         { withCredentials: true }
       );
@@ -204,7 +204,8 @@ export default function UserProfile() {
         <div className="flex flex-col  sm:flex-row gap-2 sm:gap-0 px-2 my-5">
           {/* Reset Password */}
           <button
-            className="w-fit text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm  px-4 py-2 mx-auto md:px-5 md:py-2.5 dark:bg-blue-500 dark:hover:bg-blue-600"
+            type="button"
+            className="w-fit text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm  px-4 py-2 mx-auto md:px-5 md:py-2.5 dark:bg-blue-500 dark:hover:bg-blue-600 cursor-pointer"
             onClick={handleResetPassword}
           >
             {confirmPasswordBool.deleteAccount ? 'Cancel Delete' : 'Reset Password'}
@@ -215,7 +216,7 @@ export default function UserProfile() {
             type="button"
             aria-label="Delete Account"
             onClick={handleDeleteAccount}
-            className="text-white bg-red-600 hover:bg-red-700 font-medium rounded-lg text-sm w-fit px-4 py-2 mx-auto md:px-5 md:py-2.5 dark:bg-red-500 dark:hover:bg-red-600 flex items-center justify-center"
+            className="text-white bg-red-600 hover:bg-red-700 font-medium rounded-lg text-sm w-fit px-4 py-2 mx-auto md:px-5 md:py-2.5 dark:bg-red-500 dark:hover:bg-red-600 flex items-center justify-center cursor-pointer"
             disabled={isDeleting}
           >
             {isDeleting ? (
