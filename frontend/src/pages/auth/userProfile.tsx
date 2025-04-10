@@ -235,10 +235,13 @@ export default function UserProfile() {
           {/* Reset Password */}
           <button
             type="button"
-            className="w-fit text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm  px-4 py-2 mx-auto md:px-5 md:py-2.5 dark:bg-blue-500 dark:hover:bg-blue-600 cursor-pointer"
+            className="relative group w-fit text-white bg-blue-600  font-medium rounded-lg text-sm  px-4 py-2 mx-auto md:px-5 md:py-2.5 dark:bg-blue-500 dark:hover:bg-blue-600 cursor-pointer"
             onClick={handleResetPassword}
           >
-            {confirmationsBool.deleteAccount ? 'Cancel Delete' : 'Reset Password'}
+            <span className="relative z-10">
+              {confirmationsBool.deleteAccount ? 'Cancel Delete' : 'Reset Password'}
+            </span>
+            <span className="absolute z-0 left-0 top-0 h-full w-0 bg-blue-700 rounded-lg transition-all duration-500 ease-in-out group-hover:w-full "></span>
           </button>
 
           {/* Delete Account */}
@@ -246,31 +249,34 @@ export default function UserProfile() {
             type="button"
             aria-label="Delete Account"
             onClick={handleDeleteAccount}
-            className="text-white bg-red-600 hover:bg-red-700 font-medium rounded-lg text-sm w-fit px-4 py-2 mx-auto md:px-5 md:py-2.5 dark:bg-red-500 dark:hover:bg-red-600 flex items-center justify-center cursor-pointer"
+            className="relative group text-white bg-red-600 font-medium rounded-lg text-sm w-fit px-4 py-2 mx-auto md:px-5 md:py-2.5 dark:bg-red-500 dark:hover:bg-red-600 flex items-center justify-center cursor-pointer"
             disabled={isDeleting}
           >
-            {isDeleting ? (
-              <span className="flex items-center">
-                <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mr-2" />
-                {confirmationsBool.deleteAccount &&
-                !confirmationsBool.isOtpSent &&
-                !confirmationsBool.isOtpVerified
-                  ? 'Confirming...'
-                  : confirmationsBool.deleteAccount &&
-                    confirmationsBool.isOtpSent &&
-                    !confirmationsBool.isOtpVerified
-                  ? 'verifying...'
-                  : 'Deleting...'}
-              </span>
-            ) : (
-              `${
-                confirmationsBool.deleteAccount && !confirmationsBool.isOtpSent
-                  ? 'Confirm Delete'
-                  : confirmationsBool.deleteAccount && confirmationsBool.isOtpSent
-                  ? 'Confirm OTP'
-                  : 'Delete Account'
-              }`
-            )}
+            <span className="relative z-10">
+              {isDeleting ? (
+                <span className="flex items-center">
+                  <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mr-2" />
+                  {confirmationsBool.deleteAccount &&
+                  !confirmationsBool.isOtpSent &&
+                  !confirmationsBool.isOtpVerified
+                    ? 'Confirming...'
+                    : confirmationsBool.deleteAccount &&
+                      confirmationsBool.isOtpSent &&
+                      !confirmationsBool.isOtpVerified
+                    ? 'verifying...'
+                    : 'Deleting...'}
+                </span>
+              ) : (
+                `${
+                  confirmationsBool.deleteAccount && !confirmationsBool.isOtpSent
+                    ? 'Confirm Delete'
+                    : confirmationsBool.deleteAccount && confirmationsBool.isOtpSent
+                    ? 'Confirm OTP'
+                    : 'Delete Account'
+                }`
+              )}
+            </span>
+            <span className="absolute z-0 left-0 top-0 h-full w-0 bg-red-700 rounded-lg transition-all duration-500 ease-in-out group-hover:w-full "></span>
           </button>
         </div>
         <div className="-mt-5">
