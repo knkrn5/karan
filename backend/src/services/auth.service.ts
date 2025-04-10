@@ -46,7 +46,7 @@ export class AuthService {
         const mailOptions = {
           from: `"karan.email" <${process.env.EMAIL_FROM}>`,
           to: email,
-          subject: 'Your Karan.email OTP Code is:',
+          subject: `Your ${reason}  OTP Code is:`,
           text: `Your verification code is: ${otp}`, // fallback plain text
           html: generateOTPEmailTemplate(otp, reason),
         };
@@ -76,14 +76,13 @@ export class AuthService {
     }
 
     if (Number(enteredOTP) !== Number(storedOTP)) {
-      throw new ApiResponse(401, false, 'Incorrect OTP, Please Enter Valid OTP', null);
+      throw new ApiResponse(401, false, 'Incorrect OTP, Please Enter valid OTP', null);
     }
 
     await redisClient.del(email);
 
     return new ApiResponse(200, true, 'OTP verified successfully', null);
   }
-
 
   //registering user
   static async registerUser(

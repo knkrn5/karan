@@ -7,7 +7,8 @@ import { useAuthStore } from '../../stores/auth/authStore';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import BrandLoadingPage from '../brandLoadingPage';
 import { TwoSmallLinesSkeletonLoading } from '../../components/skeletonLoadings';
-// import StatusNotifications from '../../utils/StatusNotifications';
+import { verifyPassword, sendOtp, verifyOtp } from '../../utils/auth.utils';
+import StatusNotifications from '../../utils/StatusNotifications';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -19,13 +20,17 @@ export default function UserProfile() {
   const lastName = useProfileStore(state => state.lastName);
   const email = useProfileStore(state => state.email);
 
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [confirmPasswordBool, setConfirmPasswordBool] = useState<{
+  const [inputValue, setInputValue] = useState<string>('');
+  const [confirmationsBool, setConfirmationsBool] = useState<{
     resetPassword: boolean;
     deleteAccount: boolean;
+    isOtpSent: boolean;
+    isOtpVerified: boolean;
   }>({
     resetPassword: false,
     deleteAccount: false,
+    isOtpSent: false,
+    isOtpVerified: false,
   });
 
   const isFetchingProfileData = useProfileStore(state => state.isFetchingProfileData);
@@ -36,7 +41,7 @@ export default function UserProfile() {
 
   const navigate = useNavigate();
 
-  // const statusInfoAuth = useAuthStore(state => state.statusInfoAuth);
+  const statusInfoAuth = useAuthStore(state => state.statusInfoAuth);
   const { setStatusInfoAuth } = useAuthStore();
 
   // animation trigger
@@ -47,65 +52,93 @@ export default function UserProfile() {
     }, 10);
   }, []);
 
-  // error handling for password validation
-  const validatePassword = async () => {
-    try {
-      setIsDeleting(true);
-      await axios.post(
-        `${BACKEND_URL}/api/v1/auth/verify-password`,
-        { password: confirmPassword },
-        { withCredentials: true }
-      );
-      setPasswordInputErrror('');
-      return true;
-    } catch (error) {
-      const errorMessage = axios.isAxiosError(error)
-        ? error.response?.data.message || 'Invalid password'
-        : 'An unexpected error occurred';
-      setPasswordInputErrror(errorMessage);
-      return false;
-    } finally {
-      setIsDeleting(false);
-    }
-  };
-
   const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setConfirmPassword(e.target.value);
+    setInputValue(e.target.value);
   };
 
   const handleResetPassword = async () => {
-    if (confirmPasswordBool.deleteAccount) {
-      setConfirmPasswordBool(prevState => ({
+    if (confirmationsBool.deleteAccount) {
+      setInputValue('');
+      setConfirmationsBool(prevState => ({
+        ...prevState,
+        deleteAccount: false,
+        isOtpSent: false,
+        isOtpVerified: false,
+      }));
+      setConfirmationsBool(prevState => ({
         ...prevState,
         deleteAccount: false,
       }));
       setPasswordInputErrror('');
+      setStatusInfoAuth({});
+      setIsDeleting(false);
       return;
     }
   };
 
   const handleDeleteAccount = async () => {
-    if (!confirmPasswordBool.deleteAccount) {
-      setConfirmPasswordBool(prev => ({ ...prev, deleteAccount: true }));
+    if (!confirmationsBool.deleteAccount) {
+      setConfirmationsBool(prev => ({ ...prev, deleteAccount: true }));
       return;
     }
 
-    if (!confirmPassword) {
-      return setPasswordInputErrror('Password is required');
+    setIsDeleting(true);
+
+    if (!inputValue) {
+      setIsDeleting(false);
+      setPasswordInputErrror('Password is required');
+      return;
     }
 
-    if (!(await validatePassword())) return;
+    if (confirmationsBool.deleteAccount && !confirmationsBool.isOtpSent) {
+      const response = await verifyPassword(inputValue);
+      if (response.success) {
+        setPasswordInputErrror('');
+        // return response.success;
+      } else {
+        setPasswordInputErrror(response.message);
+        setIsDeleting(false);
+        return response.success;
+      }
+      setInputValue('');
+    }
+
+    if (confirmationsBool.deleteAccount && !confirmationsBool.isOtpSent) {
+      const response = await sendOtp(email, 'Account Deletion');
+      if (response.success) {
+        setConfirmationsBool(prevState => ({
+          ...prevState,
+          isOtpSent: true,
+        }));
+        setStatusInfoAuth({ success: response.message });
+      }
+      setIsDeleting(false);
+      return;
+    }
+
+    if (confirmationsBool.isOtpSent && !confirmationsBool.isOtpVerified) {
+      const response = await verifyOtp(email, inputValue);
+      if (response.success) {
+        setConfirmationsBool(prevState => ({
+          ...prevState,
+          isOtpVerified: true,
+        }));
+        setStatusInfoAuth({ success: response.message });
+      } else {
+        setStatusInfoAuth({ error: response.message });
+        setIsDeleting(false);
+        return response.success;
+      }
+      setIsDeleting(false);
+      console.log('verifing otp');
+    }
 
     if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-      setConfirmPasswordBool(prevState => ({
-        ...prevState,
-        deleteAccount: false,
-      }));
+      handleResetPassword();
       return;
     }
 
     try {
-      setIsDeleting(true);
       const response = await axios.delete(`${BACKEND_URL}/api/v1/profile/delete-account`, {
         withCredentials: true,
       });
@@ -150,7 +183,7 @@ export default function UserProfile() {
       {/* Card */}
       <div
         className={`mx-auto rounded-lg overflow-hidden max-w-[480px] w-80 
-        bg-white dark:bg-gray-900 shadow-lg hover:dark:shadow-gray-900  ${
+        bg-white dark:bg-gray-900 shadow-lg hover:dark:shadow-gray-900  duration-300 transition-shadow ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
         }`}
       >
@@ -178,20 +211,21 @@ export default function UserProfile() {
           </div>
         )}
 
-        {/*  Password confirm */}
+        {/*  Password confirm  and OTP*/}
         <div
-          className={`flex flex-col m-4 ${confirmPasswordBool.deleteAccount ? 'block' : 'hidden'}`}
+          className={`flex flex-col m-4 ${confirmationsBool.deleteAccount ? 'block' : 'hidden'}`}
         >
           <label htmlFor="confirmPassword" className="mt-3 block text-gray-700 dark:text-gray-300">
             <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
-              Enter Password
+              {confirmationsBool.isOtpSent ? 'Enter OTP' : 'Enter Password'}
             </span>
           </label>
           <input
-            type="password"
-            name="confirmPassword"
-            id="confirmPassword"
-            placeholder="Confirm Password"
+            type={confirmationsBool.isOtpSent ? 'number' : 'password'}
+            name={confirmationsBool.isOtpSent ? 'otp' : 'confirmPassword'}
+            id={confirmationsBool.isOtpSent ? 'otp' : 'confirmPassword'}
+            placeholder={confirmationsBool.isOtpSent ? 'OTP' : 'Confirm Password'}
+            value={inputValue}
             onChange={handlePasswordInput}
             className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 `}
           />
@@ -201,14 +235,14 @@ export default function UserProfile() {
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-col  sm:flex-row gap-2 sm:gap-0 px-2 my-5">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 px-2 my-5">
           {/* Reset Password */}
           <button
             type="button"
             className="w-fit text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm  px-4 py-2 mx-auto md:px-5 md:py-2.5 dark:bg-blue-500 dark:hover:bg-blue-600 cursor-pointer"
             onClick={handleResetPassword}
           >
-            {confirmPasswordBool.deleteAccount ? 'Cancel Delete' : 'Reset Password'}
+            {confirmationsBool.deleteAccount ? 'Cancel Delete' : 'Reset Password'}
           </button>
 
           {/* Delete Account */}
@@ -221,14 +255,31 @@ export default function UserProfile() {
           >
             {isDeleting ? (
               <span className="flex items-center">
-                <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mr-2" /> Deleting...
+                <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mr-2" />
+                {confirmationsBool.deleteAccount &&
+                !confirmationsBool.isOtpSent &&
+                !confirmationsBool.isOtpVerified
+                  ? 'Confirming...'
+                  : confirmationsBool.deleteAccount &&
+                    confirmationsBool.isOtpSent &&
+                    !confirmationsBool.isOtpVerified
+                  ? 'verifying...'
+                  : 'Deleting...'}
               </span>
             ) : (
-              `${confirmPasswordBool.deleteAccount ? 'Confirm Delete' : 'Delete Account'}`
+              `${
+                confirmationsBool.deleteAccount && !confirmationsBool.isOtpSent
+                  ? 'Confirm Delete'
+                  : confirmationsBool.deleteAccount && confirmationsBool.isOtpSent
+                  ? 'Confirm OTP'
+                  : 'Delete Account'
+              }`
             )}
           </button>
         </div>
-        {/* <StatusNotifications statusInfo={statusInfoAuth} /> */}
+        <div className="-mt-5">
+          <StatusNotifications statusInfo={statusInfoAuth} />
+        </div>
       </div>
     </div>
   );

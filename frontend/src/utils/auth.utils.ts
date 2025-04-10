@@ -92,7 +92,7 @@ export async function verifyOtp(
 export async function verifyPassword(password: string): Promise<ApiResponseTypes<null>> {
   try {
     const response = await axios.post<ApiResponseTypes<null>>(
-      `${BACKEND_URL}/api/v1/profile/verify-password`,
+      `${BACKEND_URL}/api/v1/auth/verify-password`,
       { password },
       { withCredentials: true }
     );
