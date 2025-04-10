@@ -182,10 +182,11 @@ export default function Register() {
     setStatusInfoAuth({});
 
     //verifing existing user
-    if (!registrationVerification.isAccountCreated) {
+    if (!registrationVerification.isAccountCreated && !registrationVerification.isOptSent) {
       const response = await verifyExistingUser(userData.email);
       if (response.success) {
         setStatusInfoAuth({ error: response.message });
+        setIsSigningUp(false);
         return response.success;
       }
     }
@@ -284,13 +285,13 @@ export default function Register() {
       event.returnValue = '';
     }
 
-    if (formFieldsHasData) {
+    if (formFieldsHasData && registrationVerification.isOptSent) {
       window.addEventListener('beforeunload', beforeUnloadHandler);
       return () => {
         window.removeEventListener('beforeunload', beforeUnloadHandler);
       };
     }
-  }, [formFieldsHasData]);
+  }, [formFieldsHasData, registrationVerification.isOptSent]);
 
   if (isSuccessLoginedIn === null) {
     return (
