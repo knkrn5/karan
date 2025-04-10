@@ -380,7 +380,7 @@ export default function Register() {
                 </span>
                 <button
                   type="button"
-                  title="edit email"
+                  title="edit Email or Name"
                   disabled={!registrationVerification.isOptSent}
                   onClick={() => {
                     setUserData(prev => ({ ...prev, otp: '' }));
