@@ -29,7 +29,7 @@ const PopupModel = ({ isOpen, onClose, children, header, footer }: ModalProps) =
       onClick={onClose}
     >
       <div
-        className={`flex flex-col items-center bg-white dark:bg-slate-900 shadow-2xl dark:shadow-black px-6 py-2 m-1 rounded-xl relative 
+        className={` bg-white dark:bg-slate-900 shadow-2xl dark:shadow-black px-6 py-2 m-1 rounded-xl relative 
         ${!isVisible ? 'scale-95' : 'scale-100'} duration-300`}
         onClick={e => e.stopPropagation()}
       >
@@ -40,16 +40,17 @@ const PopupModel = ({ isOpen, onClose, children, header, footer }: ModalProps) =
           <IoMdClose />
         </span>
         {/* header */}
-        <div>
+        <div className="w-full flex flex-col items-center">
           <h2 className="text-2xl font-extrabold font-serif text-black dark:text-white">
             {header}
           </h2>
-          <hr className="my-1 border-gray-500 dark:border-gray-500" />
         </div>
+        <hr className="my-1 border-gray-500 dark:border-gray-500" />
+
         {children}
         {/* Footer */}
-        <div>
-          <hr className="my-1 border-gray-500 dark:border-gray-500" />
+        <hr className="my-1 border-gray-500 dark:border-gray-500" />
+        <div className="w-full flex flex-col items-center">
           <div className=" font-extrabold font-mono text-black dark:text-white">{footer}</div>
         </div>
       </div>
