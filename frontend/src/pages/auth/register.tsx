@@ -24,6 +24,16 @@ interface UserDataProps {
 export default function Register() {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [isSigningUp, setIsSigningUp] = useState<boolean>(false);
+
+  const [userData, setUserData] = useState<UserDataProps>({
+    firstName: '',
+    lastName: '',
+    email: '',
+    otp: '',
+    password: '',
+    confirmPassword: '',
+  });
+
   const [showPassword, setShowPassword] = useState<{
     onePassword: boolean;
     twoPassword: boolean;
@@ -44,15 +54,6 @@ export default function Register() {
 
   const [isResendingOtp, setIsResendingOtp] = useState<boolean>(false);
   // const [resendCooldown, setResendCooldown] = useState<number>(0);
-
-  const [userData, setUserData] = useState<UserDataProps>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    otp: '',
-    password: '',
-    confirmPassword: '',
-  });
 
   const [formFieldsError, setFormFieldsError] = useState<UserDataProps>({
     firstName: '',

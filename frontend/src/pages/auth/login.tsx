@@ -15,6 +15,8 @@ interface loginFeildDataProps {
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function LoginPage() {
+  const [isVisible, setIsVisible] = useState(false);
+
   const [loginFormFieldData, setLoginFormFieldData] = useState<{
     email: string;
     password: string;
@@ -22,7 +24,7 @@ export default function LoginPage() {
     email: '',
     password: '',
   });
-  const [isVisible, setIsVisible] = useState(false);
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -36,13 +38,17 @@ export default function LoginPage() {
 
   const navigate = useNavigate();
 
-  // Trigger animation on component mount
+  // Trigger animation on component mount and clearing status
   useEffect(() => {
     setIsVisible(false);
     setTimeout(() => {
       setIsVisible(true);
     }, 10);
-  }, []);
+
+    setTimeout(() => {
+      setStatusInfoAuth({});
+    }, 5000);
+  }, [setStatusInfoAuth]);
 
   const validateloginForm = () => {
     const loginFieldErrors: loginFeildDataProps = {
@@ -130,9 +136,6 @@ export default function LoginPage() {
       }
     } finally {
       setIsLoading(false);
-      setTimeout(() => {
-        setStatusInfoAuth({});
-      }, 5000);
     }
   };
 
@@ -258,12 +261,20 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="mt-4 text-sm text-center text-gray-600 dark:text-gray-400">
-          Don't have an account?{' '}
-          <Link to="/register" className="text-blue-500 dark:text-blue-400 hover:underline">
-            Sign up
-          </Link>
-        </p>
+        <div className="flex flex-col items-center mt-4">
+          <p className=" text-sm text-gray-600 dark:text-gray-400">
+            Don't have an account?{' '}
+            <Link to="/register" className="text-blue-500 dark:text-blue-400 hover:underline">
+              Sign up
+            </Link>
+          </p>
+          <button
+            type="button"
+            className="mt-2 text font-bold  text-gray-600 dark:text-gray-400 hover:underline duration-300 transition-transform cursor-pointer"
+          >
+            Forgot Password
+          </button>
+        </div>
         <StatusNotifications statusInfo={statusInfo} />
       </div>
     </>

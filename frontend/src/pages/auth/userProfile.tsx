@@ -14,7 +14,6 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function UserProfile() {
   const [isVisible, setIsVisible] = useState(false);
-  const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
   const firstName = useProfileStore(state => state.firstName);
   const lastName = useProfileStore(state => state.lastName);
@@ -33,9 +32,11 @@ export default function UserProfile() {
     isOtpVerified: false,
   });
 
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
   const isFetchingProfileData = useProfileStore(state => state.isFetchingProfileData);
 
-  const [passwordInputErrror, setPasswordInputErrror] = useState<string>('');
+  const [InputErrror, setInputErrror] = useState<string>('');
 
   const letter: string = firstName?.[0]?.toUpperCase() || '';
 
@@ -50,7 +51,11 @@ export default function UserProfile() {
     setTimeout(() => {
       setIsVisible(true);
     }, 10);
-  }, []);
+
+
+    //clearing statusnotifications
+    setTimeout(() => setStatusInfoAuth({}), 5000);
+  }, [setStatusInfoAuth]);
 
   const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -65,7 +70,7 @@ export default function UserProfile() {
         isOtpSent: false,
         isOtpVerified: false,
       }));
-      setPasswordInputErrror('');
+      setInputErrror('');
       setStatusInfoAuth({});
       setIsDeleting(false);
       return;
@@ -82,17 +87,17 @@ export default function UserProfile() {
 
     if (!inputValue) {
       setIsDeleting(false);
-      setPasswordInputErrror('Password is required');
+      setInputErrror('Password is required');
       return;
     }
 
     if (confirmationsBool.deleteAccount && !confirmationsBool.isOtpSent) {
       const response = await verifyPassword(inputValue);
       if (response.success) {
-        setPasswordInputErrror('');
+        setInputErrror('');
         // return response.success;
       } else {
-        setPasswordInputErrror(response.message);
+        setInputErrror(response.message);
         setIsDeleting(false);
         return response.success;
       }
@@ -155,7 +160,6 @@ export default function UserProfile() {
       });
     } finally {
       setIsDeleting(false);
-      setTimeout(() => setStatusInfoAuth({}), 10000);
     }
   };
 
@@ -225,9 +229,7 @@ export default function UserProfile() {
             onChange={handlePasswordInput}
             className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 `}
           />
-          {passwordInputErrror && (
-            <p className="text-red-600 text-sm mt-1">{passwordInputErrror}</p>
-          )}
+          {InputErrror && <p className="text-red-600 text-sm mt-1">{InputErrror}</p>}
         </div>
 
         {/* Buttons */}
