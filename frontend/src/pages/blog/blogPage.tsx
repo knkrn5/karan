@@ -110,18 +110,8 @@ export default function BlogPage() {
             ))}
           </div>
         ) : error ? (
-          /*  <div className="flex flex-col justify-center items-center text-center h-[70vh]">
-            <h2 className="text-2xl font-bold mb-2">No Posts Found</h2>
-            <p className="text-red-500">{error}</p>
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              className="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded cursor-pointer duration-300 transform"
-            >
-              Go Back
-            </button>
-          </div> */
-          <ServerErrorPage />
+          // server Error MsgPage
+          <ServerErrorPage errorMsg={error} />
         ) : filteredBlogPosts.length === 0 ? (
           <div className="min-h-[70vh] flex justify-center items-center w-full p-4">
             <div className="text-center">

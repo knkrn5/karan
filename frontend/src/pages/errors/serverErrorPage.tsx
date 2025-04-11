@@ -1,6 +1,10 @@
 import { Link, useNavigate } from 'react-router';
 
-const ServerErrorPage = () => {
+interface ServerErrorPageProps {
+  errorMsg: string;
+}
+
+const ServerErrorPage = ({ errorMsg }: ServerErrorPageProps) => {
   const navigate = useNavigate();
 
   return (
@@ -13,11 +17,16 @@ const ServerErrorPage = () => {
         <h2 className="mt-4 text-2xl font-semibold text-gray-800 dark:text-gray-200">
           Oops! No Posts Found.
         </h2>
-        <p className="mt-2 text-lg text-red-500">Failed to Load the Blog Posts. Please try again later.</p>
+        {/* <p className="mt-2 text-lg text-red-500">Failed to Load the Blog Posts. Please try again later.</p> */}
+        <p className="mt-2 text-lg text-red-500">{errorMsg}.</p>
 
         {/* Decorative Illustration */}
         <div className="flex justify-center">
-          <img src="/icons/svgs/server-error.svg" alt="server Error" className="bg-transparent w-100" />
+          <img
+            src="/icons/svgs/server-error.svg"
+            alt="server Error"
+            className="bg-transparent w-100"
+          />
         </div>
 
         {/* Back to Button */}
