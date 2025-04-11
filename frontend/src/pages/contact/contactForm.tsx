@@ -100,7 +100,7 @@ export default function ContactForm() {
         ? 'Email must end with a valid domain extension (2-6 letters)'
         : '',
       message: !message.trim()
-        ? 'Message is required'
+        ? 'Message can not be empty'
         : message.length < 10
         ? 'Message must be at least 10 characters'
         : '',
