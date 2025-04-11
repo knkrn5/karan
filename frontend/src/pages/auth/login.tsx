@@ -174,7 +174,7 @@ export default function LoginPage() {
           <hr className="flex-grow border-gray-300 dark:border-gray-600" />
         </div>
 
-        {/* Email/Password Sign In */}
+        {/* Email */}
         <form className="space-y-5" onSubmit={handleSubmit}>
           <div>
             <label
@@ -201,6 +201,7 @@ export default function LoginPage() {
             )}
           </div>
 
+          {/* Password */}
           <div>
             <label
               htmlFor="password"

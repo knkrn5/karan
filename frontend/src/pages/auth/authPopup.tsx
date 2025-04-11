@@ -1,72 +1,50 @@
-import { useState } from "react";
+import { useNavigate } from 'react-router';
 
 export default function AuthPopup() {
-  const [isLogin, setIsLogin] = useState(true);
+  const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center bg-gradient-to-br from-indigo-100 to-pink-100 p-4">
-      <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
-        {isLogin ? "Welcome Back!" : "Join Us!"}
-      </h2>
-
-      {/* Toggle Buttons */}
-      <div className="grid grid-cols-2 gap-2 mb-6">
-        <button
-          onClick={() => setIsLogin(true)}
-          className={`py-2 rounded-full text-sm font-semibold transition duration-200 ${
-            isLogin
-              ? "bg-blue-500 text-white"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-          }`}
-        >
-          Login
-        </button>
-        <button
-          onClick={() => setIsLogin(false)}
-          className={`py-2 rounded-full text-sm font-semibold transition duration-200 ${
-            !isLogin
-              ? "bg-blue-500 text-white"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-          }`}
-        >
-          Sign Up
-        </button>
+    <div className="overflow-y-auto overflow-x-hidden  top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+      <div className="relative  w-full max-w-md max-h-full">
+        <div className="relative bg-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
+          <div className="p-4 text-center">
+            <svg
+              className="mx-auto mb-4 text-gray-600 w-12 h-12 dark:text-gray-200"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            <h3 className="mb-5 text-lg font-bold text-gray-500 dark:text-gray-400">
+              Please Log In to send a message
+            </h3>
+            <button
+              data-modal-hide="popup-modal"
+              type="button"
+              className="text-white bg-blue-600 hover:bg-blue-800  outline-none font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center cursor-pointer"
+              onClick={() => navigate('/login')}
+            >
+              Login
+            </button>
+            <button
+              data-modal-hide="popup-modal"
+              type="button"
+              className="py-2.5 px-5 ms-3 text-sm font-medium rounded-lg  text-gray-900 outline-none bg-gray-300 hover:bg-gray-400  dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-900 duration-300 cursor-pointer"
+              onClick={() => navigate('/signup')}
+            >
+              Sign Up
+            </button>
+          </div>
+        </div>
       </div>
-
-      {/* Primary Action Button */}
-      <button className="w-full py-3 mb-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-2xl shadow-lg hover:from-purple-600 hover:to-pink-600 transition duration-200">
-        {isLogin ? "Login with Email" : "Sign Up with Email"}
-      </button>
-
-      {/* Social Buttons */}
-      <div className="space-y-3">
-        <button className="w-full flex items-center justify-center gap-3 py-2 border rounded-full text-gray-700 hover:bg-gray-100 transition duration-200">
-          <img
-            src="https://www.svgrepo.com/show/475656/google-color.svg"
-            alt="Google"
-            className="w-5 h-5"
-          />
-          Continue with Google
-        </button>
-        <button className="w-full flex items-center justify-center gap-3 py-2 border rounded-full text-gray-700 hover:bg-gray-100 transition duration-200">
-          <img
-            src="https://www.svgrepo.com/show/448234/github.svg"
-            alt="GitHub"
-            className="w-5 h-5"
-          />
-          Continue with GitHub
-        </button>
-      </div>
-
-      <p className="mt-6 text-xs text-center text-gray-500">
-        {isLogin ? "New here?" : "Already have an account?"}{" "}
-        <button
-          onClick={() => setIsLogin(!isLogin)}
-          className="text-blue-500 font-medium hover:underline"
-        >
-          {isLogin ? "Sign Up" : "Login"}
-        </button>
-      </p>
     </div>
   );
 }
