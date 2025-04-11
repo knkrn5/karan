@@ -111,7 +111,7 @@ export default function BlogPage() {
           </div>
         ) : error ? (
           // server Error MsgPage
-          <ServerErrorPage errorMsg={error} />
+          <ServerErrorPage statusCode={500} errorMsg={error} />
         ) : filteredBlogPosts.length === 0 ? (
           <div className="min-h-[70vh] flex justify-center items-center w-full p-4">
             <div className="text-center">

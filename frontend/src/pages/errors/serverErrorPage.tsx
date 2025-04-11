@@ -1,17 +1,16 @@
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 
 interface ServerErrorPageProps {
+  statusCode: number;
   errorMsg: string;
 }
 
-const ServerErrorPage = ({ errorMsg }: ServerErrorPageProps) => {
-  const navigate = useNavigate();
-
+const ServerErrorPage = ({ statusCode, errorMsg }: ServerErrorPageProps) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-200 dark:bg-gray-800 px-6">
       <div className="max-w-md text-center">
         {/* Animated Error Code */}
-        <h1 className="text-8xl font-extrabold text-red-600 dark:text-red-400">500</h1>
+        <h1 className="text-8xl font-extrabold text-red-600 dark:text-red-400">{statusCode}</h1>
 
         {/* Error Message */}
         <h2 className="mt-4 text-2xl font-semibold text-gray-800 dark:text-gray-200">

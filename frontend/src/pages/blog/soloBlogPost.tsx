@@ -10,6 +10,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { CiShare2 } from 'react-icons/ci';
 import { Document, TopLevelBlock, BLOCKS } from '@contentful/rich-text-types';
 import { BlogMetaTags } from './blogSEO';
+import ServerErrorPage from '../errors/serverErrorPage';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -59,7 +60,7 @@ export default function SoloBlogPost() {
     <>
       <BlogMetaTags
         title={soloPost?.title || 'blog post - karan.email'}
-        excerpt={soloPost?.excerpt?.split(' ').slice(0, 20).join(' ')  || 'personal blog posts'}
+        excerpt={soloPost?.excerpt?.split(' ').slice(0, 20).join(' ') || 'personal blog posts'}
         tags={soloPost?.tags || 'blog, post, content, karan.email, writing'}
         slug={window.location.href}
         featuredImage={
@@ -79,17 +80,7 @@ export default function SoloBlogPost() {
             {isLoading ? (
               <SoloBlogPostSkeletonLoadingTwo />
             ) : error ? (
-              <div className="flex flex-col justify-center items-center text-center h-[70vh]">
-                <h2 className="text-2xl font-bold mb-2">No Posts Found</h2>
-                <p className="text-red-500">{error}</p>
-                <button
-                  type="button"
-                  onClick={() => navigate(-1)}
-                  className="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded cursor-pointer duration-300 transform"
-                >
-                  Go Back
-                </button>
-              </div>
+              <ServerErrorPage statusCode={500} errorMsg={error} />
             ) : !soloPost ? (
               <div className="text-center py-8">
                 <h2 className="text-2xl font-bold mb-2">No Posts Found</h2>
