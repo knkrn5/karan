@@ -1,27 +1,23 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from 'react-router';
 
-const ErrorPage404 = () => {
+const ServerErrorPage = () => {
   const navigate = useNavigate();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800 px-6">
       <div className="max-w-md text-center">
         {/* Animated Error Code */}
-        <h1 className="text-8xl font-extrabold text-blue-600 dark:text-blue-400">
-          404
-        </h1>
+        <h1 className="text-8xl font-extrabold text-red-600 dark:text-red-400">500</h1>
 
         {/* Error Message */}
         <h2 className="mt-4 text-2xl font-semibold text-gray-800 dark:text-gray-200">
-          Oops! Page not found.
+          Oops! No Posts Found.
         </h2>
-        <p className="mt-2 text-lg text-gray-600 dark:text-gray-400">
-          The page you are looking for doesn't exist or has been moved.
-        </p>
+        <p className="mt-2 text-lg text-red-500">Failed to Load the Blog Posts. Please try again later.</p>
 
         {/* Decorative Illustration */}
-        <div className="mt-8 flex justify-center">
-          <img src="/icons/svgs/404.svg" alt="404 Error" className="bg-transparent" />
+        <div className="flex justify-center">
+          <img src="/icons/svgs/server-error.svg" alt="server Error" className="bg-transparent w-100" />
         </div>
 
         {/* Back to Button */}
@@ -37,4 +33,4 @@ const ErrorPage404 = () => {
   );
 };
 
-export default ErrorPage404;
+export default ServerErrorPage;

@@ -5,6 +5,8 @@ import BlogPaginaton from './blogPaginaton';
 import { useNavigate, useSearchParams } from 'react-router';
 import BlogSearchAndCategory from './blogSearchAndCategory';
 import type { Document } from '@contentful/rich-text-types';
+import ServerErrorPage from '../errors/serverErrorPage';
+
 
 export interface BlogPostPropsType {
   title: string;
@@ -108,7 +110,7 @@ export default function BlogPage() {
             ))}
           </div>
         ) : error ? (
-          <div className="flex flex-col justify-center items-center text-center h-[70vh]">
+          /*  <div className="flex flex-col justify-center items-center text-center h-[70vh]">
             <h2 className="text-2xl font-bold mb-2">No Posts Found</h2>
             <p className="text-red-500">{error}</p>
             <button
@@ -118,7 +120,8 @@ export default function BlogPage() {
             >
               Go Back
             </button>
-          </div>
+          </div> */
+          <ServerErrorPage />
         ) : filteredBlogPosts.length === 0 ? (
           <div className="min-h-[70vh] flex justify-center items-center w-full p-4">
             <div className="text-center">
