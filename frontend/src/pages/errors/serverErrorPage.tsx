@@ -4,7 +4,7 @@ const ServerErrorPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800 px-6">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-200 dark:bg-gray-800 px-6">
       <div className="max-w-md text-center">
         {/* Animated Error Code */}
         <h1 className="text-8xl font-extrabold text-red-600 dark:text-red-400">500</h1>
