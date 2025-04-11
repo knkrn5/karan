@@ -10,7 +10,7 @@ type ModalProps = {
   footer: string;
 };
 
-const Modal = ({ isOpen, onClose, children, header, footer }: ModalProps) => {
+const PopupModel = ({ isOpen, onClose, children, header, footer }: ModalProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -50,4 +50,4 @@ const Modal = ({ isOpen, onClose, children, header, footer }: ModalProps) => {
   );
 };
 
-export default Modal;
+export default PopupModel;
