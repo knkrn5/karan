@@ -3,7 +3,7 @@ import { UserDTO } from '../dtos/user.dto.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
-import { generateOTPEmailTemplate } from '../mail/emailTemplates.js';
+import { generateOTPEmailTemplate } from '../mail/templates/otpEmailTemplate.js';
 import { redisClient } from '../db/uptashRedisDB.js';
 
 export class AuthService {
