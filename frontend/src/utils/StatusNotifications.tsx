@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { FaCircleCheck, FaCircleInfo, FaCircleXmark, FaCircleExclamation  } from "react-icons/fa6";
+import { FaCircleCheck, FaCircleInfo, FaCircleXmark, FaCircleExclamation } from 'react-icons/fa6';
 
 export interface StatusNotificationsProp {
   success?: string;
@@ -9,16 +9,20 @@ export interface StatusNotificationsProp {
   error?: string;
 }
 
-export default function StatusNotifications({ statusInfo }: { statusInfo: StatusNotificationsProp }) {
+export default function StatusNotifications({
+  statusInfo,
+}: {
+  statusInfo: StatusNotificationsProp;
+}) {
   const [status, setStatus] = useState<StatusNotificationsProp>({
-/*     success: '',
+    success: '',
     info: '',
     warning: '',
-    error: '', */
+    error: '',
   });
 
   useEffect(() => {
-    setStatus(statusInfo); 
+    setStatus(statusInfo);
   }, [statusInfo]);
 
   return (
@@ -43,7 +47,7 @@ export default function StatusNotifications({ statusInfo }: { statusInfo: Status
       )}
       {status.error && (
         <div className="flex items-center w-fit mx-auto bg-red-600 text-white px-4 py-2 rounded-lg">
-          < FaCircleXmark  className="mr-2 h-6 w-6" />
+          <FaCircleXmark className="mr-2 h-6 w-6" />
           <p>Failed - {status.error}</p>
         </div>
       )}
