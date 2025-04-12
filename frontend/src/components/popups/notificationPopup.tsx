@@ -13,7 +13,10 @@ const NotificationPopupModel = () => {
   useEffect(() => {
     // Only runing effect if  notification message is present
     if (notificationMsg && Object.keys(notificationMsg).length > 0) {
-      setIsVisibleSlide(true);
+      setIsVisibleSlide(false);
+      setTimeout(() => {
+        setIsVisibleSlide(true);
+      }, 10);
 
       const timeout = setTimeout(() => {
         setIsVisibleSlide(false);
