@@ -9,11 +9,14 @@ import BrandLoadingPage from '../brandLoadingPage';
 import { TwoSmallLinesSkeletonLoading } from '../../components/skeletonLoadings';
 import { verifyPassword, sendOtp, verifyOtp } from '../../utils/auth.utils';
 import StatusNotifications from '../../utils/StatusNotifications';
+import PopupModel from '../../components/popup';
+import DeleteConfirmationPopup from './deletePopup';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function UserProfile() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const firstName = useProfileStore(state => state.firstName);
   const lastName = useProfileStore(state => state.lastName);
@@ -51,7 +54,6 @@ export default function UserProfile() {
     setTimeout(() => {
       setIsVisible(true);
     }, 10);
-
 
     //clearing statusnotifications
     setTimeout(() => setStatusInfoAuth({}), 5000);
@@ -125,6 +127,7 @@ export default function UserProfile() {
           isOtpVerified: true,
         }));
         setStatusInfoAuth({ success: response.message });
+        setIsPopupOpen(true);
       } else {
         setStatusInfoAuth({ error: response.message });
         setIsDeleting(false);
@@ -134,11 +137,13 @@ export default function UserProfile() {
       console.log('verifing otp');
     }
 
-    if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+    /* if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
       handleResetPassword();
       return;
-    }
+    } */
+  };
 
+  async function handleDeletion() {
     try {
       const response = await axios.delete(`${BACKEND_URL}/api/v1/profile/delete-account`, {
         withCredentials: true,
@@ -151,7 +156,6 @@ export default function UserProfile() {
 
         useAuthStore.getState().setIsSuccessLoginedIn(false);
         useProfileStore.getState().resetProfileStore();
-        localStorage.removeItem('isSuccessLoginedInLs');
         navigate('/register');
       }
     } catch (error) {
@@ -161,7 +165,7 @@ export default function UserProfile() {
     } finally {
       setIsDeleting(false);
     }
-  };
+  }
 
   const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
 
@@ -180,6 +184,29 @@ export default function UserProfile() {
       className="min-h-[calc(100vh-72px)] p-2 flex items-center justify-center  
       bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white"
     >
+      {/* deletion popup */}
+      {isPopupOpen && (
+        <PopupModel
+          header="Confirm Deletion"
+          footer="karan.email"
+          isOpen={isPopupOpen}
+          onClose={() => {
+            setIsPopupOpen(false);
+            handleResetPassword();
+          }}
+        >
+          <DeleteConfirmationPopup
+            onDelete={() => {
+              handleDeletion();
+              setIsPopupOpen(false);
+            }}
+            onCancel={() => {
+              handleResetPassword();
+              setIsPopupOpen(false);
+            }}
+          />
+        </PopupModel>
+      )}
       {/* Card */}
       <div
         className={`mx-auto rounded-lg overflow-hidden max-w-[480px] w-80 

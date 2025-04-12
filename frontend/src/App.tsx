@@ -14,7 +14,7 @@ import RegisterPage from './pages/auth/register';
 import About from './pages/about/aboutPage';
 import Resume from './pages/about/resume';
 import Contact from './pages/contact/contactPage';
-import UserProfile from './pages/auth/userProfile';
+import UserProfile from './pages/profile/userProfile';
 
 import SoloBlogPost from './pages/blog/soloBlogPost';
 
