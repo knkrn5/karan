@@ -31,18 +31,16 @@ const NotificationPopupModel = ({
   return createPortal(
     <div className="fixed top-20 right-0 z-50 ">
       <div
-        className={`relative  grid grid-cols-[1fr_20px] gap-4 max-w-[400px] bg-white dark:bg-slate-900 drop-shadow-xl shadow-red-500  p-2 m-1 rounded-lg 
+        className={`relative  grid grid-cols-[1fr_20px] gap-4 max-w-[400px] ${bgColor} drop-shadow-xl shadow-red-500  p-2 m-1 rounded-lg 
         ${!isVisible ? 'translate-x-full' : 'translate-x-0'} transition-transform duration-300`}
       >
-        <div
-          className={`flex items-center w-fit mx-auto ${bgColor}  text-white px-4 py-2 rounded-lg`}
-        >
+        <div className={`flex items-center w-fit mx-auto  text-white px-4 py-2 rounded-lg`}>
           {React.createElement(svgIcon, { className: 'mr-2 h-6 w-6' })}
           <p className="font-semibold">{notificationMsg}</p>
         </div>
         <span
           onClick={onClose}
-          className="absolute top-3 right-3 p-1 text-black bg-gray-300 hover:bg-gray-400  dark:text-gray-300 dark:bg-gray-600 dark:hover:text-white dark:hover:bg-gray-700  rounded-xl duration-300 cursor-pointer"
+          className="absolute top-3 right-3 p-1 m-1 text-black bg-gray-300 hover:bg-gray-400  dark:hover:text-white dark:hover:bg-gray-500  rounded-xl duration-300 cursor-pointer"
         >
           <IoMdClose />
         </span>
