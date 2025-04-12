@@ -41,10 +41,6 @@ export default function LoginPage() {
 
   // notification popup store data
   const notificationMsg = useNotificationPopupStore(state => state.notificationMsg);
-  // const svgIcon = useNotificationPopupStore(state => state.svgIcon);
-  // const bgColor = useNotificationPopupStore(state => state.bgColor);
-  // const { setNotificationMsg, setSvgIcon, setBgColor, resetNotificationPopupStore } =
-  //   useNotificationPopupStore();
   const { setNotificationMsg, resetNotificationPopupStore } = useNotificationPopupStore();
 
   const navigate = useNavigate();
@@ -138,9 +134,7 @@ export default function LoginPage() {
       // setStatusInfoAuth({ success: data.message });
 
       //notification popup filling
-      setNotificationMsg({ success: data.message  });
-      // setSvgIcon(FaCheckCircle);
-      // setBgColor('bg-green-600');
+      setNotificationMsg({ success: data.message });
 
       setIsSuccessLoginedIn(true);
       navigate('/profile');
@@ -176,11 +170,10 @@ export default function LoginPage() {
     <>
       {/* notification popup */}
       <NotificationPopupModel
-        isOpen={!!notificationMsg && Object.keys(notificationMsg).length > 0}
-        onClose={() => {
+      // isOpen={!!notificationMsg && Object.keys(notificationMsg).length > 0}
+      /*  onClose={() => {
           resetNotificationPopupStore();
-        }}
-        // notificationMsg={notificationMsg}
+        }} */
       />
       <div
         className={`bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-8 w-full max-w-md transition-transform duration-500 ease-out ${

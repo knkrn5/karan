@@ -5,20 +5,27 @@ import { useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useProfileStore } from '../../stores/auth/profileStore';
 import { useAuthStore } from '../../stores/auth/authStore';
+import { useNotificationPopupStore } from '../../stores/popup/notificationPopupStore';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function Logout() {
   // const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { setNotificationMsg } = useNotificationPopupStore();
 
   const handleLogout = async () => {
     try {
       setIsLoading(true);
-      await axios.post(`${BACKEND_URL}/api/v1/auth/logout`, {}, { withCredentials: true });
+      const res = await axios.post(
+        `${BACKEND_URL}/api/v1/auth/logout`,
+        {},
+        { withCredentials: true }
+      );
       // reseting/clearing stores
       useAuthStore.getState().resetAuthStore();
       useProfileStore.getState().resetProfileStore();
+      setNotificationMsg({ success: res.data.message });
       console.log('logging Out');
       localStorage.removeItem('session');
       // navigate('/login');

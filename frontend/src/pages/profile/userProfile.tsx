@@ -53,8 +53,6 @@ export default function UserProfile() {
 
   // notification popup store data
   const notificationMsg = useNotificationPopupStore(state => state.notificationMsg);
-  // const svgIcon = useNotificationPopupStore(state => state.svgIcon);
-  // const bgColor = useNotificationPopupStore(state => state.bgColor);
   const { setNotificationMsg, resetNotificationPopupStore } = useNotificationPopupStore();
 
   // animation trigger
@@ -163,9 +161,6 @@ export default function UserProfile() {
 
         //notification popup filling
         setNotificationMsg({ success: response.data.message });
-        // setSvgIcon(FaCheckCircle);
-        // setBgColor('bg-green-600');
-
         navigate('/register');
       }
     } catch (error) {
@@ -196,11 +191,10 @@ export default function UserProfile() {
     >
       {/* notification popup */}
       <NotificationPopupModel
-        isOpen={!!notificationMsg && Object.keys(notificationMsg).length > 0}
-        onClose={() => {
+        // isOpen={!!notificationMsg && Object.keys(notificationMsg).length > 0}
+        /* onClose={() => {
           resetNotificationPopupStore();
-        }}
-        // notificationMsg={notificationMsg}
+        }} */
       />
       {/* deletion popup */}
       {isPopupOpen && (

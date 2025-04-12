@@ -9,38 +9,22 @@ type ModalProps = {
   onClose: () => void;
 };
 
-/* interface notificationMsgProp {
-  success?: string;
-  info?: string;
-  warning?: string;
-  error?: string;
-} */
-
-// type CombinedProps = ModalProps & { notificationMsg: notificationMsgProp };
-
-const NotificationPopupModel = ({ isOpen, onClose }: ModalProps) => {
+// const NotificationPopupModel = ({ isOpen, onClose }: ModalProps) => {
+const NotificationPopupModel = () => {
   const [isVisible, setIsVisible] = useState(false);
 
-  /*   const [notificationMsg, setnotificationMsg] = useState<notificationMsgProp>({
-    success: '',
-    info: '',
-    warning: '',
-    error: '',
-  });
- */
-
   const notificationMsg = useNotificationPopupStore(state => state.notificationMsg);
+  const { resetNotificationPopupStore } = useNotificationPopupStore();
 
   useEffect(() => {
     setIsVisible(false);
     setTimeout(() => {
       setIsVisible(true);
     }, 10);
-
-    // setnotificationMsg(notificationMsg);
   }, []);
 
-  if (!isOpen) return null;
+  // if (!isOpen) return null;
+  if (!!notificationMsg && Object.keys(notificationMsg).length === 0) return null;
 
   return createPortal(
     <div className="fixed top-20 right-0 z-50 ">
@@ -80,7 +64,8 @@ const NotificationPopupModel = ({ isOpen, onClose }: ModalProps) => {
           </p>
         </div>
         <span
-          onClick={onClose}
+          // onClick={onClose}
+          onClick={resetNotificationPopupStore}
           className="absolute top-3 right-3 p-1 m-1 text-black bg-gray-300 hover:bg-gray-400  dark:hover:text-white dark:hover:bg-gray-500  rounded-xl duration-300 cursor-pointer"
         >
           <IoMdClose />
@@ -92,12 +77,3 @@ const NotificationPopupModel = ({ isOpen, onClose }: ModalProps) => {
 };
 
 export default NotificationPopupModel;
-
-//use this like this ========
-/*    <NotificationPopupModel
-          isOpen={isPopupOpen}
-          onClose={() => setIsPopupOpen(false)}
-          svgIcon={FaCircleXmark}
-          notificationMsg="Please log in to send a message."
-          bgColor="bg-red-600"
-        /> */
