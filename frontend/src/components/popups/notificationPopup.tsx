@@ -5,26 +5,41 @@ import { FaCircleCheck, FaCircleInfo, FaCircleXmark, FaCircleExclamation } from 
 import { useNotificationPopupStore } from '../../stores/popup/notificationPopupStore';
 
 const NotificationPopupModel = () => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleSlide, setIsVisibleSlide] = useState(false);
 
   const notificationMsg = useNotificationPopupStore(state => state.notificationMsg);
   const { resetNotificationPopupStore } = useNotificationPopupStore();
 
   useEffect(() => {
-    setIsVisible(false);
-    setTimeout(() => {
-      setIsVisible(true);
-    }, 10);
-  }, []);
+    // Only runing effect if  notification message is present
+    if (notificationMsg && Object.keys(notificationMsg).length > 0) {
+      setIsVisibleSlide(false);
+      setTimeout(() => {
+        setIsVisibleSlide(true);
+      }, 10);
 
-  // if (!isOpen) return null;
-  if (!!notificationMsg && Object.keys(notificationMsg).length === 0) return null;
+      const timeout = setTimeout(() => {
+        setIsVisibleSlide(false);
+        setTimeout(resetNotificationPopupStore, 300);
+      }, 5000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [notificationMsg, resetNotificationPopupStore]);
+
+  // close popup with exit animation
+  const handleClose = () => {
+    setIsVisibleSlide(false);
+    setTimeout(resetNotificationPopupStore, 300);
+  };
+
+  if (!notificationMsg || Object.keys(notificationMsg).length === 0) return null;
 
   return createPortal(
     <div className="fixed top-20 right-0 z-50 ">
       <div
         className={`relative  grid grid-cols-[1fr_20px] gap-4 max-w-[400px]  drop-shadow-xl shadow-red-500  p-2 m-1 rounded-lg transition-transform duration-300 
-        ${!isVisible ? 'translate-x-full' : 'translate-x-0'} ${
+        ${!isVisibleSlide ? 'translate-x-full' : 'translate-x-0'} ${
           notificationMsg.success
             ? 'bg-green-600'
             : notificationMsg.error
@@ -58,7 +73,7 @@ const NotificationPopupModel = () => {
           </p>
         </div>
         <span
-          onClick={resetNotificationPopupStore}
+          onClick={handleClose}
           className="absolute top-3 right-3 p-1 m-1 text-black bg-gray-300 hover:bg-gray-400  dark:hover:text-white dark:hover:bg-gray-500  rounded-xl duration-300 cursor-pointer"
         >
           <IoMdClose />
