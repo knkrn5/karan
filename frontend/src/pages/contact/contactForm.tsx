@@ -159,7 +159,7 @@ export default function ContactForm() {
     <div className="relative">
       {/* popup */}
       {isPopupOpen && (
-        <Popup
+         <Popup
           header="Login Required"
           footer="karan.email"
           isOpen={isPopupOpen}
