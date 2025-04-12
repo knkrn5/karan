@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router';
 // import { GoogleIcon, GithubIcon } from "../../icons/svgIcons";
 import axios from 'axios';
 import StatusNotifications from '../../utils/StatusNotifications.js';
-import { FaRegEye, FaRegEyeSlash, FaCheckCircle } from 'react-icons/fa';
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { useNotificationPopupStore } from '../../stores/popup/notificationPopupStore.js';
@@ -180,8 +180,7 @@ export default function LoginPage() {
         onClose={() => {
           resetNotificationPopupStore();
         }}
-        svgIcon={FaCheckCircle}
-        notificationMsg={notificationMsg}
+        // notificationMsg={notificationMsg}
       />
       <div
         className={`bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-8 w-full max-w-md transition-transform duration-500 ease-out ${

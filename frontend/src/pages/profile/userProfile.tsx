@@ -13,7 +13,6 @@ import PopupModel from '../../components/popups/popup.js';
 import DeleteConfirmationPopup from './deletePopup';
 import NotificationPopupModel from '../../components/popups/notificationPopup.js';
 import { useNotificationPopupStore } from '../../stores/popup/notificationPopupStore.js';
-import { FaCheckCircle } from 'react-icons/fa';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -201,8 +200,7 @@ export default function UserProfile() {
         onClose={() => {
           resetNotificationPopupStore();
         }}
-        svgIcon={FaCheckCircle}
-        notificationMsg={notificationMsg}
+        // notificationMsg={notificationMsg}
       />
       {/* deletion popup */}
       {isPopupOpen && (

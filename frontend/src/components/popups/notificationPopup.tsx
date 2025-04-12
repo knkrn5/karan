@@ -1,31 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { IoMdClose } from 'react-icons/io';
+import { FaCircleCheck, FaCircleInfo, FaCircleXmark, FaCircleExclamation } from 'react-icons/fa6';
+import { useNotificationPopupStore } from '../../stores/popup/notificationPopupStore';
 
 type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  svgIcon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 };
 
-interface notificationMsgProp {
+/* interface notificationMsgProp {
   success?: string;
   info?: string;
   warning?: string;
   error?: string;
-}
+} */
 
-type CombinedProps = ModalProps & { notificationMsg: notificationMsgProp };
+// type CombinedProps = ModalProps & { notificationMsg: notificationMsgProp };
 
-const NotificationPopupModel = ({ isOpen, onClose, svgIcon, notificationMsg }: CombinedProps) => {
+const NotificationPopupModel = ({ isOpen, onClose }: ModalProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
-  const [notificationStatusMsg, setNotificationStatusMsg] = useState<notificationMsgProp>({
-/*     success: '',
+  /*   const [notificationMsg, setnotificationMsg] = useState<notificationMsgProp>({
+    success: '',
     info: '',
     warning: '',
-    error: '', */
+    error: '',
   });
+ */
+
+  const notificationMsg = useNotificationPopupStore(state => state.notificationMsg);
 
   useEffect(() => {
     setIsVisible(false);
@@ -33,8 +37,8 @@ const NotificationPopupModel = ({ isOpen, onClose, svgIcon, notificationMsg }: C
       setIsVisible(true);
     }, 10);
 
-    setNotificationStatusMsg(notificationMsg);
-  }, [notificationMsg]);
+    // setnotificationMsg(notificationMsg);
+  }, []);
 
   if (!isOpen) return null;
 
@@ -43,27 +47,36 @@ const NotificationPopupModel = ({ isOpen, onClose, svgIcon, notificationMsg }: C
       <div
         className={`relative  grid grid-cols-[1fr_20px] gap-4 max-w-[400px]  drop-shadow-xl shadow-red-500  p-2 m-1 rounded-lg transition-transform duration-300 
         ${!isVisible ? 'translate-x-full' : 'translate-x-0'} ${
-          notificationStatusMsg.success
+          notificationMsg.success
             ? 'bg-green-600'
-            : notificationStatusMsg.error
+            : notificationMsg.error
             ? 'bg-red-600'
-            : notificationStatusMsg.warning
+            : notificationMsg.warning
             ? 'bg-yellow-600'
-            : notificationStatusMsg.info
+            : notificationMsg.info
             ? 'bg-blue-600'
             : ''
         } `}
       >
         <div className={`flex items-center w-fit mx-auto  text-white px-4 py-2 rounded-lg`}>
-          {React.createElement(svgIcon, { className: 'mr-2 h-6 w-6' })}
+          {React.createElement(
+            notificationMsg.success
+              ? FaCircleCheck
+              : notificationMsg.error
+              ? FaCircleXmark
+              : notificationMsg.warning
+              ? FaCircleExclamation
+              : FaCircleInfo,
+            { className: 'mr-2 h-6 w-6' }
+          )}
           <p className="font-semibold">
-            {notificationStatusMsg.success
-              ? notificationStatusMsg.success
-              : notificationStatusMsg.error
-              ? notificationStatusMsg.error
-              : notificationStatusMsg.warning
-              ? notificationStatusMsg.warning
-              : notificationStatusMsg.info}
+            {notificationMsg.success
+              ? notificationMsg.success
+              : notificationMsg.error
+              ? notificationMsg.error
+              : notificationMsg.warning
+              ? notificationMsg.warning
+              : notificationMsg.info}
           </p>
         </div>
         <span

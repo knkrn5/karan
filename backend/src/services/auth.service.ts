@@ -4,7 +4,7 @@ import { ApiResponse } from '../utils/apiResponse.js';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import { generateOTPEmailTemplate } from '../mail/templates/otpEmailTemplate.js';
-import { redisClient } from '../db/uptashRedisDB.js';
+import { redisClient } from '../db/clients/uptashRedisDB.js';
 
 export class AuthService {
   //verify existing user

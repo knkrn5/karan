@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { app } from './app.js';
-import connectMongoDB from './db/mongoDB.js';
+import connectMongoDB from './db/clients/mongoDB.js';
 // import { connectRedisDB } from './db/uptashRedisDB.js';
 
 const startServer = async () => {
