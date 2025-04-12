@@ -29,7 +29,7 @@ const PopupModel = ({ isOpen, onClose, children, header, footer }: ModalProps) =
       onClick={onClose}
     >
       <div
-        className={`max-w-[400px] bg-white dark:bg-slate-900 shadow-2xl hover:shadow-xl dark:shadow-black px-6 py-2 m-1 rounded-xl relative 
+        className={`max-w-[400px] bg-white dark:bg-slate-900 shadow-2xl hover:shadow-xl dark:shadow-black px-6 py-2 m-1 rounded-2xl relative 
         ${!isVisible ? 'scale-95' : 'scale-100'} duration-300`}
         onClick={e => e.stopPropagation()}
       >
