@@ -47,13 +47,12 @@ export default function UserProfile() {
 
   const navigate = useNavigate();
 
-  const statusInfo = useAuthStore(state => state.statusInfoAuth);
+  // const statusInfo = useAuthStore(state => state.statusInfoAuth);
   const statusInfoAuth = useAuthStore(state => state.statusInfoAuth);
   const { setStatusInfoAuth } = useAuthStore();
 
   // notification popup store data
-  const notificationMsg = useNotificationPopupStore(state => state.notificationMsg);
-  const { setNotificationMsg, resetNotificationPopupStore } = useNotificationPopupStore();
+  const { setNotificationMsg } = useNotificationPopupStore();
 
   // animation trigger
   useEffect(() => {
@@ -190,12 +189,7 @@ export default function UserProfile() {
       bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white"
     >
       {/* notification popup */}
-      <NotificationPopupModel
-        // isOpen={!!notificationMsg && Object.keys(notificationMsg).length > 0}
-        /* onClose={() => {
-          resetNotificationPopupStore();
-        }} */
-      />
+      <NotificationPopupModel />
       {/* deletion popup */}
       {isPopupOpen && (
         <PopupModel

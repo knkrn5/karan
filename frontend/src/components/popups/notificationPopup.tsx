@@ -4,12 +4,6 @@ import { IoMdClose } from 'react-icons/io';
 import { FaCircleCheck, FaCircleInfo, FaCircleXmark, FaCircleExclamation } from 'react-icons/fa6';
 import { useNotificationPopupStore } from '../../stores/popup/notificationPopupStore';
 
-type ModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-};
-
-// const NotificationPopupModel = ({ isOpen, onClose }: ModalProps) => {
 const NotificationPopupModel = () => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -64,7 +58,6 @@ const NotificationPopupModel = () => {
           </p>
         </div>
         <span
-          // onClick={onClose}
           onClick={resetNotificationPopupStore}
           className="absolute top-3 right-3 p-1 m-1 text-black bg-gray-300 hover:bg-gray-400  dark:hover:text-white dark:hover:bg-gray-500  rounded-xl duration-300 cursor-pointer"
         >

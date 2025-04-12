@@ -40,8 +40,7 @@ export default function LoginPage() {
   const { setIsSuccessLoginedIn, setStatusInfoAuth } = useAuthStore();
 
   // notification popup store data
-  const notificationMsg = useNotificationPopupStore(state => state.notificationMsg);
-  const { setNotificationMsg, resetNotificationPopupStore } = useNotificationPopupStore();
+  const { setNotificationMsg } = useNotificationPopupStore();
 
   const navigate = useNavigate();
 
@@ -169,12 +168,7 @@ export default function LoginPage() {
   return (
     <>
       {/* notification popup */}
-      <NotificationPopupModel
-      // isOpen={!!notificationMsg && Object.keys(notificationMsg).length > 0}
-      /*  onClose={() => {
-          resetNotificationPopupStore();
-        }} */
-      />
+      <NotificationPopupModel />
       <div
         className={`bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-8 w-full max-w-md transition-transform duration-500 ease-out ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
