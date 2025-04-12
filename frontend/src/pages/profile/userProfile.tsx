@@ -9,8 +9,10 @@ import BrandLoadingPage from '../brandLoadingPage';
 import { TwoSmallLinesSkeletonLoading } from '../../components/skeletonLoadings';
 import { verifyPassword, sendOtp, verifyOtp } from '../../utils/auth.utils';
 import StatusNotifications from '../../utils/StatusNotifications';
-import PopupModel from '../../components/popup';
+import PopupModel from '../../components/popups/popup.js';
 import DeleteConfirmationPopup from './deletePopup';
+import NotificationPopupModel from '../../components/popups/notificationPopup.js';
+import { FaCheckCircle } from 'react-icons/fa';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -179,6 +181,14 @@ export default function UserProfile() {
       className="min-h-[calc(100vh-72px)] p-2 flex items-center justify-center  
       bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white"
     >
+      {/* notification popup */}
+      <NotificationPopupModel
+        isOpen={isSuccessLoginedIn}
+        onClose={() => {}}
+        svgIcon={FaCheckCircle}
+        notificationMsg="Successfully logged in."
+        bgColor="bg-green-600"
+      />
       {/* deletion popup */}
       {isPopupOpen && (
         <PopupModel

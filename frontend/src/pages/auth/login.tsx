@@ -34,6 +34,7 @@ export default function LoginPage() {
   });
 
   const statusInfo = useAuthStore(state => state.statusInfoAuth);
+  const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
   const { setIsSuccessLoginedIn, setStatusInfoAuth } = useAuthStore();
 
   const navigate = useNavigate();
@@ -138,8 +139,6 @@ export default function LoginPage() {
       setIsLoading(false);
     }
   };
-
-  const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
 
   useEffect(() => {
     if (isSuccessLoginedIn === true) {
