@@ -3,9 +3,11 @@ import { Link, useNavigate } from 'react-router';
 // import { GoogleIcon, GithubIcon } from "../../icons/svgIcons";
 import axios from 'axios';
 import StatusNotifications from '../../utils/StatusNotifications.js';
-import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+import { FaRegEye, FaRegEyeSlash, FaCheckCircle } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useAuthStore } from '../../stores/auth/authStore.js';
+import { useNotificationPopupStore } from '../../stores/popup/notificationPopupStore.js';
+import NotificationPopupModel from '../../components/popups/notificationPopup.js';
 
 interface loginFeildDataProps {
   email: string;
@@ -36,6 +38,14 @@ export default function LoginPage() {
   const statusInfo = useAuthStore(state => state.statusInfoAuth);
   const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
   const { setIsSuccessLoginedIn, setStatusInfoAuth } = useAuthStore();
+
+  // notification popup store data
+  const notificationMsg = useNotificationPopupStore(state => state.notificationMsg);
+  // const svgIcon = useNotificationPopupStore(state => state.svgIcon);
+  // const bgColor = useNotificationPopupStore(state => state.bgColor);
+  // const { setNotificationMsg, setSvgIcon, setBgColor, resetNotificationPopupStore } =
+  //   useNotificationPopupStore();
+  const { setNotificationMsg, resetNotificationPopupStore } = useNotificationPopupStore();
 
   const navigate = useNavigate();
 
@@ -124,7 +134,14 @@ export default function LoginPage() {
         { withCredentials: true }
       );
       const { data } = response;
-      setStatusInfoAuth({ success: data.message });
+
+      // setStatusInfoAuth({ success: data.message });
+
+      //notification popup filling
+      setNotificationMsg({ success: data.message  });
+      // setSvgIcon(FaCheckCircle);
+      // setBgColor('bg-green-600');
+
       setIsSuccessLoginedIn(true);
       navigate('/profile');
     } catch (error: unknown) {
@@ -157,6 +174,15 @@ export default function LoginPage() {
 
   return (
     <>
+      {/* notification popup */}
+      <NotificationPopupModel
+        isOpen={!!notificationMsg && Object.keys(notificationMsg).length > 0}
+        onClose={() => {
+          resetNotificationPopupStore();
+        }}
+        svgIcon={FaCheckCircle}
+        notificationMsg={notificationMsg}
+      />
       <div
         className={`bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-8 w-full max-w-md transition-transform duration-500 ease-out ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'

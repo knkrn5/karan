@@ -10,7 +10,12 @@ export interface StatusNotificationsProp {
 }
 
 export default function StatusNotifications({ statusInfo }: { statusInfo: StatusNotificationsProp }) {
-  const [status, setStatus] = useState<StatusNotificationsProp>({});
+  const [status, setStatus] = useState<StatusNotificationsProp>({
+/*     success: '',
+    info: '',
+    warning: '',
+    error: '', */
+  });
 
   useEffect(() => {
     setStatus(statusInfo); 
@@ -21,25 +26,25 @@ export default function StatusNotifications({ statusInfo }: { statusInfo: Status
       {status.success && (
         <div className="flex items-center w-fit mx-auto bg-green-600 text-white px-4 py-2 rounded-lg">
           <FaCircleCheck className="mr-2 h-6 w-6" />
-          <span>Success- {status.success}</span>
+          <p>Success- {status.success}</p>
         </div>
       )}
       {status.info && (
         <div className="flex items-center w-fit mx-auto bg-blue-600 text-white px-4 py-2 rounded-lg">
           <FaCircleInfo className="mr-2 h-6 w-6" />
-          <span> {status.info}</span>
+          <p> {status.info}</p>
         </div>
       )}
       {status.warning && (
         <div className="flex items-center w-fit mx-auto bg-yellow-600 text-white px-4 py-2 rounded-lg">
           <FaCircleExclamation className="mr-2 h-6 w-6" />
-          <span>Warning- {status.warning}</span>
+          <p>Warning- {status.warning}</p>
         </div>
       )}
       {status.error && (
         <div className="flex items-center w-fit mx-auto bg-red-600 text-white px-4 py-2 rounded-lg">
           < FaCircleXmark  className="mr-2 h-6 w-6" />
-          <span>Failed - {status.error}</span>
+          <p>Failed - {status.error}</p>
         </div>
       )}
     </div>

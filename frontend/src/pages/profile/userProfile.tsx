@@ -12,6 +12,7 @@ import StatusNotifications from '../../utils/StatusNotifications';
 import PopupModel from '../../components/popups/popup.js';
 import DeleteConfirmationPopup from './deletePopup';
 import NotificationPopupModel from '../../components/popups/notificationPopup.js';
+import { useNotificationPopupStore } from '../../stores/popup/notificationPopupStore.js';
 import { FaCheckCircle } from 'react-icons/fa';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -47,8 +48,15 @@ export default function UserProfile() {
 
   const navigate = useNavigate();
 
+  const statusInfo = useAuthStore(state => state.statusInfoAuth);
   const statusInfoAuth = useAuthStore(state => state.statusInfoAuth);
   const { setStatusInfoAuth } = useAuthStore();
+
+  // notification popup store data
+  const notificationMsg = useNotificationPopupStore(state => state.notificationMsg);
+  // const svgIcon = useNotificationPopupStore(state => state.svgIcon);
+  // const bgColor = useNotificationPopupStore(state => state.bgColor);
+  const { setNotificationMsg, resetNotificationPopupStore } = useNotificationPopupStore();
 
   // animation trigger
   useEffect(() => {
@@ -140,19 +148,25 @@ export default function UserProfile() {
     }
   };
 
-  async function handleDeletion() {
+  async function handleConfirmationDeletion() {
     try {
       const response = await axios.delete(`${BACKEND_URL}/api/v1/profile/delete-account`, {
         withCredentials: true,
       });
 
       if (response.data.success) {
-        setStatusInfoAuth({ success: response.data.message });
+        // setStatusInfoAuth({ success: response.data.message });
 
         await axios.post(`${BACKEND_URL}/api/v1/auth/logout`, {}, { withCredentials: true });
 
         useAuthStore.getState().setIsSuccessLoginedIn(false);
         useProfileStore.getState().resetProfileStore();
+
+        //notification popup filling
+        setNotificationMsg({ success: response.data.message });
+        // setSvgIcon(FaCheckCircle);
+        // setBgColor('bg-green-600');
+
         navigate('/register');
       }
     } catch (error) {
@@ -183,11 +197,12 @@ export default function UserProfile() {
     >
       {/* notification popup */}
       <NotificationPopupModel
-        isOpen={isSuccessLoginedIn}
-        onClose={() => {}}
+        isOpen={!!notificationMsg && Object.keys(notificationMsg).length > 0}
+        onClose={() => {
+          resetNotificationPopupStore();
+        }}
         svgIcon={FaCheckCircle}
-        notificationMsg="Successfully logged in."
-        bgColor="bg-green-600"
+        notificationMsg={notificationMsg}
       />
       {/* deletion popup */}
       {isPopupOpen && (
@@ -202,7 +217,7 @@ export default function UserProfile() {
         >
           <DeleteConfirmationPopup
             onDelete={() => {
-              handleDeletion();
+              handleConfirmationDeletion();
               setIsPopupOpen(false);
             }}
             onCancel={() => {

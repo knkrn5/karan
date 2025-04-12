@@ -6,37 +6,65 @@ type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
   svgIcon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  notificationMsg: string;
-  bgColor: string;
 };
 
-const NotificationPopupModel = ({
-  isOpen,
-  onClose,
-  notificationMsg,
-  svgIcon,
-  bgColor,
-}: ModalProps) => {
+interface notificationMsgProp {
+  success?: string;
+  info?: string;
+  warning?: string;
+  error?: string;
+}
+
+type CombinedProps = ModalProps & { notificationMsg: notificationMsgProp };
+
+const NotificationPopupModel = ({ isOpen, onClose, svgIcon, notificationMsg }: CombinedProps) => {
   const [isVisible, setIsVisible] = useState(false);
+
+  const [notificationStatusMsg, setNotificationStatusMsg] = useState<notificationMsgProp>({
+/*     success: '',
+    info: '',
+    warning: '',
+    error: '', */
+  });
 
   useEffect(() => {
     setIsVisible(false);
     setTimeout(() => {
       setIsVisible(true);
     }, 10);
-  }, []);
+
+    setNotificationStatusMsg(notificationMsg);
+  }, [notificationMsg]);
 
   if (!isOpen) return null;
 
   return createPortal(
     <div className="fixed top-20 right-0 z-50 ">
       <div
-        className={`relative  grid grid-cols-[1fr_20px] gap-4 max-w-[400px] ${bgColor} drop-shadow-xl shadow-red-500  p-2 m-1 rounded-lg 
-        ${!isVisible ? 'translate-x-full' : 'translate-x-0'} transition-transform duration-300`}
+        className={`relative  grid grid-cols-[1fr_20px] gap-4 max-w-[400px]  drop-shadow-xl shadow-red-500  p-2 m-1 rounded-lg transition-transform duration-300 
+        ${!isVisible ? 'translate-x-full' : 'translate-x-0'} ${
+          notificationStatusMsg.success
+            ? 'bg-green-600'
+            : notificationStatusMsg.error
+            ? 'bg-red-600'
+            : notificationStatusMsg.warning
+            ? 'bg-yellow-600'
+            : notificationStatusMsg.info
+            ? 'bg-blue-600'
+            : ''
+        } `}
       >
         <div className={`flex items-center w-fit mx-auto  text-white px-4 py-2 rounded-lg`}>
           {React.createElement(svgIcon, { className: 'mr-2 h-6 w-6' })}
-          <p className="font-semibold">{notificationMsg}</p>
+          <p className="font-semibold">
+            {notificationStatusMsg.success
+              ? notificationStatusMsg.success
+              : notificationStatusMsg.error
+              ? notificationStatusMsg.error
+              : notificationStatusMsg.warning
+              ? notificationStatusMsg.warning
+              : notificationStatusMsg.info}
+          </p>
         </div>
         <span
           onClick={onClose}
