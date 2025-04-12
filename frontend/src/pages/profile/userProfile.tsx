@@ -136,11 +136,6 @@ export default function UserProfile() {
       setIsDeleting(false);
       console.log('verifing otp');
     }
-
-    /* if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-      handleResetPassword();
-      return;
-    } */
   };
 
   async function handleDeletion() {
