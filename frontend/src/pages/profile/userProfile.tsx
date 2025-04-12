@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 import { AnimatedLetterSvg, UserAccoutbgSvg } from '../../icons/userProfileSvg';
 import { useEffect, useState } from 'react';
-import { useProfileStore } from '../../stores/auth/profileStore';
+import { useProfileStore } from '../../stores/profile/profileStore.js';
 import axios from 'axios';
 import { useAuthStore } from '../../stores/auth/authStore';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';

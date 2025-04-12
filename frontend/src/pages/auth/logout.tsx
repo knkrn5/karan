@@ -3,7 +3,7 @@ import axios from 'axios';
 // import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { useProfileStore } from '../../stores/auth/profileStore';
+import { useProfileStore } from '../../stores/profile/profileStore';
 import { useAuthStore } from '../../stores/auth/authStore';
 import { useNotificationPopupStore } from '../../stores/popup/notificationPopupStore';
 

@@ -1,6 +1,6 @@
 import Logout from './logout';
 import { Link } from 'react-router';
-import { useProfileStore } from '../../stores/auth/profileStore';
+import { useProfileStore } from '../../stores/profile/profileStore';
 
 interface userDataProps {
   firstName: string;
