@@ -5,7 +5,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore';
 import { logout } from '../../utils/auth.utils';
 
-export default function Logout() {
+export default function LogoutUser() {
   // const navigate = useNavigate();
   const [isLoggingOut, setIsLoggingOut] = useState<boolean | null>(null);
   const { setTRpopupNotificationMsg } = useTRpopupNotificationStore();

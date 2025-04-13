@@ -1,4 +1,4 @@
-import Logout from './logout';
+import LogoutUser from './logout';
 import { Link } from 'react-router';
 import { useProfileStore } from '../../stores/profile/profileStore';
 
@@ -65,7 +65,7 @@ export default function UserAccount() {
           </h2>
           <p className="text-gray-500 font-serif dark:text-gray-400">{email}</p>
         </div>
-        <Logout />
+        <LogoutUser />
       </div>
     </>
   );
