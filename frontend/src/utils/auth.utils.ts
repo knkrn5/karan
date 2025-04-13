@@ -19,7 +19,7 @@ export async function verifyExistingUser(userEmail: string): Promise<ApiResponse
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
-      console.error('Verify User Error:', error.response?.data);
+      // console.error('Verify User Error:', error.response?.data);
       return error.response?.data;
     }
     // Handling non-Axios or unexpected error and Fallback response
