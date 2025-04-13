@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
 // import { GoogleIcon, GithubIcon } from "../../icons/svgIcons";
 import axios from 'axios';
-import { ICnotificationMsg } from '../../utils/ICnotificationMsg.js';
+import { ICnotificationMsg } from '../../components/notifications/ICnotificationMsg.js';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { useNotificationPopupStore } from '../../stores/popup/TRnotificationPopupStore.js';
-import { TRnotificationPopupModel } from '../../components/popups/TRnotificationPopup.js';
+import { TRnotificationPopupModel } from '../../components/popups/TRpopupNotification.js';
+import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
 
 interface loginFeildDataProps {
   email: string;
@@ -35,12 +36,15 @@ export default function LoginPage() {
     password: '',
   });
 
-  const authStatusNotificationMsg = useAuthStore(state => state.authStatusNotificationMsg);
+  //auth store
   const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
-  const { setIsSuccessLoginedIn, setAuthStatusNotificationMsg } = useAuthStore();
+  const { setIsSuccessLoginedIn } = useAuthStore();
 
-  // notification popup store data
+  // TRnotification popup store data
   const { setTRnotificationMsg } = useNotificationPopupStore();
+
+  //ICnotification popup store data
+  const { setICnotificationMsg } = useICnotificationMsgStore();
 
   const navigate = useNavigate();
 
@@ -99,7 +103,7 @@ export default function LoginPage() {
       ...prevState,
       [name]: value,
     }));
-    setAuthStatusNotificationMsg({});
+    setICnotificationMsg({});
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -126,7 +130,7 @@ export default function LoginPage() {
       );
       const { data } = response;
 
-      setAuthStatusNotificationMsg({ success: data.message });
+      setICnotificationMsg({ success: data.message });
 
       //notification popup filling
       setTRnotificationMsg({ success: data.message });
@@ -136,10 +140,10 @@ export default function LoginPage() {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.message);
-        setAuthStatusNotificationMsg({ error: error.response?.data.message || error.message });
+        setICnotificationMsg({ error: error.response?.data.message || error.message });
       } else {
         console.log(error);
-        setAuthStatusNotificationMsg({ error: 'An unexpected error occurred' });
+        setICnotificationMsg({ error: 'An unexpected error occurred' });
       }
     } finally {
       setIsLoading(false);
@@ -283,7 +287,7 @@ export default function LoginPage() {
             Forgot Password
           </button>
         </div>
-        <ICnotificationMsg ICnotificationStatusMsg={authStatusNotificationMsg} />
+        <ICnotificationMsg />
       </div>
     </>
   );

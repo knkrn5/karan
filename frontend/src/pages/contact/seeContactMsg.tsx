@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ICnotificationMsg } from '../../utils/ICnotificationMsg';
+import { ICnotificationMsg } from '../../components/notifications/ICnotificationMsg';
 import axios from 'axios';
 import { useContactInfoStore } from '../../stores/contact/contactMsgStore';
 
@@ -9,6 +9,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaRegSave, FaRegTrashAlt } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { IoIosSend } from 'react-icons/io';
+import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -26,17 +27,16 @@ const SeeContactMsg = () => {
     delete: false,
   });
 
+  // contact message store data
   const name = useContactInfoStore(state => state.name);
   const email = useContactInfoStore(state => state.email);
   const message = useContactInfoStore(state => state.message);
   const isSuccess = useContactInfoStore(state => state.isSuccess);
-  const contactMsgStatusNotification = useContactInfoStore(
-    state => state.contactMsgStatusNotification
-  );
   const id = useContactInfoStore(state => state.contactMsgId);
+  const { setIsSuccess, setContactMsgData, setIsSubmitted } = useContactInfoStore();
 
-  const { setIsSuccess, setContactMsgStatusNotification, setContactMsgData, setIsSubmitted } =
-    useContactInfoStore();
+  // ICnotificationMsgStore
+  const { setICnotificationMsg } = useICnotificationMsgStore();
 
   // Editing message
   const handleEdit = async () => {
@@ -48,7 +48,7 @@ const SeeContactMsg = () => {
     if (isEditing) {
       try {
         setIsLoading(prev => ({ ...prev, edit: true }));
-        setContactMsgStatusNotification({ info: 'Saving changes...' });
+        setICnotificationMsg({ info: 'Saving changes...' });
 
         const response = await axios.put(`${BACKEND_URL}/api/contact/message`, {
           id,
@@ -56,31 +56,31 @@ const SeeContactMsg = () => {
         });
 
         const { data } = response;
-        setContactMsgStatusNotification({ success: data.message });
+        setICnotificationMsg({ success: data.message });
         setIsSuccess(data.success);
         setIsEdited(data.success);
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          setContactMsgStatusNotification({
+          setICnotificationMsg({
             error: error.response?.data?.message || error.message,
           });
           setIsSuccess(error.response?.data?.success);
           setIsEdited(error.response?.data?.success);
         } else {
-          setContactMsgStatusNotification({ error: 'An unexpected error occurred' });
+          setICnotificationMsg({ error: 'An unexpected error occurred' });
         }
       } finally {
         setIsLoading(prev => ({ ...prev, edit: false }));
       }
     } else {
-      setContactMsgStatusNotification({ info: 'Editing Message' });
+      setICnotificationMsg({ info: 'Editing Message' });
     }
     setIsEditing(!isEditing);
   };
 
   // Deleting message
   const handleDelete = async () => {
-    setContactMsgStatusNotification({ info: 'Deleting Message...' });
+    setICnotificationMsg({ info: 'Deleting Message...' });
 
     const toDelete = window.confirm('Are you sure you want to delete this message?');
     if (toDelete) {
@@ -88,22 +88,22 @@ const SeeContactMsg = () => {
         setIsLoading(prev => ({ ...prev, delete: true }));
         const response = await axios.delete(`${BACKEND_URL}/api/contact/message`, { data: { id } });
         const { data } = response;
-        setContactMsgStatusNotification({ success: data.message });
+        setICnotificationMsg({ success: data.message });
         setIsSuccess(!data.success);
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          setContactMsgStatusNotification({
+          setICnotificationMsg({
             error: error.response?.data?.message || error.message,
           });
           setIsSuccess(!error.response?.data?.success);
         } else {
-          setContactMsgStatusNotification({ error: 'An unexpected error occurred' });
+          setICnotificationMsg({ error: 'An unexpected error occurred' });
         }
       } finally {
         setIsLoading(prev => ({ ...prev, delete: false }));
       }
     } else {
-      setContactMsgStatusNotification({ warning: 'Message deletion canceled.' });
+      setICnotificationMsg({ warning: 'Message deletion canceled.' });
     }
   };
 
@@ -219,7 +219,7 @@ const SeeContactMsg = () => {
           )}
         </div>
       </div>
-      <ICnotificationMsg ICnotificationStatusMsg={contactMsgStatusNotification} />
+      <ICnotificationMsg />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { FaCircleCheck, FaCircleInfo, FaCircleXmark, FaCircleExclamation } from 'react-icons/fa6';
+import { useICnotificationMsgStore } from '../stores/ICnotificationMsgStore';
 
 export interface ICnotificationMsgProp {
   success?: string;
@@ -10,17 +11,17 @@ export interface ICnotificationMsgProp {
 }
 
 // In Component Notification Message
-export function ICnotificationMsg({
-  ICnotificationStatusMsg,
-}: {
-  ICnotificationStatusMsg: ICnotificationMsgProp;
-}) {
+export function ICnotificationMsg() {
   const [ICnotificationMsg, setICnotificationMsg] = useState<ICnotificationMsgProp>({
     success: '',
     info: '',
     warning: '',
     error: '',
   });
+
+  //ICnotificationStatusMsgStore
+  const ICnotificationStatusMsg = useICnotificationMsgStore(state => state.ICnotificationStatusMsg);
+  // const { setICnotificationMsg } = useICnotificationMsgStore();
 
   useEffect(() => {
     setICnotificationMsg(ICnotificationStatusMsg);

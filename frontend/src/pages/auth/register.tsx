@@ -5,10 +5,13 @@ import axios, { AxiosError } from 'axios';
 import { FaRegEye, FaRegEyeSlash, FaRegSave, FaRegCheckCircle } from 'react-icons/fa';
 import { FaRepeat } from 'react-icons/fa6';
 import { CiEdit } from 'react-icons/ci';
-import { ICnotificationMsg } from '../../utils/ICnotificationMsg.js';
+import { ICnotificationMsg } from '../../components/notifications/ICnotificationMsg.js';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { verifyExistingUser, sendOtp, verifyOtp } from '../../utils/auth.utils.js';
+import { TRnotificationPopupModel } from '../../components/popups/TRpopupNotification.js';
+import { useNotificationPopupStore } from '../../stores/popup/TRnotificationPopupStore.js';
+import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -64,8 +67,11 @@ export default function Register() {
     confirmPassword: '',
   });
 
-  const authStatusNotificationMsg = useAuthStore(state => state.authStatusNotificationMsg);
-  const { setAuthStatusNotificationMsg } = useAuthStore();
+  // TRnotification popup store data
+  const { setTRnotificationMsg } = useNotificationPopupStore();
+
+  //ICnotification popup store data
+  const { setICnotificationMsg } = useICnotificationMsgStore();
 
   const navigate = useNavigate();
 
@@ -180,13 +186,13 @@ export default function Register() {
     }
 
     setIsSigningUp(true);
-    setAuthStatusNotificationMsg({});
+    setICnotificationMsg({});
 
     //verifing existing user
     if (!registrationVerification.isAccountCreated && !registrationVerification.isOptSent) {
       const response = await verifyExistingUser(userData.email);
       if (response.success) {
-        setAuthStatusNotificationMsg({ error: response.message });
+        setICnotificationMsg({ error: response.message });
         setIsSigningUp(false);
         return response.success;
       }
@@ -198,9 +204,9 @@ export default function Register() {
 
       if (response.success) {
         setRegistrationVerification(prev => ({ ...prev, isOptSent: true }));
-        setAuthStatusNotificationMsg({ success: response.message });
+        setICnotificationMsg({ success: response.message });
       } else {
-        setAuthStatusNotificationMsg({ error: response.message });
+        setICnotificationMsg({ error: response.message });
       }
 
       setIsSigningUp(false);
@@ -213,9 +219,9 @@ export default function Register() {
 
       if (response.success) {
         setRegistrationVerification(prev => ({ ...prev, isOptVerified: true }));
-        setAuthStatusNotificationMsg({ success: response.message });
+        setICnotificationMsg({ success: response.message });
       } else {
-        setAuthStatusNotificationMsg({ error: response.message });
+        setICnotificationMsg({ error: response.message });
         setFormFieldsError(prev => ({
           ...prev,
           otp: response.message,
@@ -231,16 +237,17 @@ export default function Register() {
       try {
         const response = await axios.post(`${BACKEND_URL}/api/v1/auth/register`, userData);
         const { data } = response;
-        setAuthStatusNotificationMsg({ success: data.message });
+        setICnotificationMsg({ success: data.message });
+        setTRnotificationMsg({ success: data.message });
         setRegistrationVerification(prev => ({ ...prev, isAccountCreated: true }));
       } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
           console.log(error.response?.data.status);
-          setAuthStatusNotificationMsg({
+          setICnotificationMsg({
             error: error.response?.data.message || error.message,
           });
         } else {
-          setAuthStatusNotificationMsg({ error: 'An unexpected error occurred' });
+          setICnotificationMsg({ error: 'An unexpected error occurred' });
         }
       } finally {
         setIsSigningUp(false);
@@ -259,9 +266,9 @@ export default function Register() {
         setFormFieldsError(prev => ({ ...prev, [name]: '' }));
       }
 
-      setAuthStatusNotificationMsg({});
+      setICnotificationMsg({});
     },
-    [formFieldsError, setAuthStatusNotificationMsg]
+    [formFieldsError, setICnotificationMsg]
   );
 
   // Toggle password visibility
@@ -305,6 +312,7 @@ export default function Register() {
 
   return (
     <>
+      <TRnotificationPopupModel />
       <div
         className={`bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-8 my-4 w-full max-w-md transition-transform duration-500 ease-out ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
@@ -391,7 +399,7 @@ export default function Register() {
                       isOptSent: false,
                       isOptVerified: false,
                     }));
-                    setAuthStatusNotificationMsg({});
+                    setICnotificationMsg({});
                   }}
                   className="focus:outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   aria-label={showPassword.onePassword ? 'Hide password' : 'Show password'}
@@ -547,11 +555,11 @@ export default function Register() {
                       disabled={!registrationVerification.isOptSent}
                       onClick={async () => {
                         try {
-                          setAuthStatusNotificationMsg({});
+                          setICnotificationMsg({});
                           setIsResendingOtp(true);
                           const res = await sendOtp(userData.email, 'registration');
                           if (!res) return;
-                          setAuthStatusNotificationMsg({ info: 'OTP resend successfully' });
+                          setICnotificationMsg({ info: 'OTP resend successfully' });
                         } catch (error) {
                           if (error instanceof AxiosError) {
                             console.log(error.response?.data);
@@ -649,7 +657,7 @@ export default function Register() {
             Sign in
           </Link>
         </div>
-        <ICnotificationMsg ICnotificationStatusMsg={authStatusNotificationMsg} />
+        <ICnotificationMsg />
       </div>
     </>
   );

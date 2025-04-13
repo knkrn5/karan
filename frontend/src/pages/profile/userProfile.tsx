@@ -8,11 +8,12 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import BrandLoadingPage from '../brandLoadingPage';
 import { TwoSmallLinesSkeletonLoading } from '../../components/skeletonLoadings';
 import { verifyPassword, sendOtp, verifyOtp } from '../../utils/auth.utils';
-import { ICnotificationMsg } from '../../utils/ICnotificationMsg.js';
+import { ICnotificationMsg } from '../../components/notifications/ICnotificationMsg.js';
 import PopupModel from '../../components/popups/popup.js';
 import DeleteConfirmationPopup from './deletePopup';
-import { TRnotificationPopupModel } from '../../components/popups/TRnotificationPopup.js';
+import { TRnotificationPopupModel } from '../../components/popups/TRpopupNotification.js';
 import { useNotificationPopupStore } from '../../stores/popup/TRnotificationPopupStore.js';
+import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -47,14 +48,11 @@ export default function UserProfile() {
 
   const navigate = useNavigate();
 
-  // auth store
-  const profileStatusNotificationMsg = useProfileStore(state => state.profileStatusNotificationMsg);
-  // const authStatusNotificationMsg = useAuthStore(state => state.authStatusNotificationMsg);
-  const { setProfileStatusNotificationMsg } = useProfileStore();
-  // const { setProfileStatusNotificationMsg } = useAuthStore();
-
-  // notification popup store data
+  // TRnotification popup store data
   const { setTRnotificationMsg } = useNotificationPopupStore();
+
+  //ICnotification popup store data
+  const { setICnotificationMsg } = useICnotificationMsgStore();
 
   // animation trigger
   useEffect(() => {
@@ -78,7 +76,7 @@ export default function UserProfile() {
         isOtpVerified: false,
       }));
       setInputErrror('');
-      setProfileStatusNotificationMsg({});
+      setICnotificationMsg({});
       setIsDeleting(false);
       return;
     }
@@ -118,7 +116,7 @@ export default function UserProfile() {
           ...prevState,
           isOtpSent: true,
         }));
-        setProfileStatusNotificationMsg({ success: response.message });
+        setICnotificationMsg({ success: response.message });
       }
       setIsDeleting(false);
       return;
@@ -131,10 +129,10 @@ export default function UserProfile() {
           ...prevState,
           isOtpVerified: true,
         }));
-        setProfileStatusNotificationMsg({ success: response.message });
+        setICnotificationMsg({ success: response.message });
         setIsPopupOpen(true);
       } else {
-        setProfileStatusNotificationMsg({ error: response.message });
+        setICnotificationMsg({ error: response.message });
         setIsDeleting(false);
         return response.success;
       }
@@ -150,7 +148,7 @@ export default function UserProfile() {
       });
 
       if (response.data.success) {
-        setProfileStatusNotificationMsg({ success: response.data.message });
+        setICnotificationMsg({ success: response.data.message });
 
         await axios.post(`${BACKEND_URL}/api/v1/auth/logout`, {}, { withCredentials: true });
 
@@ -162,7 +160,7 @@ export default function UserProfile() {
         navigate('/register');
       }
     } catch (error) {
-      setProfileStatusNotificationMsg({
+      setICnotificationMsg({
         error: axios.isAxiosError(error) ? error.response?.data.message : 'An error occurred',
       });
     } finally {
@@ -314,7 +312,7 @@ export default function UserProfile() {
           </button>
         </div>
         <div className="-mt-5">
-          <ICnotificationMsg ICnotificationStatusMsg={profileStatusNotificationMsg} />
+          <ICnotificationMsg />
         </div>
       </div>
     </div>

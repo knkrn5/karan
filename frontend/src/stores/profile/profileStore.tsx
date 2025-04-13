@@ -1,11 +1,9 @@
 import { create } from 'zustand';
-import { ICnotificationMsgProp } from '../../utils/ICnotificationMsg';
 
 type State = {
   firstName: string;
   lastName: string;
   email: string;
-  profileStatusNotificationMsg: ICnotificationMsgProp;
   isFetchingProfileData: boolean;
 };
 
@@ -14,7 +12,6 @@ type Action = {
   setLastName: (lastName: string) => void;
   setMail: (email: string) => void;
   setIsFetchingProfileData: (isFetchingProfileData: boolean) => void;
-  setProfileStatusNotificationMsg: (message: ICnotificationMsgProp) => void;
   resetProfileStore: () => void;
 };
 
@@ -28,10 +25,6 @@ const useProfileStore = create<State & Action>(set => ({
   email: '',
   setMail: (email: string) => set({ email }),
 
-  profileStatusNotificationMsg: {},
-  setProfileStatusNotificationMsg: (message: ICnotificationMsgProp) =>
-    set({ profileStatusNotificationMsg: message }),
-
   isFetchingProfileData: false,
   setIsFetchingProfileData: (value: boolean) => set({ isFetchingProfileData: value }),
 
@@ -40,7 +33,6 @@ const useProfileStore = create<State & Action>(set => ({
       firstName: '',
       lastName: '',
       email: '',
-      profileStatusNotificationMsg: {},
       isFetchingProfileData: false,
     }),
 }));

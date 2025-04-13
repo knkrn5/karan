@@ -11,6 +11,7 @@ import { useProfileStore } from '../../stores/profile/profileStore';
 import { useAuthCheck } from '../../hooks/authCheckHook';
 import Popup from '../../components/popups/popup';
 import AuthPopup from '../auth/authPopup';
+import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore';
 
 interface FormDataProp {
   name: string;
@@ -34,18 +35,16 @@ export default function ContactForm() {
   const message = useContactInfoStore(state => state.message);
   const isSubmitted = useContactInfoStore(state => state.isSubmitted);
 
-  const {
-    setContactMsgStatusNotification,
-    setIsSuccess,
-    setContactMsgData,
-    setName,
-    setEmail,
-    setIsSubmitted,
-    setContactMsgId,
-  } = useContactInfoStore();
+  //contact message store data
+  const { setIsSuccess, setContactMsgData, setName, setEmail, setIsSubmitted, setContactMsgId } =
+    useContactInfoStore();
 
+  //profile store data
   const profileName = useProfileStore(state => state.firstName);
   const profileEmail = useProfileStore(state => state.email);
+
+  //ICnotificationMsgStore
+  const { setICnotificationMsg } = useICnotificationMsgStore();
 
   useEffect(() => {
     if (profileName && profileEmail) {
@@ -124,14 +123,14 @@ export default function ContactForm() {
         message: data.data.message,
       });
       setIsSuccess(data.success);
-      setContactMsgStatusNotification({ success: data.message });
+      setICnotificationMsg({ success: data.message });
       setContactMsgId(data.data._id);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setIsSuccess(error.response?.data?.success || false);
-        setContactMsgStatusNotification({ error: error.response?.data?.message || error.message });
+        setICnotificationMsg({ error: error.response?.data?.message || error.message });
       } else {
-        setContactMsgStatusNotification({ error: 'An unexpected error occurred' });
+        setICnotificationMsg({ error: 'An unexpected error occurred' });
       }
     } finally {
       setIsLoading(false);
