@@ -13,8 +13,6 @@ export default function UserAccount() {
   const lastName = useProfileStore((state: userDataProps) => state.lastName);
   const email = useProfileStore((state: userDataProps) => state.email);
 
-  // const { setFirstName, setLastName, setMail } = useProfileStore();
-
   const letter: string = firstName?.[0]?.toUpperCase() || '';
 
   return (
