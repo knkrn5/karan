@@ -2,19 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { IoMdClose } from 'react-icons/io';
 import { FaCircleCheck, FaCircleInfo, FaCircleXmark, FaCircleExclamation } from 'react-icons/fa6';
-import { useNotificationPopupStore } from '../../stores/popup/TRnotificationPopupStore';
-
+import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore';
 
 // Top Right Notification Popup Model
-export const TRnotificationPopupModel = () => {
+export const TRpopupNotificationModel = () => {
   const [isVisibleSlide, setIsVisibleSlide] = useState(false);
 
-  const TRnotificationMsg = useNotificationPopupStore(state => state.TRnotificationMsg);
-  const { resetNotificationPopupStore } = useNotificationPopupStore();
+  const TRpopupNotificationMsg = useTRpopupNotificationStore(state => state.TRpopupNotificationMsg);
+  const { resetNotificationPopupStore } = useTRpopupNotificationStore();
 
   useEffect(() => {
     // Only runing effect if  notification message is present
-    if (TRnotificationMsg && Object.keys(TRnotificationMsg).length > 0) {
+    if (TRpopupNotificationMsg && Object.keys(TRpopupNotificationMsg).length > 0) {
       setIsVisibleSlide(false);
       setTimeout(() => {
         setIsVisibleSlide(true);
@@ -27,7 +26,7 @@ export const TRnotificationPopupModel = () => {
 
       return () => clearTimeout(timeout);
     }
-  }, [TRnotificationMsg, resetNotificationPopupStore]);
+  }, [TRpopupNotificationMsg, resetNotificationPopupStore]);
 
   // close popup with exit animation
   const handleClose = () => {
@@ -35,43 +34,43 @@ export const TRnotificationPopupModel = () => {
     setTimeout(resetNotificationPopupStore, 300);
   };
 
-  if (!TRnotificationMsg || Object.keys(TRnotificationMsg).length === 0) return null;
+  if (!TRpopupNotificationMsg || Object.keys(TRpopupNotificationMsg).length === 0) return null;
 
   return createPortal(
     <div className="fixed top-20 right-0 z-50 ">
       <div
         className={`relative  grid grid-cols-[1fr_20px] gap-4 max-w-[400px]  drop-shadow-xl shadow-red-500  p-2 m-1 rounded-lg transition-transform duration-300 
         ${!isVisibleSlide ? 'translate-x-full' : 'translate-x-0'} ${
-          TRnotificationMsg.success
+          TRpopupNotificationMsg.success
             ? 'bg-green-600'
-            : TRnotificationMsg.error
+            : TRpopupNotificationMsg.error
             ? 'bg-red-600'
-            : TRnotificationMsg.warning
+            : TRpopupNotificationMsg.warning
             ? 'bg-yellow-600'
-            : TRnotificationMsg.info
+            : TRpopupNotificationMsg.info
             ? 'bg-blue-600'
             : ''
         } `}
       >
         <div className={`flex items-center w-fit mx-auto  text-white px-4 py-2 rounded-lg`}>
           {React.createElement(
-            TRnotificationMsg.success
+            TRpopupNotificationMsg.success
               ? FaCircleCheck
-              : TRnotificationMsg.error
+              : TRpopupNotificationMsg.error
               ? FaCircleXmark
-              : TRnotificationMsg.warning
+              : TRpopupNotificationMsg.warning
               ? FaCircleExclamation
               : FaCircleInfo,
             { className: 'mr-2 h-6 w-6' }
           )}
           <p className="font-semibold">
-            {TRnotificationMsg.success
-              ? TRnotificationMsg.success
-              : TRnotificationMsg.error
-              ? TRnotificationMsg.error
-              : TRnotificationMsg.warning
-              ? TRnotificationMsg.warning
-              : TRnotificationMsg.info}
+            {TRpopupNotificationMsg.success
+              ? TRpopupNotificationMsg.success
+              : TRpopupNotificationMsg.error
+              ? TRpopupNotificationMsg.error
+              : TRpopupNotificationMsg.warning
+              ? TRpopupNotificationMsg.warning
+              : TRpopupNotificationMsg.info}
           </p>
         </div>
         <span

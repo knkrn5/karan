@@ -5,14 +5,14 @@ import { useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useProfileStore } from '../../stores/profile/profileStore';
 import { useAuthStore } from '../../stores/auth/authStore';
-import { useNotificationPopupStore } from '../../stores/popup/TRnotificationPopupStore';
+import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function Logout() {
   // const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { setTRnotificationMsg } = useNotificationPopupStore();
+  const { setTRpopupNotificationMsg } = useTRpopupNotificationStore();
 
   const handleLogout = async () => {
     try {
@@ -25,7 +25,7 @@ export default function Logout() {
       // reseting/clearing stores
       useAuthStore.getState().resetAuthStore();
       useProfileStore.getState().resetProfileStore();
-      setTRnotificationMsg({ success: res.data.message });
+      setTRpopupNotificationMsg({ success: res.data.message });
       console.log('logging Out');
       localStorage.removeItem('session');
       // navigate('/login');

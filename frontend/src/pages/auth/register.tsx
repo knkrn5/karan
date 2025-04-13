@@ -9,8 +9,8 @@ import { ICnotificationMsg } from '../../components/notifications/ICnotification
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { verifyExistingUser, sendOtp, verifyOtp } from '../../utils/auth.utils.js';
-import { TRnotificationPopupModel } from '../../components/popups/TRpopupNotification.js';
-import { useNotificationPopupStore } from '../../stores/popup/TRnotificationPopupStore.js';
+import { TRpopupNotificationModel } from '../../components/popups/TRpopupNotification.js';
+import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
 import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -68,7 +68,7 @@ export default function Register() {
   });
 
   // TRnotification popup store data
-  const { setTRnotificationMsg } = useNotificationPopupStore();
+  const { setTRpopupNotificationMsg } = useTRpopupNotificationStore();
 
   //ICnotification popup store data
   const { setICnotificationMsg } = useICnotificationMsgStore();
@@ -238,7 +238,7 @@ export default function Register() {
         const response = await axios.post(`${BACKEND_URL}/api/v1/auth/register`, userData);
         const { data } = response;
         setICnotificationMsg({ success: data.message });
-        setTRnotificationMsg({ success: data.message });
+        setTRpopupNotificationMsg({ success: data.message });
         setRegistrationVerification(prev => ({ ...prev, isAccountCreated: true }));
       } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
@@ -312,7 +312,7 @@ export default function Register() {
 
   return (
     <>
-      <TRnotificationPopupModel />
+      <TRpopupNotificationModel />
       <div
         className={`bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-8 my-4 w-full max-w-md transition-transform duration-500 ease-out ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'

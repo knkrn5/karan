@@ -11,8 +11,8 @@ import { verifyPassword, sendOtp, verifyOtp } from '../../utils/auth.utils';
 import { ICnotificationMsg } from '../../components/notifications/ICnotificationMsg.js';
 import PopupModel from '../../components/popups/popup.js';
 import DeleteConfirmationPopup from './deletePopup';
-import { TRnotificationPopupModel } from '../../components/popups/TRpopupNotification.js';
-import { useNotificationPopupStore } from '../../stores/popup/TRnotificationPopupStore.js';
+import { TRpopupNotificationModel } from '../../components/popups/TRpopupNotification.js';
+import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
 import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -49,7 +49,7 @@ export default function UserProfile() {
   const navigate = useNavigate();
 
   // TRnotification popup store data
-  const { setTRnotificationMsg } = useNotificationPopupStore();
+  const { setTRpopupNotificationMsg } = useTRpopupNotificationStore();
 
   //ICnotification popup store data
   const { setICnotificationMsg } = useICnotificationMsgStore();
@@ -156,7 +156,7 @@ export default function UserProfile() {
         useProfileStore.getState().resetProfileStore();
 
         //notification popup filling
-        setTRnotificationMsg({ success: response.data.message });
+        setTRpopupNotificationMsg({ success: response.data.message });
         navigate('/register');
       }
     } catch (error) {
@@ -186,7 +186,7 @@ export default function UserProfile() {
       bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white"
     >
       {/* notification popup */}
-      <TRnotificationPopupModel />
+      <TRpopupNotificationModel />
       {/* deletion popup */}
       {isPopupOpen && (
         <PopupModel

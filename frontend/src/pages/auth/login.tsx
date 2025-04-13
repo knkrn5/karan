@@ -6,8 +6,8 @@ import { ICnotificationMsg } from '../../components/notifications/ICnotification
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useAuthStore } from '../../stores/auth/authStore.js';
-import { useNotificationPopupStore } from '../../stores/popup/TRnotificationPopupStore.js';
-import { TRnotificationPopupModel } from '../../components/popups/TRpopupNotification.js';
+import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
+import { TRpopupNotificationModel } from '../../components/popups/TRpopupNotification.js';
 import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
 
 interface loginFeildDataProps {
@@ -41,7 +41,7 @@ export default function LoginPage() {
   const { setIsSuccessLoginedIn } = useAuthStore();
 
   // TRnotification popup store data
-  const { setTRnotificationMsg } = useNotificationPopupStore();
+  const { setTRpopupNotificationMsg } = useTRpopupNotificationStore();
 
   //ICnotification popup store data
   const { setICnotificationMsg } = useICnotificationMsgStore();
@@ -133,7 +133,7 @@ export default function LoginPage() {
       setICnotificationMsg({ success: data.message });
 
       //notification popup filling
-      setTRnotificationMsg({ success: data.message });
+      setTRpopupNotificationMsg({ success: data.message });
 
       setIsSuccessLoginedIn(true);
       navigate('/profile');
@@ -168,7 +168,7 @@ export default function LoginPage() {
   return (
     <>
       {/* notification popup */}
-      <TRnotificationPopupModel />
+      <TRpopupNotificationModel />
       <div
         className={`bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-8 w-full max-w-md transition-transform duration-500 ease-out ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
