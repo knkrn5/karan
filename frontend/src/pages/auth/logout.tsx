@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useProfileStore } from '../../stores/profile/profileStore';
 import { useAuthStore } from '../../stores/auth/authStore';
-import { useNotificationPopupStore } from '../../stores/popup/notificationPopupStore';
+import { useNotificationPopupStore } from '../../stores/popup/TRnotificationPopupStore';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 

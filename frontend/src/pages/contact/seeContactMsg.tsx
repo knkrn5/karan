@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import StatusNotifications from '../../utils/StatusNotifications';
+import { ICnotificationMsg } from '../../utils/ICnotificationMsg';
 import axios from 'axios';
-import { useContactInfoStore } from '../../stores/contact/contantInfoStore';
+import { useContactInfoStore } from '../../stores/contact/contactMsgStore';
 
 import ContactForm from './contactForm';
 
@@ -30,10 +30,13 @@ const SeeContactMsg = () => {
   const email = useContactInfoStore(state => state.email);
   const message = useContactInfoStore(state => state.message);
   const isSuccess = useContactInfoStore(state => state.isSuccess);
-  const statusInfo = useContactInfoStore(state => state.statusInfo);
+  const contactMsgStatusNotification = useContactInfoStore(
+    state => state.contactMsgStatusNotification
+  );
   const id = useContactInfoStore(state => state.contactMsgId);
 
-  const { setIsSuccess, setStatusInfo, setContactInfo, setIsSubmitted } = useContactInfoStore();
+  const { setIsSuccess, setContactMsgStatusNotification, setContactMsgData, setIsSubmitted } =
+    useContactInfoStore();
 
   // Editing message
   const handleEdit = async () => {
@@ -45,7 +48,7 @@ const SeeContactMsg = () => {
     if (isEditing) {
       try {
         setIsLoading(prev => ({ ...prev, edit: true }));
-        setStatusInfo({ info: 'Saving changes...' });
+        setContactMsgStatusNotification({ info: 'Saving changes...' });
 
         const response = await axios.put(`${BACKEND_URL}/api/contact/message`, {
           id,
@@ -53,31 +56,31 @@ const SeeContactMsg = () => {
         });
 
         const { data } = response;
-        setStatusInfo({ success: data.message });
+        setContactMsgStatusNotification({ success: data.message });
         setIsSuccess(data.success);
         setIsEdited(data.success);
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          setStatusInfo({
+          setContactMsgStatusNotification({
             error: error.response?.data?.message || error.message,
           });
           setIsSuccess(error.response?.data?.success);
           setIsEdited(error.response?.data?.success);
         } else {
-          setStatusInfo({ error: 'An unexpected error occurred' });
+          setContactMsgStatusNotification({ error: 'An unexpected error occurred' });
         }
       } finally {
         setIsLoading(prev => ({ ...prev, edit: false }));
       }
     } else {
-      setStatusInfo({ info: 'Editing Message' });
+      setContactMsgStatusNotification({ info: 'Editing Message' });
     }
     setIsEditing(!isEditing);
   };
 
   // Deleting message
   const handleDelete = async () => {
-    setStatusInfo({ info: 'Deleting Message...' });
+    setContactMsgStatusNotification({ info: 'Deleting Message...' });
 
     const toDelete = window.confirm('Are you sure you want to delete this message?');
     if (toDelete) {
@@ -85,22 +88,22 @@ const SeeContactMsg = () => {
         setIsLoading(prev => ({ ...prev, delete: true }));
         const response = await axios.delete(`${BACKEND_URL}/api/contact/message`, { data: { id } });
         const { data } = response;
-        setStatusInfo({ success: data.message });
+        setContactMsgStatusNotification({ success: data.message });
         setIsSuccess(!data.success);
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          setStatusInfo({
+          setContactMsgStatusNotification({
             error: error.response?.data?.message || error.message,
           });
           setIsSuccess(!error.response?.data?.success);
         } else {
-          setStatusInfo({ error: 'An unexpected error occurred' });
+          setContactMsgStatusNotification({ error: 'An unexpected error occurred' });
         }
       } finally {
         setIsLoading(prev => ({ ...prev, delete: false }));
       }
     } else {
-      setStatusInfo({ warning: 'Message deletion canceled.' });
+      setContactMsgStatusNotification({ warning: 'Message deletion canceled.' });
     }
   };
 
@@ -140,7 +143,7 @@ const SeeContactMsg = () => {
               maxLength={200}
               placeholder="Message..."
               value={message}
-              onChange={e => setContactInfo({ message: e.target.value })}
+              onChange={e => setContactMsgData({ message: e.target.value })}
               disabled={isLoading.edit}
             />
             <div className="flex justify-between items-center text-xs ml-5">
@@ -216,7 +219,7 @@ const SeeContactMsg = () => {
           )}
         </div>
       </div>
-      <StatusNotifications statusInfo={statusInfo} />
+      <ICnotificationMsg ICnotificationStatusMsg={contactMsgStatusNotification} />
     </div>
   );
 };

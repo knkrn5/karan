@@ -2,19 +2,19 @@ import { useState, useEffect } from 'react';
 
 import { FaCircleCheck, FaCircleInfo, FaCircleXmark, FaCircleExclamation } from 'react-icons/fa6';
 
-export interface StatusNotificationsProp {
+export interface ICnotificationMsgProp {
   success?: string;
   info?: string;
   warning?: string;
   error?: string;
 }
 
-export default function StatusNotifications({
-  statusInfo,
+export function ICnotificationMsg({
+  ICnotificationStatusMsg,
 }: {
-  statusInfo: StatusNotificationsProp;
+  ICnotificationStatusMsg: ICnotificationMsgProp;
 }) {
-  const [status, setStatus] = useState<StatusNotificationsProp>({
+  const [ICnotificationMsg, setICnotificationMsg] = useState<ICnotificationMsgProp>({
     success: '',
     info: '',
     warning: '',
@@ -22,33 +22,33 @@ export default function StatusNotifications({
   });
 
   useEffect(() => {
-    setStatus(statusInfo);
-  }, [statusInfo]);
+    setICnotificationMsg(ICnotificationStatusMsg);
+  }, [ICnotificationStatusMsg]);
 
   return (
     <div className="space-y-4 p-4">
-      {status.success && (
+      {ICnotificationMsg.success && (
         <div className="flex items-center w-fit mx-auto bg-green-600 text-white px-4 py-2 rounded-lg">
           <FaCircleCheck className="mr-2 h-6 w-6" />
-          <p>Success- {status.success}</p>
+          <p>Success- {ICnotificationMsg.success}</p>
         </div>
       )}
-      {status.info && (
+      {ICnotificationMsg.info && (
         <div className="flex items-center w-fit mx-auto bg-blue-600 text-white px-4 py-2 rounded-lg">
           <FaCircleInfo className="mr-2 h-6 w-6" />
-          <p> {status.info}</p>
+          <p> {ICnotificationMsg.info}</p>
         </div>
       )}
-      {status.warning && (
+      {ICnotificationMsg.warning && (
         <div className="flex items-center w-fit mx-auto bg-yellow-600 text-white px-4 py-2 rounded-lg">
           <FaCircleExclamation className="mr-2 h-6 w-6" />
-          <p>Warning- {status.warning}</p>
+          <p>Warning- {ICnotificationMsg.warning}</p>
         </div>
       )}
-      {status.error && (
+      {ICnotificationMsg.error && (
         <div className="flex items-center w-fit mx-auto bg-red-600 text-white px-4 py-2 rounded-lg">
           <FaCircleXmark className="mr-2 h-6 w-6" />
-          <p>Failed - {status.error}</p>
+          <p>Failed - {ICnotificationMsg.error}</p>
         </div>
       )}
     </div>

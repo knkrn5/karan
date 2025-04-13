@@ -8,11 +8,11 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import BrandLoadingPage from '../brandLoadingPage';
 import { TwoSmallLinesSkeletonLoading } from '../../components/skeletonLoadings';
 import { verifyPassword, sendOtp, verifyOtp } from '../../utils/auth.utils';
-import StatusNotifications from '../../utils/StatusNotifications';
+import { ICnotificationMsg } from '../../utils/ICnotificationMsg.js';
 import PopupModel from '../../components/popups/popup.js';
 import DeleteConfirmationPopup from './deletePopup';
 import { TRnotificationPopupModel } from '../../components/popups/TRnotificationPopup.js';
-import { useNotificationPopupStore } from '../../stores/popup/notificationPopupStore.js';
+import { useNotificationPopupStore } from '../../stores/popup/TRnotificationPopupStore.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -315,7 +315,7 @@ export default function UserProfile() {
           </button>
         </div>
         <div className="-mt-5">
-          <StatusNotifications statusInfo={statusInfoAuth} />
+          <ICnotificationMsg ICnotificationStatusMsg={statusInfoAuth} />
         </div>
       </div>
     </div>

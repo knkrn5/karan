@@ -5,7 +5,7 @@ import axios, { AxiosError } from 'axios';
 import { FaRegEye, FaRegEyeSlash, FaRegSave, FaRegCheckCircle } from 'react-icons/fa';
 import { FaRepeat } from 'react-icons/fa6';
 import { CiEdit } from 'react-icons/ci';
-import StatusNotifications from '../../utils/StatusNotifications';
+import { ICnotificationMsg } from '../../utils/ICnotificationMsg.js';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { verifyExistingUser, sendOtp, verifyOtp } from '../../utils/auth.utils.js';
@@ -649,7 +649,7 @@ export default function Register() {
             Sign in
           </Link>
         </div>
-        <StatusNotifications statusInfo={statusInfo} />
+        <ICnotificationMsg ICnotificationStatusMsg={statusInfo} />
       </div>
     </>
   );

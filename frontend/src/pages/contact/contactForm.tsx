@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { IoIosSend } from 'react-icons/io';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import axios from 'axios';
-import { useContactInfoStore } from '../../stores/contact/contantInfoStore';
+import { useContactInfoStore } from '../../stores/contact/contactMsgStore';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -35,9 +35,9 @@ export default function ContactForm() {
   const isSubmitted = useContactInfoStore(state => state.isSubmitted);
 
   const {
-    setStatusInfo,
+    setContactMsgStatusNotification,
     setIsSuccess,
-    setContactInfo,
+    setContactMsgData,
     setName,
     setEmail,
     setIsSubmitted,
@@ -62,7 +62,6 @@ export default function ContactForm() {
 
     if (!isAuthenticated) {
       setIsPopupOpen(true);
-      // alert('Please log in to send a message.');
       setIsLoading(false);
       return;
     }
@@ -118,21 +117,21 @@ export default function ContactForm() {
       const response = await axios.post(`${BACKEND_URL}/api/contact/message`, currentFormData);
       const { data } = response;
 
-      // Store data in zustand store
-      setContactInfo({
+      // Storing data in zustand store
+      setContactMsgData({
         name: data.data.name,
         email: data.data.email,
         message: data.data.message,
       });
       setIsSuccess(data.success);
-      setStatusInfo({ success: data.message });
+      setContactMsgStatusNotification({ success: data.message });
       setContactMsgId(data.data._id);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setIsSuccess(error.response?.data?.success || false);
-        setStatusInfo({ error: error.response?.data?.message || error.message });
+        setContactMsgStatusNotification({ error: error.response?.data?.message || error.message });
       } else {
-        setStatusInfo({ error: 'An unexpected error occurred' });
+        setContactMsgStatusNotification({ error: 'An unexpected error occurred' });
       }
     } finally {
       setIsLoading(false);
@@ -142,7 +141,7 @@ export default function ContactForm() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setContactInfo({ [name]: value });
+    setContactMsgData({ [name]: value });
 
     // Clear error when user starts typing
     if (error[name as keyof FormDataProp]) {

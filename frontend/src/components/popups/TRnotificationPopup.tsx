@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { IoMdClose } from 'react-icons/io';
 import { FaCircleCheck, FaCircleInfo, FaCircleXmark, FaCircleExclamation } from 'react-icons/fa6';
-import { useNotificationPopupStore } from '../../stores/popup/notificationPopupStore';
+import { useNotificationPopupStore } from '../../stores/popup/TRnotificationPopupStore';
 
 export const TRnotificationPopupModel = () => {
   const [isVisibleSlide, setIsVisibleSlide] = useState(false);

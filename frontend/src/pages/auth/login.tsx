@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
 // import { GoogleIcon, GithubIcon } from "../../icons/svgIcons";
 import axios from 'axios';
-import StatusNotifications from '../../utils/StatusNotifications.js';
+import { ICnotificationMsg } from '../../utils/ICnotificationMsg.js';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useAuthStore } from '../../stores/auth/authStore.js';
-import { useNotificationPopupStore } from '../../stores/popup/notificationPopupStore.js';
+import { useNotificationPopupStore } from '../../stores/popup/TRnotificationPopupStore.js';
 import { TRnotificationPopupModel } from '../../components/popups/TRnotificationPopup.js';
 
 interface loginFeildDataProps {
@@ -287,7 +287,7 @@ export default function LoginPage() {
             Forgot Password
           </button>
         </div>
-        <StatusNotifications statusInfo={statusInfo} />
+        <ICnotificationMsg ICnotificationStatusMsg={statusInfo} />
       </div>
     </>
   );
