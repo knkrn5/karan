@@ -49,7 +49,8 @@ function Home() {
   return (
     <>
       {/* chatbot introduction popup */}
-      <div className="fixed bottom-5 left-1/2 transform -translate-x-1/2 z-50 min-w-[350px] max-w-[400px]">
+      {/* <div className="fixed bottom-5 left-1/2 transform -translate-x-1/2 z-50 min-w-[350px] max-w-[400px]"> */}
+      <div className="fixed bottom-5 right-5 z-50 min-w-[350px] max-w-[400px]">
         <FlexiPopupModel
           isOpen={showPopup}
           onClose={() => setshowPopup(false)}
