@@ -24,7 +24,9 @@ export const TRpopupNotificationModel = () => {
         setTimeout(resetNotificationPopupStore, 300);
       }, 5000);
 
-      return () => clearTimeout(timeout);
+      return () => {
+        clearTimeout(timeout);
+      };
     }
   }, [TRpopupNotificationMsg, resetNotificationPopupStore]);
 
