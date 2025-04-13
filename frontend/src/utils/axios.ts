@@ -45,8 +45,6 @@ axiosApi.interceptors.response.use(
         ) {
           console.log(error.response.data.message, 'logging out...');
           await logout();
-          
-          // window.location.href = '/login';
         } else {
           if (error instanceof Error) {
             console.log('unexpected error occured:', error.message);
