@@ -60,10 +60,7 @@ export default function UserProfile() {
     setTimeout(() => {
       setIsVisible(true);
     }, 10);
-
-    //clearing statusnotifications
-    setTimeout(() => setStatusInfoAuth({}), 5000);
-  }, [setStatusInfoAuth]);
+  }, []);
 
   const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);

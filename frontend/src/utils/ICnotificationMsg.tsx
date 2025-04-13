@@ -23,6 +23,8 @@ export function ICnotificationMsg({
 
   useEffect(() => {
     setICnotificationMsg(ICnotificationStatusMsg);
+    //clearing ICnotificationStatusMsg after 5 seconds
+    setTimeout(() => setICnotificationMsg({}), 5000);
   }, [ICnotificationStatusMsg]);
 
   return (
