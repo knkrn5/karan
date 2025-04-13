@@ -35,9 +35,9 @@ export default function LoginPage() {
     password: '',
   });
 
-  const statusInfo = useAuthStore(state => state.statusInfoAuth);
+  const authStatusNotificationMsg = useAuthStore(state => state.authStatusNotificationMsg);
   const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
-  const { setIsSuccessLoginedIn, setStatusInfoAuth } = useAuthStore();
+  const { setIsSuccessLoginedIn, setAuthStatusNotificationMsg } = useAuthStore();
 
   // notification popup store data
   const { setTRnotificationMsg } = useNotificationPopupStore();
@@ -52,9 +52,9 @@ export default function LoginPage() {
     }, 10);
 
     setTimeout(() => {
-      setStatusInfoAuth({});
+      setAuthStatusNotificationMsg({});
     }, 5000);
-  }, [setStatusInfoAuth]);
+  }, [setAuthStatusNotificationMsg]);
 
   const validateloginForm = () => {
     const loginFieldErrors: loginFeildDataProps = {
@@ -103,7 +103,7 @@ export default function LoginPage() {
       ...prevState,
       [name]: value,
     }));
-    setStatusInfoAuth({});
+    setAuthStatusNotificationMsg({});
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -130,7 +130,7 @@ export default function LoginPage() {
       );
       const { data } = response;
 
-      // setStatusInfoAuth({ success: data.message });
+      // setAuthStatusNotificationMsg({ success: data.message });
 
       //notification popup filling
       setTRnotificationMsg({ success: data.message });
@@ -140,10 +140,10 @@ export default function LoginPage() {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.message);
-        setStatusInfoAuth({ error: error.response?.data.message || error.message });
+        setAuthStatusNotificationMsg({ error: error.response?.data.message || error.message });
       } else {
         console.log(error);
-        setStatusInfoAuth({ error: 'An unexpected error occurred' });
+        setAuthStatusNotificationMsg({ error: 'An unexpected error occurred' });
       }
     } finally {
       setIsLoading(false);
@@ -287,7 +287,7 @@ export default function LoginPage() {
             Forgot Password
           </button>
         </div>
-        <ICnotificationMsg ICnotificationStatusMsg={statusInfo} />
+        <ICnotificationMsg ICnotificationStatusMsg={authStatusNotificationMsg} />
       </div>
     </>
   );

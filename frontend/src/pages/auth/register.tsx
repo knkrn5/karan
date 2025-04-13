@@ -64,8 +64,8 @@ export default function Register() {
     confirmPassword: '',
   });
 
-  const statusInfo = useAuthStore(state => state.statusInfoAuth);
-  const { setStatusInfoAuth } = useAuthStore();
+  const authStatusNotificationMsg = useAuthStore(state => state.authStatusNotificationMsg);
+  const { setAuthStatusNotificationMsg } = useAuthStore();
 
   const navigate = useNavigate();
 
@@ -180,13 +180,13 @@ export default function Register() {
     }
 
     setIsSigningUp(true);
-    setStatusInfoAuth({});
+    setAuthStatusNotificationMsg({});
 
     //verifing existing user
     if (!registrationVerification.isAccountCreated && !registrationVerification.isOptSent) {
       const response = await verifyExistingUser(userData.email);
       if (response.success) {
-        setStatusInfoAuth({ error: response.message });
+        setAuthStatusNotificationMsg({ error: response.message });
         setIsSigningUp(false);
         return response.success;
       }
@@ -198,9 +198,9 @@ export default function Register() {
 
       if (response.success) {
         setRegistrationVerification(prev => ({ ...prev, isOptSent: true }));
-        setStatusInfoAuth({ success: response.message });
+        setAuthStatusNotificationMsg({ success: response.message });
       } else {
-        setStatusInfoAuth({ error: response.message });
+        setAuthStatusNotificationMsg({ error: response.message });
       }
 
       setIsSigningUp(false);
@@ -213,9 +213,9 @@ export default function Register() {
 
       if (response.success) {
         setRegistrationVerification(prev => ({ ...prev, isOptVerified: true }));
-        setStatusInfoAuth({ success: response.message });
+        setAuthStatusNotificationMsg({ success: response.message });
       } else {
-        setStatusInfoAuth({ error: response.message });
+        setAuthStatusNotificationMsg({ error: response.message });
         setFormFieldsError(prev => ({
           ...prev,
           otp: response.message,
@@ -231,16 +231,16 @@ export default function Register() {
       try {
         const response = await axios.post(`${BACKEND_URL}/api/v1/auth/register`, userData);
         const { data } = response;
-        setStatusInfoAuth({ success: data.message });
+        setAuthStatusNotificationMsg({ success: data.message });
         setRegistrationVerification(prev => ({ ...prev, isAccountCreated: true }));
       } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
           console.log(error.response?.data.status);
-          setStatusInfoAuth({
+          setAuthStatusNotificationMsg({
             error: error.response?.data.message || error.message,
           });
         } else {
-          setStatusInfoAuth({ error: 'An unexpected error occurred' });
+          setAuthStatusNotificationMsg({ error: 'An unexpected error occurred' });
         }
       } finally {
         setIsSigningUp(false);
@@ -259,9 +259,9 @@ export default function Register() {
         setFormFieldsError(prev => ({ ...prev, [name]: '' }));
       }
 
-      setStatusInfoAuth({});
+      setAuthStatusNotificationMsg({});
     },
-    [formFieldsError, setStatusInfoAuth]
+    [formFieldsError, setAuthStatusNotificationMsg]
   );
 
   // Toggle password visibility
@@ -391,7 +391,7 @@ export default function Register() {
                       isOptSent: false,
                       isOptVerified: false,
                     }));
-                    setStatusInfoAuth({});
+                    setAuthStatusNotificationMsg({});
                   }}
                   className="focus:outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   aria-label={showPassword.onePassword ? 'Hide password' : 'Show password'}
@@ -547,11 +547,11 @@ export default function Register() {
                       disabled={!registrationVerification.isOptSent}
                       onClick={async () => {
                         try {
-                          setStatusInfoAuth({});
+                          setAuthStatusNotificationMsg({});
                           setIsResendingOtp(true);
                           const res = await sendOtp(userData.email, 'registration');
                           if (!res) return;
-                          setStatusInfoAuth({ info: 'OTP resend successfully' });
+                          setAuthStatusNotificationMsg({ info: 'OTP resend successfully' });
                         } catch (error) {
                           if (error instanceof AxiosError) {
                             console.log(error.response?.data);
@@ -649,7 +649,7 @@ export default function Register() {
             Sign in
           </Link>
         </div>
-        <ICnotificationMsg ICnotificationStatusMsg={statusInfo} />
+        <ICnotificationMsg ICnotificationStatusMsg={authStatusNotificationMsg} />
       </div>
     </>
   );

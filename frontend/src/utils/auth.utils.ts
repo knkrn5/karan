@@ -47,6 +47,7 @@ export async function sendOtp(
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
+      // console.error('Sending OTP Error:', error.response?.data);
       return error.response?.data;
     }
     // Handling non-Axios or unexpected error
@@ -73,7 +74,7 @@ export async function verifyOtp(
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
-      console.error('Verify OTP Error:', error.response?.data);
+      // console.error('Verify OTP Error:', error.response?.data);
       return error.response?.data;
     }
 
@@ -99,7 +100,7 @@ export async function verifyPassword(password: string): Promise<ApiResponseTypes
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
-      console.error('Verify Password Error:', error.response?.data);
+      // console.error('Verify Password Error:', error.response?.data);
       return error.response?.data;
     }
 

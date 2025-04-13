@@ -48,8 +48,8 @@ export default function UserProfile() {
   const navigate = useNavigate();
 
   // const statusInfo = useAuthStore(state => state.statusInfoAuth);
-  const statusInfoAuth = useAuthStore(state => state.statusInfoAuth);
-  const { setStatusInfoAuth } = useAuthStore();
+  const authStatusNotificationMsg = useAuthStore(state => state.authStatusNotificationMsg);
+  const { setAuthStatusNotificationMsg } = useAuthStore();
 
   // notification popup store data
   const { setTRnotificationMsg } = useNotificationPopupStore();
@@ -76,7 +76,7 @@ export default function UserProfile() {
         isOtpVerified: false,
       }));
       setInputErrror('');
-      setStatusInfoAuth({});
+      setAuthStatusNotificationMsg({});
       setIsDeleting(false);
       return;
     }
@@ -116,7 +116,7 @@ export default function UserProfile() {
           ...prevState,
           isOtpSent: true,
         }));
-        setStatusInfoAuth({ success: response.message });
+        setAuthStatusNotificationMsg({ success: response.message });
       }
       setIsDeleting(false);
       return;
@@ -129,10 +129,10 @@ export default function UserProfile() {
           ...prevState,
           isOtpVerified: true,
         }));
-        setStatusInfoAuth({ success: response.message });
+        setAuthStatusNotificationMsg({ success: response.message });
         setIsPopupOpen(true);
       } else {
-        setStatusInfoAuth({ error: response.message });
+        setAuthStatusNotificationMsg({ error: response.message });
         setIsDeleting(false);
         return response.success;
       }
@@ -148,7 +148,7 @@ export default function UserProfile() {
       });
 
       if (response.data.success) {
-        // setStatusInfoAuth({ success: response.data.message });
+        // setAuthStatusNotificationMsg({ success: response.data.message });
 
         await axios.post(`${BACKEND_URL}/api/v1/auth/logout`, {}, { withCredentials: true });
 
@@ -160,7 +160,7 @@ export default function UserProfile() {
         navigate('/register');
       }
     } catch (error) {
-      setStatusInfoAuth({
+      setAuthStatusNotificationMsg({
         error: axios.isAxiosError(error) ? error.response?.data.message : 'An error occurred',
       });
     } finally {
@@ -312,7 +312,7 @@ export default function UserProfile() {
           </button>
         </div>
         <div className="-mt-5">
-          <ICnotificationMsg ICnotificationStatusMsg={statusInfoAuth} />
+          <ICnotificationMsg ICnotificationStatusMsg={authStatusNotificationMsg} />
         </div>
       </div>
     </div>
