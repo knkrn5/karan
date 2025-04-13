@@ -11,7 +11,6 @@ import { verifyPassword, sendOtp, verifyOtp } from '../../utils/auth.utils';
 import { ICnotificationMsg } from '../../components/notifications/ICnotificationMsg.js';
 import PopupModel from '../../components/popups/popup.js';
 import DeleteConfirmationPopup from './deletePopup';
-import { TRpopupNotificationModel } from '../../components/popups/TRpopupNotification.js';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
 import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
 
@@ -185,8 +184,6 @@ export default function UserProfile() {
       className="min-h-[calc(100vh-72px)] p-2 flex items-center justify-center  
       bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white"
     >
-      {/* notification popup */}
-      <TRpopupNotificationModel />
       {/* deletion popup */}
       {isPopupOpen && (
         <PopupModel
