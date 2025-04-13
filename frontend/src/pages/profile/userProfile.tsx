@@ -11,7 +11,7 @@ import { verifyPassword, sendOtp, verifyOtp } from '../../utils/auth.utils';
 import StatusNotifications from '../../utils/StatusNotifications';
 import PopupModel from '../../components/popups/popup.js';
 import DeleteConfirmationPopup from './deletePopup';
-import NotificationPopupModel from '../../components/popups/notificationPopup.js';
+import { TRnotificationPopupModel } from '../../components/popups/TRnotificationPopup.js';
 import { useNotificationPopupStore } from '../../stores/popup/notificationPopupStore.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -52,7 +52,7 @@ export default function UserProfile() {
   const { setStatusInfoAuth } = useAuthStore();
 
   // notification popup store data
-  const { setNotificationMsg } = useNotificationPopupStore();
+  const { setTRnotificationMsg } = useNotificationPopupStore();
 
   // animation trigger
   useEffect(() => {
@@ -159,7 +159,7 @@ export default function UserProfile() {
         useProfileStore.getState().resetProfileStore();
 
         //notification popup filling
-        setNotificationMsg({ success: response.data.message });
+        setTRnotificationMsg({ success: response.data.message });
         navigate('/register');
       }
     } catch (error) {
@@ -189,7 +189,7 @@ export default function UserProfile() {
       bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white"
     >
       {/* notification popup */}
-      <NotificationPopupModel />
+      <TRnotificationPopupModel />
       {/* deletion popup */}
       {isPopupOpen && (
         <PopupModel

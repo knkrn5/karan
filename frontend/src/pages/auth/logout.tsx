@@ -12,7 +12,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export default function Logout() {
   // const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { setNotificationMsg } = useNotificationPopupStore();
+  const { setTRnotificationMsg } = useNotificationPopupStore();
 
   const handleLogout = async () => {
     try {
@@ -25,7 +25,7 @@ export default function Logout() {
       // reseting/clearing stores
       useAuthStore.getState().resetAuthStore();
       useProfileStore.getState().resetProfileStore();
-      setNotificationMsg({ success: res.data.message });
+      setTRnotificationMsg({ success: res.data.message });
       console.log('logging Out');
       localStorage.removeItem('session');
       // navigate('/login');

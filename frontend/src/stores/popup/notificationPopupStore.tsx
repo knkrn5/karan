@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-interface notificationMsgProp {
+interface TRnotificationPopupProp {
   success?: string;
   info?: string;
   warning?: string;
@@ -8,19 +8,19 @@ interface notificationMsgProp {
 }
 
 type State = {
-  notificationMsg: notificationMsgProp;
+  TRnotificationMsg: TRnotificationPopupProp;
 };
 
 type Action = {
-  setNotificationMsg: (value: notificationMsgProp) => void;
+  setTRnotificationMsg: (value: TRnotificationPopupProp) => void;
   resetNotificationPopupStore: () => void;
 };
 
 const useNotificationPopupStore = create<State & Action>(set => ({
-  notificationMsg: {},
-  setNotificationMsg: (value: notificationMsgProp) => set({ notificationMsg: value }),
+  TRnotificationMsg: {},
+  setTRnotificationMsg: (value: TRnotificationPopupProp) => set({ TRnotificationMsg: value }),
 
-  resetNotificationPopupStore: () => set({ notificationMsg: {} }),
+  resetNotificationPopupStore: () => set({ TRnotificationMsg: {} }),
 }));
 
 export { useNotificationPopupStore };

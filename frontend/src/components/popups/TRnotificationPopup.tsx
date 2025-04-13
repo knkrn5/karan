@@ -4,15 +4,15 @@ import { IoMdClose } from 'react-icons/io';
 import { FaCircleCheck, FaCircleInfo, FaCircleXmark, FaCircleExclamation } from 'react-icons/fa6';
 import { useNotificationPopupStore } from '../../stores/popup/notificationPopupStore';
 
-const NotificationPopupModel = () => {
+export const TRnotificationPopupModel = () => {
   const [isVisibleSlide, setIsVisibleSlide] = useState(false);
 
-  const notificationMsg = useNotificationPopupStore(state => state.notificationMsg);
+  const TRnotificationMsg = useNotificationPopupStore(state => state.TRnotificationMsg);
   const { resetNotificationPopupStore } = useNotificationPopupStore();
 
   useEffect(() => {
     // Only runing effect if  notification message is present
-    if (notificationMsg && Object.keys(notificationMsg).length > 0) {
+    if (TRnotificationMsg && Object.keys(TRnotificationMsg).length > 0) {
       setIsVisibleSlide(false);
       setTimeout(() => {
         setIsVisibleSlide(true);
@@ -25,7 +25,7 @@ const NotificationPopupModel = () => {
 
       return () => clearTimeout(timeout);
     }
-  }, [notificationMsg, resetNotificationPopupStore]);
+  }, [TRnotificationMsg, resetNotificationPopupStore]);
 
   // close popup with exit animation
   const handleClose = () => {
@@ -33,43 +33,43 @@ const NotificationPopupModel = () => {
     setTimeout(resetNotificationPopupStore, 300);
   };
 
-  if (!notificationMsg || Object.keys(notificationMsg).length === 0) return null;
+  if (!TRnotificationMsg || Object.keys(TRnotificationMsg).length === 0) return null;
 
   return createPortal(
     <div className="fixed top-20 right-0 z-50 ">
       <div
         className={`relative  grid grid-cols-[1fr_20px] gap-4 max-w-[400px]  drop-shadow-xl shadow-red-500  p-2 m-1 rounded-lg transition-transform duration-300 
         ${!isVisibleSlide ? 'translate-x-full' : 'translate-x-0'} ${
-          notificationMsg.success
+          TRnotificationMsg.success
             ? 'bg-green-600'
-            : notificationMsg.error
+            : TRnotificationMsg.error
             ? 'bg-red-600'
-            : notificationMsg.warning
+            : TRnotificationMsg.warning
             ? 'bg-yellow-600'
-            : notificationMsg.info
+            : TRnotificationMsg.info
             ? 'bg-blue-600'
             : ''
         } `}
       >
         <div className={`flex items-center w-fit mx-auto  text-white px-4 py-2 rounded-lg`}>
           {React.createElement(
-            notificationMsg.success
+            TRnotificationMsg.success
               ? FaCircleCheck
-              : notificationMsg.error
+              : TRnotificationMsg.error
               ? FaCircleXmark
-              : notificationMsg.warning
+              : TRnotificationMsg.warning
               ? FaCircleExclamation
               : FaCircleInfo,
             { className: 'mr-2 h-6 w-6' }
           )}
           <p className="font-semibold">
-            {notificationMsg.success
-              ? notificationMsg.success
-              : notificationMsg.error
-              ? notificationMsg.error
-              : notificationMsg.warning
-              ? notificationMsg.warning
-              : notificationMsg.info}
+            {TRnotificationMsg.success
+              ? TRnotificationMsg.success
+              : TRnotificationMsg.error
+              ? TRnotificationMsg.error
+              : TRnotificationMsg.warning
+              ? TRnotificationMsg.warning
+              : TRnotificationMsg.info}
           </p>
         </div>
         <span
@@ -83,5 +83,3 @@ const NotificationPopupModel = () => {
     document.getElementById('popup-modal-root') as HTMLElement
   );
 };
-
-export default NotificationPopupModel;
