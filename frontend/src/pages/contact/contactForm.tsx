@@ -9,7 +9,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 import SeeContactMsg from './seeContactMsg';
 import { useProfileStore } from '../../stores/profile/profileStore';
 import { useAuthCheck } from '../../hooks/authCheckHook';
-import Popup from '../../components/popups/popup';
+import Popup from '../../components/popups/mainPopup';
 import AuthPopup from '../auth/authPopup';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore';
 

@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { useAuthStore } from '../stores/auth/authStore';
-import { useProfileStore } from '../stores/profile/profileStore';
+import { logout } from './auth.utils';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -45,10 +44,8 @@ axiosApi.interceptors.response.use(
           (error.response?.status === 401 || error.response?.status === 403)
         ) {
           console.log(error.response.data.message, 'logging out...');
-          await axios.post(`${BACKEND_URL}/api/v1/auth/logout`, {}, { withCredentials: true });
-          useAuthStore.getState().resetAuthStore();
-          useProfileStore.getState().resetProfileStore();
-          localStorage.removeItem('session');
+          await logout();
+          
           // window.location.href = '/login';
         } else {
           if (error instanceof Error) {
@@ -62,7 +59,7 @@ axiosApi.interceptors.response.use(
       }
     }
 
-    // Handle forbidden (403), but from no where i am sending this 403 error
+    // Handle forbidden (403), commented this  from no where i am sending this 403 error
     /* if (error.response.status === 403) {
       console.log('forbidden 403, logging out...');
     } */

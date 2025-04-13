@@ -1,4 +1,6 @@
 import axios, { AxiosError } from 'axios';
+import { useProfileStore } from '../stores/profile/profileStore';
+import { useAuthStore } from '../stores/auth/authStore';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -106,6 +108,37 @@ export async function verifyPassword(password: string): Promise<ApiResponseTypes
 
     // Handling non-Axios or unexpected error
     console.error('Unexpected error verifying password:', error);
+    return {
+      statusCode: 500,
+      success: false,
+      message: 'Unexpected error occurred',
+      data: null,
+    };
+  }
+}
+
+// === LOGOUT USER ===
+export async function logout(): Promise<ApiResponseTypes<null>> {
+  try {
+    const response = await axios.post<ApiResponseTypes<null>>(
+      `${BACKEND_URL}/api/v1/auth/logout`,
+      {},
+      { withCredentials: true }
+    );
+
+    //clearing stores and localstorage
+    useAuthStore.getState().resetAuthStore();
+    useProfileStore.getState().resetProfileStore();
+    localStorage.removeItem('session');
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // console.error('Logout User Error:', error.response?.data);
+      return error.response?.data;
+    }
+
+    // Handling non-Axios or unexpected error
+    console.error('Unexpected error logging out user:', error);
     return {
       statusCode: 500,
       success: false,

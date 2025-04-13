@@ -7,9 +7,9 @@ import { useAuthStore } from '../../stores/auth/authStore';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import BrandLoadingPage from '../brandLoadingPage';
 import { TwoSmallLinesSkeletonLoading } from '../../components/skeletonLoadings';
-import { verifyPassword, sendOtp, verifyOtp } from '../../utils/auth.utils';
+import { verifyPassword, sendOtp, verifyOtp, logout } from '../../utils/auth.utils';
 import { ICnotificationMsg } from '../../components/notifications/ICnotificationMsg.js';
-import PopupModel from '../../components/popups/popup.js';
+import PopupModel from '../../components/popups/mainPopup.js';
 import DeleteConfirmationPopup from './deletePopup';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
 import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
@@ -91,7 +91,7 @@ export default function UserProfile() {
 
     if (!inputValue) {
       setIsDeleting(false);
-      setInputErrror('Password is required');
+      setInputErrror(!confirmationsBool.isOtpSent ? 'Password is required' : 'OTP is required');
       return;
     }
 
@@ -149,7 +149,7 @@ export default function UserProfile() {
       if (response.data.success) {
         setICnotificationMsg({ success: response.data.message });
 
-        await axios.post(`${BACKEND_URL}/api/v1/auth/logout`, {}, { withCredentials: true });
+        await logout();
 
         useAuthStore.getState().setIsSuccessLoginedIn(false);
         useProfileStore.getState().resetProfileStore();
