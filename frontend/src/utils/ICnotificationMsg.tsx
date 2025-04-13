@@ -9,6 +9,7 @@ export interface ICnotificationMsgProp {
   error?: string;
 }
 
+// In Component Notification Message
 export function ICnotificationMsg({
   ICnotificationStatusMsg,
 }: {

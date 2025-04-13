@@ -4,6 +4,8 @@ import { IoMdClose } from 'react-icons/io';
 import { FaCircleCheck, FaCircleInfo, FaCircleXmark, FaCircleExclamation } from 'react-icons/fa6';
 import { useNotificationPopupStore } from '../../stores/popup/TRnotificationPopupStore';
 
+
+// Top Right Notification Popup Model
 export const TRnotificationPopupModel = () => {
   const [isVisibleSlide, setIsVisibleSlide] = useState(false);
 
