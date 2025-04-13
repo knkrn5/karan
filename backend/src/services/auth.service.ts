@@ -72,7 +72,7 @@ export class AuthService {
     const storedOTP = await redisClient.get(email);
     const OPTttl = await redisClient.ttl(email);
     if (OPTttl <= 0 || !storedOTP) {
-      throw new ApiResponse(404, false, 'OTP expired, Please resend OTP', null);
+      throw new ApiResponse(404, false, 'OTP expired, Please resend again', null);
     }
 
     if (Number(enteredOTP) !== Number(storedOTP)) {
