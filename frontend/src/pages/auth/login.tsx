@@ -44,17 +44,13 @@ export default function LoginPage() {
 
   const navigate = useNavigate();
 
-  // Trigger animation on component mount and clearing status
+  // Trigger animation
   useEffect(() => {
     setIsVisible(false);
     setTimeout(() => {
       setIsVisible(true);
     }, 10);
-
-    setTimeout(() => {
-      setAuthStatusNotificationMsg({});
-    }, 5000);
-  }, [setAuthStatusNotificationMsg]);
+  }, []);
 
   const validateloginForm = () => {
     const loginFieldErrors: loginFeildDataProps = {
@@ -130,7 +126,7 @@ export default function LoginPage() {
       );
       const { data } = response;
 
-      // setAuthStatusNotificationMsg({ success: data.message });
+      setAuthStatusNotificationMsg({ success: data.message });
 
       //notification popup filling
       setTRnotificationMsg({ success: data.message });
