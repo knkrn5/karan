@@ -22,33 +22,30 @@ const FlexiPopupModel = ({ isOpen, onClose, children, header, footer }: ModalPro
   if (!isOpen) return null;
 
   return (
-    // <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-brightness-100 backdrop-blur-sm">
-    <div className=" bg-black/10 backdrop-blur-[3px]" onClick={onClose}>
-      <div
-        className={`max-w-[400px] bg-white dark:bg-slate-900 shadow-2xl hover:shadow-xl dark:shadow-black px-6 py-2 m-1 rounded-2xl relative 
-        ${!isVisible ? 'scale-95' : 'scale-100'} duration-300`}
-        onClick={e => e.stopPropagation()}
-      >
+    <div
+      className={` bg-linear-to-t from-neutral-400 via-neutral-50 to-neutral-600 dark:from-gray-800 dark:via-slate-800 dark:to-gray-900 shadow-2xl hover:shadow-xl hover:scale-102 dark:shadow-black px-6 py-2 rounded-2xl relative 
+        ${!isVisible ? 'scale-95' : 'scale-100'} transition-transform duration-300`}
+      onClick={e => e.stopPropagation()}
+    >
+      <div className="grid grid-cols-[1fr_auto] gap-6">
+        {/* header */}
+        <div className="w-full flex flex-col items-center">
+          <h2 className="text-2xl font-extrabold  text-black dark:text-white">{header}</h2>
+        </div>
         <span
           onClick={onClose}
-          className="absolute top-3 right-3 p-1 text-black bg-gray-300 hover:bg-gray-400  dark:text-gray-300 dark:bg-gray-600 dark:hover:text-white dark:hover:bg-gray-700  rounded-xl duration-300 cursor-pointer"
+          className="absolute top-3 right-3 p-1 text-black bg-gray-100 hover:bg-gray-200  dark:text-gray-300 dark:bg-gray-600 dark:hover:text-white dark:hover:bg-gray-700  rounded-xl duration-300 transition-transform cursor-pointer"
         >
           <IoMdClose />
         </span>
-        {/* header */}
-        <div className="w-full flex flex-col items-center">
-          <h2 className="text-2xl font-extrabold font-serif text-black dark:text-white">
-            {header}
-          </h2>
-        </div>
-        <hr className="my-1 border-gray-500 dark:border-gray-500" />
+      </div>
+      <hr className="my-1 border-gray-500 dark:border-gray-600" />
 
-        {children}
-        {/* Footer */}
-        <hr className="my-1 border-gray-500 dark:border-gray-500" />
-        <div className="w-full flex flex-col items-center">
-          <div className=" font-extrabold font-mono text-black dark:text-white">{footer}</div>
-        </div>
+      {children}
+      {/* Footer */}
+      <hr className="my-1 border-gray-500 dark:border-gray-600" />
+      <div className="w-full flex flex-col items-center">
+        <div className=" font-extrabold font-mono text-black dark:text-white">{footer}</div>
       </div>
     </div>
   );

@@ -50,6 +50,7 @@ export default function MegaMenu1() {
     <>
       {/* notification popup */}
       <TRpopupNotificationModel />
+
       <header>
         <div className="bg-white dark:bg-dark">
           <div className="relative flex items-center justify-between">
