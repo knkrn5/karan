@@ -7,7 +7,6 @@ import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
-import { TRpopupNotificationModel } from '../../components/popups/TRpopupNotification.js';
 import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
 
 interface loginFeildDataProps {
@@ -167,8 +166,6 @@ export default function LoginPage() {
 
   return (
     <>
-      {/* notification popup */}
-      <TRpopupNotificationModel />
       <div
         className={`bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-8 w-full max-w-md transition-transform duration-500 ease-out ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'

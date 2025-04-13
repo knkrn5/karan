@@ -9,7 +9,6 @@ import { ICnotificationMsg } from '../../components/notifications/ICnotification
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { verifyExistingUser, sendOtp, verifyOtp } from '../../utils/auth.utils.js';
-import { TRpopupNotificationModel } from '../../components/popups/TRpopupNotification.js';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
 import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
 
@@ -312,7 +311,6 @@ export default function Register() {
 
   return (
     <>
-      <TRpopupNotificationModel />
       <div
         className={`bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-8 my-4 w-full max-w-md transition-transform duration-500 ease-out ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'

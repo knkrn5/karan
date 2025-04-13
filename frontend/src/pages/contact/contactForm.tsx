@@ -11,7 +11,7 @@ import { useProfileStore } from '../../stores/profile/profileStore';
 import { useAuthCheck } from '../../hooks/authCheckHook';
 import Popup from '../../components/popups/popup';
 import AuthPopup from '../auth/authPopup';
-import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore';
+import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore';
 
 interface FormDataProp {
   name: string;
@@ -43,8 +43,8 @@ export default function ContactForm() {
   const profileName = useProfileStore(state => state.firstName);
   const profileEmail = useProfileStore(state => state.email);
 
-  //ICnotificationMsgStore
-  const { setICnotificationMsg } = useICnotificationMsgStore();
+  //TRpopupNotificationStore
+  const { setTRpopupNotificationMsg } = useTRpopupNotificationStore();
 
   useEffect(() => {
     if (profileName && profileEmail) {
@@ -123,14 +123,14 @@ export default function ContactForm() {
         message: data.data.message,
       });
       setIsSuccess(data.success);
-      setICnotificationMsg({ success: data.message });
+      setTRpopupNotificationMsg({ success: data.message });
       setContactMsgId(data.data._id);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setIsSuccess(error.response?.data?.success || false);
-        setICnotificationMsg({ error: error.response?.data?.message || error.message });
+        setTRpopupNotificationMsg({ error: error.response?.data?.message || error.message });
       } else {
-        setICnotificationMsg({ error: 'An unexpected error occurred' });
+        setTRpopupNotificationMsg({ error: 'An unexpected error occurred' });
       }
     } finally {
       setIsLoading(false);

@@ -1,3 +1,4 @@
+import { TRpopupNotificationModel } from '../../components/popups/TRpopupNotification';
 import { ContactMetaTags } from '../../components/seo/pagesSeoComponents';
 import ContactDetails from './contactDetails';
 import ContactForm from './contactForm';
@@ -5,6 +6,7 @@ import ContactForm from './contactForm';
 function Contact() {
   return (
     <>
+      <TRpopupNotificationModel />
       <ContactMetaTags />
       <div className=" bg-gray-100 dark:bg-gray-800">
         <div className="text-center mb-4">
