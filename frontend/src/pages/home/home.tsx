@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import FlexiPopupModel from '../../components/popups/flexiPopupModel';
-import { HomeMetaTags } from '../../components/seo/pagesSeoComponents';
 import HeroSectionOne from './heroSectionOne';
 import HeroSectionTwo from './heroSectionTwo';
+import { HomePageSeoMetaTags } from './homePageSeoMetaTags';
 
 function Home() {
   const [showPopup, setshowPopup] = useState<boolean>(true);
@@ -61,7 +61,7 @@ function Home() {
           </p>
         </FlexiPopupModel>
       </div>
-      <HomeMetaTags />
+      <HomePageSeoMetaTags />
       <HeroSectionOne />
       {/* Container for the timeline */}
       <div className="relative mx-auto px-4 py-12 lg:px-[10%] bg-gradient-to-br from-gray-150 via-gray-300 to-gray-150 dark:from-gray-900 dark:via-slate-800 dark:to-gray-900">

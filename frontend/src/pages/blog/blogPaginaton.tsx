@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { BlogPostPropsType } from './blogPage';
+import type { BlogPostPropsType } from './blogPostsPage';
 import { useSearchParams } from 'react-router';
 
 const POSTS_PER_PAGE = 6;

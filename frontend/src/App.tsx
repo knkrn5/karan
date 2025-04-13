@@ -4,8 +4,8 @@ import Header from './components/common/header';
 import Footer from './components/common/footer';
 import Home from './pages/home/home';
 import ErrorPage404 from './pages/errors/404-error-page';
-import ResourcesInfo from './pages/resources/resourses-page';
-import BlogPage from './pages/blog/blogPage';
+import ResourcesInfo from './pages/resources/resoursesPage';
+import BlogPage from './pages/blog/blogPostsPage';
 
 import AuthLayout from './pages/auth/authLayout';
 import LoginPage from './pages/auth/login';
@@ -16,7 +16,7 @@ import Resume from './pages/about/resume';
 import Contact from './pages/contact/contactPage';
 import UserProfile from './pages/profile/userProfile';
 
-import SoloBlogPost from './pages/blog/soloBlogPost';
+import SoloBlogPost from './pages/blog/soloBlogPostPage';
 
 function App() {
   return (

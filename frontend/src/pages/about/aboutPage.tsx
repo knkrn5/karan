@@ -1,10 +1,10 @@
 import { Link } from 'react-router';
-import { AboutMetaTags } from '../../components/seo/pagesSeoComponents';
+import { AboutPageSeoMetaTags } from './aboutPageSeoMetaTags';
 
 function About() {
   return (
     <>
-      <AboutMetaTags />
+      <AboutPageSeoMetaTags />
       <section className="h-screen bg-gray-50 dark:bg-slate-800">
         <div className="max-w-screen-xl px-4 py-16 mx-auto text-center lg:py-32 lg:px-12">
           <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">

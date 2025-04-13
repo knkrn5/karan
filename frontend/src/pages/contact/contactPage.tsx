@@ -1,11 +1,11 @@
-import { ContactMetaTags } from '../../components/seo/pagesSeoComponents';
 import ContactDetails from './contactDetails';
 import ContactForm from './contactForm';
+import { ContactPageSeoMetaTags } from './contactPageSeoMetaTags';
 
 function Contact() {
   return (
     <>
-      <ContactMetaTags />
+      <ContactPageSeoMetaTags />
       <div className=" bg-gray-100 dark:bg-gray-800">
         <div className="text-center mb-4">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 pt-4">Contact Me</h1>

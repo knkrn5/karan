@@ -10,7 +10,7 @@ import {
   FaLock,
 } from 'react-icons/fa';
 
-import { ResourcesMetaTags } from '../../components/seo/pagesSeoComponents';
+import { ResourcesPageSeoMetaTags } from './resourcesPageSeoMetaTags';
 
 type Tool = {
   name: string;
@@ -175,7 +175,7 @@ function ResourceCard({ resource }: { resource: Resource }) {
 function ResourcesInfo() {
   return (
     <>
-      <ResourcesMetaTags />
+      <ResourcesPageSeoMetaTags />
       <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">

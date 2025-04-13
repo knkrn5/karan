@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { BlogPostPropsType } from './blogPage';
+import type { BlogPostPropsType } from './blogPostsPage';
 import axios from 'axios';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 // import { useSearchParams } from 'react-router';
@@ -9,7 +9,7 @@ import options from '../../utils/contentfulNodetypeOptions';
 import { IoIosArrowBack } from 'react-icons/io';
 import { CiShare2 } from 'react-icons/ci';
 import { Document, TopLevelBlock, BLOCKS } from '@contentful/rich-text-types';
-import { BlogMetaTags } from './blogSEO';
+import { BlogMetaTags } from './soloBlogPostSeoMetaTags';
 import ServerErrorPage from '../errors/serverErrorPage';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;

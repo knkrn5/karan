@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { BlogPostPropsType } from './blogPage';
+import { BlogPostPropsType } from './blogPostsPage';
 
 export function BlogMetaTags({ title, excerpt, tags, slug, featuredImage }: BlogPostPropsType) {
   return (
