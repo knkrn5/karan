@@ -34,9 +34,10 @@ export class AuthService {
     });
 
     try {
+      const otpSubject = `${otp} ${subject}`;
       await sendEmail({
         email,
-        subject,
+        subject: otpSubject,
         content: `Your verification code is: ${otp}`,
         template: () => generateOTPEmailTemplate(otp, subject),
       });

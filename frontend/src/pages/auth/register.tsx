@@ -199,10 +199,7 @@ export default function Register() {
 
     //sending OTP
     if (!registrationVerification.isOptSent) {
-      const response = await sendOtp(
-        userData.email,
-        'Your one-time password (OTP) for Registration is:'
-      );
+      const response = await sendOtp(userData.email, 'is your Registration (OTP) code');
 
       if (response.success) {
         setRegistrationVerification(prev => ({ ...prev, isOptSent: true }));
@@ -560,7 +557,7 @@ export default function Register() {
                           setIsResendingOtp(true);
                           const res = await sendOtp(
                             userData.email,
-                            'Your one-time password (OTP) for registration is:'
+                            'is your Registration (OTP) code'
                           );
                           if (!res) return;
                           setICnotificationMsg({ info: 'OTP resend successfully' });
