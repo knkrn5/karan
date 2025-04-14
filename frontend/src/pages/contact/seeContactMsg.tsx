@@ -10,6 +10,7 @@ import { FaRegSave, FaRegTrashAlt } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { IoIosSend } from 'react-icons/io';
 import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore';
+import { sendContactMsgCopyEmail } from '../../utils/contact.utils';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -59,6 +60,9 @@ const SeeContactMsg = () => {
         setICnotificationMsg({ success: data.message });
         setIsSuccess(data.success);
         setIsEdited(data.success);
+
+        // sending contact message copy email
+        await sendContactMsgCopyEmail(email, message);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           setICnotificationMsg({

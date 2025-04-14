@@ -29,7 +29,7 @@ export async function verifyExistingUser(userEmail: string): Promise<ApiResponse
     return {
       statusCode: 500,
       success: false,
-      message: 'Unexpected error occurred',
+      message: 'Unexpected error verifying user',
       data: null,
     };
   }
@@ -56,7 +56,7 @@ export async function sendOtp(
     return {
       statusCode: 500,
       success: false,
-      message: 'Unexpected error occurred',
+      message: 'Unexpected error occurred sending OTP',
       data: null,
     };
   }
@@ -85,7 +85,7 @@ export async function verifyOtp(
     return {
       statusCode: 500,
       success: false,
-      message: 'Unexpected error occurred',
+      message: 'Unexpected error occurred verifying OTP',
       data: null,
     };
   }
@@ -111,7 +111,7 @@ export async function verifyPassword(password: string): Promise<ApiResponseTypes
     return {
       statusCode: 500,
       success: false,
-      message: 'Unexpected error occurred',
+      message: 'Unexpected error occurred verifying password',
       data: null,
     };
   }
@@ -142,7 +142,7 @@ export async function logout(): Promise<ApiResponseTypes<null>> {
     return {
       statusCode: 500,
       success: false,
-      message: 'Unexpected error occurred',
+      message: 'Unexpected error occurred logging out user',
       data: null,
     };
   }

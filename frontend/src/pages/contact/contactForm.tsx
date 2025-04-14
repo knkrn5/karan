@@ -140,12 +140,7 @@ export default function ContactForm() {
     }
 
     // sending contact message copy email
-    const response = await sendContactMsgCopyEmail(email, message);
-    if (response.success) {
-      setTRpopupNotificationMsg({ success: response.message });
-    } else {
-      setTRpopupNotificationMsg({ error: response.error });
-    }
+    await sendContactMsgCopyEmail(email, message);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
