@@ -17,10 +17,14 @@ import Contact from './pages/contact/contactPage';
 import UserProfile from './pages/profile/userProfile';
 
 import SoloBlogPost from './pages/blog/soloBlogPostPage';
+import { TRpopupNotificationModel } from './components/popups/TRpopupNotification';
 
 function App() {
   return (
     <Router>
+      {/* notification popup */}
+      <TRpopupNotificationModel />
+
       <Header />
       <main>
         <Routes>

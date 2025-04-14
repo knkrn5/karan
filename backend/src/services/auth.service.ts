@@ -124,7 +124,7 @@ export class AuthService {
   //loginning in user
   static async loginUser(email: string, password: string) {
     const user: IUser | null = await User.findOne({ email });
-    if (!user) throw new ApiResponse(404, false, 'User not found', null);
+    if (!user) throw new ApiResponse(404, false, 'User not found, Please Signup', null);
 
     const isPasswordMatch = await user.comparePassword(password);
     if (!isPasswordMatch) throw new ApiResponse(401, false, 'Incorrect password', null);

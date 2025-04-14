@@ -223,7 +223,7 @@ export default function ContactForm() {
               name="message"
               id="message"
               rows={4}
-              maxLength={200}
+              maxLength={500}
               value={message}
               onChange={handleChange}
               disabled={isLoading}
@@ -233,7 +233,7 @@ export default function ContactForm() {
             <div className="flex justify-between">
               {error.message && <p className="text-red-600 text-sm">{error.message}</p>}
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                {message.length}/200 characters
+                {message.length}/500 characters
               </p>
             </div>
           </div>
