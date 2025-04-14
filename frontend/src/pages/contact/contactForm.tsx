@@ -12,6 +12,7 @@ import { useAuthCheck } from '../../hooks/authCheckHook';
 import Popup from '../../components/popups/mainPopup';
 import AuthPopup from '../auth/authPopup';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore';
+import { sendContactMsgCopyEmail } from '../../utils/contact.utils';
 
 interface FormDataProp {
   name: string;
@@ -54,22 +55,6 @@ export default function ContactForm() {
   }, [profileName, setName, profileEmail, setEmail]);
 
   const isAuthenticated = useAuthCheck();
-
-  async function sendContactMsgCopyEmail(userEmail: string, userMsg: string) {
-    try {
-      const response = await axios.post(`${BACKEND_URL}/api/contact/send-contact-msg-copy-email`, {
-        email: userEmail,
-        subject: 'Thank you for contacting Us',
-        content: userMsg,
-      });
-      setTRpopupNotificationMsg({ success: response.data.message });
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setTRpopupNotificationMsg({ error: error.response?.data.message });
-      }
-      console.log(error);
-    }
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -141,7 +126,6 @@ export default function ContactForm() {
       setIsSuccess(data.success);
       setTRpopupNotificationMsg({ success: data.message });
       setContactMsgId(data.data._id);
-      await sendContactMsgCopyEmail(email, message);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setIsSuccess(error.response?.data?.success || false);
@@ -149,9 +133,18 @@ export default function ContactForm() {
       } else {
         setTRpopupNotificationMsg({ error: 'An unexpected error occurred' });
       }
+      return;
     } finally {
       setIsLoading(false);
       setIsSubmitted(true);
+    }
+
+    // sending contact message copy email
+    const response = await sendContactMsgCopyEmail(email, message);
+    if (response.success) {
+      setTRpopupNotificationMsg({ success: response.message });
+    } else {
+      setTRpopupNotificationMsg({ error: response.error });
     }
   };
 
