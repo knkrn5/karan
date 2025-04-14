@@ -1,4 +1,4 @@
-export function generateOTPEmailTemplate(otp: number, subject: string): string {
+export function OTPEmailTemplate(otp: number, excerpt: string): string {
   //date
   const date = new Date().toLocaleDateString('en-US', {
     weekday: 'long',
@@ -35,7 +35,7 @@ export function generateOTPEmailTemplate(otp: number, subject: string): string {
             <div style="padding: 30px 25px;">
               <p style="font-size: 14px; color: #777777; margin: 0 0 20px 0;">${date} at ${time}</p>
               <p style="font-size: 16px; color: #333; margin-bottom: 25px;">
-                <strong>${subject}</strong>
+                <strong>${excerpt}</strong>
               </p>
               
               <div style="text-align: center; margin: 30px 0;">

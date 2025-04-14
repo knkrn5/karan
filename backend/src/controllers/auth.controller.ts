@@ -19,10 +19,10 @@ export class AuthController {
   }
 
   //sending opt
-  static async sendOTPVerificationEmail(req: Request, res: Response) {
+  static async sendEmailVerificationOTP(req: Request, res: Response) {
     try {
-      const { email, subject } = req.body;
-      const response = await AuthService.sendOTPVerificationEmail(email, subject);
+      const { email, subject, excerpt } = req.body;
+      const response = await AuthService.sendEmailVerificationOTP(email, subject, excerpt);
 
       res.status(response.statusCode).json(response);
     } catch (error: any) {

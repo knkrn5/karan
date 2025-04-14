@@ -51,16 +51,16 @@ export class ContactService {
     return new ApiResponse(200, true, 'Message deleted successfully', deletedContactMsg);
   }
 
-  static async sendContactMsgCopyEmail(email: string, subject: string, content: string) {
+  static async sendContactMsgCopyEmail(email: string, subject: string, fallbackEmail: string) {
     if (!email) throw new ApiResponse(400, false, 'email is required', null);
     if (!subject) throw new ApiResponse(400, false, 'reason is required', null);
-    if (!content) throw new ApiResponse(400, false, 'content is required', null);
+    if (!fallbackEmail) throw new ApiResponse(400, false, 'content is required', null);
 
     const response = await sendEmail({
       email,
       subject,
-      content,
-      template: () => contactMsgEmailTemplate(subject, content),
+      fallbackEmail,
+      template: () => contactMsgEmailTemplate(subject, fallbackEmail),
     });
 
     return new ApiResponse(200, true, 'Contact Message Emailed successfully', response);

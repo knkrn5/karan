@@ -12,7 +12,7 @@ router.post('/register', registrationLimiter, AuthController.registerUser);
 router.post('/login', AuthController.loginUser);
 
 router.post('/verify-user', AuthController.verifyUser);
-router.post('/send-otp', sendOtpLimiter, AuthController.sendOTPVerificationEmail);
+router.post('/send-otp', sendOtpLimiter, AuthController.sendEmailVerificationOTP);
 router.post('/verify-otp', AuthController.verifyOTP);
 
 router.post('/logout', AuthController.logoutUser);

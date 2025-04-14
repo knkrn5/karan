@@ -37,13 +37,14 @@ export async function verifyExistingUser(userEmail: string): Promise<ApiResponse
 
 // === SEND OTP ===
 export async function sendOtp(
-  userEmail: string,
-  purpose: string
+  email: string,
+  subject: string,
+  excerpt: string
 ): Promise<ApiResponseTypes<string | number | null>> {
   try {
     const response = await axios.post(
       `${BACKEND_URL}/api/v1/auth/send-otp`,
-      { email: userEmail, subject: purpose },
+      { email, subject, excerpt },
       { withCredentials: true }
     );
     return response.data;

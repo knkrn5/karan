@@ -2,8 +2,7 @@ import { User, IUser } from '../models/user.model.js';
 import { UserDTO } from '../dtos/user.dto.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 import jwt from 'jsonwebtoken';
-import nodemailer from 'nodemailer';
-import { generateOTPEmailTemplate } from '../mail/templates/otpEmailTemplate.js';
+import { OTPEmailTemplate } from '../mail/templates/otpEmailTemplate.js';
 import { redisClient } from '../db/clients/uptashRedisDB.js';
 import { sendEmail } from '../utils/email.js';
 
@@ -18,7 +17,7 @@ export class AuthService {
   }
 
   //sending opt
-  static async sendOTPVerificationEmail(email: string, subject: string) {
+  static async sendEmailVerificationOTP(email: string, subject: string, excerpt: string) {
     if (!email) throw new ApiResponse(400, false, 'email is required', null);
     if (!subject) throw new ApiResponse(400, false, 'reason is required', null);
 
@@ -34,12 +33,12 @@ export class AuthService {
     });
 
     try {
-      const otpSubject = `${otp} ${subject}`;
+      const otpSubject = `${otp} is your ${subject} code`;
       await sendEmail({
         email,
         subject: otpSubject,
-        content: `Your verification code is: ${otp}`,
-        template: () => generateOTPEmailTemplate(otp, subject),
+        fallbackEmail: `Your verification code is: ${otp}`,
+        template: () => OTPEmailTemplate(otp, excerpt),
       });
 
       const OPTttl = await redisClient.ttl(email);
