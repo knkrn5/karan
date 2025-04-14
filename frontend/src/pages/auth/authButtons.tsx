@@ -30,7 +30,7 @@ export default function AuthButtons() {
     if (authStatus === null) {
       return;
     }
-    setIsSuccessLoginedIn(authStatus); //this will set based on authStatus true/false
+    setIsSuccessLoginedIn(authStatus); 
   }, [authStatus, setIsSuccessLoginedIn]);
 
   useEffect(() => {

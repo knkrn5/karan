@@ -102,10 +102,12 @@ function Home() {
                     <p className="text-sm mb-4">{project.description}</p>
                     <div className="flex space-x-2">
                       <button
+                        type="button"
                         onClick={() => window.open(project.link, '_blank')}
-                        className="bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold px-6 py-2 rounded-full cursor-pointer shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95"
+                        className="relative group bg-green-600 active:bg-green-800 text-white font-semibold px-6 py-2 rounded-full cursor-pointer shadow-md transition-all duration-300 ease-in-out transform overflow-hidden"
                       >
-                        Visit Project
+                        <span className="relative z-10">Visit Project</span>
+                        <span className="absolute w-0 h-full top-0 left-0 bg-green-800 group-hover:w-full transition-hover duration-300 ease-in-out"></span>
                       </button>
                     </div>
                   </div>
