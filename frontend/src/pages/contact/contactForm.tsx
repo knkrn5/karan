@@ -147,7 +147,7 @@ export default function ContactForm() {
     const { name, value } = e.target;
     setContactMsgData({ [name]: value });
 
-    // Clear error when user starts typing
+    // Clearing error when user starts typing
     if (error[name as keyof FormDataProp]) {
       setError(prev => ({ ...prev, [name]: '' }));
     }

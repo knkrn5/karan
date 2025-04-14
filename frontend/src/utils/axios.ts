@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { logout } from './auth.utils';
+import { useTRpopupNotificationStore } from '../stores/popup/TRpopupNotificationStore';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -43,8 +44,11 @@ axiosApi.interceptors.response.use(
           axios.isAxiosError(error) &&
           (error.response?.status === 401 || error.response?.status === 403)
         ) {
-          console.log(error.response.data.message, 'logging out...');
+          //logging out...
           await logout();
+          useTRpopupNotificationStore
+            .getState()
+            .setTRpopupNotificationMsg({ error: error.response.data.message });
         } else {
           if (error instanceof Error) {
             console.log('unexpected error occured:', error.message);
