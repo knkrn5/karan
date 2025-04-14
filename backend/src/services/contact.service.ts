@@ -1,5 +1,8 @@
 import { ApiResponse } from '../utils/apiResponse.js';
-import { Contact, IContact } from '../models/contact.model.js';
+import { Contact } from '../models/contact.model.js';
+import nodemailer from 'nodemailer';
+import { sendEmail } from '../utils/email.js';
+import { contactMsgEmailTemplate } from '../mail/templates/contactMsgEmailTemplate.js';
 
 export class ContactService {
   static async addContactMessages(name: string, email: string, message: string) {
@@ -46,5 +49,20 @@ export class ContactService {
     if (!deletedContactMsg) throw new ApiResponse(400, false, 'Message not found.', null);
 
     return new ApiResponse(200, true, 'Message deleted successfully', deletedContactMsg);
+  }
+
+  static async sendContactMsgCopyEmail(email: string, subject: string, content: string) {
+    if (!email) throw new ApiResponse(400, false, 'email is required', null);
+    if (!subject) throw new ApiResponse(400, false, 'reason is required', null);
+    if (!content) throw new ApiResponse(400, false, 'content is required', null);
+
+    const response = await sendEmail({
+      email,
+      subject,
+      content,
+      template: () => contactMsgEmailTemplate(subject, content),
+    });
+
+    return new ApiResponse(200, true, 'Email sent successfully', response);
   }
 }

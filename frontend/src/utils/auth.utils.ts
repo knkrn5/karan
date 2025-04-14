@@ -43,7 +43,7 @@ export async function sendOtp(
   try {
     const response = await axios.post(
       `${BACKEND_URL}/api/v1/auth/send-otp`,
-      { email: userEmail, reason: purpose },
+      { email: userEmail, subject: purpose },
       { withCredentials: true }
     );
     return response.data;

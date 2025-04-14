@@ -59,4 +59,18 @@ export class ContactController {
       });
     }
   }
+
+  static async sendContactMsgCopyEmail(req: Request, res: Response): Promise<void> {
+    const { email, subject, content } = req.body;
+    try {
+      const response = await ContactService.sendContactMsgCopyEmail(email, subject, content);
+      res.status(response.statusCode).json(response);
+    } catch (error: any) {
+      if (error instanceof ApiResponse) {
+        res.status(error.statusCode).json(error);
+        return;
+      }
+      res.status(500).json({ success: false, message: error.message, data: null });
+    }
+  }
 }

@@ -1,4 +1,10 @@
-export function generateOTPEmailTemplate(otp: number, reason: string): string {
+export function generateOTPEmailTemplate(otp: number, subject: string): string {
+  const date = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
   const year = new Date().getFullYear();
   return `
         <!DOCTYPE html>
@@ -17,9 +23,9 @@ export function generateOTPEmailTemplate(otp: number, reason: string): string {
             
             <!-- Content -->
             <div style="padding: 30px 25px;">
-              <p style="font-size: 16px; color: #333; margin-top: 0;">Hello,</p>
+              <p style="font-size: 14px; color: #777777; margin: 0 0 20px 0;">${date}</p>
               <p style="font-size: 16px; color: #333; margin-bottom: 25px;">
-                Your one-time password (OTP) for <strong>${reason}</strong> is:
+                <strong>${subject}</strong>
               </p>
               
               <div style="text-align: center; margin: 30px 0;">

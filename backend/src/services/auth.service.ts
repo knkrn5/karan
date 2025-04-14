@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import { generateOTPEmailTemplate } from '../mail/templates/otpEmailTemplate.js';
 import { redisClient } from '../db/clients/uptashRedisDB.js';
+import { sendEmail } from '../utils/email.js';
 
 export class AuthService {
   //verify existing user
@@ -17,8 +18,9 @@ export class AuthService {
   }
 
   //sending opt
-  static async sendOTPVerificationEmail(email: string, reason: string) {
+  static async sendOTPVerificationEmail(email: string, subject: string) {
     if (!email) throw new ApiResponse(400, false, 'email is required', null);
+    if (!subject) throw new ApiResponse(400, false, 'reason is required', null);
 
     const existingOtp = await redisClient.get(email);
     if (existingOtp) {
@@ -32,29 +34,12 @@ export class AuthService {
     });
 
     try {
-      const sendOTPEmail = async () => {
-        const transporter = nodemailer.createTransport({
-          host: 'smtp.zoho.in',
-          port: 465,
-          secure: true, // true for 465, false for 587
-          auth: {
-            user: process.env.EMAIL_FROM,
-            pass: process.env.EMAIL_PASS,
-          },
-        });
-
-        const mailOptions = {
-          from: `"karan.email" <${process.env.EMAIL_FROM}>`,
-          to: email,
-          subject: `Your ${reason}  OTP Code is:`,
-          text: `Your verification code is: ${otp}`, // fallback plain text
-          html: generateOTPEmailTemplate(otp, reason),
-        };
-
-        await transporter.sendMail(mailOptions);
-      };
-
-      await sendOTPEmail();
+      await sendEmail({
+        email,
+        subject,
+        content: `Your verification code is: ${otp}`,
+        template: () => generateOTPEmailTemplate(otp, subject),
+      });
 
       const OPTttl = await redisClient.ttl(email);
 
