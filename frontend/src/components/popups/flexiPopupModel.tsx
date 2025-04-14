@@ -52,3 +52,20 @@ const FlexiPopupModel = ({ isOpen, onClose, children, header, footer }: ModalPro
 };
 
 export default FlexiPopupModel;
+
+
+{
+  /* chatbot introduction popup */
+}
+/*    <div className="fixed bottom-5 right-5 z-50 min-w-[350px] max-w-[400px]">
+        <FlexiPopupModel
+          isOpen={showPopup}
+          onClose={() => setshowPopup(false)}
+          header={'Chatbot Integration'}
+          footer={''}
+        >
+          <p className="font-serif text-black text-center dark:text-white">
+            I will soon introduce Chatbot for you assistance, Hope It Helps You.
+          </p>
+        </FlexiPopupModel>
+      </div> */

@@ -140,7 +140,7 @@ const SeeContactMsg = () => {
               className="w-full h-fit text-sm p-4 m-2 break-all bg-white outline-none rounded-2xl dark:bg-gray-700 dark:text-white disabled:opacity-50"
               title="Edit Message"
               minLength={10}
-              maxLength={200}
+              maxLength={500}
               placeholder="Message..."
               value={message}
               onChange={e => setContactMsgData({ message: e.target.value })}
@@ -149,7 +149,7 @@ const SeeContactMsg = () => {
             <div className="flex justify-between items-center text-xs ml-5">
               {isRequired && <p className="text-red-600 ">Min 10 characters required</p>}
               <p className="text-gray-500 dark:text-gray-400 text-right">
-                {message.length}/200 Characters
+                {message.length}/500 Characters
               </p>
             </div>
           </div>

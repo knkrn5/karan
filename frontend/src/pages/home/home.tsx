@@ -1,12 +1,8 @@
-import { useState } from 'react';
-import FlexiPopupModel from '../../components/popups/flexiPopupModel';
 import HeroSectionOne from './heroSectionOne';
 import HeroSectionTwo from './heroSectionTwo';
 import { HomePageSeoMetaTags } from './homePageSeoMetaTags';
 
 function Home() {
-  const [showPopup, setshowPopup] = useState<boolean>(true);
-
   class myProjects {
     img: string;
     name: string;
@@ -48,19 +44,6 @@ function Home() {
 
   return (
     <>
-      {/* chatbot introduction popup */}
-      <div className="fixed bottom-5 right-5 z-50 min-w-[350px] max-w-[400px]">
-        <FlexiPopupModel
-          isOpen={showPopup}
-          onClose={() => setshowPopup(false)}
-          header={'Chatbot Integration'}
-          footer={''}
-        >
-          <p className="font-serif text-black text-center dark:text-white">
-            I will soon introduce Chatbot for you assistance, Hope It Helps You.
-          </p>
-        </FlexiPopupModel>
-      </div>
       <HomePageSeoMetaTags />
       <HeroSectionOne />
       {/* Container for the timeline */}
