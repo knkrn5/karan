@@ -55,6 +55,22 @@ export default function ContactForm() {
 
   const isAuthenticated = useAuthCheck();
 
+  async function sendContactMsgCopyEmail(userEmail: string, userMsg: string) {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/api/contact/send-contact-msg-copy-email`, {
+        email: userEmail,
+        subject: 'Thank you for contacting Us',
+        content: userMsg,
+      });
+      setTRpopupNotificationMsg({ success: response.data.message });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setTRpopupNotificationMsg({ error: error.response?.data.message });
+      }
+      console.log(error);
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -125,6 +141,7 @@ export default function ContactForm() {
       setIsSuccess(data.success);
       setTRpopupNotificationMsg({ success: data.message });
       setContactMsgId(data.data._id);
+      await sendContactMsgCopyEmail(email, message);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setIsSuccess(error.response?.data?.success || false);

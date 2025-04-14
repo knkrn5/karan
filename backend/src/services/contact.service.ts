@@ -63,6 +63,6 @@ export class ContactService {
       template: () => contactMsgEmailTemplate(subject, content),
     });
 
-    return new ApiResponse(200, true, 'Email sent successfully', response);
+    return new ApiResponse(200, true, 'Contact Message Emailed successfully', response);
   }
 }
