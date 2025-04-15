@@ -8,6 +8,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
 import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
+import { sendUserAgentDataEmail } from '../../utils/userAgentData.js';
 
 interface loginFeildDataProps {
   email: string;
@@ -65,7 +66,7 @@ export default function LoginPage() {
 
     // Email validation
     if (loginFormFieldData.email.trim().length === 0) {
-      loginFieldErrors.email = 'Email is required';
+      loginFieldErrors.email = 'Please Enter the Email';
     } else if (!loginFormFieldData.email.includes('@')) {
       loginFieldErrors.email = 'Email must contain @ symbol';
     } else if (!loginFormFieldData.email.includes('.')) {
@@ -90,7 +91,7 @@ export default function LoginPage() {
     }
 
     if (loginFormFieldData.password.trim().length === 0) {
-      loginFieldErrors.password = 'Password is required';
+      loginFieldErrors.password = 'Please Enter the Password';
     } else if (loginFormFieldData.password.length < 8) {
       loginFieldErrors.password = 'Password must be at least 8 characters';
     }
@@ -106,7 +107,6 @@ export default function LoginPage() {
     }));
     setICnotificationMsg({});
   };
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,12 +133,13 @@ export default function LoginPage() {
       const { data } = response;
 
       setICnotificationMsg({ success: data.message });
-
-      //notification popup filling
       setTRpopupNotificationMsg({ success: data.message });
-
       setIsSuccessLoginedIn(true);
       navigate('/profile');
+
+      //emailing user agent data
+      await sendUserAgentDataEmail(loginFormFieldData.email, 'user agent email');
+      setTRpopupNotificationMsg({ success: 'user agent data sent' });
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.message);
@@ -198,7 +199,6 @@ export default function LoginPage() {
             </label>
             <input
               name="email"
-              // type="text"
               value={loginFormFieldData.email}
               onChange={e => handleInputChnage(e)}
               placeholder="Enter your email"

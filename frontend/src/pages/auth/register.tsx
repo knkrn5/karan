@@ -96,13 +96,13 @@ export default function Register() {
 
       // First name validation
       if (!data.firstName.trim()) {
-        errors.firstName = 'First name is required';
+        errors.firstName = 'Please Enter the First name';
       }
 
       // Email validation
       // const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
       if (!data.email.trim()) {
-        errors.email = 'Email is required';
+        errors.email = 'Please Enter the Email';
       } else if (!data.email.includes('@')) {
         errors.email = 'Email must contain @ symbol';
       } else if (!data.email.includes('.')) {
@@ -132,7 +132,7 @@ export default function Register() {
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; */
       if (registrationVerification.isOptVerified) {
         if (!data.password) {
-          errors.password = 'Password is required';
+          errors.password = 'Please Enter the Password';
         } else if (data.password.length < 8) {
           errors.password = 'Password must be at least 8 characters long';
         } else if (!/(?=.*[A-Z])/.test(data.password)) {

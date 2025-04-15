@@ -1,7 +1,6 @@
 import { ApiResponse } from '../utils/apiResponse.js';
 import { Contact } from '../models/contact.model.js';
-import nodemailer from 'nodemailer';
-import { sendEmail } from '../utils/emailTransporter.js';
+import { emailTransporter } from '../utils/emailTransporter.js';
 import { contactMsgEmailTemplate } from '../mail/templates/contactMsgEmailTemplate.js';
 
 export class ContactService {
@@ -61,7 +60,7 @@ export class ContactService {
     if (!subject) throw new ApiResponse(400, false, 'reason is required', null);
     if (!excerpt) throw new ApiResponse(400, false, 'excerpt is required', null);
 
-    const response = await sendEmail({
+    const response = await emailTransporter({
       email,
       subject,
       fallbackEmail: excerpt + '\n' + message,

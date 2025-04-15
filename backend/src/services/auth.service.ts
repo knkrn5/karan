@@ -4,7 +4,7 @@ import { ApiResponse } from '../utils/apiResponse.js';
 import jwt from 'jsonwebtoken';
 import { OTPEmailTemplate } from '../mail/templates/otpEmailTemplate.js';
 import { redisClient } from '../db/clients/uptashRedisDB.js';
-import { sendEmail } from '../utils/emailTransporter.js';
+import { emailTransporter } from '../utils/emailTransporter.js';
 import bcrypt from 'bcrypt';
 
 export class AuthService {
@@ -36,7 +36,7 @@ export class AuthService {
 
     try {
       const otpSubject = `${otp} is your ${subject} code`;
-      await sendEmail({
+      await emailTransporter({
         email,
         subject: otpSubject,
         fallbackEmail: `Your ${subject} code is: ${otp}`,
