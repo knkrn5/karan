@@ -1,7 +1,7 @@
 import { ApiResponse } from '../utils/apiResponse.js';
 import { Contact } from '../models/contact.model.js';
 import nodemailer from 'nodemailer';
-import { sendEmail } from '../utils/email.js';
+import { sendEmail } from '../utils/emailTransporter.js';
 import { contactMsgEmailTemplate } from '../mail/templates/contactMsgEmailTemplate.js';
 
 export class ContactService {
