@@ -17,15 +17,13 @@ interface UserAgentDataPropTypes {
   };
 }
 
+// const FALLBACK_IP = '2409:40d0:10cc:2121:14de:63:4b89:ba14';
+const ACCESS_KEY = 'f95a50c2-dc84-4ec5-9e30-eb2466051980';
+
 async function getUserIpAddress() {
-  //   const testIpAddress = '2409:40d0:10cc:2121:14de:63:4b89:ba14';
   try {
     const response = await axios.post(`${BACKEND_URL}/api/v1/auth/get-user-ip-address`);
     return response.data?.ip;
-
-    // const ipRes = await axios.get('https://api.ipify.org?format=json');
-    // const userIpAddress = ipRes.data.ip;
-    // return userIpAddress;
   } catch (error) {
     console.error('Error fetching IP address:', error);
     return null;
@@ -36,10 +34,9 @@ async function getGeoDetails() {
   const userIpAddress = await getUserIpAddress();
 
   if (!userIpAddress) return null;
-  const accessKey = 'f95a50c2-dc84-4ec5-9e30-eb2466051980';
 
   try {
-    const url = 'https://apiip.net/api/check?ip=' + userIpAddress + '&accessKey=' + accessKey;
+    const url = 'https://apiip.net/api/check?ip=' + userIpAddress + '&accessKey=' + ACCESS_KEY;
 
     // Make a request and store the response
     const response = await axios(url);
@@ -48,12 +45,16 @@ async function getGeoDetails() {
     console.log(geoData);
     return {
       country_name: geoData.countryName,
-      city: geoData.city,
       region: geoData.regionName,
+      city: geoData.city,
     };
   } catch (err) {
     console.error('Error fetching geo data:', err);
-    return null;
+    return {
+      country_name: 'unknow country',
+      region: 'unknow region',
+      city: 'unknow city',
+    };
   }
 }
 
