@@ -25,6 +25,7 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '16kb' }));
 app.use(express.urlencoded({ limit: '16kb', extended: true }));
 app.use(cookieParser());
+app.set('trust proxy', true); // trust first proxy leftmost IP address
 
 // Health Check
 app.get('/health', (req, res) => {
@@ -42,7 +43,6 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/v1/auth/', authRoutes);
 app.use('/api/v1/profile/', profileRoutes);
 app.use('/api/blog/', blogRoutes);
-
 
 app.get('*', (req, res) => {
   /* const frontendUrl ='PRODUCTION'
