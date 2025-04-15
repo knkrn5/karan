@@ -42,7 +42,6 @@ async function getGeoDetails() {
     const response = await axios(url);
 
     const geoData = response.data;
-    console.log(geoData);
     return {
       country_name: geoData.countryName,
       region: geoData.regionName,
