@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { OTPEmailTemplate } from '../mail/templates/otpEmailTemplate.js';
 import { redisClient } from '../db/clients/uptashRedisDB.js';
 import { sendEmail } from '../utils/emailTransporter.js';
+import bcrypt from 'bcrypt';
 
 export class AuthService {
   //verify existing user
@@ -16,10 +17,10 @@ export class AuthService {
     return new ApiResponse(200, true, 'User already exists, Please Login', null);
   }
 
-  //sending opt
+  // Sending OTP
   static async sendEmailVerificationOTP(email: string, subject: string, excerpt: string) {
-    if (!email) throw new ApiResponse(400, false, 'email is required', null);
-    if (!subject) throw new ApiResponse(400, false, 'reason is required', null);
+    if (!email) throw new ApiResponse(400, false, 'Email is required', null);
+    if (!subject) throw new ApiResponse(400, false, 'Subject is required', null);
 
     const existingOtp = await redisClient.get(email);
     if (existingOtp) {
@@ -27,9 +28,10 @@ export class AuthService {
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000);
+    const hashedOtp = await bcrypt.hash(String(otp), 10);
 
-    await redisClient.set(email, otp, {
-      EX: 300, // IN SECONDS
+    await redisClient.set(email, hashedOtp, {
+      EX: 300, // 5 minutes
     });
 
     try {
@@ -41,31 +43,31 @@ export class AuthService {
         template: () => OTPEmailTemplate(excerpt, otp),
       });
 
-      const OPTttl = await redisClient.ttl(email);
-
-      return new ApiResponse(200, true, 'OTP Email sent successfully', OPTttl);
+      const otpTtl = await redisClient.ttl(email);
+      return new ApiResponse(200, true, 'OTP Email sent successfully', otpTtl);
     } catch (error: any) {
       return new ApiResponse(500, false, error.message, null);
     }
   }
 
-  //verifing opt
+  //  Verifying OTP
   static async verifyOTP(email: string, enteredOTP: number) {
-    if (!email) throw new ApiResponse(404, false, 'Email is required', null);
-    if (!enteredOTP) throw new ApiResponse(404, false, 'OTP not found', null);
+    if (!email) throw new ApiResponse(400, false, 'Email is required', null);
+    if (!enteredOTP) throw new ApiResponse(400, false, 'OTP is required', null);
 
     const storedOTP = await redisClient.get(email);
-    const OPTttl = await redisClient.ttl(email);
-    if (OPTttl <= 0 || !storedOTP) {
-      throw new ApiResponse(404, false, 'OTP expired, Please resend again', null);
+    const ttl = await redisClient.ttl(email);
+
+    if (!storedOTP || ttl <= 0) {
+      throw new ApiResponse(404, false, 'OTP expired or not found. Please resend.', null);
     }
 
-    if (Number(enteredOTP) !== Number(storedOTP)) {
-      throw new ApiResponse(401, false, 'Incorrect OTP, Please Enter valid OTP', null);
+    const isOtpMatch = await bcrypt.compare(String(enteredOTP), storedOTP);
+    if (!isOtpMatch) {
+      throw new ApiResponse(401, false, 'Incorrect OTP. Please Enter Valid OTP.', null);
     }
 
     await redisClient.del(email);
-
     return new ApiResponse(200, true, 'OTP verified successfully', null);
   }
 
