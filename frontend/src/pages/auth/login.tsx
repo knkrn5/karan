@@ -8,7 +8,6 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
 import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
-import { getUserAgentData } from '../../utils/userAgentData.js';
 
 interface loginFeildDataProps {
   email: string;
@@ -108,12 +107,6 @@ export default function LoginPage() {
     setICnotificationMsg({});
   };
 
-  //user agent data
-  async function callUserAgentData() {
-    const userAgentData = await getUserAgentData();
-    console.log(userAgentData);
-  }
-  callUserAgentData();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

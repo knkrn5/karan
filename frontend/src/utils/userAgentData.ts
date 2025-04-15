@@ -118,3 +118,11 @@ try {
 } catch (error) {
     console.error("Error fetching location info:", error.message);
 } */
+
+//===============================================================
+      //user agent data
+/*   async function callUserAgentData() {
+    const userAgentData = await getUserAgentData();
+    console.log(userAgentData);
+  }
+  callUserAgentData(); */
