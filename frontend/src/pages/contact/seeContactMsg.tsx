@@ -65,7 +65,7 @@ const SeeContactMsg = () => {
         await sendContactMsgCopyEmail(
           email,
           'Email Copy of your message',
-          'Thank you for Contact Us',
+          'Thank you for Contacting Us',
           message
         );
       } catch (error) {
