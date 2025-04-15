@@ -140,7 +140,12 @@ export default function ContactForm() {
     }
 
     // sending contact message copy email
-    await sendContactMsgCopyEmail(email, message);
+    await sendContactMsgCopyEmail(
+      email,
+      'Email Copy of your message',
+      'Thank you for Contact Us',
+      message
+    );
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

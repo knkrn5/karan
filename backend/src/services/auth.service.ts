@@ -37,8 +37,8 @@ export class AuthService {
       await sendEmail({
         email,
         subject: otpSubject,
-        fallbackEmail: `Your verification code is: ${otp}`,
-        template: () => OTPEmailTemplate(otp, excerpt),
+        fallbackEmail: `Your ${subject} code is: ${otp}`,
+        template: () => OTPEmailTemplate(excerpt, otp),
       });
 
       const OPTttl = await redisClient.ttl(email);

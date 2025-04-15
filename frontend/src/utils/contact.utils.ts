@@ -3,12 +3,18 @@ import { useTRpopupNotificationStore } from '../stores/popup/TRpopupNotification
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-export async function sendContactMsgCopyEmail(userEmail: string, userMsg: string) {
+export async function sendContactMsgCopyEmail(
+  userEmail: string,
+  subject: string,
+  excerpt: string,
+  userMsg: string
+) {
   try {
     const response = await axios.post(`${BACKEND_URL}/api/contact/send-contact-msg-copy-email`, {
       email: userEmail,
-      subject: 'Thank you for contacting Us',
-      content: userMsg,
+      subject,
+      excerpt,
+      message: userMsg,
     });
     useTRpopupNotificationStore
       .getState()

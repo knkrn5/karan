@@ -109,7 +109,11 @@ export default function UserProfile() {
     }
 
     if (confirmationsBool.deleteAccount && !confirmationsBool.isOtpSent) {
-      const response = await sendOtp(email, 'is your Account Deletion (OTP) code');
+      const response = await sendOtp(
+        email,
+        'account deletion',
+        'Your one-time-password (OTP) for Account Deletion is:'
+      );
       if (response.success) {
         setConfirmationsBool(prevState => ({
           ...prevState,

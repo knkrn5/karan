@@ -61,9 +61,14 @@ export class ContactController {
   }
 
   static async sendContactMsgCopyEmail(req: Request, res: Response): Promise<void> {
-    const { email, subject, content } = req.body;
+    const { email, subject, excerpt, message } = req.body;
     try {
-      const response = await ContactService.sendContactMsgCopyEmail(email, subject, content);
+      const response = await ContactService.sendContactMsgCopyEmail(
+        email,
+        subject,
+        excerpt,
+        message
+      );
       res.status(response.statusCode).json(response);
     } catch (error: any) {
       if (error instanceof ApiResponse) {

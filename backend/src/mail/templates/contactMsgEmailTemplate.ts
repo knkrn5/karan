@@ -1,4 +1,4 @@
-export function contactMsgEmailTemplate(subject: string, content: string): string {
+export function contactMsgEmailTemplate(excerpt: string, message: string): string {
   //date
   const date = new Date().toLocaleDateString('en-US', {
     weekday: 'long',
@@ -36,7 +36,7 @@ export function contactMsgEmailTemplate(subject: string, content: string): strin
           <div style="padding: 35px 30px;">
             <p style="font-size: 14px; color: #777777; margin: 0 0 20px 0;">${date} at ${time}</p>
             
-            <p style="font-size: 16px; color: #333333; margin-top: 0; line-height: 1.5;"><strong>${subject}</strong>.</p>
+            <p style="font-size: 16px; color: #333333; margin-top: 0; line-height: 1.5;"><strong>${excerpt}</strong>.</p>
             
             <p style="font-size: 16px; color: #333333; margin-bottom: 25px; line-height: 1.5;">
               We have received your message and appreciate you taking the time to reach out to me.
@@ -45,7 +45,7 @@ export function contactMsgEmailTemplate(subject: string, content: string): strin
             <div style="background-color: #f9f9f9; border-left: 4px solid #2d89ef; padding: 20px; margin: 25px 0; border-radius: 4px;">
               <p style="font-size: 15px; color: #555555; margin: 0; line-height: 1.6;">
                 <strong>Your message:</strong><br>
-                ${content}
+                ${message}
               </p>
             </div>
             

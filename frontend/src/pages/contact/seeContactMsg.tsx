@@ -62,7 +62,12 @@ const SeeContactMsg = () => {
         setIsEdited(data.success);
 
         // sending contact message copy email
-        await sendContactMsgCopyEmail(email, message);
+        await sendContactMsgCopyEmail(
+          email,
+          'Email Copy of your message',
+          'Thank you for Contact Us',
+          message
+        );
       } catch (error) {
         if (axios.isAxiosError(error)) {
           setICnotificationMsg({

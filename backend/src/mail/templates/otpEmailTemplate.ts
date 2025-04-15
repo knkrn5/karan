@@ -1,4 +1,4 @@
-export function OTPEmailTemplate(otp: number, excerpt: string): string {
+export function OTPEmailTemplate(excerpt: string, otp: number): string {
   //date
   const date = new Date().toLocaleDateString('en-US', {
     weekday: 'long',
