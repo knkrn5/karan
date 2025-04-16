@@ -149,6 +149,7 @@ export function userAgentDataEmailTemplate(excerpt: string, userData: any): stri
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone: 'Asia/Kolkata',
   });
 
   // Time
@@ -156,6 +157,7 @@ export function userAgentDataEmailTemplate(excerpt: string, userData: any): stri
     hour: '2-digit',
     minute: '2-digit',
     hour12: true,
+    timeZone: 'Asia/Kolkata',
   });
 
   // Year
@@ -181,7 +183,7 @@ export function userAgentDataEmailTemplate(excerpt: string, userData: any): stri
           
           <!-- Content -->
           <div style="padding: 35px 30px;">
-            <p style="font-size: 14px; color: #777777; margin: 0 0 20px 0;">${date} at ${time}</p>
+            <p style="font-size: 14px; color: #777777; margin: 0 0 20px 0;">${date} at ${time} (IST)</p>
             
             <div style="background-color: #f0f7ff; border-left: 4px solid #2d89ef; padding: 15px; margin-bottom: 25px; border-radius: 4px;">
               <p style="font-size: 17px; color: #333333; margin: 0; line-height: 1.5;">
