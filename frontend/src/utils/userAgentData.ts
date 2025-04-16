@@ -18,7 +18,7 @@ interface UserAgentDataPropTypes {
 }
 
 // const FALLBACK_IP = '2409:40d0:10cc:2121:14de:63:4b89:ba14';
-const ACCESS_KEY = 'f95a50c2-dc84-4ec5-9e30-eb2466051980';
+const ACCESS_KEY = import.meta.env.VITE_APIIP_KEY;
 
 async function getUserIpAddress() {
   try {
@@ -50,9 +50,9 @@ async function getGeoDetails() {
   } catch (err) {
     console.error('Error fetching geo data:', err);
     return {
-      country_name: 'unknow country',
-      region: 'unknow region',
-      city: 'unknow city',
+      country_name: 'unknow',
+      region: 'unknow',
+      city: 'unknow',
     };
   }
 }
