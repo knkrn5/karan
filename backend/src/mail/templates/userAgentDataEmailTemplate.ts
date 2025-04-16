@@ -205,7 +205,7 @@ export function userAgentDataEmailTemplate(excerpt: string, userData: any): stri
             </div>
             
             <p style="font-size: 15px; color: #555555; margin-top: 25px; line-height: 1.5;">
-              This is an automated security notification. If you require assistance, please email us at <a href="mailto:support@karan.email" style="color: #2d89ef; text-decoration: none; font-weight: 500;">support@karan.email</a>.
+              This is an automated security notification. If you require Immediate assistance, please email us at <a href="mailto:support@karan.email" style="color: #2d89ef; text-decoration: none; font-weight: 500;">support@karan.email</a>.
             </p>
           </div>
           
