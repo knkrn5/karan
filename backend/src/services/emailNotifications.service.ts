@@ -1,15 +1,9 @@
 import { emailTransporter } from '../utils/emailTransporter.js';
 import { ApiResponse } from '../utils/apiResponse.js';
-import {
-  sendUserAgentEmail,
-} from '../mail/templates/userAgentDataEmailTemplate.js';
+import { sendUserAgentEmail } from '../mail/templates/userAgentDataEmailTemplate.js';
 
 export class emailNotificationsService {
-  static async emailUserAgentData(
-    email: string,
-    subject: string,
-    userAgentData: any
-  ) {
+  static async emailUserAgentData(email: string, subject: string, userAgentData: any) {
     if (!email) throw new ApiResponse(400, false, 'Email is required', null);
     if (!subject) throw new ApiResponse(400, false, 'Subject is required', null);
     if (!userAgentData) throw new ApiResponse(400, false, 'User Agent Data not found', null);

@@ -142,7 +142,7 @@ export default function LoginPage() {
         loginFormFieldData.email,
         'New Sign-in Detected on Your KARAN Account'
       );
-      setTRpopupNotificationMsg({ success: 'user agent data Emailed' });
+      setTRpopupNotificationMsg({ success: 'User Agent Data Emailed' });
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.message);
