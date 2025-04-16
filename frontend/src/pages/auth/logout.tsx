@@ -29,7 +29,7 @@ export default function LogoutUser() {
         className="bg-blue-500 dark:bg-blue-600 text-white p-2 rounded-md cursor-pointer duration-300 hover:bg-blue-800"
         onClick={handleLogout}
       >
-        {isLoggingOut ? (
+        {!isLoggingOut ? (
           <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 " />
         ) : (
           <IoLogOut className="w-5 h-5 duration-300 hover:scale-125" />
