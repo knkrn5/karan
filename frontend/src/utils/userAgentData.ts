@@ -96,24 +96,12 @@ export async function sendUserAgentDataEmail(email: string, subject: string) {
       subject,
       userAgentData: userAgentData,
     });
-    console.log(userAgentData);
+    // console.log(userAgentData);
   } catch (error) {
     console.error('Error sending user agent data:', error);
     return null;
   }
 }
-
-/* async function callUserAgentData() {
-  const userAgentData = await getUserAgentData();
-  await axios.post(`${BACKEND_URL}/api/email-notifications/email-user-agent-data`, {
-    email: 'xonimeqo@cyclelove.cc',
-    subject: 'user agent email',
-    userAgentData: userAgentData,
-  });
-  console.log(userAgentData);
-  setTRpopupNotificationMsg({ success: 'User agent data sent successfully' });
-}
-callUserAgentData(); */
 
 //===========ONLY LOCAL PACKAGES WAY TO GET THE GEO INFO, NO EXTERNAL API==================//
 /* import geoip from 'geoip-lite';
