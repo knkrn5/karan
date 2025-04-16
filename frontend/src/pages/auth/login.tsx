@@ -138,11 +138,11 @@ export default function LoginPage() {
       navigate('/profile');
 
       //emailing user agent data
-     /*  await sendUserAgentDataEmail(
+      await sendUserAgentDataEmail(
         loginFormFieldData.email,
         'New Sign-in Detected on Your KARAN Account'
       );
-      setTRpopupNotificationMsg({ success: 'user agent data Emailed' }); */
+      setTRpopupNotificationMsg({ success: 'user agent data Emailed' });
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.message);
