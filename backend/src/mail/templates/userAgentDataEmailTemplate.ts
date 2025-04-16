@@ -156,7 +156,6 @@ export function userAgentDataEmailTemplate(excerpt: string, userData: any): stri
     hour: '2-digit',
     minute: '2-digit',
     hour12: true,
-    timeZone: 'Asia/Kolkata',
   });
 
   // Year
