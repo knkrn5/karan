@@ -88,12 +88,13 @@ export async function getUserAgentData() {
   return data;
 }
 
-export async function sendUserAgentDataEmail(email: string, subject: string) {
+export async function sendUserAgentDataEmail(email: string, subject: string, excerpt: string) {
   const userAgentData = await getUserAgentData();
   try {
     await axios.post(`${BACKEND_URL}/api/email-notifications/email-user-agent-data`, {
       email,
       subject,
+      excerpt,
       userAgentData: userAgentData,
     });
     console.log(userAgentData);

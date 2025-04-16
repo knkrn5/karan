@@ -138,7 +138,11 @@ export default function LoginPage() {
       navigate('/profile');
 
       //emailing user agent data
-      await sendUserAgentDataEmail(loginFormFieldData.email, 'user agent email');
+      await sendUserAgentDataEmail(
+        loginFormFieldData.email,
+        'user agent email',
+        'We have Noticed a login from the following device'
+      );
       setTRpopupNotificationMsg({ success: 'user agent data sent' });
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
