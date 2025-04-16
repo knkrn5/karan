@@ -1,7 +1,6 @@
 import { emailTransporter } from '../utils/emailTransporter.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 import {
-  userAgentDataEmailTemplate,
   sendUserAgentEmail,
 } from '../mail/templates/userAgentDataEmailTemplate.js';
 

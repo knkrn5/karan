@@ -131,6 +131,7 @@ export async function logout(): Promise<ApiResponseTypes<null>> {
     useAuthStore.getState().resetAuthStore();
     useProfileStore.getState().resetProfileStore();
     localStorage.removeItem('session');
+    // navigate('/login');
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {

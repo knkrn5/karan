@@ -99,7 +99,7 @@ export default function LoginPage() {
     return loginFieldErrors;
   };
 
-  const handleInputChnage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLoginFormFieldData(prevState => ({
       ...prevState,
@@ -138,11 +138,11 @@ export default function LoginPage() {
       navigate('/profile');
 
       //emailing user agent data
-      await sendUserAgentDataEmail(
+     /*  await sendUserAgentDataEmail(
         loginFormFieldData.email,
         'New Sign-in Detected on Your KARAN Account'
       );
-      setTRpopupNotificationMsg({ success: 'user agent data Emailed' });
+      setTRpopupNotificationMsg({ success: 'user agent data Emailed' }); */
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data.message);
@@ -203,7 +203,7 @@ export default function LoginPage() {
             <input
               name="email"
               value={loginFormFieldData.email}
-              onChange={e => handleInputChnage(e)}
+              onChange={e => handleInputChange(e)}
               placeholder="Enter your email"
               disabled={isLoading}
               className={`w-full mt-2 px-4 py-2 border rounded-lg text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 ${
@@ -241,7 +241,7 @@ export default function LoginPage() {
               id="password"
               type={showPassword ? 'text' : 'password'}
               value={loginFormFieldData.password}
-              onChange={e => handleInputChnage(e)}
+              onChange={e => handleInputChange(e)}
               placeholder="Enter your password"
               disabled={isLoading}
               className={`w-full mt-2 px-4 py-2 border rounded-lg text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 

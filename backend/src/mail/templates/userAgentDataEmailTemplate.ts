@@ -228,14 +228,9 @@ export function userAgentDataEmailTemplate(excerpt: string, userData: any): stri
 
 // Modified sendUserAgentEmail function to pass the data object directly
 export function sendUserAgentEmail(userData: any) {
-  // Create an excerpt based on the login information
   const excerpt = `New login detected from ${userData.geoDetails?.city || 'unknown location'}`;
 
-  // Generate the email HTML using your existing template, passing the userData object
-  const emailHtml = userAgentDataEmailTemplate(excerpt, userData);
+  const emailHtmlTemplate = userAgentDataEmailTemplate(excerpt, userData);
 
-  // Here you would typically send the email using your preferred email service
-  // sendEmail(userEmail, "New Login Detected - KARAN", emailHtml);
-
-  return emailHtml;
+  return emailHtmlTemplate;
 }

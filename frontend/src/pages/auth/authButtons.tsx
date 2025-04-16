@@ -30,7 +30,7 @@ export default function AuthButtons() {
     if (authStatus === null) {
       return;
     }
-    setIsSuccessLoginedIn(authStatus); 
+    setIsSuccessLoginedIn(authStatus);
   }, [authStatus, setIsSuccessLoginedIn]);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function AuthButtons() {
         setShowProfile(false);
       }
     }
-    document.addEventListener('click', outsideClick);
+    document.addEventListener('mousedown', outsideClick);
   }, [authStatus, showProfile, updateLoginStatus]);
 
   useEffect(() => {
