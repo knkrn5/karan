@@ -140,8 +140,7 @@ export default function LoginPage() {
       //emailing user agent data
       await sendUserAgentDataEmail(
         loginFormFieldData.email,
-        'user agent email',
-        'We have Noticed a login from the following device'
+        'New Sign-in Detected on Your KARAN Account'
       );
       setTRpopupNotificationMsg({ success: 'user agent data sent' });
     } catch (error: unknown) {

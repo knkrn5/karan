@@ -5,11 +5,10 @@ import { ApiResponse } from '../utils/apiResponse.js';
 export class emailNotificationsController {
   static async emailUserAgentData(req: Request, res: Response) {
     try {
-      const { email, subject, excerpt, userAgentData } = req.body;
+      const { email, subject, userAgentData } = req.body;
       const response = await emailNotificationsService.emailUserAgentData(
         email,
         subject,
-        excerpt,
         userAgentData
       );
       res.status(response.statusCode).json(response);

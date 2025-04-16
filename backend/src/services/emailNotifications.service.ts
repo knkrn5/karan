@@ -9,7 +9,6 @@ export class emailNotificationsService {
   static async emailUserAgentData(
     email: string,
     subject: string,
-    excerpt: string,
     userAgentData: any
   ) {
     if (!email) throw new ApiResponse(400, false, 'Email is required', null);
