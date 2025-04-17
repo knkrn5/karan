@@ -18,6 +18,7 @@ import UserProfile from './pages/profile/userProfile';
 
 import SoloBlogPost from './pages/blog/soloBlogPostPage';
 import { TRpopupNotificationModel } from './components/popups/TRpopupNotification';
+import ResetPassward from './pages/auth/resetPassward';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             <Route path="/signin" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/signup" element={<RegisterPage />} />
+            <Route path="/reset-password" element={<ResetPassward />} />
           </Route>
 
           <Route path="/profile" element={<UserProfile />} />

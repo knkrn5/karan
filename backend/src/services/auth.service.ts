@@ -58,9 +58,8 @@ export class AuthService {
     const storedOTP = await redisClient.get(email);
     const ttl = await redisClient.ttl(email);
 
-    if (!storedOTP || ttl <= 0) {
-      throw new ApiResponse(404, false, 'OTP expired or not found. Please resend.', null);
-    }
+    if (ttl <= 0) throw new ApiResponse(404, false, 'OTP expired. Please resend.', null);
+    if (!storedOTP) throw new ApiResponse(404, false, 'OTP not found. Please resend.', null);
 
     const isOtpMatch = await bcrypt.compare(String(enteredOTP), storedOTP);
     if (!isOtpMatch) {
