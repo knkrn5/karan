@@ -36,7 +36,7 @@ export async function verifyExistingUser(userEmail: string): Promise<ApiResponse
 }
 
 // === SEND OTP ===
-export async function sendOtp(
+export async function sendEmailOtp(
   email: string,
   subject: string,
   excerpt: string
@@ -64,7 +64,7 @@ export async function sendOtp(
 }
 
 // === VERIFY OTP ===
-export async function verifyOtp(
+export async function verifyEmailOtp(
   userEmail: string,
   enteredOTP: string
 ): Promise<ApiResponseTypes<null>> {

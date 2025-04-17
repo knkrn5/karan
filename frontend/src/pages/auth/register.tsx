@@ -8,7 +8,7 @@ import { CiEdit } from 'react-icons/ci';
 import { ICnotificationMsg } from '../../components/notifications/ICnotificationMsg.js';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { verifyExistingUser, sendOtp, verifyOtp } from '../../utils/auth.utils.js';
+import { verifyExistingUser, sendEmailOtp, verifyEmailOtp } from '../../utils/auth.utils.js';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
 import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
 
@@ -199,7 +199,7 @@ export default function Register() {
 
     //sending OTP
     if (!registrationVerification.isOptSent) {
-      const response = await sendOtp(
+      const response = await sendEmailOtp(
         userData.email,
         'registration',
         'Your one-time-password (OTP) for Registration is:'
@@ -218,7 +218,7 @@ export default function Register() {
 
     //verifing OTP
     if (registrationVerification.isOptSent && !registrationVerification.isOptVerified) {
-      const response = await verifyOtp(userData.email, userData.otp);
+      const response = await verifyEmailOtp(userData.email, userData.otp);
 
       if (response.success) {
         setRegistrationVerification(prev => ({ ...prev, isOptVerified: true }));
@@ -559,7 +559,7 @@ export default function Register() {
                         try {
                           setICnotificationMsg({});
                           setIsResendingOtp(true);
-                          const res = await sendOtp(
+                          const res = await sendEmailOtp(
                             userData.email,
                             'registration',
                             'Your one-time-password (OTP) for Registration is:'

@@ -7,7 +7,7 @@ import { useAuthStore } from '../../stores/auth/authStore';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import BrandLoadingPage from '../brandLoadingPage';
 import { TwoSmallLinesSkeletonLoading } from '../../components/skeletonLoadings';
-import { verifyPassword, sendOtp, verifyOtp, logout } from '../../utils/auth.utils';
+import { verifyPassword, sendEmailOtp, verifyEmailOtp, logout } from '../../utils/auth.utils';
 import { ICnotificationMsg } from '../../components/notifications/ICnotificationMsg.js';
 import PopupModel from '../../components/popups/mainPopup.js';
 import DeleteConfirmationPopup from './deletePopup';
@@ -109,7 +109,7 @@ export default function UserProfile() {
     }
 
     if (confirmationsBool.deleteAccount && !confirmationsBool.isOtpSent) {
-      const response = await sendOtp(
+      const response = await sendEmailOtp(
         email,
         'account deletion',
         'Your one-time-password (OTP) for Account Deletion is:'
@@ -126,7 +126,7 @@ export default function UserProfile() {
     }
 
     if (confirmationsBool.isOtpSent && !confirmationsBool.isOtpVerified) {
-      const response = await verifyOtp(email, inputValue);
+      const response = await verifyEmailOtp(email, inputValue);
       if (response.success) {
         setConfirmationsBool(prevState => ({
           ...prevState,

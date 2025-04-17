@@ -8,7 +8,7 @@ import { useAuthStore } from '../../stores/auth/authStore.js';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
 import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
 import { sendUserAgentDataEmail } from '../../utils/userAgentData.js';
-import { sendOtp, verifyOtp } from '../../utils/auth.utils.js';
+import { sendEmailOtp, verifyEmailOtp } from '../../utils/auth.utils.js';
 
 interface loginFeildDataProps {
   email: string;
@@ -144,7 +144,7 @@ export default function ResetPassward() {
     setIsLoading(true);
 
     if (!otpConfirmations.isOptSent) {
-      const response = await sendOtp(
+      const response = await sendEmailOtp(
         loginFormFieldData.email,
         'reset password',
         'you password reseting'
@@ -161,7 +161,7 @@ export default function ResetPassward() {
     }
 
     if (otpConfirmations.isOptSent && !otpConfirmations.isOptVerified) {
-      const response = await verifyOtp(loginFormFieldData.email, loginFormFieldData.otp || '');
+      const response = await verifyEmailOtp(loginFormFieldData.email, loginFormFieldData.otp || '');
       if (response.success) {
         setOtpConfirmations(prevState => ({ ...prevState, isOptVerified: true }));
         setICnotificationMsg({ success: response.message });
