@@ -36,8 +36,6 @@ export default function LoginPage() {
     password: '',
   });
 
-  const [isforgotPassword, setisforgotPassword] = useState<boolean>(false);
-
   //auth store data
   const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
   const { setIsSuccessLoginedIn } = useAuthStore();
@@ -270,10 +268,8 @@ export default function LoginPage() {
                 <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mr-2" />
                 Signing in...
               </span>
-            ) : !isforgotPassword ? (
-              'Sign In'
             ) : (
-              'Send OTP'
+              'Sign In'
             )}
           </button>
         </form>
@@ -288,7 +284,7 @@ export default function LoginPage() {
           <button
             type="button"
             className="mt-2 text font-bold  text-gray-600 dark:text-gray-400 hover:underline duration-300 transition-transform cursor-pointer"
-            onClick={() => setisforgotPassword(true)}
+            onClick={() => {}}
           >
             Forgot Password
           </button>
