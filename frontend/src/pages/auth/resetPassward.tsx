@@ -313,9 +313,7 @@ export default function ResetPassward() {
                 }`}
             />
             {loginFieldErrors.newPassword && (
-              <p className="text-red-600 text-sm mt-1" id="password-error">
-                {loginFieldErrors.newPassword}
-              </p>
+              <p className="text-red-600 text-sm mt-1">{loginFieldErrors.newPassword}</p>
             )}
           </div>
 
@@ -357,9 +355,7 @@ export default function ResetPassward() {
                 }`}
               />
               {loginFieldErrors.confirmNewPassword && (
-                <p className="text-red-600 text-sm mt-1" id="password-error">
-                  {loginFieldErrors.confirmNewPassword}
-                </p>
+                <p className="text-red-600 text-sm mt-1">{loginFieldErrors.confirmNewPassword}</p>
               )}
             </div>
           )}

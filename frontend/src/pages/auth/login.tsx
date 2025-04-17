@@ -250,9 +250,7 @@ export default function LoginPage() {
                 } ${isLoading ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
             />
             {loginFieldErrors.password && (
-              <p className="text-red-600 text-sm mt-1" id="password-error">
-                {loginFieldErrors.password}
-              </p>
+              <p className="text-red-600 text-sm mt-1">{loginFieldErrors.password}</p>
             )}
           </div>
 
@@ -284,7 +282,9 @@ export default function LoginPage() {
           <button
             type="button"
             className="mt-2 text font-bold  text-gray-600 dark:text-gray-400 hover:underline duration-300 transition-transform cursor-pointer"
-            onClick={() => {navigate('/reset-password')}}
+            onClick={() => {
+              navigate('/reset-password');
+            }}
           >
             Forgot Password
           </button>
