@@ -43,7 +43,7 @@ export async function sendEmailOtp(
 ): Promise<ApiResponseTypes<string | number | null>> {
   try {
     const response = await axios.post(
-      `${BACKEND_URL}/api/v1/auth/send-otp`,
+      `${BACKEND_URL}/api/v1/auth/send-email-otp`,
       { email, subject, excerpt },
       { withCredentials: true }
     );
@@ -70,7 +70,7 @@ export async function verifyEmailOtp(
 ): Promise<ApiResponseTypes<null>> {
   try {
     const response = await axios.post<ApiResponseTypes<null>>(
-      `${BACKEND_URL}/api/v1/auth/verify-otp`,
+      `${BACKEND_URL}/api/v1/auth/verify-email-otp`,
       { email: userEmail, otp: enteredOTP },
       { withCredentials: true }
     );

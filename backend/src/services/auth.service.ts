@@ -13,7 +13,7 @@ export class AuthService {
     if (!email) throw new ApiResponse(400, false, 'email is required', null);
     const existingUser = await User.findOne({ email });
 
-    if (!existingUser) throw new ApiResponse(404, false, 'User not found', null);
+    if (!existingUser) throw new ApiResponse(404, false, 'User not found, Please Signup', null);
     return new ApiResponse(200, true, 'User already exists, Please Login', null);
   }
 

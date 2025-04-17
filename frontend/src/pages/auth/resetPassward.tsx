@@ -8,7 +8,7 @@ import { useAuthStore } from '../../stores/auth/authStore.js';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
 import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
 import { sendUserAgentDataEmail } from '../../utils/userAgentData.js';
-import { sendEmailOtp, verifyEmailOtp } from '../../utils/auth.utils.js';
+import { verifyExistingUser, sendEmailOtp, verifyEmailOtp } from '../../utils/auth.utils.js';
 
 interface loginFeildDataProps {
   email: string;
@@ -144,6 +144,15 @@ export default function ResetPassward() {
     }
 
     setIsLoading(true);
+
+    if (!otpConfirmations.isOptSent) {
+      const response = await verifyExistingUser(loginFormFieldData.email);
+      if (!response.success) {
+        setICnotificationMsg({ error: response.message });
+        setIsLoading(false);
+        return;
+      }
+    }
 
     if (!otpConfirmations.isOptSent) {
       const response = await sendEmailOtp(
