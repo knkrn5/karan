@@ -113,7 +113,9 @@ export default function ResetPassward() {
 
     //confirm new password field validation
     if (otpConfirmations.isOptVerified) {
-      if (loginFormFieldData.newPassword !== loginFormFieldData.confirmNewPassword) {
+      if ((loginFormFieldData.confirmNewPassword ?? '').trim().length === 0) {
+        loginFieldErrors.confirmNewPassword = 'Please Enter the Confirm Password';
+      } else if (loginFormFieldData.newPassword !== loginFormFieldData.confirmNewPassword) {
         loginFieldErrors.confirmNewPassword = 'Password does not match';
       }
     }
@@ -175,6 +177,9 @@ export default function ResetPassward() {
     if (otpConfirmations.isOptSent && otpConfirmations.isOptVerified) {
       try {
         console.log('password changed');
+        setICnotificationMsg({ success: 'Password changed Successfully' });
+        setTRpopupNotificationMsg({ success: 'Password changed Successfully' });
+        // navigate('/login');
       } catch (error) {
         console.log(error);
       } finally {
@@ -291,7 +296,7 @@ export default function ResetPassward() {
             <input
               name={!otpConfirmations.isOptVerified ? 'otp' : 'newPassword'}
               id={!otpConfirmations.isOptVerified ? 'otp' : 'newPassword'}
-              type={!otpConfirmations.isOptVerified ? 'number' : 'password'}
+              type={!otpConfirmations.isOptVerified ? 'number' : showPassword ? 'text' : 'password'}
               value={
                 !otpConfirmations.isOptVerified
                   ? loginFormFieldData.otp
@@ -369,7 +374,11 @@ export default function ResetPassward() {
             {isLoading ? (
               <span className="flex items-center">
                 <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mr-2" />
-                Signing in...
+                {!otpConfirmations.isOptSent && !otpConfirmations.isOptVerified
+                  ? 'Sending OTP...'
+                  : otpConfirmations.isOptSent && !otpConfirmations.isOptVerified
+                  ? 'Verifying OTP...'
+                  : 'Resetting Password...'}
               </span>
             ) : !otpConfirmations.isOptSent && !otpConfirmations.isOptVerified ? (
               'Send OTP'
