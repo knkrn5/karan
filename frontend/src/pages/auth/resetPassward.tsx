@@ -104,14 +104,14 @@ export default function ResetPassward() {
       }
     }
 
-    //password field validation
+    //new password field validation
     if (otpConfirmations.isOptVerified) {
       if ((loginFormFieldData.newPassword ?? '').trim().length === 0) {
         loginFieldErrors.newPassword = 'Please Enter the Password';
       }
     }
 
-    //confirm password field validation
+    //confirm new password field validation
     if (otpConfirmations.isOptVerified) {
       if (loginFormFieldData.newPassword !== loginFormFieldData.confirmNewPassword) {
         loginFieldErrors.confirmNewPassword = 'Password does not match';
@@ -270,7 +270,7 @@ export default function ResetPassward() {
           {/* otp and newPassword */}
           <div>
             <label
-              htmlFor="otp"
+              htmlFor={!otpConfirmations.isOptVerified ? 'otp' : 'newPassword'}
               className="block text-sm font-medium text-gray-600 dark:text-gray-300"
             >
               <span className="flex justify-between items-center">
