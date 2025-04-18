@@ -6,7 +6,7 @@ const router = express.Router();
 
 const contactPutLimiter = conactMiddleware.ContactPutLimiter;
 router.post('/message', conactMiddleware.ContactPostLimiter, ContactController.addContactMessage);
-router.put('/message', contactPutLimiter, ContactController.updateContactMessages);
+router.patch('/message', contactPutLimiter, ContactController.updateContactMessages);
 router.delete('/message', ContactController.deleteContactMessages);
 
 router.post('/send-contact-msg-copy-email', ContactController.sendContactMsgCopyEmail);

@@ -271,7 +271,7 @@ export default function UserProfile() {
             onClick={handleResetPassword}
           >
             <span className="relative z-10">
-              {confirmationsBool.deleteAccount ? 'Cancel Delete' : 'Reset Password'}
+              {confirmationsBool.deleteAccount ? 'Cancel Delete' : 'Edit Profile'}
             </span>
             <span className="absolute z-0 left-0 top-0 h-full w-0 bg-blue-700 rounded-lg transition-all duration-500 ease-in-out group-hover:w-full "></span>
           </button>

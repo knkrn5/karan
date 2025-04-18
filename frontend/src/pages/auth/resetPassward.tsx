@@ -201,7 +201,7 @@ export default function ResetPassward() {
 
     if (otpConfirmations.isOptSent && otpConfirmations.isOptVerified) {
       try {
-        const response = await axios.post(`${BACKEND_URL}/api/v1/auth/reset-password`, {
+        const response = await axios.patch(`${BACKEND_URL}/api/v1/auth/reset-password`, {
           email: resetPasswardFieldData.email,
           newPassword: resetPasswardFieldData.newPassword,
         });

@@ -51,7 +51,7 @@ const SeeContactMsg = () => {
         setIsLoading(prev => ({ ...prev, edit: true }));
         setICnotificationMsg({ info: 'Saving changes...' });
 
-        const response = await axios.put(`${BACKEND_URL}/api/contact/message`, {
+        const response = await axios.patch(`${BACKEND_URL}/api/contact/message`, {
           id,
           message: message,
         });
