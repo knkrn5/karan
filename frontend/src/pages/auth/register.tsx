@@ -246,7 +246,7 @@ export default function Register() {
         if (axios.isAxiosError(error)) {
           console.log(error.response?.data.status);
           setICnotificationMsg({
-            error: error.response?.data.message || error.message,
+            error: error.response?.data.message ?? error.message,
           });
         } else {
           setICnotificationMsg({ error: 'An unexpected error occurred' });

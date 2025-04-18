@@ -20,14 +20,15 @@ router.post('/refresh-token', AuthController.refreshToken);
 router.get('/authenticateUser', isAccessTokenValid, AuthController.authenticateUser);
 router.post('/verify-password', isAccessTokenValid, AuthController.verifyPassword);
 
+router.post('/reset-password', AuthController.changePassword);
+
 // Tracking the ip address of the user
 router.post('/get-user-ip-address', (req, res) => {
   const xForwardedFor = Array.isArray(req.headers['x-forwarded-for'])
     ? req.headers['x-forwarded-for'][0]
     : req.headers['x-forwarded-for'];
-  const ip = (req.ip ?? xForwardedFor?.split(',')[0]) ?? req.socket.remoteAddress;
+  const ip = req.ip ?? xForwardedFor?.split(',')[0] ?? req.socket.remoteAddress;
   res.status(200).json({ ip });
 });
-
 
 export default router;

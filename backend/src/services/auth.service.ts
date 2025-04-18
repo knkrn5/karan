@@ -194,5 +194,18 @@ export class AuthService {
   }
 
   //change password
-  static async changePassword(email: string, newPassword: string) {}
+  static async changePassword(email: string, newPassword: string) {
+    const user = await User.findOne({ email });
+    if (!user) throw new ApiResponse(404, false, 'User not found', null);
+
+    const isPasswordSameMatch = await user.comparePassword(newPassword);
+
+    if (isPasswordSameMatch)
+      throw new ApiResponse(400, false, 'New password cannot be same as old password', null);
+
+    user.password = newPassword;
+    await user.save();
+
+    return new ApiResponse(200, true, 'Password changed successfully', null);
+  }
 }

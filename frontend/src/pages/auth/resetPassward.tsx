@@ -201,14 +201,17 @@ export default function ResetPassward() {
 
     if (otpConfirmations.isOptSent && otpConfirmations.isOptVerified) {
       try {
-        console.log('password changed');
-        setICnotificationMsg({ success: 'Password changed Successfully' });
-        setTRpopupNotificationMsg({ success: 'Password changed Successfully' });
-        // navigate('/login');
+        const response = await axios.post(`${BACKEND_URL}/api/v1/auth/reset-password`, {
+          email: resetPasswardFieldData.email,
+          newPassword: resetPasswardFieldData.newPassword,
+        });
+        setICnotificationMsg({ success: response.data.message });
+        setTRpopupNotificationMsg({ success: response.data.message });
+        navigate('/login');
       } catch (error) {
         console.log(error);
         if (axios.isAxiosError(error)) {
-          setICnotificationMsg({ error: error.response?.data.message || error.message });
+          setICnotificationMsg({ error: error.response?.data.message ?? error.message });
         } else {
           setICnotificationMsg({ error: 'An unexpected error occurred' });
         }
