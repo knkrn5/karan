@@ -215,21 +215,19 @@ export default function LoginPage() {
         <div>
           <label
             htmlFor="password"
-            className="block text-sm font-medium text-gray-600 dark:text-gray-300"
+            className="flex justify-between items-center text-sm font-medium text-gray-600 dark:text-gray-300"
           >
-            <span className="flex justify-between items-center">
-              <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
-                Password
-              </span>
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="focus:outline-none"
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
-              >
-                {!showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
-              </button>
+            <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
+              Password
             </span>
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="focus:outline-none"
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+            >
+              {!showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
+            </button>
           </label>
 
           <input
