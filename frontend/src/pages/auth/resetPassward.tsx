@@ -12,7 +12,7 @@ import { sendUserAgentDataEmail } from '../../utils/userAgentData.js';
 import { verifyExistingUser, sendEmailOtp, verifyEmailOtp } from '../../utils/auth.utils.js';
 import { CiEdit } from 'react-icons/ci';
 
-interface LoginFieldDataProps {
+interface ResetPasswardFieldDataProps {
   email: string;
   otp?: string;
   newPassword?: string;
@@ -24,12 +24,14 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export default function ResetPassward() {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
-  const [resetPasswardFieldData, setResetPasswardFieldData] = useState<LoginFieldDataProps>({
-    email: '',
-    otp: '',
-    newPassword: '',
-    confirmNewPassword: '',
-  });
+  const [resetPasswardFieldData, setResetPasswardFieldData] = useState<ResetPasswardFieldDataProps>(
+    {
+      email: '',
+      otp: '',
+      newPassword: '',
+      confirmNewPassword: '',
+    }
+  );
 
   const [showPassword, setShowPassword] = useState<{
     newPassword: boolean;
@@ -40,11 +42,12 @@ export default function ResetPassward() {
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [resetPasswardFieldErrors, setResetPasswardFieldErrors] = useState<LoginFieldDataProps>({
-    email: '',
-    newPassword: '',
-    confirmNewPassword: '',
-  });
+  const [resetPasswardFieldErrors, setResetPasswardFieldErrors] =
+    useState<ResetPasswardFieldDataProps>({
+      email: '',
+      newPassword: '',
+      confirmNewPassword: '',
+    });
 
   const [otpConfirmations, setOtpConfirmations] = useState<{
     isOptSent: boolean;
@@ -74,7 +77,7 @@ export default function ResetPassward() {
   }, []);
 
   const validateloginForm = () => {
-    const resetPasswardFieldErrors: LoginFieldDataProps = {
+    const resetPasswardFieldErrors: ResetPasswardFieldDataProps = {
       email: '',
       newPassword: '',
     };
