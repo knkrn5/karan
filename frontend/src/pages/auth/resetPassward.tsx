@@ -252,30 +252,28 @@ export default function ResetPassward() {
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-gray-600 dark:text-gray-300"
+            className="flex justify-between items-center text-sm font-medium text-gray-600 dark:text-gray-300"
           >
-            <span className="flex justify-between items-center">
-              <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
-                Email
-              </span>
-              <button
-                type="button"
-                title="edit Email address"
-                disabled={!otpConfirmations.isOptSent}
-                onClick={() => {
-                  setOtpConfirmations(prev => ({
-                    ...prev,
-                    isOptSent: false,
-                    isOptVerified: false,
-                  }));
-                  setICnotificationMsg({});
-                }}
-                className="focus:outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                aria-label="edit Email address"
-              >
-                {otpConfirmations.isOptSent ? <CiEdit /> : <FaRegSave />}
-              </button>
+            <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
+              Email
             </span>
+            <button
+              type="button"
+              title="edit Email address"
+              disabled={!otpConfirmations.isOptSent}
+              onClick={() => {
+                setOtpConfirmations(prev => ({
+                  ...prev,
+                  isOptSent: false,
+                  isOptVerified: false,
+                }));
+                setICnotificationMsg({});
+              }}
+              className="focus:outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-label="edit Email address"
+            >
+              {otpConfirmations.isOptSent ? <CiEdit /> : <FaRegSave />}
+            </button>
           </label>
           <input
             name="email"
@@ -298,50 +296,48 @@ export default function ResetPassward() {
         <div>
           <label
             htmlFor={!otpConfirmations.isOptVerified ? 'otp' : 'newPassword'}
-            className="block text-sm font-medium text-gray-600 dark:text-gray-300"
+            className="flex justify-between items-center text-sm font-medium text-gray-600 dark:text-gray-300"
           >
-            <span className="flex justify-between items-center">
-              <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
-                {!otpConfirmations.isOptVerified ? 'Enter OTP' : 'Enter New Password'}
-              </span>
-              <button
-                type="button"
-                title={
-                  !otpConfirmations.isOptVerified
-                    ? 'resend OTP'
-                    : showPassword.newPassword
-                    ? 'Hide password'
-                    : 'Show password'
-                }
-                onClick={async () => {
-                  if (!otpConfirmations.isOptVerified) {
-                    const response = await sendEmailOtp(
-                      resetPasswardFieldData.email,
-                      'Reset Password',
-                      'Please enter the OTP you received in your email to reset your password.'
-                    );
-                    if (response.success) {
-                      setICnotificationMsg({ info: 'OTP resent' });
-                    } else {
-                      setICnotificationMsg({ error: response.message });
-                    }
-                  } else {
-                    setShowPassword(prev => ({ ...prev, newPassword: !showPassword.newPassword }));
-                  }
-                }}
-                className="focus:outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={isLoading || !otpConfirmations.isOptSent}
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
-              >
-                {!otpConfirmations.isOptVerified ? (
-                  <FaRepeat />
-                ) : !showPassword.newPassword ? (
-                  <FaRegEye />
-                ) : (
-                  <FaRegEyeSlash />
-                )}
-              </button>
+            <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
+              {!otpConfirmations.isOptVerified ? 'Enter OTP' : 'Enter New Password'}
             </span>
+            <button
+              type="button"
+              title={
+                !otpConfirmations.isOptVerified
+                  ? 'resend OTP'
+                  : showPassword.newPassword
+                  ? 'Hide password'
+                  : 'Show password'
+              }
+              onClick={async () => {
+                if (!otpConfirmations.isOptVerified) {
+                  const response = await sendEmailOtp(
+                    resetPasswardFieldData.email,
+                    'Reset Password',
+                    'Please enter the OTP you received in your email to reset your password.'
+                  );
+                  if (response.success) {
+                    setICnotificationMsg({ info: 'OTP resent' });
+                  } else {
+                    setICnotificationMsg({ error: response.message });
+                  }
+                } else {
+                  setShowPassword(prev => ({ ...prev, newPassword: !showPassword.newPassword }));
+                }
+              }}
+              className="focus:outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isLoading || !otpConfirmations.isOptSent}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+            >
+              {!otpConfirmations.isOptVerified ? (
+                <FaRepeat />
+              ) : !showPassword.newPassword ? (
+                <FaRegEye />
+              ) : (
+                <FaRegEyeSlash />
+              )}
+            </button>
           </label>
 
           <input
@@ -379,27 +375,25 @@ export default function ResetPassward() {
           <div>
             <label
               htmlFor="confirmNewPassword"
-              className="block text-sm font-medium text-gray-600 dark:text-gray-300"
+              className="flex justify-between items-center text-sm font-medium text-gray-600 dark:text-gray-300"
             >
-              <span className="flex justify-between items-center">
-                <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
-                  Confirm New Password
-                </span>
-                <button
-                  type="button"
-                  title={showPassword.confirmNewPassword ? 'Hide password' : 'Show password'}
-                  onClick={() =>
-                    setShowPassword(prev => ({
-                      ...prev,
-                      confirmNewPassword: !showPassword.confirmNewPassword,
-                    }))
-                  }
-                  className="focus:outline-none cursor-pointer"
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
-                >
-                  {!showPassword.confirmNewPassword ? <FaRegEye /> : <FaRegEyeSlash />}
-                </button>
+              <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
+                Confirm New Password
               </span>
+              <button
+                type="button"
+                title={showPassword.confirmNewPassword ? 'Hide password' : 'Show password'}
+                onClick={() =>
+                  setShowPassword(prev => ({
+                    ...prev,
+                    confirmNewPassword: !showPassword.confirmNewPassword,
+                  }))
+                }
+                className="focus:outline-none cursor-pointer"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {!showPassword.confirmNewPassword ? <FaRegEye /> : <FaRegEyeSlash />}
+              </button>
             </label>
 
             <input
