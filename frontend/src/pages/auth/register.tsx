@@ -498,21 +498,19 @@ export default function Register() {
             <div className="flex flex-col mb-6">
               <label
                 htmlFor="confirmPassword"
-                className="mb-1 block text-gray-700 dark:text-gray-300"
+                className="mb-1 flex justify-between text-gray-700 dark:text-gray-300"
               >
-                <span className="flex justify-between">
-                  <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
-                    Confirm Password
-                  </span>
-                  <button
-                    type="button"
-                    title={!showPassword.twoPassword ? 'show password' : 'hide password'}
-                    onClick={() => togglePasswordVisibility('twoPassword')}
-                    className="focus:outline-none cursor-pointer"
-                  >
-                    {!showPassword.twoPassword ? <FaRegEye /> : <FaRegEyeSlash />}
-                  </button>
+                <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
+                  Confirm Password
                 </span>
+                <button
+                  type="button"
+                  title={!showPassword.twoPassword ? 'show password' : 'hide password'}
+                  onClick={() => togglePasswordVisibility('twoPassword')}
+                  className="focus:outline-none cursor-pointer"
+                >
+                  {!showPassword.twoPassword ? <FaRegEye /> : <FaRegEyeSlash />}
+                </button>
               </label>
               <input
                 id="confirmPassword"
@@ -542,47 +540,46 @@ export default function Register() {
             <div className="flex flex-col mb-6">
               <label
                 htmlFor="confirmPassword"
-                className="mb-1 block text-gray-700 dark:text-gray-300"
+                className="mb-1 flex justify-between text-gray-700 dark:text-gray-300"
               >
-                <span className="flex justify-between">
-                  <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
-                    Enter OTP
-                  </span>
-                  <button
-                    type="button"
-                    title="resend otp"
-                    disabled={!registrationVerification.isOptSent}
-                    onClick={async () => {
-                      try {
-                        setICnotificationMsg({});
-                        setIsResendingOtp(true);
-                        const res = await sendEmailOtp(
-                          userData.email,
-                          'registration',
-                          'Your one-time-password (OTP) for Registration is:'
-                        );
-                        if (!res) return;
-                        setICnotificationMsg({ info: 'OTP resend successfully' });
-                      } catch (error) {
-                        if (error instanceof AxiosError) {
-                          console.log(error.response?.data);
-                        }
-                      } finally {
-                        setIsResendingOtp(false);
-                      }
-                    }}
-                    className="focus:outline-none cursor-pointer disabled:cursor-not-allowed"
-                  >
-                    {isResendingOtp ? (
-                      <AiOutlineLoading3Quarters className="animate-spin" />
-                    ) : !registrationVerification.isOptSent ? (
-                      <FaRegCheckCircle />
-                    ) : (
-                      <FaRepeat />
-                    )}
-                  </button>
+                <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
+                  Enter OTP
                 </span>
+                <button
+                  type="button"
+                  title="resend otp"
+                  disabled={!registrationVerification.isOptSent}
+                  onClick={async () => {
+                    try {
+                      setICnotificationMsg({});
+                      setIsResendingOtp(true);
+                      const res = await sendEmailOtp(
+                        userData.email,
+                        'registration',
+                        'Your one-time-password (OTP) for Registration is:'
+                      );
+                      if (!res) return;
+                      setICnotificationMsg({ info: 'OTP resend successfully' });
+                    } catch (error) {
+                      if (error instanceof AxiosError) {
+                        console.log(error.response?.data);
+                      }
+                    } finally {
+                      setIsResendingOtp(false);
+                    }
+                  }}
+                  className="focus:outline-none cursor-pointer disabled:cursor-not-allowed"
+                >
+                  {isResendingOtp ? (
+                    <AiOutlineLoading3Quarters className="animate-spin" />
+                  ) : !registrationVerification.isOptSent ? (
+                    <FaRegCheckCircle />
+                  ) : (
+                    <FaRepeat />
+                  )}
+                </button>
               </label>
+
               <input
                 id="otp"
                 name="otp"
