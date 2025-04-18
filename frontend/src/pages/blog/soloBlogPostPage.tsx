@@ -32,7 +32,7 @@ export default function SoloBlogPost() {
         setError(null);
         const res = await axios.get(`${BACKEND_URL}/api/blog/blog-posts`);
 
-        if (!res.data || !res.data.data) {
+        if (!res.data?.data) {
           throw new Error('Invalid response format from API');
         }
 
