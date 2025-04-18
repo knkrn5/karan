@@ -292,7 +292,6 @@ export default function Register() {
   useEffect(() => {
     function beforeUnloadHandler(event: BeforeUnloadEvent) {
       event.preventDefault();
-      event.returnValue = '';
     }
 
     if (formFieldsHasData && registrationVerification.isOptSent) {
