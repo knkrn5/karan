@@ -171,7 +171,7 @@ export default function ResetPassward() {
       const response = await sendEmailOtp(
         resetPasswardFieldData.email,
         'reset password',
-        'you password reseting'
+        'We received a request to reset your password. Please enter the OTP below to proceed:'
       );
       if (response.success) {
         setOtpConfirmations(prevState => ({ ...prevState, isOptSent: true }));
@@ -208,6 +208,12 @@ export default function ResetPassward() {
         setICnotificationMsg({ success: response.data.message });
         setTRpopupNotificationMsg({ success: response.data.message });
         navigate('/login');
+
+        //emailing user agent data
+        await sendUserAgentDataEmail(
+          resetPasswardFieldData.email,
+          'Alert! your KARAN Account Password has been Reset'
+        );
       } catch (error) {
         console.log(error);
         if (axios.isAxiosError(error)) {

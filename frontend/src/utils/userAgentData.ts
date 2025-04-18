@@ -78,12 +78,9 @@ export async function getUserAgentData() {
     data.brands = ua.brands || [];
     data.mobile = ua.mobile;
     data.platform = ua.platform;
+  } else {
+    throw new Error('User agent data is not available');
   }
-
-  // Fallback for older browsers
-  data.userAgent = navigator.userAgent;
-  data.language = navigator.language;
-  data.platform = navigator.platform;
 
   return data;
 }
@@ -96,7 +93,6 @@ export async function sendUserAgentDataEmail(email: string, subject: string) {
       subject,
       userAgentData: userAgentData,
     });
-    // console.log(userAgentData);
   } catch (error) {
     console.error('Error sending user agent data:', error);
     return null;
