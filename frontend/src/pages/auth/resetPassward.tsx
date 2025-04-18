@@ -24,7 +24,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export default function ResetPassward() {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
-  const [resetPasswardFieldData, setRestPasswardFieldData] = useState<LoginFieldDataProps>({
+  const [resetPasswardFieldData, setResetPasswardFieldData] = useState<LoginFieldDataProps>({
     email: '',
     otp: '',
     newPassword: '',
@@ -136,7 +136,7 @@ export default function ResetPassward() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setRestPasswardFieldData(prevState => ({
+    setResetPasswardFieldData(prevState => ({
       ...prevState,
       [name]: value,
     }));
