@@ -21,7 +21,7 @@ export default function AuthButtons() {
 
   const letter: string = firstName?.[0]?.toUpperCase() || '';
 
-  const AuthButtonsRef = useRef<HTMLDivElement>(null);
+  const AuthButtonsRef = useRef<HTMLButtonElement>(null);
   const userAccountRef = useRef<HTMLDivElement>(null);
 
   const authStatus = useAuthCheck();
@@ -102,14 +102,15 @@ export default function AuthButtons() {
           </Link>
         </div>
       ) : (
-        <div
+        <button
+          type="button"
           className="flex items-center justify-center w-8 h-8 bg-gray-500 rounded-full cursor-pointer duration-300 hover:ring-2 hover:ring-blue-600 dark:hover:ring-gray-300"
           title="Account"
           onClick={() => setShowProfile(!showProfile)}
           ref={AuthButtonsRef}
         >
           <span className="text-white text-lg font-semibold">{letter}</span>
-        </div>
+        </button>
       )}
       {showProfile && isSuccessLoginedIn && (
         <div ref={userAccountRef}>

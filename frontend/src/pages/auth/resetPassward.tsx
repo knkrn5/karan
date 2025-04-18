@@ -150,7 +150,6 @@ export default function ResetPassward() {
     setResetPasswardFieldErrors(loginFieldValidation);
 
     if (Object.values(loginFieldValidation).some(error => error !== '')) {
-      console.log('All fields are required');
       return;
     }
 
@@ -205,35 +204,15 @@ export default function ResetPassward() {
         // navigate('/login');
       } catch (error) {
         console.log(error);
+        if (axios.isAxiosError(error)) {
+          setICnotificationMsg({ error: error.response?.data.message || error.message });
+        } else {
+          setICnotificationMsg({ error: 'An unexpected error occurred' });
+        }
       } finally {
         setIsLoading(false);
       }
     }
-
-    /*  try {
-      const response = await axios.post(
-        `${BACKEND_URL}/api/v1/auth/login`,
-        {
-          email: resetPasswardFieldData.email,
-          password: resetPasswardFieldData.password,
-        },
-        { withCredentials: true }
-      );
-      const { data } = response;
-
-      setICnotificationMsg({ success: data.message });
-      setTRpopupNotificationMsg({ success: data.message });
-      setIsSuccessLoginedIn(true);
-      navigate('/profile');
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        setICnotificationMsg({ error: error.response?.data.message || error.message });
-      } else {
-        setICnotificationMsg({ error: 'An unexpected error occurred' });
-      }
-    } finally {
-      setIsLoading(false);
-    } */
   };
 
   useEffect(() => {
