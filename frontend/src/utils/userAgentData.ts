@@ -58,30 +58,32 @@ async function getGeoDetails() {
 
 //user agent data
 export async function getUserAgentData() {
-  const data = {} as UserAgentDataPropTypes;
+  const userAgentData = {} as UserAgentDataPropTypes;
 
   //date and time
   const dataAndTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
-  data.dataAndTime = dataAndTime;
+  userAgentData.dataAndTime = dataAndTime;
 
   const userGeoDetails = await getGeoDetails();
 
   if (userGeoDetails) {
-    data.geoDetails = userGeoDetails;
+    userAgentData.geoDetails = userGeoDetails;
   }
 
   // Modern userAgentData (Chrome 89+)
   if ('userAgentData' in navigator) {
     const ua = navigator.userAgentData as UserAgentDataPropTypes;
+    const navigatorInfo = navigator;
 
-    data.brands = ua.brands || [];
-    data.mobile = ua.mobile;
-    data.platform = ua.platform;
+    userAgentData.brands = ua.brands || [];
+    userAgentData.mobile = ua.mobile;
+    userAgentData.platform = ua.platform;
+    userAgentData.language = navigatorInfo.language;
   } else {
     throw new Error('User agent data is not available');
   }
 
-  return data;
+  return userAgentData;
 }
 
 export async function sendUserAgentDataEmail(email: string, subject: string) {
