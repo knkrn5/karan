@@ -192,4 +192,7 @@ export class AuthService {
 
     return new ApiResponse(200, true, 'Password verified successfully', null);
   }
+
+  //change password
+  static async changePassword(email: string, newPassword: string) {}
 }

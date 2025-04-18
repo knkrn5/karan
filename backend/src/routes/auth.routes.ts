@@ -25,7 +25,7 @@ router.post('/get-user-ip-address', (req, res) => {
   const xForwardedFor = Array.isArray(req.headers['x-forwarded-for'])
     ? req.headers['x-forwarded-for'][0]
     : req.headers['x-forwarded-for'];
-  const ip = req.ip || xForwardedFor?.split(',')[0] || req.socket.remoteAddress;
+  const ip = (req.ip ?? xForwardedFor?.split(',')[0]) ?? req.socket.remoteAddress;
   res.status(200).json({ ip });
 });
 

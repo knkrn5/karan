@@ -176,7 +176,7 @@ export class AuthController {
 
       res.status(500).json({
         success: false,
-        message: error.message || 'An unknown error occurred.',
+        message: error.message ?? 'An unknown error occurred.',
       });
     }
   }

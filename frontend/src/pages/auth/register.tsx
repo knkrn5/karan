@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router';
-// import { GoogleIcon, GithubIcon } from "../../icons/svgIcons";
 import axios, { AxiosError } from 'axios';
 import { FaRegEye, FaRegEyeSlash, FaRegSave, FaRegCheckCircle } from 'react-icons/fa';
 import { FaRepeat } from 'react-icons/fa6';
@@ -404,7 +403,7 @@ export default function Register() {
                     setICnotificationMsg({});
                   }}
                   className="focus:outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                  aria-label={showPassword.onePassword ? 'Hide password' : 'Show password'}
+                  aria-label="edit Email or Name"
                 >
                   {registrationVerification.isOptSent ? <CiEdit /> : <FaRegSave />}
                 </button>
