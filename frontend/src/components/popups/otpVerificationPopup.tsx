@@ -56,12 +56,14 @@ const OtpVerificationPopupModel = ({
               {header}
             </h2>
           </div>
-          <span
+          <button
+            title="Close"
+            type="button"
             onClick={onClose}
             className="absolute top-3 right-3 p-1 text-black bg-gray-100 hover:bg-gray-200  dark:text-gray-300 dark:bg-gray-600 dark:hover:text-white dark:hover:bg-gray-700  rounded-xl duration-300 transition-transform cursor-pointer"
           >
             <IoMdClose />
-          </span>
+          </button>
         </div>
         <hr className="my-1 border-gray-500 dark:border-gray-500" />
 

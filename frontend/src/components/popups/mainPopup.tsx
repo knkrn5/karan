@@ -33,12 +33,14 @@ const PopupModel = ({ isOpen, onClose, children, header, footer }: ModalProps) =
         ${!isVisible ? 'scale-95' : 'scale-100'} duration-300`}
         onClick={e => e.stopPropagation()}
       >
-        <span
+        <button
+          title="close popup"
+          type="button"
           onClick={onClose}
           className="absolute top-3 right-3 p-1 text-black bg-gray-300 hover:bg-gray-400  dark:text-gray-300 dark:bg-gray-600 dark:hover:text-white dark:hover:bg-gray-700  rounded-xl duration-300 cursor-pointer"
         >
           <IoMdClose />
-        </span>
+        </button>
         {/* header */}
         <div className="w-full flex flex-col items-center">
           <h2 className="text-2xl font-extrabold font-serif text-black dark:text-white">
