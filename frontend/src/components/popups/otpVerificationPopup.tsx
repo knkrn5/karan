@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { IoMdClose } from 'react-icons/io';
-import { verifyOtp } from '../../utils/auth.utils';
+import { verifyEmailOtp } from '../../utils/auth.utils';
 import { ICnotificationMsg } from '../notifications/ICnotificationMsg';
 import { useICnotificationMsgStore } from '../stores/ICnotificationMsgStore';
 
@@ -34,7 +34,7 @@ const OtpVerificationPopupModel = ({
   }, []);
 
   async function handleAction() {
-    const response = await verifyOtp(email, enteredOTP);
+    const response = await verifyEmailOtp(email, enteredOTP);
     console.log(response);
     if (response.success) {
       setICnotificationMsg({ success: response.message });
@@ -114,12 +114,13 @@ const OtpVerificationPopupModel = ({
 
 export default OtpVerificationPopupModel;
 
-
-{/* <OtpVerificationPopupModel
+{
+  /* <OtpVerificationPopupModel
 isOpen={isforgotPassword}
 onClose={() => setisforgotPassword(false)}
 header={'OTP Verification'}
 onAction={() => {}}
 email={loginFormFieldData.email}
 enteredOTP=''
-></OtpVerificationPopupModel> */}
+></OtpVerificationPopupModel> */
+}
