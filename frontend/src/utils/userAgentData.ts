@@ -17,7 +17,6 @@ interface UserAgentDataPropTypes {
   };
 }
 
-// const FALLBACK_IP = '2409:40d0:10cc:2121:14de:63:4b89:ba14';
 const ACCESS_KEY = import.meta.env.VITE_APIIP_KEY;
 
 async function getUserIpAddress() {

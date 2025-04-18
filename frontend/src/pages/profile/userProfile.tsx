@@ -77,7 +77,6 @@ export default function UserProfile() {
       setInputErrror('');
       setICnotificationMsg({});
       setIsDeleting(false);
-      return;
     }
   };
 
