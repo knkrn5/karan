@@ -50,7 +50,7 @@ export default function SoloBlogPost() {
 
     fetchBlogPosts();
 
-    // Scroll page to very top
+    // Scrolls the page to very top
     scrollTo(0, 0);
   }, []);
 
@@ -59,9 +59,9 @@ export default function SoloBlogPost() {
   return (
     <>
       <BlogMetaTags
-        title={soloPost?.title || 'blog post - karan.email'}
+        title={soloPost?.title ?? 'blog post - karan.email'}
         excerpt={soloPost?.excerpt?.split(' ').slice(0, 20).join(' ') || 'personal blog posts'}
-        tags={soloPost?.tags || 'blog, post, content, karan.email, writing'}
+        tags={soloPost?.tags ?? 'blog, post, content, karan.email, writing'}
         slug={window.location.href}
         featuredImage={
           soloPost?.featuredImage || {
@@ -75,7 +75,7 @@ export default function SoloBlogPost() {
         }
       />
       <div className="min-h-screen  p-4 text-black dark:text-white bg-gray-200 dark:bg-gray-800">
-        <div className="max-w-3xl mx-auto mb-4">
+        <div className="max-w-2xl mx-auto mb-4">
           <div className="rounded-lg shadow-2xl dark:shadow-neutral-900 bg-gray-100 dark:bg-gray-900 p-4">
             {isLoading ? (
               <SoloBlogPostSkeletonLoadingTwo />
