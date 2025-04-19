@@ -11,6 +11,10 @@ import { useICnotificationMsgStore } from '../../components/stores/ICnotificatio
 import { sendUserAgentDataEmail } from '../../utils/userAgentData.js';
 import { verifyExistingUser, sendEmailOtp, verifyEmailOtp } from '../../utils/auth.utils.js';
 import { CiEdit } from 'react-icons/ci';
+import {
+  validateEmailInputField,
+  validatePasswordInputField,
+} from '../../utils/inputFieldValidations.js';
 
 interface ResetPasswardFieldDataProps {
   email: string;
@@ -83,32 +87,9 @@ export default function ResetPassward() {
     };
 
     // Email validation
-    if (resetPasswardFieldData.email.trim().length === 0) {
-      resetPasswardFieldErrors.email = 'Please Enter the Email';
-    } else if (!resetPasswardFieldData.email.includes('@')) {
-      resetPasswardFieldErrors.email = 'Email must contain @ symbol';
-    } else if (!resetPasswardFieldData.email.includes('.')) {
-      resetPasswardFieldErrors.email = 'Email must contain a domain extension (e.g., .com)';
-    } else if (resetPasswardFieldData.email.startsWith('@')) {
-      resetPasswardFieldErrors.email = 'Email must have a username before @ symbol';
-    } else if (
-      resetPasswardFieldData.email.indexOf('@') ===
-      resetPasswardFieldData.email.length - 1
-    ) {
-      resetPasswardFieldErrors.email = 'Email must have a domain after @ symbol';
-    } else if (
-      resetPasswardFieldData.email.split('@')[1] &&
-      !resetPasswardFieldData.email.split('@')[1].includes('.')
-    ) {
-      resetPasswardFieldErrors.email = 'Email domain must include an extension (e.g., .com)';
-    } else if (!/^[a-zA-Z0-9._-]+@/.test(resetPasswardFieldData.email)) {
-      resetPasswardFieldErrors.email =
-        'Email username can only contain letters, numbers, periods, underscores, and hyphens';
-    } else if (!/@[a-zA-Z0-9.-]+\./.test(resetPasswardFieldData.email)) {
-      resetPasswardFieldErrors.email =
-        'Email domain can only contain letters, numbers, periods, and hyphens';
-    } else if (!/\.[a-zA-Z]{2,6}$/.test(resetPasswardFieldData.email)) {
-      resetPasswardFieldErrors.email = 'Email must end with a valid domain extension (2-6 letters)';
+    const emailInputFieldError = validateEmailInputField(resetPasswardFieldData.email);
+    if (emailInputFieldError) {
+      resetPasswardFieldErrors.email = emailInputFieldError;
     }
 
     //otp field validation
@@ -120,8 +101,11 @@ export default function ResetPassward() {
 
     //new password field validation
     if (otpConfirmations.isOptVerified) {
-      if ((resetPasswardFieldData.newPassword ?? '').trim().length === 0) {
-        resetPasswardFieldErrors.newPassword = 'Please Enter the Password';
+      const passwordInputFieldError = validatePasswordInputField(
+        resetPasswardFieldData.newPassword ?? ''
+      );
+      if (passwordInputFieldError) {
+        resetPasswardFieldErrors.newPassword = passwordInputFieldError;
       }
     }
 
@@ -130,7 +114,7 @@ export default function ResetPassward() {
       if ((resetPasswardFieldData.confirmNewPassword ?? '').trim().length === 0) {
         resetPasswardFieldErrors.confirmNewPassword = 'Please Enter the Confirm Password';
       } else if (resetPasswardFieldData.newPassword !== resetPasswardFieldData.confirmNewPassword) {
-        resetPasswardFieldErrors.confirmNewPassword = 'Password does not match';
+        resetPasswardFieldErrors.confirmNewPassword = 'Password did not match';
       }
     }
 
