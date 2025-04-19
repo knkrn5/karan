@@ -56,9 +56,11 @@ export default function ResetPassward() {
   const [otpConfirmations, setOtpConfirmations] = useState<{
     isOptSent: boolean;
     isOptVerified: boolean;
+    isResendingOtp: boolean;
   }>({
     isOptSent: false,
     isOptVerified: false,
+    isResendingOtp: false,
   });
 
   //auth store data
