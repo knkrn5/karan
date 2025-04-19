@@ -14,6 +14,7 @@ interface UserAgentDataPropTypes {
     country_name: string;
     city: string;
     region: string;
+    nearestLocation: string;
   };
 }
 
@@ -45,12 +46,14 @@ async function getGeoDetails() {
     const lat = geoData.latitude;
     const lon = geoData.longitude;
 
-    getExactGeoDetails(lat, lon);
+    //user exact location
+    const exactGeoData = await getExactGeoDetails(lat, lon);
 
     return {
       country_name: geoData.countryName,
       region: geoData.regionName,
       city: geoData.city,
+      nearestLocation: exactGeoData,
     };
   } catch (err) {
     console.error('Error fetching geo data:', err);
@@ -58,6 +61,7 @@ async function getGeoDetails() {
       country_name: 'unknow',
       region: 'unknow',
       city: 'unknow',
+      nearestLocation: 'unknow',
     };
   }
 }
@@ -69,9 +73,10 @@ async function getExactGeoDetails(lat: number, lon: number) {
     );
 
     const geoData = response.data;
-    console.log(geoData);
+    return geoData.display_name;
   } catch (error) {
-    console.log(error);
+    console.error('Error fetching exact geo data:', error);
+    return 'unknow location';
   }
 }
 

@@ -102,6 +102,14 @@ export function formatUserAgentDataHTML(data: any): string {
           </div>`;
     }
 
+    if (data.geoDetails.nearestLocation) {
+      formattedHTML += `
+          <div style="margin-bottom: 5px; display: flex;">
+            <span style="min-width: 120px; font-weight: 500; color: #555555;">Nearest Location:</span>
+            <span style="color: #333333;">${data.geoDetails.nearestLocation}</span>
+          </div>`;
+    }
+
     formattedHTML += `
         </div>
       </div>`;
