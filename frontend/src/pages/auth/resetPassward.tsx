@@ -132,6 +132,30 @@ export default function ResetPassward() {
     setICnotificationMsg({});
   };
 
+  async function handleSendEmailOtp(email: string, subject: string, excerpt: string) {
+    const response = await sendEmailOtp(email, subject, excerpt);
+    if (response.success) {
+      setOtpConfirmations(prevState => ({ ...prevState, isOptSent: true }));
+      setICnotificationMsg({ success: response.message });
+      return true;
+    } else {
+      setICnotificationMsg({ error: response.message });
+      return false;
+    }
+  }
+
+  async function handleVerifyEmailOtp(email: string, otp: string) {
+    const response = await verifyEmailOtp(email, otp);
+    if (response.success) {
+      setOtpConfirmations(prevState => ({ ...prevState, isOptVerified: true }));
+      setICnotificationMsg({ success: response.message });
+      return true;
+    } else {
+      setICnotificationMsg({ error: response.message });
+      return false;
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -142,8 +166,10 @@ export default function ResetPassward() {
       return;
     }
 
+    setICnotificationMsg({});
     setIsLoading(true);
 
+    //verifying existing user
     if (!otpConfirmations.isOptSent) {
       const response = await verifyExistingUser(resetPasswardFieldData.email);
       if (!response.success) {
@@ -153,36 +179,25 @@ export default function ResetPassward() {
       }
     }
 
+    //sending otp
     if (!otpConfirmations.isOptSent) {
-      const response = await sendEmailOtp(
+      const sendEmailOtpRes = await handleSendEmailOtp(
         resetPasswardFieldData.email,
         'reset password',
         'We received a request to reset your password. Please enter the OTP below to proceed:'
       );
-      if (response.success) {
-        setOtpConfirmations(prevState => ({ ...prevState, isOptSent: true }));
-        setICnotificationMsg({ success: response.message });
-      } else {
-        setICnotificationMsg({ error: response.message });
-      }
-
       setIsLoading(false);
-      return;
+      return sendEmailOtpRes;
     }
 
+    //verifying otp
     if (otpConfirmations.isOptSent && !otpConfirmations.isOptVerified) {
-      const response = await verifyEmailOtp(
+      const verifyEmailOtpRes = await handleVerifyEmailOtp(
         resetPasswardFieldData.email,
         resetPasswardFieldData.otp ?? ''
       );
-      if (response.success) {
-        setOtpConfirmations(prevState => ({ ...prevState, isOptVerified: true }));
-        setICnotificationMsg({ success: response.message });
-      } else {
-        setICnotificationMsg({ error: response.message });
-      }
       setIsLoading(false);
-      return;
+      return verifyEmailOtpRes;
     }
 
     if (otpConfirmations.isOptSent && otpConfirmations.isOptVerified) {
@@ -311,26 +326,28 @@ export default function ResetPassward() {
               }
               onClick={async () => {
                 if (!otpConfirmations.isOptVerified) {
-                  const response = await sendEmailOtp(
+                  setOtpConfirmations(prev => ({ ...prev, isResendingOtp: true }));
+                  const resendOtpEmailRes = await handleSendEmailOtp(
                     resetPasswardFieldData.email,
                     'Reset Password',
-                    'Please enter the OTP you received in your email to reset your password.'
+                    'We have again received a request to reset your password. Please enter the OTP below to proceed: '
                   );
-                  if (response.success) {
-                    setICnotificationMsg({ info: 'OTP resent' });
-                  } else {
-                    setICnotificationMsg({ error: response.message });
+                  if (resendOtpEmailRes) {
+                    setICnotificationMsg({ info: 'OTP resent successfully' });
                   }
+                  setOtpConfirmations(prev => ({ ...prev, isResendingOtp: false }));
                 } else {
                   setShowPassword(prev => ({ ...prev, newPassword: !showPassword.newPassword }));
                 }
               }}
               className="focus:outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={isLoading || !otpConfirmations.isOptSent}
+              disabled={isLoading || !otpConfirmations.isOptSent || otpConfirmations.isResendingOtp}
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
-              {!otpConfirmations.isOptVerified ? (
+              {!otpConfirmations.isOptVerified && !otpConfirmations.isResendingOtp ? (
                 <FaRepeat />
+              ) : !otpConfirmations.isOptVerified && otpConfirmations.isResendingOtp ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
               ) : !showPassword.newPassword ? (
                 <FaRegEye />
               ) : (

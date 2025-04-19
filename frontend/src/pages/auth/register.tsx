@@ -534,7 +534,7 @@ export default function Register() {
                 <button
                   type="button"
                   title="resend otp"
-                  disabled={!registrationVerification.isOptSent}
+                  disabled={!registrationVerification.isOptSent || isResendingOtp}
                   onClick={async () => {
                     setIsResendingOtp(true);
                     setICnotificationMsg({});
