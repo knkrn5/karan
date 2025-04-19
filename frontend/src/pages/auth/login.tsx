@@ -8,6 +8,7 @@ import { useAuthStore } from '../../stores/auth/authStore.js';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
 import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
 import { sendUserAgentDataEmail } from '../../utils/userAgentData.js';
+import { validateEmailInputField } from '../../utils/inputFieldValidations.js';
 
 interface LoginFeildDataProps {
   email: string;
@@ -62,35 +63,13 @@ export default function LoginPage() {
     };
 
     // Email validation
-    if (loginFormFieldData.email.trim().length === 0) {
-      loginFieldErrors.email = 'Please Enter the Email';
-    } else if (!loginFormFieldData.email.includes('@')) {
-      loginFieldErrors.email = 'Email must contain @ symbol';
-    } else if (!loginFormFieldData.email.includes('.')) {
-      loginFieldErrors.email = 'Email must contain a domain extension (e.g., .com)';
-    } else if (loginFormFieldData.email.startsWith('@')) {
-      loginFieldErrors.email = 'Email must have a username before @ symbol';
-    } else if (loginFormFieldData.email.indexOf('@') === loginFormFieldData.email.length - 1) {
-      loginFieldErrors.email = 'Email must have a domain after @ symbol';
-    } else if (
-      loginFormFieldData.email.split('@')[1] &&
-      !loginFormFieldData.email.split('@')[1].includes('.')
-    ) {
-      loginFieldErrors.email = 'Email domain must include an extension (e.g., .com)';
-    } else if (!/^[a-zA-Z0-9._-]+@/.test(loginFormFieldData.email)) {
-      loginFieldErrors.email =
-        'Email username can only contain letters, numbers, periods, underscores, and hyphens';
-    } else if (!/@[a-zA-Z0-9.-]+\./.test(loginFormFieldData.email)) {
-      loginFieldErrors.email =
-        'Email domain can only contain letters, numbers, periods, and hyphens';
-    } else if (!/\.[a-zA-Z]{2,6}$/.test(loginFormFieldData.email)) {
-      loginFieldErrors.email = 'Email must end with a valid domain extension (2-6 letters)';
+    const emailInputFieldError = validateEmailInputField(loginFormFieldData.email);
+    if (emailInputFieldError) {
+      loginFieldErrors.email = emailInputFieldError;
     }
 
     if (loginFormFieldData.password.trim().length === 0) {
       loginFieldErrors.password = 'Please Enter the Password';
-    } else if (loginFormFieldData.password.length < 8) {
-      loginFieldErrors.password = 'Password must be at least 8 characters';
     }
 
     return loginFieldErrors;
