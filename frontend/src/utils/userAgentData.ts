@@ -83,6 +83,7 @@ export async function getUserAgentData() {
     throw new Error('User agent data is not available');
   }
 
+  console.log(userAgentData);
   return userAgentData;
 }
 
