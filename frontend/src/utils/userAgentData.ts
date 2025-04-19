@@ -41,6 +41,12 @@ async function getGeoDetails() {
     const response = await axios(url);
 
     const geoData = response.data;
+
+    const lat = geoData.latitude;
+    const lon = geoData.longitude;
+
+    getExactGeoDetails(lat, lon);
+
     return {
       country_name: geoData.countryName,
       region: geoData.regionName,
@@ -53,6 +59,19 @@ async function getGeoDetails() {
       region: 'unknow',
       city: 'unknow',
     };
+  }
+}
+
+async function getExactGeoDetails(lat: number, lon: number) {
+  try {
+    const response = await axios(
+      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
+    );
+
+    const geoData = response.data;
+    console.log(geoData);
+  } catch (error) {
+    console.log(error);
   }
 }
 

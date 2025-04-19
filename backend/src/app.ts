@@ -13,6 +13,7 @@ const corsOptions = {
     'https://www.karan.email',
     'https://karan-frontend.onrender.com',
     'http://localhost:5173',
+    'http://localhost:4173/',
   ],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
