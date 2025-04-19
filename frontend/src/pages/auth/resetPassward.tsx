@@ -212,7 +212,8 @@ export default function ResetPassward() {
         //emailing user agent data
         await sendUserAgentDataEmail(
           resetPasswardFieldData.email,
-          'Alert! your KARAN Account Password has been Reset'
+          'Alert! your KARAN Account Password has been Reset',
+          'We received a request to reset your password. These are the details of your account.'
         );
       } catch (error) {
         console.log(error);

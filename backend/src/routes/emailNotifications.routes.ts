@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { emailNotificationsController } from '../controllers/emailNotifications.controller.js';
+import { EmailNotificationsController } from '../controllers/emailNotifications.controller.js';
 
 const router = Router();
 
-router.post('/email-user-agent-data', emailNotificationsController.emailUserAgentData);
+router.post('/email-user-agent-data', EmailNotificationsController.emailUserAgentData);
 
 export default router;

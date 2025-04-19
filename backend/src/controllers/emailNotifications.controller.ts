@@ -1,14 +1,15 @@
 import { Request, Response } from 'express';
-import { emailNotificationsService } from '../services/emailNotifications.service.js';
+import { EmailNotificationsService } from '../services/emailNotifications.service.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 
-export class emailNotificationsController {
+export class EmailNotificationsController {
   static async emailUserAgentData(req: Request, res: Response) {
     try {
-      const { email, subject, userAgentData } = req.body;
-      const response = await emailNotificationsService.emailUserAgentData(
+      const { email, subject, excerpt, userAgentData } = req.body;
+      const response = await EmailNotificationsService.emailUserAgentData(
         email,
         subject,
+        excerpt,
         userAgentData
       );
       res.status(response.statusCode).json(response);

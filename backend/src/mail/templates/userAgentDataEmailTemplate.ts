@@ -1,3 +1,19 @@
+// Interface for user agent data
+interface UserAgentDataPropTypes {
+  dataAndTime?: string;
+  brands?: { brand: string; version: string }[];
+  mobile?: boolean;
+  platform?: string;
+  userAgent?: string;
+  language?: string;
+  ipAddress?: string;
+  geoDetails?: {
+    country_name: string;
+    city: string;
+    region: string;
+  };
+}
+
 // Function to format the user agent data into a visually appealing HTML string
 export function formatUserAgentDataHTML(data: any): string {
   let formattedHTML = '';
@@ -185,14 +201,9 @@ export function userAgentDataEmailTemplate(excerpt: string, userData: any): stri
           <div style="padding: 35px 30px;">
             <p style="font-size: 14px; color: #777777; margin: 0 0 20px 0;">${date} at ${time} (IST)</p>
             
-            <div style="background-color: #f0f7ff; border-left: 4px solid #2d89ef; padding: 15px; margin-bottom: 25px; border-radius: 4px;">
-              <p style="font-size: 17px; color: #333333; margin: 0; line-height: 1.5;">
-                <strong>${excerpt}</strong>
-              </p>
-            </div>
             
             <p style="font-size: 16px; color: #333333; margin-bottom: 25px; line-height: 1.5;">
-              We have detected a new login to your account. If this was you, no action is needed. If you don't recognize this activity, please secure your account immediately.
+              ${excerpt}
             </p>
             
             <div style="background-color: #f9f9f9; border: 1px solid #e5e5e5; padding: 25px; margin: 25px 0; border-radius: 6px;">
@@ -229,9 +240,7 @@ export function userAgentDataEmailTemplate(excerpt: string, userData: any): stri
 }
 
 // Modified sendUserAgentEmail function to pass the data object directly
-export function sendUserAgentEmail(userData: any) {
-  const excerpt = `New login detected from ${userData.geoDetails?.city || 'unknown location'}`;
-
+export function sendUserDataAgentEmailTemplate(excerpt: string, userData: UserAgentDataPropTypes) {
   const emailHtmlTemplate = userAgentDataEmailTemplate(excerpt, userData);
 
   return emailHtmlTemplate;

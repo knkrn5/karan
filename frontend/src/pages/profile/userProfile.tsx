@@ -26,12 +26,12 @@ export default function UserProfile() {
 
   const [inputValue, setInputValue] = useState<string>('');
   const [confirmationsBool, setConfirmationsBool] = useState<{
-    resetPassword: boolean;
+    editProfile: boolean;
     deleteAccount: boolean;
     isOtpSent: boolean;
     isOtpVerified: boolean;
   }>({
-    resetPassword: false,
+    editProfile: false,
     deleteAccount: false,
     isOtpSent: false,
     isOtpVerified: false,
@@ -210,6 +210,7 @@ export default function UserProfile() {
           />
         </PopupModel>
       )}
+
       {/* Card */}
       <div
         className={`mx-auto rounded-lg overflow-hidden max-w-[480px] w-80 
