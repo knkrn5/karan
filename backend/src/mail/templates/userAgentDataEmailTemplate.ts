@@ -11,6 +11,7 @@ interface UserAgentDataPropTypes {
     country_name: string;
     city: string;
     region: string;
+    nearestLocation: string;
   };
 }
 

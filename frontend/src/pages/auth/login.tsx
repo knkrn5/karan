@@ -143,10 +143,8 @@ export default function LoginPage() {
       setTRpopupNotificationMsg({ success: 'User Agent Data Emailed' });
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        console.log(error.response?.data.message);
         setICnotificationMsg({ error: error.response?.data.message ?? error.message });
       } else {
-        console.log(error);
         setICnotificationMsg({ error: 'An unexpected error occurred' });
       }
     } finally {
