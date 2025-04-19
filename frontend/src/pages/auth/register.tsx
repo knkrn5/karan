@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { FaRegEye, FaRegEyeSlash, FaRegSave, FaRegCheckCircle } from 'react-icons/fa';
 import { FaRepeat } from 'react-icons/fa6';
 import { CiEdit } from 'react-icons/ci';
@@ -106,7 +106,7 @@ export default function Register() {
         errors.email = 'Email must contain @ symbol';
       } else if (!data.email.includes('.')) {
         errors.email = 'Email must contain a domain extension (e.g., .com)';
-      } else if (data.email.indexOf('@') === 0) {
+      } else if (data.email.startsWith('@')) {
         errors.email = 'Email must have a username before @ symbol';
       } else if (data.email.indexOf('@') === data.email.length - 1) {
         errors.email = 'Email must have a domain after @ symbol';
@@ -172,6 +172,37 @@ export default function Register() {
     return Object.values(errors).some(error => error !== '');
   }, [userData, validateForm]);
 
+  //funciton for sending Email OTP
+  async function handleSendEmailOtp(email: string, subject: string, excerpt: string) {
+    const response = await sendEmailOtp(email, subject, excerpt);
+
+    if (response.success) {
+      setRegistrationVerification(prev => ({ ...prev, isOptSent: true }));
+      setICnotificationMsg({ success: response.message });
+      return true;
+    } else {
+      setICnotificationMsg({ error: response.message });
+      return false;
+    }
+  }
+
+  //funciton for verifing Email OTP
+  async function handleVerifyEmailOtp(email: string, otp: string) {
+    const response = await verifyEmailOtp(email, otp);
+    if (response.success) {
+      setRegistrationVerification(prev => ({ ...prev, isOptVerified: true }));
+      setICnotificationMsg({ success: response.message });
+      return true;
+    } else {
+      setICnotificationMsg({ error: response.message });
+      setFormFieldsError(prev => ({
+        ...prev,
+        otp: response.message,
+      }));
+      return false;
+    }
+  }
+
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -198,40 +229,20 @@ export default function Register() {
 
     //sending OTP
     if (!registrationVerification.isOptSent) {
-      const response = await sendEmailOtp(
+      const sendOtpRes = await handleSendEmailOtp(
         userData.email,
         'registration',
         'Your one-time-password (OTP) for Registration is:'
       );
-
-      if (response.success) {
-        setRegistrationVerification(prev => ({ ...prev, isOptSent: true }));
-        setICnotificationMsg({ success: response.message });
-      } else {
-        setICnotificationMsg({ error: response.message });
-      }
-
       setIsSigningUp(false);
-      return response.success;
+      return sendOtpRes;
     }
 
     //verifing OTP
     if (registrationVerification.isOptSent && !registrationVerification.isOptVerified) {
-      const response = await verifyEmailOtp(userData.email, userData.otp);
-
-      if (response.success) {
-        setRegistrationVerification(prev => ({ ...prev, isOptVerified: true }));
-        setICnotificationMsg({ success: response.message });
-      } else {
-        setICnotificationMsg({ error: response.message });
-        setFormFieldsError(prev => ({
-          ...prev,
-          otp: response.message,
-        }));
-      }
-
+      const verifyOtpRes = await handleVerifyEmailOtp(userData.email, userData.otp);
       setIsSigningUp(false);
-      return response.success;
+      return verifyOtpRes;
     }
 
     //registering user
@@ -289,6 +300,7 @@ export default function Register() {
     }
   }, [isSuccessLoginedIn, navigate, registrationVerification.isAccountCreated]);
 
+  // Preventing page reload
   useEffect(() => {
     function beforeUnloadHandler(event: BeforeUnloadEvent) {
       event.preventDefault();
@@ -550,23 +562,17 @@ export default function Register() {
                   title="resend otp"
                   disabled={!registrationVerification.isOptSent}
                   onClick={async () => {
-                    try {
-                      setICnotificationMsg({});
-                      setIsResendingOtp(true);
-                      const res = await sendEmailOtp(
-                        userData.email,
-                        'registration',
-                        'Your one-time-password (OTP) for Registration is:'
-                      );
-                      if (!res) return;
+                    setIsResendingOtp(true);
+                    setICnotificationMsg({});
+                    const sendOtpRes = await handleSendEmailOtp(
+                      userData.email,
+                      'registration',
+                      'Your resend one-time-password (OTP) for Registration is:'
+                    );
+                    if (sendOtpRes) {
                       setICnotificationMsg({ info: 'OTP resend successfully' });
-                    } catch (error) {
-                      if (error instanceof AxiosError) {
-                        console.log(error.response?.data);
-                      }
-                    } finally {
-                      setIsResendingOtp(false);
                     }
+                    setIsResendingOtp(false);
                   }}
                   className="focus:outline-none cursor-pointer disabled:cursor-not-allowed"
                 >
