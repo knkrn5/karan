@@ -69,6 +69,7 @@ async function getGeoDetails() {
 
 async function getExactGeoDetails(lat: number, lon: number) {
   try {
+    //this API is free, will use this when needed...
     /* const response = await axios(
       `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
     ); 
@@ -80,7 +81,7 @@ async function getExactGeoDetails(lat: number, lon: number) {
     );
 
     const geoData = response.data;
-    return geoData.results[0].formatted;
+    return geoData.results?.[0]?.formatted ?? 'unknown location';
   } catch (error) {
     console.error('Error fetching exact geo data:', error);
     return 'unknow location';
@@ -132,7 +133,7 @@ export async function sendUserAgentDataEmail(email: string, subject: string, exc
   }
 }
 
-//===========ONLY LOCAL PACKAGES WAY TO GET THE GEO INFO, NO EXTERNAL API==================//
+//=========== OFFLINE LOCAL PACKAGES WAY TO GET THE EXACT GEO INFO, NO EXTERNAL API==================//
 /* const geoip = require('geoip-lite');
 const NodeGeocoder = require('node-geocoder');
 
