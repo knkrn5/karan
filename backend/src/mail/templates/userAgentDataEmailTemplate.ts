@@ -46,7 +46,7 @@ export function formatUserAgentDataHTML(data: UserAgentDataPropTypes): string {
       // matching browser name
       if (
         [
-          'chrome',
+          'google chrome',
           'firefox',
           'opera',
           'brave',
