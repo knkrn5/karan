@@ -203,14 +203,6 @@ export function formatUserAgentDataHTML(data: UserAgentDataPropTypes): string {
         </div>`;
   }
 
-  if (data.userAgent) {
-    formattedHTML += `
-        <div style="margin-bottom: 5px; display: flex; flex-wrap: wrap;">
-          <span style="min-width: 120px; font-weight: 500; color: #555555;">User Agent:</span>
-          <span style="color: #333333; word-break: break-word;">${data.userAgent}</span>
-        </div>`;
-  }
-
   formattedHTML += `
         </div>
       </div>`;
