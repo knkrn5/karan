@@ -71,14 +71,16 @@ async function getExactGeoDetails(lat: number, lon: number) {
   try {
     /* const response = await axios(
       `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
-    ); */
+    ); 
+    return geoData.display_name;
+    */
 
     const response = await axios(
       `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${OPENCAGE_KEY}`
     );
 
     const geoData = response.data;
-    return geoData.display_name;
+    return geoData.results[0].formatted;
   } catch (error) {
     console.error('Error fetching exact geo data:', error);
     return 'unknow location';
