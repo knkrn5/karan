@@ -115,7 +115,6 @@ export async function getUserAgentData() {
     // fallback for Firefox and others
     userAgentData.userAgent = navigator.userAgent;
     userAgentData.language = navigator.language;
-    console.log(navigator.userAgent);
   }
 
   return userAgentData;
