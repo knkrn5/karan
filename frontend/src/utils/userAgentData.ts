@@ -73,7 +73,7 @@ async function getExactGeoDetails(lat: number, lon: number) {
     /* const response = await axios(
       `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
     ); 
-    return geoData.display_name;
+    return geoData.display_name ?? 'unknown location';
     */
 
     const response = await axios(
@@ -115,6 +115,7 @@ export async function getUserAgentData() {
     throw new Error('User agent data is not available');
   }
 
+  console.log(userAgentData);
   return userAgentData;
 }
 

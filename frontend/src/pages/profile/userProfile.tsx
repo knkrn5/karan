@@ -65,7 +65,7 @@ export default function UserProfile() {
     setInputValue(e.target.value);
   };
 
-  const handleResetPassword = async () => {
+  const handleEditProfile = async () => {
     if (confirmationsBool.deleteAccount) {
       setInputValue('');
       setConfirmationsBool(prevState => ({
@@ -195,7 +195,7 @@ export default function UserProfile() {
           isOpen={isPopupOpen}
           onClose={() => {
             setIsPopupOpen(false);
-            handleResetPassword();
+            handleEditProfile();
           }}
         >
           <DeleteConfirmationPopup
@@ -204,7 +204,7 @@ export default function UserProfile() {
               setIsPopupOpen(false);
             }}
             onCancel={() => {
-              handleResetPassword();
+              handleEditProfile();
               setIsPopupOpen(false);
             }}
           />
@@ -265,11 +265,11 @@ export default function UserProfile() {
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 px-2 my-5">
-          {/* Reset Password */}
+          {/* Edit Profile */}
           <button
             type="button"
             className="relative group w-fit text-white bg-blue-600  font-medium rounded-lg text-sm  px-4 py-2 mx-auto md:px-5 md:py-2.5 dark:bg-blue-500 dark:hover:bg-blue-600 cursor-pointer"
-            onClick={handleResetPassword}
+            onClick={handleEditProfile}
           >
             <span className="relative z-10">
               {confirmationsBool.deleteAccount ? 'Cancel Delete' : 'Edit Profile'}

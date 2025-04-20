@@ -15,7 +15,7 @@ interface UserAgentDataPropTypes {
   };
 }
 
-// Function to format the user agent data into a visually appealing HTML string
+// function to format the useragent data as HTML
 export function formatUserAgentDataHTML(data: any): string {
   let formattedHTML = '';
 
@@ -32,13 +32,55 @@ export function formatUserAgentDataHTML(data: any): string {
         </h3>
         <div style="padding-left: 10px;">`;
 
+  //matching browser name and version and engine
   if (data.brands && Array.isArray(data.brands)) {
-    data.brands.forEach((brand: any) => {
+    // Initialize default values
+    let browserName = 'Unknown';
+    let engineInfo = 'Unknown';
+    let brandInfo = 'Unknown';
+
+    // Try to find specific brands
+    data.brands.forEach((brand: { brand: string; version: string }) => {
+      const brandLower = brand.brand.toLowerCase();
+
+      // matching browser name
+      if (
+        [
+          'chrome',
+          'firefox',
+          'opera',
+          'brave',
+          'microsoft edge',
+          'safari',
+          'samsung internet',
+        ].includes(brandLower)
+      ) {
+        browserName = `${brand.brand} (version ${brand.version})`;
+      }
+      // matching browser engines
+      else if (['chromium', 'gecko', 'webkit', 'blink'].includes(brandLower)) {
+        engineInfo = `${brand.brand} (version ${brand.version})`;
+      }
+      // matching browser brands
+      else if (brandLower.includes('not') && brandLower.includes('brand')) {
+        brandInfo = `${brand.brand} (version ${brand.version})`;
+      }
+    });
+
+    //organising information
+    const displayItems = [
+      { label: 'Name', value: browserName },
+      { label: 'Engine', value: engineInfo },
+      { label: 'Brand', value: brandInfo },
+    ];
+
+    // Displaying the organised information
+    displayItems.forEach(item => {
       formattedHTML += `
-          <div style="margin-bottom: 5px; display: flex;">
-            <span style="min-width: 120px; font-weight: 500; color: #555555;">Browser:</span>
-            <span style="color: #333333;">${brand.brand} (version ${brand.version})</span>
-          </div>`;
+        <div style="margin-bottom: 5px; display: flex;">
+          <span style="min-width: 120px; font-weight: 500; color: #555555;">${item.label}:</span>
+          <span style="color: #333333;">${item.value}</span>
+        </div>`;
     });
   }
 
