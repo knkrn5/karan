@@ -112,7 +112,10 @@ export async function getUserAgentData() {
     userAgentData.platform = ua.platform;
     userAgentData.language = navigatorInfo.language;
   } else {
-    throw new Error('User agent data is not available');
+    // fallback for Firefox and others
+    userAgentData.userAgent = navigator.userAgent;
+    userAgentData.language = navigator.language;
+    console.log(navigator.userAgent);
   }
 
   return userAgentData;

@@ -16,7 +16,7 @@ interface UserAgentDataPropTypes {
 }
 
 // function to format the useragent data as HTML
-export function formatUserAgentDataHTML(data: any): string {
+export function formatUserAgentDataHTML(data: UserAgentDataPropTypes): string {
   let formattedHTML = '';
 
   // Browser information section
@@ -82,6 +82,15 @@ export function formatUserAgentDataHTML(data: any): string {
           <span style="color: #333333;">${item.value}</span>
         </div>`;
     });
+  }
+
+  // fallback for Firefox and others
+  if (data.userAgent) {
+    formattedHTML += `
+      <div style="margin-bottom: 5px; display: flex;">
+        <span style="min-width: 120px; font-weight: 500; color: #555555;">Browser:</span>
+        <span style="color: #333333;">${data.userAgent}</span>
+      </div>`;
   }
 
   formattedHTML += `

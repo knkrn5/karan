@@ -12,8 +12,8 @@ export default function LogoutUser() {
     const response = await logout();
     if (response.success) {
       setTRpopupNotificationMsg({ success: response.message });
-      setIsLoggingOut(false);
     }
+    setIsLoggingOut(false);
   };
 
   return (

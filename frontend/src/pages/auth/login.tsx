@@ -36,6 +36,9 @@ export default function LoginPage() {
     password: '',
   });
 
+  const [showTooltip, setShowTooltip] = useState<boolean>(false);
+  const [agreed, setAgreed] = useState<boolean>(false);
+
   //auth store data
   const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
   const { setIsSuccessLoginedIn } = useAuthStore();
@@ -95,6 +98,13 @@ export default function LoginPage() {
       return;
     }
 
+    //check if user agreed to the data collection policy
+    if (!agreed) {
+      setICnotificationMsg({ info: 'Please agree to the data collection policy' });
+      return;
+    }
+
+    setICnotificationMsg({});
     setIsLoading(true);
 
     try {
@@ -246,6 +256,35 @@ export default function LoginPage() {
         </button>
       </form>
 
+      {/* Data privacy tooltip */}
+      <label className="flex items-center mt-2 mb-4 text-sm font-bold text-black dark:text-neutral-300 relative">
+        <input
+          type="checkbox"
+          id="agree-checkbox"
+          className="mr-2"
+          onChange={() => setAgreed(!agreed)}
+        />
+        I have read and agree to the data collection policy
+        <div className=" ml-1 cursor-pointer relative">
+          <button
+            type="button"
+            className="text-blue-500 cursor-pointer "
+            onClick={() => setShowTooltip(!showTooltip)}
+          >
+            ℹ️
+          </button>
+          <div
+            className={`absolute right-5 top-full mt-1 w-64 p-2 text-xs text-white bg-gray-700 rounded shadow-lg transition-opacity duration-200 z-10 ${
+              showTooltip ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            We collect limited device and location information (e.g., browser, platform, IP, and
+            region) to enhance security and user experience. This data is not shared with any third
+            parties.
+          </div>
+        </div>
+      </label>
+
       <div className="flex flex-col items-center mt-4">
         <p className=" text-sm text-gray-600 dark:text-gray-400">
           Don't have an account?{' '}
@@ -263,6 +302,7 @@ export default function LoginPage() {
           Forgot Password
         </button>
       </div>
+
       <ICnotificationMsg />
     </div>
   );
