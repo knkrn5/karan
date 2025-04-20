@@ -111,7 +111,7 @@ export default function LoginPage() {
       const response = await axios.post(
         `${BACKEND_URL}/api/v1/auth/login`,
         {
-          email: loginFormFieldData.email,
+          email: loginFormFieldData.email.toLowerCase(),
           password: loginFormFieldData.password,
         },
         { withCredentials: true }

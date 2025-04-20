@@ -83,7 +83,7 @@ export class AuthService {
     const user: IUser = await User.create({
       firstName,
       lastName,
-      email,
+      email: email.toLowerCase(),
       password,
     });
 

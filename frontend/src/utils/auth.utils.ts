@@ -16,7 +16,7 @@ export async function verifyExistingUser(userEmail: string): Promise<ApiResponse
   try {
     const response = await axios.post<ApiResponseTypes<null>>(
       `${BACKEND_URL}/api/v1/auth/verify-user`,
-      { email: userEmail }
+      { email: userEmail.toLowerCase() }
     );
     return response.data;
   } catch (error) {
@@ -44,7 +44,7 @@ export async function sendEmailOtp(
   try {
     const response = await axios.post(
       `${BACKEND_URL}/api/v1/auth/send-email-otp`,
-      { email, subject, excerpt },
+      { email: email.toLowerCase(), subject, excerpt },
       { withCredentials: true }
     );
     return response.data;
@@ -71,7 +71,7 @@ export async function verifyEmailOtp(
   try {
     const response = await axios.post<ApiResponseTypes<null>>(
       `${BACKEND_URL}/api/v1/auth/verify-email-otp`,
-      { email: userEmail, otp: enteredOTP },
+      { email: userEmail.toLowerCase(), otp: enteredOTP },
       { withCredentials: true }
     );
     return response.data;
