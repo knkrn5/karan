@@ -18,7 +18,8 @@ interface UserAgentDataPropTypes {
   };
 }
 
-const ACCESS_KEY = import.meta.env.VITE_APIIP_KEY;
+const APIIP_KEY = import.meta.env.VITE_APIIP_KEY;
+const OPENCAGE_KEY = import.meta.env.VITE_OPENCAGE_KEY;
 
 async function getUserIpAddress() {
   try {
@@ -36,7 +37,7 @@ async function getGeoDetails() {
   if (!userIpAddress) return null;
 
   try {
-    const url = 'https://apiip.net/api/check?ip=' + userIpAddress + '&accessKey=' + ACCESS_KEY;
+    const url = 'https://apiip.net/api/check?ip=' + userIpAddress + '&accessKey=' + APIIP_KEY;
 
     // Make a request and store the response
     const response = await axios(url);
@@ -68,8 +69,12 @@ async function getGeoDetails() {
 
 async function getExactGeoDetails(lat: number, lon: number) {
   try {
-    const response = await axios(
+    /* const response = await axios(
       `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
+    ); */
+
+    const response = await axios(
+      `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${OPENCAGE_KEY}`
     );
 
     const geoData = response.data;
@@ -126,34 +131,42 @@ export async function sendUserAgentDataEmail(email: string, subject: string, exc
 }
 
 //===========ONLY LOCAL PACKAGES WAY TO GET THE GEO INFO, NO EXTERNAL API==================//
-/* import geoip from 'geoip-lite';
-import csc from 'country-state-city';
-const { Country, State } = csc;
+/* const geoip = require('geoip-lite');
+const NodeGeocoder = require('node-geocoder');
 
-const ipAddress = "2409:40d0:10cc:2121:14de:63:4b89:ba14";
-// const ipAddress = "127.0.0.1";
+// Declare geocoder 
+const geocoderOptions = {
+    provider: 'openstreetmap',
+};
+const geocoder = NodeGeocoder(geocoderOptions);
 
-try {
-    const geo = geoip.lookup(ipAddress);
+const ip = "2409:40d0:10cc:2121:14de:63:4b89:ba14";
+const geo = geoip.lookup(ip);
 
-    if (!geo) {
-        throw new Error("Geo data not found for the IP address.");
+if (geo) {
+    console.log("Latitude:", geo.ll[0]);
+    console.log("Longitude:", geo.ll[1]);
+
+    const lat = geo.ll[0];
+    const lon = geo.ll[1];
+
+    getAddress(lat, lon);
+} else {
+    console.log("Geo data not found for the IP address.");
+}
+
+// Define function after everything is ready
+async function getAddress(lat, lon) {
+    try {
+        const res = await geocoder.reverse({ lat, lon });
+        if (res.length > 0) {
+            console.log("📍 node-geocoder:", res[0].formattedAddress);
+        } else {
+            console.log("❌ node-geocoder: No address found.");
+        }
+    } catch (err) {
+        console.log("❌ Error in reverse geocoding:", err.message);
     }
-
-    const countryCode = geo.country;
-    const regionCode = geo.region;
-    const city = geo.city;
-
-    const country = Country.getCountryByCode(countryCode);
-    const state = State.getStateByCodeAndCountry(regionCode, countryCode);
-
-    if (!country || !state) {
-        throw new Error("Country or state not found for the given codes.");
-    }
-
-    console.log(`${country.name}, ${state.name}, ${city}`);
-} catch (error) {
-    console.error("Error fetching location info:", error.message);
 } */
 
 //===============================================================
