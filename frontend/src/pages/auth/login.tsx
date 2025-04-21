@@ -262,21 +262,26 @@ export default function LoginPage() {
           type="checkbox"
           id="agree-checkbox"
           className="mr-2"
+          checked={agreed}
           onChange={() => setAgreed(!agreed)}
         />
         I have read and agree to the data collection policy
         <div className=" ml-1 cursor-pointer relative">
           <button
             type="button"
-            className="text-blue-500 cursor-pointer "
+            className="text-blue-500 cursor-pointer"
             onClick={() => setShowTooltip(!showTooltip)}
+            onMouseEnter={() => setShowTooltip(true)}
           >
             ℹ️
           </button>
+
           <div
-            className={`absolute right-5 top-full mt-1 w-64 p-2 text-xs text-white bg-gray-700 rounded shadow-lg transition-opacity duration-200 z-10 ${
-              showTooltip ? 'opacity-100' : 'opacity-0'
+            role="tooltip"
+            className={`absolute right-0 top-full mt-1 w-64 p-2 text-xs text-white bg-gray-700 rounded shadow-lg transition-opacity duration-200 z-10 before:content-[''] before:absolute before:-top-1.5 before:right-0.5  before:border-l-8 before:border-r-8 before:border-b-8 before:border-l-transparent before:border-r-transparent before:border-b-gray-700  ${
+              showTooltip ? 'block' : 'hidden'
             }`}
+            onMouseLeave={() => setShowTooltip(false)}
           >
             We collect limited device and location information (e.g., browser, platform, IP, and
             region) to enhance security and user experience. This data is not shared with any third
