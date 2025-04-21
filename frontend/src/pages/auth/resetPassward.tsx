@@ -15,6 +15,7 @@ import {
   validateEmailInputField,
   validatePasswordInputField,
 } from '../../utils/inputFieldValidations.js';
+import PasswardRequirementToolTip from '../../components/ui/passwardRequirementToolTip.js';
 
 interface ResetPasswardFieldDataProps {
   email: string;
@@ -313,7 +314,13 @@ export default function ResetPassward() {
             className="flex justify-between items-center text-sm font-medium text-gray-600 dark:text-gray-300"
           >
             <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">
-              {!otpConfirmations.isOptVerified ? 'Enter OTP' : 'Enter New Password'}
+              {!otpConfirmations.isOptVerified ? (
+                'Enter OTP'
+              ) : (
+                <>
+                  New Password <PasswardRequirementToolTip />
+                </>
+              )}
             </span>
             <button
               type="button"
