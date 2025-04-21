@@ -37,7 +37,6 @@ export default function LoginPage() {
     password: '',
   });
 
-  const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const [agreed, setAgreed] = useState<boolean>(false);
 
   //auth store data
@@ -237,7 +236,6 @@ export default function LoginPage() {
           {loginFieldErrors.password && (
             <p className="text-red-600 text-sm mt-1">{loginFieldErrors.password}</p>
           )}
-          <ToolTip />
         </div>
 
         <button
@@ -268,30 +266,18 @@ export default function LoginPage() {
           onChange={() => setAgreed(!agreed)}
         />
         <span>I have read and agree to the data collection policy</span>
-        <button
-          title="Tooltip"
-          aria-label="Tooltip"
-          type="button"
-          className="ml-1 cursor-pointer relative"
-          onClick={() => {
-            if (window.innerWidth < 640) {
-              setShowTooltip(!showTooltip);
-            }
-          }}
-          onMouseEnter={() => setShowTooltip(true)}
-          onMouseLeave={() => setShowTooltip(false)}
+        <ToolTip
+          tooltipIconStyling='w-5 mt-2 text-md text-black dark:text-white my-auto"'
+          tooltipStyling={`right-0 top-full mt-1 w-64 p-2 before:content-[''] before:absolute before:-top-1.5 before:right-0.5  before:border-l-8 before:border-r-8 before:border-b-8 before:border-l-transparent before:border-r-transparent before:border-b-gray-700`}
         >
-          ℹ️
-          <div
-            className={`absolute right-0 top-full mt-1 w-64 p-2 text-xs text-white bg-gray-700 rounded shadow-lg transition-opacity duration-200 z-10 before:content-[''] before:absolute before:-top-1.5 before:right-0.5  before:border-l-8 before:border-r-8 before:border-b-8 before:border-l-transparent before:border-r-transparent before:border-b-gray-700  ${
-              showTooltip ? 'block' : 'hidden'
-            }`}
-          >
+          {' '}
+          <p>
+            {' '}
             We collect limited device and location information (e.g., browser, platform, IP, and
             region) to enhance security and user experience. This data is not shared with any third
             parties.
-          </div>
-        </button>
+          </p>{' '}
+        </ToolTip>
       </label>
 
       <div className="flex flex-col items-center mt-4">

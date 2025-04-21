@@ -1,12 +1,28 @@
-/* import { useState } from 'react';
-import { CiCircleInfo } from 'react-icons/ci';
+import { useState, ReactNode } from 'react';
+import { FaInfoCircle } from 'react-icons/fa';
 
 interface ToolTipProps {
-  onChecked: (checked: boolean) => void;
+  children: ReactNode;
+  tooltipStyling?: string;
+  tooltipIconStyling?: string;
 }
 
-export default function ToolTip() {
+export default function ToolTip({
+  children,
+  tooltipStyling = '',
+  tooltipIconStyling = '',
+}: Readonly<ToolTipProps>) {
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
+
+  /* const positionStyles = {
+  //   className={`absolute right-0 top-full mt-1 w-64 p-2 text-xs text-white bg-gray-700 rounded shadow-lg  duration-200 z-10 before:content-[''] before:absolute before:-top-1.5 before:right-0  before:border-l-8 before:border-r-8 before:border-b-8 before:border-l-transparent before:border-r-transparent before:border-b-gray-700
+    top: 'right-0 top-full mt-1 before:-top-1.5 before:right-0 before:border-l-8 before:border-r-8 before:border-b-8 before:border-l-transparent before:border-r-transparent before:border-b-gray-700',
+    bottom:
+      'right-0 bottom-full mb-1 before:-bottom-1.5 before:right-0 before:border-l-8 before:border-r-8 before:border-t-8 before:border-l-transparent before:border-r-transparent before:border-t-gray-700',
+    left: 'right-full top-0 mr-1 before:top-1 before:-right-1.5 before:border-t-8 before:border-b-8 before:border-l-8 before:border-t-transparent before:border-b-transparent before:border-l-gray-700',
+    right:
+      'left-full top-0 ml-1 before:top-1 before:-left-1.5 before:border-t-8 before:border-b-8 before:border-r-8 before:border-t-transparent before:border-b-transparent before:border-r-gray-700',
+  }; */
 
   return (
     <div className="w-fit cursor-pointer relative">
@@ -14,36 +30,25 @@ export default function ToolTip() {
         title="Tooltip"
         aria-label="Tooltip"
         type="button"
-        className="text-white cursor-pointer"
-        onClick={() => setShowTooltip(!showTooltip)}
+        className="ml-1 cursor-pointer relative"
+        onClick={() => {
+          if (window.innerWidth < 640) {
+            setShowTooltip(!showTooltip);
+          }
+        }}
         onMouseEnter={() => setShowTooltip(true)}
-      >
-        <CiCircleInfo className="w-5 h-5 mt-1" />
-      </button>
-
-      <div
-        role="tooltip"
-        className={`absolute right-0 top-full mt-1 w-64 p-2 text-xs text-white bg-gray-700 rounded shadow-lg transition-opacity duration-200 z-10 before:content-[''] before:absolute before:-top-1.5 before:right-0.5  before:border-l-8 before:border-r-8 before:border-b-8 before:border-l-transparent before:border-r-transparent before:border-b-gray-700 ${
-          showTooltip ? 'block' : 'hidden'
-        } `}
         onMouseLeave={() => setShowTooltip(false)}
       >
-        <ul className="list-disc list-inside font-semibold text-gray-200">
-          <li>
-            {' '}
-            thsi is testthsi is testthsi is testthsi is testthsi is testthsi is testthsi is test
-          </li>
-          <li>
-            {' '}
-            thsi is testthsi is testthsi is testthsi is testthsi is testthsi is testthsi is test
-          </li>
-          <li>
-            {' '}
-            thsi is testthsi is testthsi is testthsi is testthsi is testthsi is testthsi is test
-          </li>
-        </ul>
-      </div>
+        {/* <FaInfoCircle className=" text-md text-black dark:text-white my-auto" /> */}
+        <FaInfoCircle className={tooltipIconStyling} />
+        <div
+          className={`absolute text-xs text-white bg-gray-700 rounded shadow-lg  duration-200 z-10 ${tooltipStyling}  ${
+            showTooltip ? 'block' : 'hidden'
+          }`}
+        >
+          {children}
+        </div>
+      </button>
     </div>
   );
 }
- */
