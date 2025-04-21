@@ -267,16 +267,14 @@ export default function LoginPage() {
         />
         <span>I have read and agree to the data collection policy</span>
         <ToolTip
-          tooltipIconStyling='w-5 mt-2 text-md text-black dark:text-white my-auto"'
-          tooltipStyling={`right-0 top-full mt-1 w-64 p-2 before:content-[''] before:absolute before:-top-1.5 before:right-0.5  before:border-l-8 before:border-r-8 before:border-b-8 before:border-l-transparent before:border-r-transparent before:border-b-gray-700`}
+          tooltipIconStyling="w-5 mt-2 text-md text-black dark:text-white"
+          tooltipBoxStyling={`right-0 top-full mt-1 w-64 p-2 before:content-[''] before:absolute before:-top-1.5 before:right-0.5  before:border-l-8 before:border-r-8 before:border-b-8 before:border-l-transparent before:border-r-transparent before:border-b-gray-700`}
         >
-          {' '}
           <p>
-            {' '}
             We collect limited device and location information (e.g., browser, platform, IP, and
             region) to enhance security and user experience. This data is not shared with any third
             parties.
-          </p>{' '}
+          </p>
         </ToolTip>
       </label>
 

@@ -3,13 +3,13 @@ import { FaInfoCircle } from 'react-icons/fa';
 
 interface ToolTipProps {
   children: ReactNode;
-  tooltipStyling?: string;
+  tooltipBoxStyling?: string;
   tooltipIconStyling?: string;
 }
 
 export default function ToolTip({
   children,
-  tooltipStyling = '',
+  tooltipBoxStyling = '',
   tooltipIconStyling = '',
 }: Readonly<ToolTipProps>) {
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
@@ -39,10 +39,9 @@ export default function ToolTip({
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
       >
-        {/* <FaInfoCircle className=" text-md text-black dark:text-white my-auto" /> */}
         <FaInfoCircle className={tooltipIconStyling} />
         <div
-          className={`absolute text-xs text-white bg-gray-700 rounded shadow-lg  duration-200 z-10 ${tooltipStyling}  ${
+          className={`absolute text-xs text-white bg-gray-700 rounded shadow-lg  duration-200 z-10 ${tooltipBoxStyling}  ${
             showTooltip ? 'block' : 'hidden'
           }`}
         >

@@ -31,15 +31,15 @@ export function validatePasswordInputField(password: string): string | null {
   if (!password) {
     return 'Please Enter the Password';
   } else if (password.length < 8) {
-    return 'Password must be at least 8 characters long';
+    return 'Password must be atleast 8 characters long';
   } else if (!/(?=.*[A-Z])/.test(password)) {
-    return 'Password must contain at least one uppercase letter';
+    return 'Password must contain atleast one uppercase letter';
   } else if (!/(?=.*[a-z])/.test(password)) {
-    return 'Password must contain at least one lowercase letter';
+    return 'Password must contain atleast one lowercase letter';
   } else if (!/(?=.*\d)/.test(password)) {
-    return 'Password must contain at least one number';
+    return 'Password must contain atleast one number';
   } else if (!/(?=.*[@$!%*?&])/.test(password)) {
-    return 'Password must contain at least one special character';
+    return 'Password must contain atleast one special character(!@#$%^&*)';
   } else if (password.length > 50) {
     return 'Password can max be 50 characters long';
   }
