@@ -70,11 +70,10 @@ async function getGeoDetails() {
 async function getExactGeoDetails(lat: number, lon: number) {
   try {
     //this API is free, will use this when needed...
-    /* const response = await axios(
-      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
-    ); 
-    return geoData.display_name ?? 'unknown location';
-    */
+    //  const response = await axios(
+    //   `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
+    // );
+    // return geoData.display_name ?? 'unknown location';
 
     const response = await axios(
       `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${OPENCAGE_KEY}`

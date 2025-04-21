@@ -142,20 +142,22 @@ export default function ThemeMode() {
       aria-label="Theme selector"
     >
       {themes.map((theme) => (
-        <button
+        <label
           key={theme.name}
           className={`rounded-full p-0 *:size-7 ${
             themeMode === theme.name && "bg-white dark:bg-gray-700"
           }`}
-          role="radio"
-          aria-checked={themeMode === theme.name}
-          // aria-checked={themeMode === theme.name ? 'true' : 'false'}
-          aria-label={theme.label}
-          onClick={theme.onClick}
-          type="button"
         >
+          <input
+            type="radio"
+            name="theme"
+            value={theme.name}
+            checked={themeMode === theme.name}
+            onChange={theme.onClick}
+            className="sr-only"
+          />
           {theme.icon}
-        </button>
+        </label>
       ))}
     </div>
   );
