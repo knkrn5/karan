@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { Link, useNavigate } from 'react-router';
 import axios from 'axios';
 import { FaRegEye, FaRegEyeSlash, FaRegSave, FaRegCheckCircle } from 'react-icons/fa';
@@ -59,7 +59,9 @@ export default function Register() {
   });
 
   const [isResendingOtp, setIsResendingOtp] = useState<boolean>(false);
-  // const [resendCooldown, setResendCooldown] = useState<number>(0);
+  const [otptiming, setotptiming] = useState<string>('00:00');
+  const [resendCooldown, setResendCooldown] = useState<number>(60);
+  const otpCleanupRef = useRef<(() => void) | null>(null);
 
   const [formFieldsError, setFormFieldsError] = useState<UserDataProps>({
     firstName: '',
@@ -85,6 +87,41 @@ export default function Register() {
       setIsVisible(true);
     }, 10);
   }, []);
+
+  //OTP remaining time calculator function
+  function otpRemainingTimeCounter(reamingOtpTime: number) {
+    const endTime = Date.now() + reamingOtpTime * 1000;
+
+    const interval = setInterval(() => {
+      const now = Date.now();
+      const remainingMillis = endTime - now;
+      const remainingSeconds = Math.max(Math.floor(remainingMillis / 1000), 0);
+
+      const minutes = Math.floor(remainingSeconds / 60);
+      const seconds = remainingSeconds % 60;
+      const formattedRemainingTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+      setotptiming(formattedRemainingTime);
+      setResendCooldown(Math.max(remainingSeconds - 240, 0));
+
+      if (remainingSeconds <= 0) {
+        setotptiming('00:00');
+        setICnotificationMsg({ error: 'OTP expired, Please resend' });
+        clearInterval(interval);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }
+
+  function callOtpRemainingTimeCounter(reamingOtpTime: number) {
+    // Clear the previous interval
+    if (otpCleanupRef.current) {
+      otpCleanupRef.current();
+    }
+    const res = otpRemainingTimeCounter(reamingOtpTime);
+    otpCleanupRef.current = res;
+  }
 
   // Validate form fields and return errors
   const validateForm = useCallback(
@@ -152,6 +189,8 @@ export default function Register() {
     const response = await sendEmailOtp(email, subject, excerpt);
 
     if (response.success) {
+      callOtpRemainingTimeCounter(Number(response.data));
+
       setRegistrationVerification(prev => ({ ...prev, isOptSent: true }));
       setICnotificationMsg({ success: response.message });
       return true;
@@ -253,10 +292,8 @@ export default function Register() {
       if (formFieldsError[name as keyof UserDataProps]) {
         setFormFieldsError(prev => ({ ...prev, [name]: '' }));
       }
-
-      setICnotificationMsg({});
     },
-    [formFieldsError, setICnotificationMsg]
+    [formFieldsError]
   );
 
   // Toggle password visibility
@@ -536,7 +573,13 @@ export default function Register() {
                 <button
                   type="button"
                   title="resend otp"
-                  disabled={!registrationVerification.isOptSent || isResendingOtp}
+                  disabled={
+                    !registrationVerification.isOptSent ||
+                    isResendingOtp ||
+                    isSigningUp ||
+                    resendCooldown > 0
+                  }
+                  aria-label="resend otp"
                   onClick={async () => {
                     setIsResendingOtp(true);
                     setICnotificationMsg({});
@@ -550,7 +593,7 @@ export default function Register() {
                     }
                     setIsResendingOtp(false);
                   }}
-                  className="focus:outline-none cursor-pointer disabled:cursor-not-allowed"
+                  className="focus:outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isResendingOtp ? (
                     <AiOutlineLoading3Quarters className="animate-spin" />
@@ -575,6 +618,12 @@ export default function Register() {
                 value={userData.otp}
                 onChange={handleChange}
               />
+              {registrationVerification.isOptSent && (
+                <span className="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
+                  <p>OTP expires in: {otptiming}</p>
+                  <p>Resend OTP in: {resendCooldown} seconds</p>
+                </span>
+              )}
               {formFieldsError.otp && (
                 <p className="text-red-600 text-sm mt-1" id="confirmPassword-error">
                   {formFieldsError.otp}
@@ -589,7 +638,8 @@ export default function Register() {
           type="submit"
           className={`${
             isSigningUp ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
-          } text-white font-semibold py-2 px-4 rounded-lg w-full flex justify-center items-center cursor-pointer`}
+          } text-white font-semibold py-2 px-4 rounded-lg w-full flex justify-center items-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed`}
+          disabled={isSigningUp}
         >
           {isSigningUp ? (
             <>
