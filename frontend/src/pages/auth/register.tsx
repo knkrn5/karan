@@ -594,20 +594,33 @@ export default function Register() {
           {isSigningUp ? (
             <>
               <AiOutlineLoading3Quarters className="animate-spin -ml-1 mr-3 h-5 w-5 text-white font-bold" />
-              {!registrationVerification.isOptSent
-                ? 'Sending OTP...'
-                : registrationVerification.isOptSent && !registrationVerification.isOptVerified
-                ? 'Verifying OTP...'
-                : 'Signing Up...'}
+              {(() => {
+                if (!registrationVerification.isOptSent) {
+                  return 'Sending OTP...';
+                } else if (
+                  registrationVerification.isOptSent &&
+                  !registrationVerification.isOptVerified
+                ) {
+                  return 'Verifying OTP...';
+                } else {
+                  return 'Signing Up...';
+                }
+              })()}
             </>
           ) : (
             <>
-              {!registrationVerification.isOptSent
-                ? 'Send OTP'
-                : registrationVerification.isOptSent && !registrationVerification.isOptVerified
-                ? 'Verify OPT'
-                : 'Sign Up'}
-              <i className="fas fa-arrow-right ml-2"></i>
+              {(() => {
+                if (!registrationVerification.isOptSent) {
+                  return 'Send OTP';
+                } else if (
+                  registrationVerification.isOptSent &&
+                  !registrationVerification.isOptVerified
+                ) {
+                  return 'Verify OTP';
+                } else {
+                  return 'Sign Up';
+                }
+              })()}
             </>
           )}
         </button>
