@@ -1,12 +1,13 @@
-import { FaGithub, FaLinkedin, FaInstagram, FaFacebook } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import { FaGithub, FaLinkedin, FaInstagram } from 'react-icons/fa';
+import { SiHuggingface } from 'react-icons/si';
+import { FaXTwitter } from 'react-icons/fa6';
 
 type SocialLinkProps = {
   platform: keyof typeof iconMap;
   title: string;
   url: string;
-  fgColor: string; 
-  bgColor: string;   
+  fgColor: string;
+  bgColor: string;
   ariaLabel: string;
 };
 
@@ -15,50 +16,50 @@ const iconMap = {
   linkedin: <FaLinkedin size={24} />,
   github: <FaGithub size={24} />,
   ig: <FaInstagram size={24} />,
-  fb: <FaFacebook size={24} />,
+  hf: <SiHuggingface size={24} />,
 };
 
 export default function SocialLinks() {
   const socialUrls: SocialLinkProps[] = [
     {
-      platform: "x",
-      title: "X (Twitter)",
-      url: "https://x.com/ka_r_an5",
-      fgColor: "text-white",
-      bgColor: "bg-black",
-      ariaLabel: "Visit X (Twitter) profile",
+      platform: 'x',
+      title: 'X (Twitter)',
+      url: 'https://x.com/ka_r_an5',
+      fgColor: 'text-white',
+      bgColor: 'bg-black',
+      ariaLabel: 'Visit X (Twitter) profile',
     },
     {
-      platform: "linkedin",
-      title: "LinkedIn",
-      url: "https://linkedin.com/in/ka-r-an5",
-      fgColor: "text-white",
-      bgColor: "bg-blue-600",
-      ariaLabel: "Visit LinkedIn profile",
+      platform: 'linkedin',
+      title: 'LinkedIn',
+      url: 'https://linkedin.com/in/ka-r-an5',
+      fgColor: 'text-white',
+      bgColor: 'bg-blue-600',
+      ariaLabel: 'Visit LinkedIn profile',
     },
     {
-      platform: "github",
-      title: "GitHub",
-      url: "https://github.com/knkrn5",
-      fgColor: "text-white",
-      bgColor: "bg-gray-800",
-      ariaLabel: "Visit GitHub profile",
+      platform: 'github',
+      title: 'GitHub',
+      url: 'https://github.com/knkrn5',
+      fgColor: 'text-white',
+      bgColor: 'bg-gray-800',
+      ariaLabel: 'Visit GitHub profile',
     },
     {
-      platform: "ig",
-      title: "Instagram",
-      url: "https://instagram.com/ka_r_an5",
-      fgColor: "text-white",
-      bgColor: "bg-orange-500",
-      ariaLabel: "Visit Instagram profile",
+      platform: 'ig',
+      title: 'Instagram',
+      url: 'https://instagram.com/ka_r_an5',
+      fgColor: 'text-white',
+      bgColor: 'bg-orange-500',
+      ariaLabel: 'Visit Instagram profile',
     },
     {
-      platform: "fb",
-      title: "Facebook",
-      url: "https://facebook.com/knkrn5/",
-      fgColor: "text-white",
-      bgColor: "bg-blue-500",
-      ariaLabel: "Visit Facebook profile",
+      platform: 'hf',
+      title: 'huggingface',
+      url: 'https://huggingface.co/knkrn5',
+      fgColor: 'text-orange-900',
+      bgColor: 'bg-yellow-500',
+      ariaLabel: 'Visit hugginface profile',
     },
   ];
 
