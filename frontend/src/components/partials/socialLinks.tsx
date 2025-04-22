@@ -65,9 +65,9 @@ export default function SocialLinks() {
 
   return (
     <div className="flex flex-col items-center justify-center mx-auto my-5">
-      <h1 className="text-black text-xl font-serif mb-3 font-extrabold dark:text-white">
+      <h3 className="text-black text-xl font-serif mb-3 font-extrabold dark:text-white">
         Contact Me
-      </h1>
+      </h3>
       <div className="flex space-x-4">
         {socialUrls.map(({ platform, title, url, fgColor, bgColor, ariaLabel }) => (
           <a
