@@ -91,6 +91,11 @@ export default function Register() {
 
   //OTP remaining time calculator function
   function otpRemainingTimeCounter(reamingOtpTime: number) {
+    // Clear the previous interval
+    if (otpCleanupRef.current) {
+      otpCleanupRef.current();
+    }
+
     const timerCounter = remainingTimeCalculator(reamingOtpTime);
 
     const remainingTimeIntervalID = setInterval(() => {
@@ -101,22 +106,23 @@ export default function Register() {
 
       if (res.remainingSeconds <= 0) {
         setotptiming(res.formattedRemainingTime);
-        setICnotificationMsg({ error: 'OTP expired, Please resend' });
+        setICnotificationMsg({ info: 'OTP expired, Please resend' });
         clearInterval(remainingTimeIntervalID);
       }
     }, 1000);
 
-    return () => clearInterval(remainingTimeIntervalID);
+    // return () => clearInterval(remainingTimeIntervalID);
+    otpCleanupRef.current = () => clearInterval(remainingTimeIntervalID);
   }
 
-  function callOtpRemainingTimeCounter(reamingOtpTime: number) {
-    // Clear the previous interval
-    if (otpCleanupRef.current) {
-      otpCleanupRef.current();
-    }
-    const res = otpRemainingTimeCounter(reamingOtpTime);
-    otpCleanupRef.current = res;
-  }
+  // function callOtpRemainingTimeCounter(reamingOtpTime: number) {
+  // Clear the previous interval
+  // if (otpCleanupRef.current) {
+  //   otpCleanupRef.current();
+  // }
+  //   const res = otpRemainingTimeCounter(reamingOtpTime);
+  //   otpCleanupRef.current = res;
+  // }
 
   // Validate form fields and return errors
   const validateForm = useCallback(
@@ -184,7 +190,7 @@ export default function Register() {
     const response = await sendEmailOtp(email, subject, excerpt);
 
     if (response.success) {
-      callOtpRemainingTimeCounter(Number(response.data));
+      otpRemainingTimeCounter(Number(response.data));
 
       setRegistrationVerification(prev => ({ ...prev, isOptSent: true }));
       setICnotificationMsg({ success: response.message });
