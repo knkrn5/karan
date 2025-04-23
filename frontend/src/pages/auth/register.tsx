@@ -15,6 +15,7 @@ import {
   validatePasswordInputField,
 } from '../../utils/inputFieldValidations.js';
 import PasswardRequirementToolTip from '../../components/ui/passwardRequirementToolTip.js';
+import { remainingTimeCalculator } from '../../utils/remainingTimeCounter.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -90,22 +91,16 @@ export default function Register() {
 
   //OTP remaining time calculator function
   function otpRemainingTimeCounter(reamingOtpTime: number) {
-    const endTime = Date.now() + reamingOtpTime * 1000;
+    const timerCounter = remainingTimeCalculator(reamingOtpTime);
 
     const remainingTimeIntervalID = setInterval(() => {
-      const now = Date.now();
-      const remainingMillis = endTime - now;
-      const remainingSeconds = Math.max(Math.floor(remainingMillis / 1000), 0);
+      const res = timerCounter();
 
-      const minutes = Math.floor(remainingSeconds / 60);
-      const seconds = remainingSeconds % 60;
-      const formattedRemainingTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      setotptiming(res.formattedRemainingTime);
+      setResendCooldown(Math.max(res.remainingSeconds - 240, 0));
 
-      setotptiming(formattedRemainingTime);
-      setResendCooldown(Math.max(remainingSeconds - 240, 0));
-
-      if (remainingSeconds <= 0) {
-        setotptiming('00:00');
+      if (res.remainingSeconds <= 0) {
+        setotptiming(res.formattedRemainingTime);
         setICnotificationMsg({ error: 'OTP expired, Please resend' });
         clearInterval(remainingTimeIntervalID);
       }
