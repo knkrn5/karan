@@ -95,7 +95,7 @@ export default function Register() {
       setIsVisible(true);
     }, 10);
 
-    //clear interval on unmount
+    //clearing remainingTimeInterval on unmount
     return () => {
       clearRemainingTimeInterval();
     };

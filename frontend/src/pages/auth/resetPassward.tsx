@@ -16,6 +16,8 @@ import {
   validatePasswordInputField,
 } from '../../utils/inputFieldValidations.js';
 import PasswardRequirementToolTip from '../../components/ui/passwardRequirementToolTip.js';
+import { useRemainingTimeCalculatorStore } from '../../components/stores/remainingTimeCalculatorStore.js';
+import { remainingTimeCounter } from '../../utils/remainingTimeCalculator.js';
 
 interface ResetPasswardFieldDataProps {
   email: string;
@@ -67,6 +69,15 @@ export default function ResetPassward() {
   //auth store data
   const isSuccessLoginedIn = useAuthStore(state => state.isSuccessLoginedIn);
 
+  // Reamainging time calculator store data
+  const remainingSeconds = useRemainingTimeCalculatorStore(state => state.remainingSeconds);
+  const formattedRemainingTime = useRemainingTimeCalculatorStore(
+    state => state.formattedRemainingTime
+  );
+  const clearRemainingTimeInterval = useRemainingTimeCalculatorStore(
+    state => state.clearRemainingTimeInterval
+  );
+
   // TRnotification popup store data
   const { setTRpopupNotificationMsg } = useTRpopupNotificationStore();
 
@@ -81,7 +92,12 @@ export default function ResetPassward() {
     setTimeout(() => {
       setIsVisible(true);
     }, 10);
-  }, []);
+
+    //clearing remainingTimeInterval on unmount
+    return () => {
+      clearRemainingTimeInterval();
+    };
+  }, [clearRemainingTimeInterval]);
 
   const validateloginForm = () => {
     const resetPasswardFieldErrors: ResetPasswardFieldDataProps = {
@@ -136,6 +152,7 @@ export default function ResetPassward() {
   async function handleSendEmailOtp(email: string, subject: string, excerpt: string) {
     const response = await sendEmailOtp(email, subject, excerpt);
     if (response.success) {
+      remainingTimeCounter(Number(response.data), 240);
       setOtpConfirmations(prevState => ({ ...prevState, isOptSent: true }));
       setICnotificationMsg({ success: response.message });
       return true;
@@ -282,6 +299,7 @@ export default function ResetPassward() {
                   isOptSent: false,
                   isOptVerified: false,
                 }));
+                setResetPasswardFieldData(prev => ({ ...prev, otp: '' }));
                 setICnotificationMsg({});
               }}
               className="focus:outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
@@ -348,7 +366,12 @@ export default function ResetPassward() {
                 }
               }}
               className="focus:outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={isLoading || !otpConfirmations.isOptSent || otpConfirmations.isResendingOtp}
+              disabled={
+                isLoading ||
+                !otpConfirmations.isOptSent ||
+                otpConfirmations.isResendingOtp ||
+                (!otpConfirmations.isOptVerified && remainingSeconds > 0)
+              }
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
               {!otpConfirmations.isOptVerified && !otpConfirmations.isResendingOtp ? (
@@ -388,6 +411,12 @@ export default function ResetPassward() {
                     : 'border-gray-300 dark:border-gray-600'
                 }`}
           />
+          {otpConfirmations.isOptSent && !otpConfirmations.isOptVerified && (
+            <span className="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
+              <p>OTP expires in: {formattedRemainingTime}</p>
+              <p>Resend OTP in: {remainingSeconds} seconds</p>
+            </span>
+          )}
           {resetPasswardFieldErrors.newPassword && (
             <p className="text-red-600 text-sm mt-1">{resetPasswardFieldErrors.newPassword}</p>
           )}
