@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router';
 import axios from 'axios';
 import { FaRegEye, FaRegEyeSlash, FaRegSave, FaRegCheckCircle } from 'react-icons/fa';
@@ -15,7 +15,8 @@ import {
   validatePasswordInputField,
 } from '../../utils/inputFieldValidations.js';
 import PasswardRequirementToolTip from '../../components/ui/passwardRequirementToolTip.js';
-import { remainingTimeCalculator } from '../../utils/remainingTimeCalculator.js';
+import { remainingTimeCounter } from '../../utils/remainingTimeCalculator.js';
+import { useRemainingTimeCalculatorStore } from '../../components/stores/remainingTimeCalculatorStore.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -60,9 +61,6 @@ export default function Register() {
   });
 
   const [isResendingOtp, setIsResendingOtp] = useState<boolean>(false);
-  const [otptiming, setotptiming] = useState<string>('00:00');
-  const [resendCooldown, setResendCooldown] = useState<number>(60);
-  const otpCleanupRef = useRef<(() => void) | null>(null);
 
   const [formFieldsError, setFormFieldsError] = useState<UserDataProps>({
     firstName: '',
@@ -72,6 +70,15 @@ export default function Register() {
     password: '',
     confirmPassword: '',
   });
+
+  // Reamainging time calculator store data
+  const remainingSeconds = useRemainingTimeCalculatorStore(state => state.remainingSeconds);
+  const formattedRemainingTime = useRemainingTimeCalculatorStore(
+    state => state.formattedRemainingTime
+  );
+  const clearRemainingTimeInterval = useRemainingTimeCalculatorStore(
+    state => state.clearRemainingTimeInterval
+  );
 
   // TRnotification popup store data
   const { setTRpopupNotificationMsg } = useTRpopupNotificationStore();
@@ -87,42 +94,12 @@ export default function Register() {
     setTimeout(() => {
       setIsVisible(true);
     }, 10);
-  }, []);
 
-  //OTP remaining time calculator function
-  function otpRemainingTimeCounter(reamingOtpTime: number) {
-    // Clear the previous interval
-    if (otpCleanupRef.current) {
-      otpCleanupRef.current();
-    }
-
-    const timerCounter = remainingTimeCalculator(reamingOtpTime);
-
-    const remainingTimeIntervalID = setInterval(() => {
-      const { remainingSeconds, formattedRemainingTime } = timerCounter();
-
-      setotptiming(formattedRemainingTime);
-      setResendCooldown(Math.max(remainingSeconds - 240, 0));
-
-      if (remainingSeconds <= 0) {
-        setotptiming(formattedRemainingTime);
-        setICnotificationMsg({ info: 'OTP expired, Please resend' });
-        clearInterval(remainingTimeIntervalID);
-      }
-    }, 1000);
-
-    // return () => clearInterval(remainingTimeIntervalID);
-    otpCleanupRef.current = () => clearInterval(remainingTimeIntervalID);
-  }
-
-  // function callOtpRemainingTimeCounter(reamingOtpTime: number) {
-  // Clear the previous interval
-  // if (otpCleanupRef.current) {
-  //   otpCleanupRef.current();
-  // }
-  //   const res = otpRemainingTimeCounter(reamingOtpTime);
-  //   otpCleanupRef.current = res;
-  // }
+    //clear interval on unmount
+    return () => {
+      clearRemainingTimeInterval();
+    };
+  }, [clearRemainingTimeInterval]);
 
   // Validate form fields and return errors
   const validateForm = useCallback(
@@ -149,7 +126,7 @@ export default function Register() {
 
       // opt validation
       if (!data.otp.trim() && registrationVerification.isOptSent) {
-        errors.otp = 'OTP is required';
+        errors.otp = 'Please enter the OTP';
       }
 
       // Password validation
@@ -190,7 +167,7 @@ export default function Register() {
     const response = await sendEmailOtp(email, subject, excerpt);
 
     if (response.success) {
-      otpRemainingTimeCounter(Number(response.data));
+      remainingTimeCounter(Number(response.data), 240);
 
       setRegistrationVerification(prev => ({ ...prev, isOptSent: true }));
       setICnotificationMsg({ success: response.message });
@@ -578,7 +555,7 @@ export default function Register() {
                     !registrationVerification.isOptSent ||
                     isResendingOtp ||
                     isSigningUp ||
-                    resendCooldown > 0
+                    remainingSeconds > 0
                   }
                   aria-label="resend otp"
                   onClick={async () => {
@@ -621,8 +598,8 @@ export default function Register() {
               />
               {registrationVerification.isOptSent && (
                 <span className="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
-                  <p>OTP expires in: {otptiming}</p>
-                  <p>Resend OTP in: {resendCooldown} seconds</p>
+                  <p>OTP expires in: {formattedRemainingTime}</p>
+                  <p>Resend OTP in: {remainingSeconds} seconds</p>
                 </span>
               )}
               {formFieldsError.otp && (

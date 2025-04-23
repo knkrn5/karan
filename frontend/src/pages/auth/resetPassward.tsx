@@ -16,7 +16,6 @@ import {
   validatePasswordInputField,
 } from '../../utils/inputFieldValidations.js';
 import PasswardRequirementToolTip from '../../components/ui/passwardRequirementToolTip.js';
-import { remainingTimeCalculator } from '../../utils/remainingTimeCalculator.js';
 
 interface ResetPasswardFieldDataProps {
   email: string;
@@ -75,17 +74,6 @@ export default function ResetPassward() {
   const { setICnotificationMsg } = useICnotificationMsgStore();
 
   const navigate = useNavigate();
-
-  // Timer calculator
-  // const timerCounter = remainingTimeCalculator(20);
-  // const interval = setInterval(() => {
-  //   const res = timerCounter();
-  //   console.log(`Time left: ${res.formattedRemainingTime}`);
-  //   if (res.remainingSeconds < 0) {
-  //     console.log('Time is up!');
-  //     clearInterval(interval);
-  //   }
-  // }, 1000);
 
   // Trigger animation
   useEffect(() => {
