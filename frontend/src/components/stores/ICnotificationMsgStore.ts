@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ICnotificationMsgProp } from '../../components/notifications/ICnotificationMsg';
+import { ICnotificationMsgProp } from '../notifications/ICnotificationMsg';
 
 type State = {
   ICnotificationStatusMsg: ICnotificationMsgProp;

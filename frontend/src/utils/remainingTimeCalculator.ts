@@ -33,15 +33,15 @@ function remainingTimeCalculator(timeInSeconds: number) {
 }
 
 export function remainingTimeCounter(timeInSeconds: number, cooldownTime: number) {
-  const interval = useRemainingTimeCalculatorStore.getState().clearRemainingTimeInterval;
-  if (typeof interval === 'function') {
-    console.log(interval);
-    interval();
+  const remainingTimeCounterinterval =
+    useRemainingTimeCalculatorStore.getState().clearRemainingTimeInterval;
+  if (typeof remainingTimeCounterinterval === 'function') {
+    remainingTimeCounterinterval();
   }
 
   const timerCounter = remainingTimeCalculator(timeInSeconds);
 
-  const remainingTimeIntervalID = setInterval(() => {
+  const remainingTimeCounterIntervalID = setInterval(() => {
     const { remainingSeconds, formattedRemainingTime } = timerCounter();
 
     useRemainingTimeCalculatorStore
@@ -54,11 +54,11 @@ export function remainingTimeCounter(timeInSeconds: number, cooldownTime: number
         info: 'OTP expired, Please resend',
       });
       useRemainingTimeCalculatorStore.getState().resetRemainingTimeCalculatorStore();
-      clearInterval(remainingTimeIntervalID);
+      clearInterval(remainingTimeCounterIntervalID);
     }
   }, 1000);
 
   useRemainingTimeCalculatorStore
     .getState()
-    .setclearRemainingTimeInterval(() => clearInterval(remainingTimeIntervalID));
+    .setclearRemainingTimeInterval(() => clearInterval(remainingTimeCounterIntervalID));
 }
