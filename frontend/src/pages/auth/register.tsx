@@ -15,7 +15,7 @@ import {
   validatePasswordInputField,
 } from '../../utils/inputFieldValidations.js';
 import PasswardRequirementToolTip from '../../components/ui/passwardRequirementToolTip.js';
-import { remainingTimeCalculator } from '../../utils/remainingTimeCounter.js';
+import { remainingTimeCalculator } from '../../utils/remainingTimeCalculator.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 

@@ -16,7 +16,7 @@ import {
   validatePasswordInputField,
 } from '../../utils/inputFieldValidations.js';
 import PasswardRequirementToolTip from '../../components/ui/passwardRequirementToolTip.js';
-import { remainingTimeCalculator } from '../../utils/remainingTimeCounter.js';
+import { remainingTimeCalculator } from '../../utils/remainingTimeCalculator.js';
 
 interface ResetPasswardFieldDataProps {
   email: string;
