@@ -9,7 +9,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaRegSave, FaRegTrashAlt } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { IoIosSend } from 'react-icons/io';
-import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore';
+import { useICnotificationMsgStore } from '../../stores/notificationMsg/ICnotificationMsgStore.js';
 import { sendContactMsgCopyEmail } from '../../utils/contact.utils';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;

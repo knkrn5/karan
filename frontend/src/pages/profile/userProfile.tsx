@@ -12,7 +12,7 @@ import { ICnotificationMsg } from '../../components/notifications/ICnotification
 import PopupModel from '../../components/popups/mainPopup.js';
 import DeleteConfirmationPopup from './deletePopup';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
-import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
+import { useICnotificationMsgStore } from '../../stores/notificationMsg/ICnotificationMsgStore.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 

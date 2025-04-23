@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { FaCircleCheck, FaCircleInfo, FaCircleXmark, FaCircleExclamation } from 'react-icons/fa6';
-import { useICnotificationMsgStore } from '../stores/ICnotificationMsgStore';
+import { useICnotificationMsgStore } from '../../stores/notificationMsg/ICnotificationMsgStore.js';
 
 export interface ICnotificationMsgProp {
   success?: string;

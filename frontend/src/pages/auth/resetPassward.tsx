@@ -7,7 +7,7 @@ import { FaRepeat } from 'react-icons/fa6';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
-import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
+import { useICnotificationMsgStore } from '../../stores/notificationMsg/ICnotificationMsgStore.js';
 import { sendUserAgentDataEmail } from '../../utils/userAgentData.js';
 import { verifyExistingUser, sendEmailOtp, verifyEmailOtp } from '../../utils/auth.utils.js';
 import { CiEdit } from 'react-icons/ci';
@@ -16,7 +16,7 @@ import {
   validatePasswordInputField,
 } from '../../utils/inputFieldValidations.js';
 import PasswardRequirementToolTip from '../../components/ui/passwardRequirementToolTip.js';
-import { useRemainingTimeCalculatorStore } from '../../components/stores/remainingTimeCalculatorStore.js';
+import { useRemainingTimeCalculatorStore } from '../../stores/others/remainingTimeCalculatorStore.js';
 import { remainingTimeCounter } from '../../utils/remainingTimeCalculator.js';
 
 interface ResetPasswardFieldDataProps {

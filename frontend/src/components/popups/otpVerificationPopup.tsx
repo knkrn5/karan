@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { IoMdClose } from 'react-icons/io';
 import { verifyEmailOtp } from '../../utils/auth.utils';
 import { ICnotificationMsg } from '../notifications/ICnotificationMsg';
-import { useICnotificationMsgStore } from '../stores/ICnotificationMsgStore';
+import { useICnotificationMsgStore } from '../../stores/notificationMsg/ICnotificationMsgStore.js';
 
 type ModalProps = {
   isOpen: boolean;

@@ -1,5 +1,5 @@
-import { useICnotificationMsgStore } from '../components/stores/ICnotificationMsgStore';
-import { useRemainingTimeCalculatorStore } from '../components/stores/remainingTimeCalculatorStore';
+import { useICnotificationMsgStore } from '../stores/notificationMsg/ICnotificationMsgStore.js';
+import { useRemainingTimeCalculatorStore } from '../stores/others/remainingTimeCalculatorStore';
 
 interface RemainingTimePropsTypes {
   remainingSeconds: number;

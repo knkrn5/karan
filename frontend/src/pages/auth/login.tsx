@@ -6,7 +6,7 @@ import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
-import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
+import { useICnotificationMsgStore } from '../../stores/notificationMsg/ICnotificationMsgStore.js';
 import { sendUserAgentDataEmail } from '../../utils/userAgentData.js';
 import { validateEmailInputField } from '../../utils/inputFieldValidations.js';
 import ToolTip from '../../components/ui/toolTip.js';

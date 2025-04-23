@@ -9,14 +9,14 @@ import { ICnotificationMsg } from '../../components/notifications/ICnotification
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { verifyExistingUser, sendEmailOtp, verifyEmailOtp } from '../../utils/auth.utils.js';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
-import { useICnotificationMsgStore } from '../../components/stores/ICnotificationMsgStore.js';
+import { useICnotificationMsgStore } from '../../stores/notificationMsg/ICnotificationMsgStore.js';
 import {
   validateEmailInputField,
   validatePasswordInputField,
 } from '../../utils/inputFieldValidations.js';
 import PasswardRequirementToolTip from '../../components/ui/passwardRequirementToolTip.js';
 import { remainingTimeCounter } from '../../utils/remainingTimeCalculator.js';
-import { useRemainingTimeCalculatorStore } from '../../components/stores/remainingTimeCalculatorStore.js';
+import { useRemainingTimeCalculatorStore } from '../../stores/others/remainingTimeCalculatorStore.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
