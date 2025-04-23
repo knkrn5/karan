@@ -99,13 +99,13 @@ export default function Register() {
     const timerCounter = remainingTimeCalculator(reamingOtpTime);
 
     const remainingTimeIntervalID = setInterval(() => {
-      const res = timerCounter();
+      const { remainingSeconds, formattedRemainingTime } = timerCounter();
 
-      setotptiming(res.formattedRemainingTime);
-      setResendCooldown(Math.max(res.remainingSeconds - 240, 0));
+      setotptiming(formattedRemainingTime);
+      setResendCooldown(Math.max(remainingSeconds - 240, 0));
 
-      if (res.remainingSeconds <= 0) {
-        setotptiming(res.formattedRemainingTime);
+      if (remainingSeconds <= 0) {
+        setotptiming(formattedRemainingTime);
         setICnotificationMsg({ info: 'OTP expired, Please resend' });
         clearInterval(remainingTimeIntervalID);
       }

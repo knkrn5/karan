@@ -29,6 +29,20 @@ export function remainingTimeCalculator(timeInSeconds: number) {
   };
 }
 
+function remainingTimeCounter(timeInSeconds: number) {
+  const timerCounter = remainingTimeCalculator(timeInSeconds)
+  // return timerCounter();
+  const remainingTimeIntervalID = setInterval(() => {
+    const { remainingSeconds, formattedRemainingTime } = timerCounter();
+
+    if (remainingSeconds <= 0) {
+      clearInterval(remainingTimeIntervalID);
+    }
+
+    console.log('Remaining Time:', formattedRemainingTime);
+  }, 1000);
+}
+
 // function otpRemainingTimeCounter(reamingOtpTime: number) {
 //   const endTime = Date.now() + reamingOtpTime * 1000;
 
