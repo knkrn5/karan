@@ -20,6 +20,7 @@ function remainingTimeCalculator(timeInSeconds: number) {
       };
     }
 
+    //formatting the remaining time in minutes and seconds
     const remainingSeconds = Math.floor(remainingTime / 1000);
     const minutes = Math.floor(remainingSeconds / 60);
     const seconds = remainingSeconds % 60;
@@ -33,16 +34,17 @@ function remainingTimeCalculator(timeInSeconds: number) {
 }
 
 export function remainingTimeCounter(timeInSeconds: number, cooldownTime: number) {
+  // Clear any existing interval, if exists
   const remainingTimeCounterinterval =
     useRemainingTimeCalculatorStore.getState().clearRemainingTimeInterval;
   if (typeof remainingTimeCounterinterval === 'function') {
     remainingTimeCounterinterval();
   }
 
-  const timerCounter = remainingTimeCalculator(timeInSeconds);
+  const remainingTimeCounterInnerFn = remainingTimeCalculator(timeInSeconds);
 
   const remainingTimeCounterIntervalID = setInterval(() => {
-    const { remainingSeconds, formattedRemainingTime } = timerCounter();
+    const { remainingSeconds, formattedRemainingTime } = remainingTimeCounterInnerFn();
 
     useRemainingTimeCalculatorStore
       .getState()
