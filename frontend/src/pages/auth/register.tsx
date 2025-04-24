@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router';
 import axios from 'axios';
-import { FaRegEye, FaRegEyeSlash, FaRegSave, FaRegCheckCircle } from 'react-icons/fa';
+import { FaRegEye, FaRegEyeSlash, FaRegSave } from 'react-icons/fa';
 import { FaRepeat } from 'react-icons/fa6';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { CiEdit } from 'react-icons/ci';
@@ -54,13 +54,13 @@ export default function Register() {
     isAccountCreated: boolean;
     isOptSent: boolean;
     isOptVerified: boolean;
+    isResendingOtp: boolean;
   }>({
     isAccountCreated: false,
     isOptSent: false,
     isOptVerified: false,
+    isResendingOtp: false,
   });
-
-  const [isResendingOtp, setIsResendingOtp] = useState<boolean>(false);
 
   const [formFieldsError, setFormFieldsError] = useState<UserDataProps>({
     firstName: '',
@@ -553,13 +553,16 @@ export default function Register() {
                   title="resend otp"
                   disabled={
                     !registrationVerification.isOptSent ||
-                    isResendingOtp ||
+                    registrationVerification.isResendingOtp ||
                     isSigningUp ||
                     remainingSeconds > 0
                   }
                   aria-label="resend otp"
                   onClick={async () => {
-                    setIsResendingOtp(true);
+                    setRegistrationVerification(prev => ({
+                      ...prev,
+                      isResendingOtp: true,
+                    }));
                     setICnotificationMsg({});
                     const sendOtpRes = await handleSendEmailOtp(
                       userData.email,
@@ -569,14 +572,15 @@ export default function Register() {
                     if (sendOtpRes) {
                       setICnotificationMsg({ info: 'OTP resend successfully' });
                     }
-                    setIsResendingOtp(false);
+                    setRegistrationVerification(prev => ({
+                      ...prev,
+                      isResendingOtp: false,
+                    }));
                   }}
                   className="focus:outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {isResendingOtp ? (
+                  {registrationVerification.isResendingOtp ? (
                     <AiOutlineLoading3Quarters className="animate-spin" />
-                  ) : !registrationVerification.isOptSent ? (
-                    <FaRegCheckCircle />
                   ) : (
                     <FaRepeat />
                   )}
