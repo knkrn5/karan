@@ -272,7 +272,7 @@ export default function LoginPage() {
         >
           <div className=" p-3 rounded-lg shadow-md bg-gray-100 dark:bg-slate-800 border border-gray-200 max-w-md mx-auto">
             <h3 className="font-extrabold text-lg text-gray-800 dark:text-neutral-100 mb-3 pb-2 border-b border-gray-500 dark:border-neutral-400">
-              Data Collection Policy:
+              Data Collection Policy:-
             </h3>
             <ul className="space-y-2 text-gray-700 dark:text-neutral-300">
               {[
