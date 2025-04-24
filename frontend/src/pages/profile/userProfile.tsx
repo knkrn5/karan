@@ -213,7 +213,7 @@ export default function UserProfile() {
 
       {/* Card */}
       <div
-        className={`mx-auto rounded-lg overflow-hidden max-w-[480px] w-80 
+        className={`mx-auto rounded-lg overflow-hidden max-w-[480px] w-80
         bg-white dark:bg-gray-900 shadow-lg hover:dark:shadow-gray-900  duration-300 transition-shadow ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
         }`}
@@ -264,7 +264,7 @@ export default function UserProfile() {
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 px-2 my-5">
+        <div className="flex flex-row gap-0 px-2 my-5">
           {/* Edit Profile */}
           <button
             type="button"

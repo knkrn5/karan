@@ -54,7 +54,7 @@ async function scheduleTokenRefresh() {
       scheduleTokenRefresh();
     }, remainingTime);
   } else {
-    //re-active call if the token is already expired
+    //re-activating call if the token is already expired
     const refreshResult = await autoRefreshAccessToken();
     if (refreshResult !== null) {
       scheduleTokenRefresh();
