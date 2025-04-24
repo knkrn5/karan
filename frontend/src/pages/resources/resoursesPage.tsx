@@ -98,11 +98,11 @@ const resources: Resource[] = [
   new CreateResourses('CHATBOT API', FaCode, 'text-yellow-500', [
     {
       name: 'NVIDIA',
-      description: 'https://integrate.api.nvidia.com/v1',
+      description: 'NVIDIA’s chatbot API for AI applications',
     },
     {
       name: 'GEMINI',
-      description: 'From google import genai',
+      description: 'Google’s gemini api for chatbots',
     },
   ]),
 
