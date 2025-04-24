@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
 import axios from 'axios';
 import { ICnotificationMsg } from '../../components/notifications/ICnotificationMsg.js';
-import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+import { FaRegCheckCircle, FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
@@ -270,11 +270,31 @@ export default function LoginPage() {
           tooltipIconStyling="w-5 mt-2 text-md text-black dark:text-white"
           tooltipBoxStyling={`right-0 top-full mt-1 w-64 p-2 before:content-[''] before:absolute before:-top-1.5 before:right-0.5  before:border-l-8 before:border-r-8 before:border-b-8 before:border-l-transparent before:border-r-transparent before:border-b-gray-700`}
         >
-          <p>
+          <div className=" p-3 rounded-lg shadow-md bg-gray-100 dark:bg-slate-800 border border-gray-200 max-w-md mx-auto">
+            <h3 className="font-extrabold text-lg text-gray-800 dark:text-neutral-100 mb-3 pb-2 border-b border-gray-500 dark:border-neutral-400">
+              Data Collection Policy:
+            </h3>
+            <ul className="space-y-2 text-gray-700 dark:text-neutral-300">
+              {[
+                'Device and location information (e.g., platform, IP, and region)',
+                'User agent data (e.g., browser, operating system, and device type)',
+              ].map(requirement => (
+                <li key={requirement} className="flex items-start ">
+                  <FaRegCheckCircle className=" text-green-500 mr-2 mt-1 flex-shrink-0" />
+                  <span className="text-left font-semibold">{requirement}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 text-xm font-mono pt-2 border-t border-gray-500 dark:border-neutral-400 text-gray-600 dark:text-gray-400">
+              We collect this data to enhance security and user experience. This data is not shared
+              with any third parties.
+            </p>
+          </div>
+          {/* <p>
             We collect limited device and location information (e.g., browser, platform, IP, and
             region) to enhance security and user experience. This data is not shared with any third
             parties.
-          </p>
+          </p> */}
         </ToolTip>
       </label>
 
