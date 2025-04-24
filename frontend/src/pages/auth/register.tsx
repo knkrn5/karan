@@ -542,7 +542,7 @@ export default function Register() {
             {/* OTP field */}
             <div className="flex flex-col mb-6">
               <label
-                htmlFor="confirmPassword"
+                htmlFor="otp"
                 className="mb-1 flex justify-between text-gray-700 dark:text-gray-300"
               >
                 <span className="flex items-center after:ml-0.5 after:text-red-500 after:content-['*']">

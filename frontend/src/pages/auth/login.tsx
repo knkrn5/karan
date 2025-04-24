@@ -185,6 +185,7 @@ export default function LoginPage() {
             </span>
           </label>
           <input
+            id="email"
             name="email"
             value={loginFormFieldData.email}
             onChange={e => handleInputChange(e)}
@@ -219,8 +220,8 @@ export default function LoginPage() {
           </label>
 
           <input
-            name="password"
             id="password"
+            name="password"
             type={showPassword ? 'text' : 'password'}
             value={loginFormFieldData.password}
             onChange={e => handleInputChange(e)}
