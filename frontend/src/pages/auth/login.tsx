@@ -290,11 +290,6 @@ export default function LoginPage() {
               with any third parties.
             </p>
           </div>
-          {/* <p>
-            We collect limited device and location information (e.g., browser, platform, IP, and
-            region) to enhance security and user experience. This data is not shared with any third
-            parties.
-          </p> */}
         </ToolTip>
       </label>
 
