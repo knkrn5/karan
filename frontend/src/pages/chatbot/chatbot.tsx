@@ -3,8 +3,13 @@ import { IoIosSend, IoMdArrowDropdownCircle } from 'react-icons/io';
 import { LuBot } from 'react-icons/lu';
 
 export default function Chatbot() {
-  const [selectedModel, setSelectedModel] = useState('Claude 3');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [inputMessage, setInputMessage] = useState<string>('');
+  const [selectedModel, setSelectedModel] = useState<string>('Claude 3');
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+
+  function handleSend() {
+    console.log('Message sent!');
+  }
 
   return (
     <div className="flex flex-col bg-gray-200 dark:bg-dark text-black dark:text-white p-4 rounded-xl shadow-lg w-[400px] border border-neutral-400 dark:border-gray-700 mx-auto m-4 h-[600px] ">
@@ -62,7 +67,7 @@ export default function Chatbot() {
               type="button"
               key={msg}
               className="px-4 py-2 w-fit max-w-xs border border-gray-600 rounded-full hover:bg-neutral-50 dark:hover:bg-gray-700 transition-all duration-200 ease-in-out cursor-pointer"
-              onClick={e => console.log((e.target as HTMLButtonElement).innerText)}
+              onClick={e => setInputMessage((e.target as HTMLButtonElement).innerText)}
             >
               {msg}
             </button>
@@ -74,16 +79,23 @@ export default function Chatbot() {
       <div className="flex items-end gap-2 mt-2 border border-neutral-500 dark:border-gray-600 rounded-lg p-2">
         <textarea
           placeholder="Ask a question..."
-          // onChange={handleInputChange}
+          value={inputMessage}
+          onChange={e => {
+            setInputMessage(e.target.value);
+          }}
           className="w-full p-2 outline-none text-black dark:text-white placeholder-gray-400 rounded bg-white dark:bg-slate-800 resize-none min-h-[40px] max-h-[120px] overflow-y-auto"
         />
         <button
           type="button"
-          title="Send"
-          // onClick={handleAsk}
-          className="bg-gray-300 text-blue-600 px-3 py-1 rounded-full hover:bg-white"
+          title="Send message"
+          aria-label="Send message"
+          onClick={handleSend}
+          disabled={!inputMessage.trim()}
+          className={`${
+            !inputMessage.trim() ? ' bg-white text-black ' : 'bg-blue-500 text-white'
+          } px-3 py-1 rounded-full transition-colors duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed`}
         >
-          <IoIosSend className="w-6 h-6" />
+          <IoIosSend size={20} className="w-6 h-6" />
         </button>
       </div>
       <p className="mt-1 text-sm font-extrabold text-center text-gray-500   dark:text-gray-400">
