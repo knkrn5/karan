@@ -7,12 +7,13 @@ export default function Chatbot() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <div className="flex flex-col bg-dark text-white p-4 rounded-xl shadow-lg w-[400px] border border-gray-700 mx-auto m-4 h-[600px] ">
+    <div className="flex flex-col bg-gray-200 dark:bg-dark text-black dark:text-white p-4 rounded-xl shadow-lg w-[400px] border border-neutral-400 dark:border-gray-700 mx-auto m-4 h-[600px] ">
       <div className="relative mb-2">
         <button
           type="button"
+          title="Select model"
           aria-label="Select model"
-          className="flex items-center justify-between w-full p-3 bg-slate-800 rounded-xl border border-gray-600 cursor-pointer shadow-md hover:border-blue-400 transition-all duration-200"
+          className="flex items-center justify-between w-full p-3 bg-white dark:bg-slate-800 rounded-xl border border-neutral-300 dark:border-gray-600 cursor-pointer shadow-md hover:border-blue-400 transition-all duration-200"
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
           <div className="flex items-center gap-2">
@@ -21,34 +22,37 @@ export default function Chatbot() {
           </div>
           <IoMdArrowDropdownCircle
             size={22}
-            className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
+            className={`transition-transform duration-300 hover:scale-105 ${
+              isDropdownOpen ? 'rotate-180' : ''
+            }`}
           />
         </button>
 
-        {isDropdownOpen && (
-          <div
-            className={`absolute w-full bg-slate-800 border border-gray-600 rounded-xl shadow-xl z-10 overflow-hidden`}
-          >
-            {['GPT 3.5 Turbo', 'GPT 4', 'GPT 4 (32k)', 'Claude 3', 'Mistral 7B'].map(model => (
-              <button
-                type="button"
-                key={model}
-                className="w-full text-left px-3 py-2 border-b border-gray-600 hover:bg-slate-700 cursor-pointer transition-colors"
-                onClick={() => {
-                  setSelectedModel(model);
-                  setIsDropdownOpen(false);
-                }}
-              >
-                {model}
-              </button>
-            ))}
-          </div>
-        )}
+        <div
+          className={`absolute top-full w-full bg-white dark:bg-slate-800 border border-neutral-300 dark:border-gray-600 rounded-xl shadow-xl z-10 overflow-hidden transition-transform duration-500 ${
+            !isDropdownOpen ? 'scale-y-0' : 'scale-y-100'
+          } origin-top`}
+        >
+          {['GPT 3.5 Turbo', 'GPT 4', 'GPT 4 (32k)', 'Claude 3', 'Mistral 7B'].map(model => (
+            <button
+              type="button"
+              key={model}
+              className="w-full text-left px-3 py-2 border-b border-gray-600 hover:bg-neutral-200 dark:hover:bg-slate-700 cursor-pointer transition-colors"
+              onClick={() => {
+                setSelectedModel(model);
+                setIsDropdownOpen(false);
+              }}
+            >
+              {model}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Messages container */}
-      <div className="flex flex-col flex-1 gap-2  overflow-y-auto  p-2 rounded-lg border border-gray-600 bg-slate-800">
-        <div className="flex flex-col gap-2   px-2 py-4 rounded-lg bg-dark">
+      <div className="flex flex-col flex-1 gap-2  overflow-y-auto  p-2 rounded-lg border border-neutral-300 dark:border-gray-600 bg-white dark:bg-slate-800">
+        {/* Suggestion box */}
+        <div className="flex flex-col gap-2 px-2 py-4 rounded-lg bg-gray-200 dark:bg-dark">
           {[
             'What is this site about?',
             'What modules are available in this site?',
@@ -57,7 +61,7 @@ export default function Chatbot() {
             <button
               type="button"
               key={msg}
-              className="px-4 py-2 w-fit max-w-xs border border-white rounded-full hover:bg-gray-700 transition-all duration-200 ease-in-out cursor-pointer"
+              className="px-4 py-2 w-fit max-w-xs border border-gray-600 rounded-full hover:bg-neutral-50 dark:hover:bg-gray-700 transition-all duration-200 ease-in-out cursor-pointer"
               onClick={e => console.log((e.target as HTMLButtonElement).innerText)}
             >
               {msg}
@@ -67,11 +71,11 @@ export default function Chatbot() {
       </div>
 
       {/* Input section  */}
-      <div className="flex items-end gap-2 mt-2 border border-gray-600 rounded-lg p-2">
+      <div className="flex items-end gap-2 mt-2 border border-neutral-500 dark:border-gray-600 rounded-lg p-2">
         <textarea
           placeholder="Ask a question..."
           // onChange={handleInputChange}
-          className="w-full p-2 outline-none  text-white placeholder-gray-400 rounded bg-slate-800 resize-none min-h-[40px] max-h-[120px] overflow-y-auto"
+          className="w-full p-2 outline-none text-black dark:text-white placeholder-gray-400 rounded bg-white dark:bg-slate-800 resize-none min-h-[40px] max-h-[120px] overflow-y-auto"
         />
         <button
           type="button"
@@ -82,7 +86,9 @@ export default function Chatbot() {
           <IoIosSend className="w-6 h-6" />
         </button>
       </div>
-      <p className="mt-1 text-sm font-extrabold text-center text-gray-400">Karan.email</p>
+      <p className="mt-1 text-sm font-extrabold text-center text-gray-500   dark:text-gray-400">
+        Karan.email
+      </p>
     </div>
   );
 }
