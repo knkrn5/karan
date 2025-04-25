@@ -5,7 +5,6 @@ export class ChatbotController {
   static async getChatbotResponse(req: Request, res: Response) {
     try {
       const { userMsg } = req.body;
-      console.log('Received message:', userMsg);
       const response = await ChatbotService.getChatbotResponse(userMsg);
       res.send(response);
     } catch (error) {

@@ -1,6 +1,6 @@
 import OpenAI from 'openai';
 import dotenv from 'dotenv';
-import { ApiResponse } from '../utils/apiResponse';
+import { ApiResponse } from '../utils/apiResponse.js';
 dotenv.config();
 
 const openai = new OpenAI({
@@ -9,7 +9,9 @@ const openai = new OpenAI({
 });
 
 export class ChatbotService {
-  static async getChatbotResponse(userMsg: string) {
+  static async getChatbotResponse(userMsg: string): Promise<string> {
+    if (!userMsg) throw new ApiResponse(400, false, 'User message not found', null);
+
     const completion = await openai.chat.completions.create({
       model: 'meta/llama-3.1-70b-instruct',
       messages: [{ role: 'user', content: userMsg }],
@@ -19,8 +21,14 @@ export class ChatbotService {
       stream: true,
     });
 
+    let fullResponse = '';
+
     for await (const chunk of completion) {
-      process.stdout.write(chunk.choices[0]?.delta?.content || '');
+      const text = chunk.choices[0]?.delta?.content ?? '';
+      fullResponse += text;
     }
+
+    return fullResponse;
   }
 }
+

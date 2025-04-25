@@ -1,15 +1,47 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useRef, useState } from 'react';
 import { IoIosSend, IoMdArrowDropdownCircle } from 'react-icons/io';
 import { LuBot } from 'react-icons/lu';
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function Chatbot() {
   const [inputMessage, setInputMessage] = useState<string>('');
   const [selectedModel, setSelectedModel] = useState<string>('Claude 3');
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const [isGettingChatbotRes, setIsGettingChatbotRes] = useState<boolean>(false);
 
-  function handleSend() {
-    console.log('Message sent!');
-    setInputMessage('');
+  const dropdownButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!dropdownButtonRef.current?.contains(target) && isDropdownOpen) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleOutsideClick);
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, [isDropdownOpen]);
+
+  async function handleSend() {
+    setIsGettingChatbotRes(true);
+    try {
+      const response = await axios.post(`${BACKEND_URL}/api/chatbot/send-msg-to-chatbot`, {
+        userMsg: inputMessage,
+      });
+      console.log(response.data);
+      setInputMessage('');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error sending message:', error.response?.data ?? error.message);
+      }
+    } finally {
+      setIsGettingChatbotRes(false);
+    }
   }
 
   return (
@@ -19,6 +51,7 @@ export default function Chatbot() {
           type="button"
           title="Select model"
           aria-label="Select model"
+          ref={dropdownButtonRef}
           className="flex items-center justify-between w-full p-3 bg-white dark:bg-slate-800 rounded-xl border border-neutral-300 dark:border-gray-600 cursor-pointer shadow-md hover:border-blue-400 transition-transform duration-200"
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
@@ -69,7 +102,7 @@ export default function Chatbot() {
             <button
               type="button"
               key={msg}
-              className="px-4 py-2 w-fit max-w-xs border border-gray-600 rounded-full hover:bg-neutral-50 dark:hover:bg-gray-700 transition-all duration-200 ease-in-out cursor-pointer"
+              className="px-4 py-2 w-fit max-w-xs border border-neutral-400 dark:border-gray-600 rounded-full hover:bg-neutral-50 dark:hover:bg-gray-700 transition-all duration-200 ease-in-out cursor-pointer"
               onClick={e => setInputMessage((e.target as HTMLButtonElement).innerText)}
             >
               {msg}
@@ -93,7 +126,7 @@ export default function Chatbot() {
           title="Send message"
           aria-label="Send message"
           onClick={handleSend}
-          disabled={!inputMessage.trim()}
+          disabled={!inputMessage.trim() || isGettingChatbotRes}
           className={` px-3 py-1 rounded-full transition-colors duration-200 ease-in-out cursor-pointer bg-blue-500 text-white disabled:bg-white disabled:text-black  disabled:opacity-50 disabled:cursor-not-allowed`}
         >
           <IoIosSend size={20} className="w-6 h-6" />
