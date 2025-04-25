@@ -5,7 +5,7 @@ dotenv.config();
 
 const openai = new OpenAI({
   baseURL: 'https://integrate.api.nvidia.com/v1',
-  apiKey: '',
+  apiKey: process.env.NVIDIA_API_KEY,
 });
 
 export class ChatbotService {

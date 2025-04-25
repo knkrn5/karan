@@ -1,9 +1,10 @@
+import Chatbot from '../chatbot/chatbot';
 import HeroSectionOne from './heroSectionOne';
 import HeroSectionTwo from './heroSectionTwo';
 import { HomePageSeoMetaTags } from './homePageSeoMetaTags';
 
 function Home() {
-  class myProjects {
+  class MyProjects {
     img: string;
     name: string;
     description: string;
@@ -18,22 +19,22 @@ function Home() {
     }
   }
 
-  const projects: myProjects[] = [
-    new myProjects(
+  const projects: MyProjects[] = [
+    new MyProjects(
       'https://res.cloudinary.com/dywuvwqth/image/upload/v1743429589/karan.email/rinkpptt11gjweedg7mx.png',
       'WealthPsychology: -',
       `Teaches the principles of financial psychology, and explains different financial concepts.`,
       'bg-lime-500',
       'https://wealthpsychology.in'
     ),
-    new myProjects(
+    new MyProjects(
       'https://res.cloudinary.com/dywuvwqth/image/upload/v1743587227/karan.email/m8yyptura5kuao1nzugt.jpg',
       'Explanator AI: -',
       `Include the Chatbots, and custom Datasets of Different models and APIs.`,
       'bg-blue-500',
       'https://explanatorai.site'
     ),
-    new myProjects(
+    new MyProjects(
       'https://res.cloudinary.com/dywuvwqth/image/upload/v1743587228/karan.email/vrqkgi7qwemhcttfsvvl.jpg',
       'Other Projects: -',
       `Developing some other projects, and working on some new ideas. Using different technologies.`,
@@ -44,6 +45,7 @@ function Home() {
 
   return (
     <>
+      <Chatbot />
       <HomePageSeoMetaTags />
       <HeroSectionOne />
       {/* Container for the timeline */}
@@ -76,8 +78,7 @@ function Home() {
                 }`}
               >
                 <div className="flex items-center max-[350px]:flex-col ">
-                  <img alt="Project Image" className="w-48 h-48 object-cover " src={project.img} />
-
+                  <img alt="Project" className="w-48 h-48 object-cover " src={project.img} />
                   <div className=" p-2">
                     <h2 className="text-lg font-bold mb-2 after:block after:content-[''] after:h-[1px] after:w-full after:bg-black">
                       {project.name}
