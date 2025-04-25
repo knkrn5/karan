@@ -19,6 +19,7 @@ import UserProfile from './pages/profile/userProfile';
 import SoloBlogPost from './pages/blog/soloBlogPostPage';
 import { TRpopupNotificationModel } from './components/popups/TRpopupNotification';
 import ResetPassward from './pages/auth/resetPassward';
+import Chatbot from './pages/chatbot/chatbot';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           </Route>
 
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/chatbot" element={<Chatbot />} />
 
           <Route path="/about" element={<About />} />
           <Route path="/resume" element={<Resume />} />
