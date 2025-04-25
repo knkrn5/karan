@@ -13,7 +13,7 @@ export default function Chatbot() {
           type="button"
           title="Select model"
           aria-label="Select model"
-          className="flex items-center justify-between w-full p-3 bg-white dark:bg-slate-800 rounded-xl border border-neutral-300 dark:border-gray-600 cursor-pointer shadow-md hover:border-blue-400 transition-all duration-200"
+          className="flex items-center justify-between w-full p-3 bg-white dark:bg-slate-800 rounded-xl border border-neutral-300 dark:border-gray-600 cursor-pointer shadow-md hover:border-blue-400 transition-transform duration-200"
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
           <div className="flex items-center gap-2">
