@@ -91,9 +91,7 @@ export default function Chatbot() {
           aria-label="Send message"
           onClick={handleSend}
           disabled={!inputMessage.trim()}
-          className={`${
-            !inputMessage.trim() ? ' bg-white text-black ' : 'bg-blue-500 text-white'
-          } px-3 py-1 rounded-full transition-colors duration-200 ease-in-out cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed`}
+          className={` px-3 py-1 rounded-full transition-colors duration-200 ease-in-out cursor-pointer bg-blue-500 text-white disabled:bg-white disabled:text-black  disabled:opacity-50 disabled:cursor-not-allowed`}
         >
           <IoIosSend size={20} className="w-6 h-6" />
         </button>
