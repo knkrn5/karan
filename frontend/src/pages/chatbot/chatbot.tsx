@@ -9,6 +9,7 @@ export default function Chatbot() {
 
   function handleSend() {
     console.log('Message sent!');
+    setInputMessage('');
   }
 
   return (
@@ -38,19 +39,21 @@ export default function Chatbot() {
             !isDropdownOpen ? 'scale-y-0' : 'scale-y-100'
           } origin-top`}
         >
-          {['GPT 3.5 Turbo', 'GPT 4', 'GPT 4 (32k)', 'Claude 3', 'Mistral 7B'].map(model => (
-            <button
-              type="button"
-              key={model}
-              className="w-full text-left px-3 py-2 border-b border-gray-600 hover:bg-neutral-200 dark:hover:bg-slate-700 cursor-pointer transition-colors"
-              onClick={() => {
-                setSelectedModel(model);
-                setIsDropdownOpen(false);
-              }}
-            >
-              {model}
-            </button>
-          ))}
+          {['meta/llama-3.1-70b-instruct', 'GPT 4', 'GPT 4 (32k)', 'Claude 3', 'Mistral 7B'].map(
+            model => (
+              <button
+                type="button"
+                key={model}
+                className="w-full text-left px-3 py-2 border-b border-gray-600 hover:bg-neutral-200 dark:hover:bg-slate-700 cursor-pointer transition-colors"
+                onClick={() => {
+                  setSelectedModel(model);
+                  setIsDropdownOpen(false);
+                }}
+              >
+                {model}
+              </button>
+            )
+          )}
         </div>
       </div>
 

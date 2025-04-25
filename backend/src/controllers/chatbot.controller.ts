@@ -1,0 +1,19 @@
+import { Request, Response } from 'express';
+import { ChatbotService } from '../services/chatbot.service.js';
+
+export class ChatbotController {
+  static async getChatbotResponse(req: Request, res: Response) {
+    try {
+      const { userMsg } = req.body;
+      console.log('Received message:', userMsg);
+      const response = await ChatbotService.getChatbotResponse(userMsg);
+      res.send(response);
+    } catch (error) {
+      console.error('Error sending chatbot response:', error);
+      res.status(500).send({ error: 'Internal Server Error' });
+    }
+
+  }
+}
+
+

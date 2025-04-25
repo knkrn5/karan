@@ -37,6 +37,7 @@ import authRoutes from './routes/auth.routes.js';
 import profileRoutes from './routes/profile.routes.js';
 import blogRoutes from './routes/blog.routes.js';
 import emailNotificationsRoutes from './routes/emailNotifications.routes.js';
+import chatbotRoutes from './routes/chatbot.routes.js'; 
 
 // Route Definitions
 app.use('/api/contact', contactRoutes);
@@ -44,6 +45,7 @@ app.use('/api/v1/auth/', authRoutes);
 app.use('/api/v1/profile/', profileRoutes);
 app.use('/api/blog/', blogRoutes);
 app.use('/api/email-notifications/', emailNotificationsRoutes);
+app.use('/api/chatbot/', chatbotRoutes); 
 
 app.get('*', (req, res) => {
   /* const frontendUrl ='PRODUCTION'
