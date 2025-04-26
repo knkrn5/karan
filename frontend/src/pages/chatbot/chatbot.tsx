@@ -54,6 +54,10 @@ export default function Chatbot() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error('Error sending message:', error.response?.data ?? error.message);
+        setMessages(prevMessages => [
+          ...prevMessages,
+          { role: 'bot', content: error.response?.data?.error },
+        ]);
       }
     } finally {
       setIsGettingChatbotRes(false);
@@ -119,7 +123,7 @@ export default function Chatbot() {
         </div>
 
         {/* Messages container */}
-        <div className="flex flex-col flex-1 gap-2 overflow-y-auto  p-2 rounded-lg border border-neutral-300 dark:border-gray-600 bg-white dark:bg-slate-800">
+        <div className="flex flex-col flex-1 gap-2 overflow-y-auto  p-2 rounded-lg border border-neutral-300 dark:border-gray-600 bg-white dark:bg-slate-800 ">
           {/* Suggestion box */}
           <div
             className="flex flex-col gap-2 px-2 py-4 rounded-lg bg-gray-200 dark:bg-dark"
