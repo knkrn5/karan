@@ -96,7 +96,7 @@ export default function Chatbot() {
           </button>
 
           <div
-            className={`absolute top-full w-full bg-white dark:bg-slate-800 border border-neutral-300 dark:border-gray-600 rounded-xl shadow-xl z-10 overflow-hidden transition-transform duration-500 ${
+            className={`absolute top-full w-full bg-white dark:bg-slate-800 border border-neutral-300 dark:border-gray-600 rounded-xl shadow-xl z-10 overflow-hidden transition-transform duration-300 ${
               !isDropdownOpen ? 'scale-y-0' : 'scale-y-100'
             } origin-top`}
           >
