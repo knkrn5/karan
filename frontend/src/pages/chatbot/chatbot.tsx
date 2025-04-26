@@ -8,11 +8,12 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export default function Chatbot() {
   const [showChatbot, setShowChatbot] = useState<boolean>(false);
   const [inputMessage, setInputMessage] = useState<string>('');
-  const [selectedModel, setSelectedModel] = useState<string>('Claude 3');
+  const [selectedModel, setSelectedModel] = useState<string>('meta/llama-3.1-70b-instruct');
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isGettingChatbotRes, setIsGettingChatbotRes] = useState<boolean>(false);
 
   const dropdownButtonRef = useRef<HTMLButtonElement>(null);
+  const chatbotContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -20,13 +21,16 @@ export default function Chatbot() {
       if (!dropdownButtonRef.current?.contains(target) && isDropdownOpen) {
         setIsDropdownOpen(false);
       }
+      if (!chatbotContainerRef.current?.contains(target) && showChatbot) {
+        setShowChatbot(false);
+      }
     };
 
     document.addEventListener('click', handleOutsideClick);
     return () => {
       document.removeEventListener('click', handleOutsideClick);
     };
-  }, [isDropdownOpen]);
+  }, [isDropdownOpen, showChatbot]);
 
   async function handleSend() {
     setIsGettingChatbotRes(true);
@@ -46,16 +50,16 @@ export default function Chatbot() {
   }
 
   return (
-    <div className="fixed bottom-0 right-0 w-full z-50">
+    <div className="fixed bottom-0 right-0 w-full z-10 " ref={chatbotContainerRef}>
       <img
         src="/favicons/K.svg"
         alt="chatbot logo"
-        className=" fixed  bottom-0 -right-2 w-12 m-4 cursor-pointer hover:scale-105 transition-transform duration-200 ease-in-out"
+        className=" fixed  z-50 bottom-0 -right-2 w-12 m-4 cursor-pointer hover:scale-105 transition-transform duration-200 ease-in-out"
         onClick={() => setShowChatbot(!showChatbot)}
       />
 
       <div
-        className={`absolute flex flex-col bottom-16 right-2 w-[95%] h-150 sm:w-[400px]  bg-gray-200 dark:bg-slate-900 text-black dark:text-white p-4 rounded-xl shadow-lg border border-neutral-400 dark:border-gray-700  ${
+        className={`absolute flex flex-col bottom-7 right-2 w-[95%] h-150 sm:w-[400px]  bg-gray-200 dark:bg-slate-900 text-black dark:text-white p-4 rounded-xl shadow-lg border border-neutral-400 dark:border-gray-700  ${
           showChatbot ? 'scale-y-100' : 'scale-y-0'
         } origin-bottom transition-transform duration-300 ease-in-out`}
       >
