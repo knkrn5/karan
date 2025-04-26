@@ -9,11 +9,12 @@ const openai = new OpenAI({
 });
 
 export class ChatbotService {
-  static async getChatbotResponse(userMsg: string): Promise<string> {
+  static async getChatbotResponse(userMsg: string, llmName: string): Promise<string> {
     if (!userMsg) throw new ApiResponse(400, false, 'User message not found', null);
+    if (!llmName) throw new ApiResponse(400, false, 'AI model not found', null);
 
     const completion = await openai.chat.completions.create({
-      model: 'meta/llama-3.1-70b-instruct',
+      model: llmName,
       messages: [{ role: 'user', content: userMsg }],
       temperature: 0.2,
       top_p: 0.7,

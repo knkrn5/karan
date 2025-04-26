@@ -10,7 +10,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export default function Chatbot() {
   const [showChatbot, setShowChatbot] = useState<boolean>(false);
   const [inputMessage, setInputMessage] = useState<string>('');
-  const [selectedModel, setSelectedModel] = useState<string>('meta/llama-3.1-70b-instruct');
+  const [selectedLLM, setSelectedLLM] = useState<string>('meta/llama-3.1-70b-instruct');
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isGettingChatbotRes, setIsGettingChatbotRes] = useState<boolean>(false);
   const [messages, setMessages] = useState<{ role: 'user' | 'bot'; content: string }[]>([]);
@@ -48,6 +48,7 @@ export default function Chatbot() {
       setMessages(prevMessages => [...prevMessages, { role: 'user', content: inputMessage }]);
       const response = await axios.post(`${BACKEND_URL}/api/chatbot/send-msg-to-chatbot`, {
         userMsg,
+        llmName: selectedLLM,
       });
       // Adding bot message
       setMessages(prevMessages => [...prevMessages, { role: 'bot', content: response.data }]);
@@ -57,6 +58,11 @@ export default function Chatbot() {
         setMessages(prevMessages => [
           ...prevMessages,
           { role: 'bot', content: error.response?.data?.error },
+        ]);
+      } else {
+        setMessages(prevMessages => [
+          ...prevMessages,
+          { role: 'bot', content: 'unexpected error occured' },
         ]);
       }
     } finally {
@@ -89,7 +95,7 @@ export default function Chatbot() {
           >
             <div className="flex items-center gap-2">
               <LuBot size={20} className="text-blue-400" />
-              <span className="font-medium">{selectedModel}</span>
+              <span className="font-medium">{selectedLLM}</span>
             </div>
             <IoMdArrowDropdownCircle
               size={22}
@@ -104,21 +110,26 @@ export default function Chatbot() {
               !isDropdownOpen ? 'scale-y-0' : 'scale-y-100'
             } origin-top`}
           >
-            {['meta/llama-3.1-70b-instruct', 'GPT 4', 'GPT 4 (32k)', 'Claude 3', 'Mistral 7B'].map(
-              model => (
-                <button
-                  type="button"
-                  key={model}
-                  className="w-full text-left px-3 py-2 border-b border-gray-600 hover:bg-neutral-200 dark:hover:bg-slate-700 cursor-pointer transition-colors"
-                  onClick={() => {
-                    setSelectedModel(model);
-                    setIsDropdownOpen(false);
-                  }}
-                >
-                  {model}
-                </button>
-              )
-            )}
+            {[
+              'meta/llama-3.1-70b-instruct',
+              'qwen/qwen2.5-7b-instruct',
+              'nvidia/llama-3.3-nemotron-super-49b-v1',
+              'mistralai/mistral-small-24b-instruct',
+              'google/gemma-3-1b-it',
+              'microsoft/phi-4-mini-instruct',
+            ].map(model => (
+              <button
+                type="button"
+                key={model}
+                className="w-full text-left px-3 py-2 border-b border-gray-600 hover:bg-neutral-200 dark:hover:bg-slate-700 cursor-pointer transition-colors"
+                onClick={() => {
+                  setSelectedLLM(model);
+                  setIsDropdownOpen(false);
+                }}
+              >
+                {model}
+              </button>
+            ))}
           </div>
         </div>
 
