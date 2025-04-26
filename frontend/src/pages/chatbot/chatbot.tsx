@@ -2,6 +2,8 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { IoIosSend, IoMdArrowDropdownCircle } from 'react-icons/io';
 import { LuBot } from 'react-icons/lu';
+import { FaRobot } from 'react-icons/fa6';
+import { FaUser } from 'react-icons/fa';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -15,6 +17,7 @@ export default function Chatbot() {
 
   const dropdownButtonRef = useRef<HTMLButtonElement>(null);
   const chatbotContainerRef = useRef<HTMLDivElement>(null);
+  const suggestionBoxRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -33,19 +36,21 @@ export default function Chatbot() {
     };
   }, [isDropdownOpen, showChatbot]);
 
-  async function handleSend() {
+  async function handleSend(userMsg: string) {
+    if (!userMsg.trim()) return;
     setIsGettingChatbotRes(true);
+    if (suggestionBoxRef.current) {
+      suggestionBoxRef.current.style.display = 'none';
+    }
     try {
       setInputMessage('');
+      // Adding user message
+      setMessages(prevMessages => [...prevMessages, { role: 'user', content: inputMessage }]);
       const response = await axios.post(`${BACKEND_URL}/api/chatbot/send-msg-to-chatbot`, {
-        userMsg: inputMessage,
+        userMsg,
       });
-      console.log(response.data);
-      setMessages(prevMessages => [
-        ...prevMessages,
-        { role: 'user', content: inputMessage },
-        { role: 'bot', content: response.data },
-      ]);
+      // Adding bot message
+      setMessages(prevMessages => [...prevMessages, { role: 'bot', content: response.data }]);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error('Error sending message:', error.response?.data ?? error.message);
@@ -116,7 +121,10 @@ export default function Chatbot() {
         {/* Messages container */}
         <div className="flex flex-col flex-1 gap-2 overflow-y-auto  p-2 rounded-lg border border-neutral-300 dark:border-gray-600 bg-white dark:bg-slate-800">
           {/* Suggestion box */}
-          <div className="flex flex-col gap-2 px-2 py-4 rounded-lg bg-gray-200 dark:bg-dark">
+          <div
+            className="flex flex-col gap-2 px-2 py-4 rounded-lg bg-gray-200 dark:bg-dark"
+            ref={suggestionBoxRef}
+          >
             {[
               'What is this website about?',
               'Tell me about Karan?',
@@ -126,7 +134,9 @@ export default function Chatbot() {
                 type="button"
                 key={msg}
                 className="px-4 py-2 w-fit max-w-xs border border-neutral-400 dark:border-gray-600 rounded-full hover:bg-neutral-50 dark:hover:bg-gray-700 transition-hover duration-300  cursor-pointer"
-                onClick={e => setInputMessage((e.target as HTMLButtonElement).innerText)}
+                onClick={e => {
+                  setInputMessage((e.target as HTMLButtonElement).innerText);
+                }}
               >
                 {msg}
               </button>
@@ -145,11 +155,22 @@ export default function Chatbot() {
                 <div
                   className={`p-2 rounded-lg max-w-[80%] ${
                     msg.role === 'user'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-300 dark:bg-slate-700 text-black dark:text-white'
+                      ? 'bg-blue-500 text-white rounded-tr-none shadow-lg '
+                      : 'bg-gray-300 dark:bg-slate-700 text-black dark:text-white rounded-tl-none'
                   }`}
                 >
-                  {msg.content}
+                  <div className="flex items-start gap-2">
+                    {msg.role === 'bot' && (
+                      <FaRobot
+                        size={18}
+                        className="text-black dark:text-white mt-1 shrink-0 self-start"
+                      />
+                    )}
+                    <p className="whitespace-pre-line">{msg.content}</p>
+                    {msg.role === 'user' && (
+                      <FaUser size={18} className="text-white mt-1 shrink-0 self-start" />
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -164,13 +185,21 @@ export default function Chatbot() {
             onChange={e => {
               setInputMessage(e.target.value);
             }}
+            onKeyDown={e => {
+              if (inputMessage.trim() && !isGettingChatbotRes && window.innerWidth > 640) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend(inputMessage);
+                }
+              }
+            }}
             className="w-full p-2 outline-none text-black dark:text-white placeholder-gray-400 rounded bg-white dark:bg-slate-800 resize-none min-h-[40px] max-h-[120px] overflow-y-auto"
           />
           <button
             type="button"
             title="Send message"
             aria-label="Send message"
-            onClick={handleSend}
+            onClick={() => handleSend(inputMessage)}
             disabled={!inputMessage.trim() || isGettingChatbotRes}
             className={` px-3 py-1 rounded-full transition-colors duration-200 ease-in-out cursor-pointer bg-blue-500 text-white disabled:bg-white disabled:text-black  disabled:opacity-50 disabled:cursor-not-allowed`}
           >
