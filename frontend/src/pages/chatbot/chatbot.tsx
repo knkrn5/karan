@@ -149,9 +149,10 @@ export default function Chatbot() {
                 type="button"
                 key={msg}
                 className="px-4 py-2 w-fit max-w-xs border border-neutral-400 dark:border-gray-600 rounded-full hover:bg-neutral-50 dark:hover:bg-gray-700 transition-hover duration-300  cursor-pointer"
-                onClick={e => {
-                  setInputMessage((e.target as HTMLButtonElement).innerText);
-                }}
+                // onClick={e => {
+                //   setInputMessage((e.target as HTMLButtonElement).innerText);
+                // }}
+                onClick={() => setInputMessage(msg)}
               >
                 {msg}
               </button>
