@@ -11,6 +11,7 @@ export default function Chatbot() {
   const [selectedModel, setSelectedModel] = useState<string>('meta/llama-3.1-70b-instruct');
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isGettingChatbotRes, setIsGettingChatbotRes] = useState<boolean>(false);
+  const [messages, setMessages] = useState<{ role: 'user' | 'bot'; content: string }[]>([]);
 
   const dropdownButtonRef = useRef<HTMLButtonElement>(null);
   const chatbotContainerRef = useRef<HTMLDivElement>(null);
@@ -40,6 +41,11 @@ export default function Chatbot() {
         userMsg: inputMessage,
       });
       console.log(response.data);
+      setMessages(prevMessages => [
+        ...prevMessages,
+        { role: 'user', content: inputMessage },
+        { role: 'bot', content: response.data },
+      ]);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error('Error sending message:', error.response?.data ?? error.message);
@@ -124,6 +130,28 @@ export default function Chatbot() {
               >
                 {msg}
               </button>
+            ))}
+          </div>
+
+          {/* messages box */}
+          <div className="">
+            {messages.map((msg, i) => (
+              <div
+                key={i}
+                className={`flex items-start gap-2 mb-2 ${
+                  msg.role === 'user' ? 'justify-end' : 'justify-start'
+                }`}
+              >
+                <div
+                  className={`p-2 rounded-lg max-w-[80%] ${
+                    msg.role === 'user'
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-gray-300 dark:bg-slate-700 text-black dark:text-white'
+                  }`}
+                >
+                  {msg.content}
+                </div>
+              </div>
             ))}
           </div>
         </div>
