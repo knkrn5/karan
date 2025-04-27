@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { marked } from 'marked';
 import { useEffect, useRef, useState } from 'react';
 import { IoIosSend, IoMdArrowDropdownCircle } from 'react-icons/io';
 import { LuBot } from 'react-icons/lu';
@@ -55,8 +56,9 @@ export default function Chatbot() {
         userMsg,
         llmName: selectedLLM,
       });
-      // Adding bot message
-      setMessages(prevMessages => [...prevMessages, { role: 'bot', content: response.data }]);
+      const markdownText = response.data;
+      const htmlText = await marked.parse(markdownText);
+      setMessages(prevMessages => [...prevMessages, { role: 'bot', content: htmlText }]);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error('Error sending message:', error.response?.data ?? error.message);
@@ -184,7 +186,10 @@ export default function Chatbot() {
                         className="text-black dark:text-white mt-1 shrink-0 self-start"
                       />
                     )}
-                    <p className="whitespace-pre-line">{msg.content}</p>
+                    <div
+                      className="break-words prose dark:prose-invert max-w-none"
+                      dangerouslySetInnerHTML={{ __html: msg.content }}
+                    />
                     {msg.role === 'user' && (
                       <FaUser size={18} className="text-white mt-1 shrink-0 self-start" />
                     )}
