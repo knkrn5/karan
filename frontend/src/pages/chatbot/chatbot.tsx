@@ -4,6 +4,7 @@ import { IoIosSend, IoMdArrowDropdownCircle } from 'react-icons/io';
 import { LuBot } from 'react-icons/lu';
 import { FaRobot } from 'react-icons/fa6';
 import { FaUser } from 'react-icons/fa';
+import { FiLoader } from 'react-icons/fi';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -18,6 +19,11 @@ export default function Chatbot() {
   const dropdownButtonRef = useRef<HTMLButtonElement>(null);
   const chatbotContainerRef = useRef<HTMLDivElement>(null);
   const suggestionBoxRef = useRef<HTMLDivElement | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -62,7 +68,7 @@ export default function Chatbot() {
       } else {
         setMessages(prevMessages => [
           ...prevMessages,
-          { role: 'bot', content: 'unexpected error occured' },
+          { role: 'bot', content: 'Unexpected error occurred' },
         ]);
       }
     } finally {
@@ -149,9 +155,6 @@ export default function Chatbot() {
                 type="button"
                 key={msg}
                 className="px-4 py-2 w-fit max-w-xs border border-neutral-400 dark:border-gray-600 rounded-full hover:bg-neutral-50 dark:hover:bg-gray-700 transition-hover duration-300  cursor-pointer"
-                // onClick={e => {
-                //   setInputMessage((e.target as HTMLButtonElement).innerText);
-                // }}
                 onClick={() => setInputMessage(msg)}
               >
                 {msg}
@@ -190,6 +193,15 @@ export default function Chatbot() {
                 </div>
               </div>
             ))}
+            {/* Scroll to the bottom */}
+            <div ref={messagesEndRef} />
+            {/* Loading spinner */}
+            {isGettingChatbotRes && (
+              <div className="flex  items-center gap-2 w-fit mb-2 p-2 rounded-lg bg-gray-200 dark:bg-gray-600 justify-start">
+                <FiLoader className="animate-spin text-blue-500" />
+                <span className="text-gray-600 dark:text-gray-300">Thinking...</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -222,7 +234,7 @@ export default function Chatbot() {
             <IoIosSend size={20} className="w-6 h-6" />
           </button>
         </div>
-        <p className="mt-1 text-sm font-extrabold text-center text-gray-500   dark:text-gray-400">
+        <p className="mt-1 text-sm font-extrabold text-center text-gray-500 dark:text-gray-400">
           Karan.email
         </p>
       </div>
