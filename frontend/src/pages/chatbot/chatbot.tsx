@@ -187,7 +187,7 @@ export default function Chatbot() {
                       />
                     )}
                     <div
-                      className="break-words prose prose-code:inline-block prose-code:w-[50px] dark:prose-invert max-w-none"
+                      className="break-words prose prose-code:inline-block prose-code:w-[50px] prose-a:text-blue-500 dark:prose-invert max-w-none"
                       dangerouslySetInnerHTML={{ __html: msg.content }}
                     />
                     {msg.role === 'user' && (
