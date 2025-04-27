@@ -4,7 +4,6 @@ import { IoIosSend, IoMdArrowDropdownCircle } from 'react-icons/io';
 import { LuBot } from 'react-icons/lu';
 import { FaRobot } from 'react-icons/fa6';
 import { FaUser } from 'react-icons/fa';
-import { FiLoader } from 'react-icons/fi';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -195,11 +194,10 @@ export default function Chatbot() {
             ))}
             {/* Scroll to the bottom */}
             <div ref={messagesEndRef} />
-            {/* Loading spinner */}
+            {/* Loading indicator */}
             {isGettingChatbotRes && (
               <div className="flex  items-center gap-2 w-fit mb-2 p-2 rounded-lg bg-gray-200 dark:bg-gray-600 justify-start">
-                <FiLoader className="animate-spin text-blue-500" />
-                <span className="text-gray-600 dark:text-gray-300">Thinking...</span>
+                <FaRobot className="animate-zoom-in-out" />
               </div>
             )}
           </div>
