@@ -61,10 +61,9 @@ export default function Chatbot() {
       setMessages(prevMessages => [...prevMessages, { role: 'bot', content: htmlText }]);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error('Error sending message:', error.response?.data ?? error.message);
         setMessages(prevMessages => [
           ...prevMessages,
-          { role: 'bot', content: error.response?.data?.error },
+          { role: 'bot', content: error.response?.data.message ?? error.message },
         ]);
       } else {
         setMessages(prevMessages => [
