@@ -14,7 +14,7 @@ export default function Chatbot() {
   const [selectedLLM, setSelectedLLM] = useState<string>('meta/llama-3.1-70b-instruct');
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isGettingChatbotRes, setIsGettingChatbotRes] = useState<boolean>(false);
-  const [messages, setMessages] = useState<{ role: 'user' | 'bot'; content: string }[]>([]);
+  const [messages, setMessages] = useState<{ role: 'user' | 'system'; content: string }[]>([]);
 
   const dropdownButtonRef = useRef<HTMLButtonElement>(null);
   const chatbotContainerRef = useRef<HTMLDivElement>(null);
@@ -59,17 +59,17 @@ export default function Chatbot() {
       });
       const markdownText = response.data;
       const htmlText = await marked.parse(markdownText);
-      setMessages(prevMessages => [...prevMessages, { role: 'bot', content: htmlText }]);
+      setMessages(prevMessages => [...prevMessages, { role: 'system', content: htmlText }]);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setMessages(prevMessages => [
           ...prevMessages,
-          { role: 'bot', content: error.response?.data.message ?? error.message },
+          { role: 'system', content: error.response?.data.message ?? error.message },
         ]);
       } else {
         setMessages(prevMessages => [
           ...prevMessages,
-          { role: 'bot', content: 'Unexpected error occurred' },
+          { role: 'system', content: 'Unexpected error occurred' },
         ]);
       }
     } finally {
@@ -182,7 +182,7 @@ export default function Chatbot() {
                   }`}
                 >
                   <div className="flex items-start gap-2">
-                    {msg.role === 'bot' && (
+                    {msg.role === 'system' && (
                       <FaRobot
                         size={18}
                         className="text-black dark:text-white mt-1 shrink-0 self-start"

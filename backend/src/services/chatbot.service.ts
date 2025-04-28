@@ -22,10 +22,6 @@ export class ChatbotService {
       process.exit(1);
     }
 
-    //only user history messages
-    const userMsgHistory = historyMsgs.filter(msg => msg.role === 'user').slice(-10);
-    const userMsgHistorystack = userMsgHistory.map(msg => msg.content).join('\n');
-
     const completion = await openai.chat.completions.create({
       model: llmName,
       messages: [
@@ -35,9 +31,10 @@ export class ChatbotService {
             You are Karan's assistant.
             You will only answer based on the provided data and ignore any irrelevant questions.
             The user's name is ${userName}. Treat the user respectfully and refer to them as ${userName} when needed.
-            Here is Karan's data: ${karanData},  and these are the only user's history chats messages that the user has sent: ${userMsgHistorystack}, so please refer to the history chats messages whenever needed.
+            Here is Karan's data: ${karanData}.
           `
         },
+        ...historyMsgs,
         { role: "user", content: userMsg }
       ],
       temperature: 0.2,
