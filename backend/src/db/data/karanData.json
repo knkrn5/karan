@@ -77,7 +77,7 @@
           "programming_languages": ["JavaScript", "Python", "Node.js", "Java", "TypeScript"],
           "frontend_frameworks": ["React, Redux"],
           "backend_frameworks": [" Express.js", "FastAPI"],
-          "cloud_platforms": ["AWS", "Vercel"],
+          "cloud_platforms": ["AWS", "Render"],
           "containerization_and_devops": ["Docker"],
           "databases": ["SQLite", "MySQL", "PostgreSQL", "MongoDB"],
           "orm_odm_tools": ["Mongoose"]

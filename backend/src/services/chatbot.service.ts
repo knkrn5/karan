@@ -10,9 +10,9 @@ const openai = new OpenAI({
 });
 
 export class ChatbotService {
-  static async getChatbotResponse(userMsg: string, llmName: string, userName: string = 'mukesh'): Promise<string> {
+  static async getChatbotResponse(userMsg: string, llmName: string, historyMsgs: Array<{ role: 'user' | 'system'; content: string }>, userName: string = 'mukesh'): Promise<string> {
     if (!userMsg) throw new ApiResponse(400, false, 'User message not found', null);
-    if (!llmName) throw new ApiResponse(400, false, 'AI model not found', null);
+    if (!llmName) throw new ApiResponse(400, false, 'LLM not found', null);
 
     let karanData = '';
     try {
@@ -22,6 +22,9 @@ export class ChatbotService {
       process.exit(1);
     }
 
+    //only user history messages
+    const userMsgHistory = historyMsgs.filter(msg => msg.role === 'user').slice(-10);
+    const userMsgHistorystack = userMsgHistory.map(msg => msg.content).join('\n');
 
     const completion = await openai.chat.completions.create({
       model: llmName,
@@ -29,16 +32,13 @@ export class ChatbotService {
         {
           role: "system",
           content: `
-          You are Karan's assistant. 
-          You will only answer based on the provided data and ignore any irrelevant questions.
-          The user's name is ${userName}. Treat the user respectfully and refer to them as ${userName} when needed.
-          Here is Karan's data: ${karanData}
-        `
+            You are Karan's assistant.
+            You will only answer based on the provided data and ignore any irrelevant questions.
+            The user's name is ${userName}. Treat the user respectfully and refer to them as ${userName} when needed.
+            Here is Karan's data: ${karanData},  and these are the only user's history chats messages that the user has sent: ${userMsgHistorystack}, so please refer to the history chats messages whenever needed.
+          `
         },
-        {
-          role: "user",
-          content: userMsg
-        }
+        { role: "user", content: userMsg }
       ],
       temperature: 0.2,
       top_p: 0.7,

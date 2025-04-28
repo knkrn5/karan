@@ -55,6 +55,7 @@ export default function Chatbot() {
       const response = await axios.post(`${BACKEND_URL}/api/chatbot/send-msg-to-chatbot`, {
         userMsg,
         llmName: selectedLLM,
+        historyMsgs: messages,
       });
       const markdownText = response.data;
       const htmlText = await marked.parse(markdownText);
@@ -214,6 +215,7 @@ export default function Chatbot() {
           <textarea
             placeholder="Ask a question..."
             value={inputMessage}
+            maxLength={500}
             onChange={e => {
               setInputMessage(e.target.value);
             }}
