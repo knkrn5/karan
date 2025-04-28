@@ -52,10 +52,9 @@
         }
       }
     },
-    "personal_experience": [
+    "personal_projects": [
       {
-        "role": "Personal Projects",
-        "position": "Full Stack Developer",
+        "solo": "Full Stack Developer",
         "projects": [
           {
             "title": "Portfolio Website",
@@ -63,22 +62,26 @@
             "link": "https://karan.dev"
           },
           {
-            "title": "Chat Application",
-            "description": "Created a real-time chat application using Socket.io and Node.js backend.",
-            "link": "https://github.com/karan/chat-app"
+            "title": "wealthPsychology",
+            "description": "Teaches the principles of financial psychology, and explains different financial concepts.",
+            "link": "https:wealthpsychology.in"
+          },
+          {
+            "title": "Explanator AI",
+            "description": "Include the Chatbots, and custom Datasets of Different models and APIs.",
+            "link": "https://explanatorai.site"
           }
         ],
-        "skills": [
-          "JavaScript",
-          "Python",
-          "Java",
-          "React",
-          "Node.js",
-          "AWS",
-          "Docker",
-          "SQL",
-          "TypeScript"
-        ]
+        "skills": {
+          "web_technologies": ["HTML", "CSS", "TailwindCSS"],
+          "programming_languages": ["JavaScript", "Python", "Node.js", "Java", "TypeScript"],
+          "frontend_frameworks": ["React, Redux"],
+          "backend_frameworks": [" Express.js", "FastAPI"],
+          "cloud_platforms": ["AWS", "Vercel"],
+          "containerization_and_devops": ["Docker"],
+          "databases": ["SQLite", "MySQL", "PostgreSQL", "MongoDB"],
+          "orm_odm_tools": ["Mongoose"]
+        }
       }
     ],
 

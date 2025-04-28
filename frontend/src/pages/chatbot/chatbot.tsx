@@ -81,7 +81,9 @@ export default function Chatbot() {
       <img
         src="/favicons/K.svg"
         alt="chatbot logo"
-        className=" fixed  z-50 bottom-0 -right-2 w-12 m-4 cursor-pointer hover:scale-105 transition-transform duration-200 ease-in-out"
+        className={`fixed  z-50 bottom-0 -right-2 w-12 m-4 cursor-pointer hover:scale-105 transition-transform duration-300 ease-in-out ${
+          showChatbot ? 'animate-spin ' : ''
+        }`}
         onClick={() => setShowChatbot(!showChatbot)}
       />
 
