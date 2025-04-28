@@ -27,9 +27,9 @@ export default function ContactForm() {
     message: '',
   });
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
 
   const name = useContactInfoStore(state => state.name);
   const email = useContactInfoStore(state => state.email);
