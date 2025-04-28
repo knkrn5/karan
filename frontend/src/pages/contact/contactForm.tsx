@@ -69,35 +69,10 @@ export default function ContactForm() {
     // storing form data in an object
     const currentFormData = { name, email, message };
 
-    /*     // robust email regex
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/; */
-
     // Calculating errors synchronously
     const formFieldErrors = {
-      name: !name.trim()
-        ? 'Name is required'
-        : name.length < 3
-        ? 'Name must be at least 3 characters'
-        : '',
-      email: !email
-        ? 'Email is required'
-        : !email.includes('@')
-        ? 'Email must contain @ symbol'
-        : !email.includes('.')
-        ? 'Email must contain a domain extension (e.g., .com)'
-        : email.indexOf('@') === 0
-        ? 'Email must have a username before @ symbol'
-        : email.indexOf('@') === email.length - 1
-        ? 'Email must have a domain after @ symbol'
-        : email.split('@')[1] && !email.split('@')[1].includes('.')
-        ? 'Email domain must include an extension (e.g., .com)'
-        : !/^[a-zA-Z0-9._-]+@/.test(email)
-        ? 'Email username can only contain letters, numbers, periods, underscores, and hyphens'
-        : !/@[a-zA-Z0-9.-]+\./.test(email)
-        ? 'Email domain can only contain letters, numbers, periods, and hyphens'
-        : !/\.[a-zA-Z]{2,6}$/.test(email)
-        ? 'Email must end with a valid domain extension (2-6 letters)'
-        : '',
+      name: !name.trim() ? 'Name is required' : '',
+      email: !email ? 'Email is required' : '',
       message: !message.trim()
         ? 'Message can not be empty'
         : message.length < 10
@@ -165,7 +140,7 @@ export default function ContactForm() {
 
   return (
     <div className="relative">
-      {/* popup */}
+      {/*login popup */}
       {isPopupOpen && (
         <Popup
           header="Login Required"

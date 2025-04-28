@@ -84,22 +84,12 @@
         }
       }
     ],
-
-    "certifications": [
-      {
-        "name": "AWS Certified Solutions Architect",
-        "issuer": "Amazon Web Services",
-        "year": 2023
-      }
-    ],
     "languages": {
       "English": "Fluent",
-      "Spanish": "Intermediate",
-      "French": "Basic",
       "Hindi": "Native"
     },
 
-    "interests": ["Reading", "Traveling", "Gaming", "Photography", "Open Source Contribution"],
+    "interests": ["Reading", "Traveling", "Gaming", "Learning", "Open Source Contribution"],
     "availability": "Open to remote opportunities and relocation."
   }
 }

@@ -5,6 +5,8 @@ import { IoIosSend, IoMdArrowDropdownCircle } from 'react-icons/io';
 import { LuBot } from 'react-icons/lu';
 import { FaRobot } from 'react-icons/fa6';
 import { FaUser } from 'react-icons/fa';
+import { useAuthCheck } from '../../hooks/authCheckHook';
+import { useProfileStore } from '../../stores/profile/profileStore';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -20,6 +22,10 @@ export default function Chatbot() {
   const chatbotContainerRef = useRef<HTMLDivElement>(null);
   const suggestionBoxRef = useRef<HTMLDivElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  const profileName = useProfileStore(state => state.firstName);
+
+  const isAuthenticated = useAuthCheck();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -43,6 +49,12 @@ export default function Chatbot() {
   }, [isDropdownOpen, showChatbot]);
 
   async function handleSend(userMsg: string) {
+    // Check if the user is loged in
+    if (!isAuthenticated) {
+      alert('Please log in to send a message');
+      return;
+    }
+
     if (!userMsg.trim()) return;
     setIsGettingChatbotRes(true);
     if (suggestionBoxRef.current) {
@@ -53,6 +65,7 @@ export default function Chatbot() {
       // Adding user message
       setMessages(prevMessages => [...prevMessages, { role: 'user', content: inputMessage }]);
       const response = await axios.post(`${BACKEND_URL}/api/chatbot/send-msg-to-chatbot`, {
+        userName: profileName,
         userMsg,
         llmName: selectedLLM,
         historyMsgs: messages,
