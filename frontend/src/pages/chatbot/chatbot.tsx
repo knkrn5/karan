@@ -138,7 +138,7 @@ export default function Chatbot() {
               'nvidia/llama-3.3-nemotron-super-49b-v1',
               'mistralai/mistral-small-24b-instruct',
               'google/gemma-3-1b-it',
-              'microsoft/phi-4-mini-instruct',
+              'microsoft/phi-3.5-mini-instruct',
             ].map(model => (
               <button
                 type="button"
