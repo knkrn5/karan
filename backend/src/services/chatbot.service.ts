@@ -10,7 +10,7 @@ const openai = new OpenAI({
 });
 
 export class ChatbotService {
-  static async getChatbotResponse(userMsg: string, llmName: string, userName: string = 'rahul'): Promise<string> {
+  static async getChatbotResponse(userMsg: string, llmName: string, userName: string = 'mukesh'): Promise<string> {
     if (!userMsg) throw new ApiResponse(400, false, 'User message not found', null);
     if (!llmName) throw new ApiResponse(400, false, 'AI model not found', null);
 

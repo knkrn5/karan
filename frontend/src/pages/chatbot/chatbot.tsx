@@ -149,7 +149,7 @@ export default function Chatbot() {
             {[
               'What is this website about?',
               'Tell me about Karan?',
-              'Where can I get karan`s resume?',
+              'How can I contact karan?',
             ].map(msg => (
               <button
                 type="button"

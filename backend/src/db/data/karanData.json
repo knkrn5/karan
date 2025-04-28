@@ -2,78 +2,91 @@
   "personal_info": {
     "name": "Karan",
     "age": 24,
-    "location": {
+    "address": {
       "country": "India",
       "city": "Delhi",
       "region": "Delhi NCR"
     },
     "contact": {
-      "email": "gH6yS@example.com",
-      "phone": "123-456-7890",
-      "linkedin": "https://linkedin.com/in/karan",
-      "github": "https://github.com/karan",
-      "website": "https://karan.dev"
+      "email": "mail@karan.email",
+      "phone": "N/A",
+      "linkedin": "https://linkedin.com/in/ka-r-an5",
+      "github": "https://github.com/knkrn5",
+      "twitter": "https://x.com/ka_r_an5",
+      "website": "https://karan.email"
     },
     "education": {
-      "degree": "Bachelor's",
-      "major": "Computer Science",
-      "university": "XYZ University",
-      "graduation_year": 2022,
-      "gpa": "3.8/4.0"
-    },
-    "work_experience": [
-      {
-        "company": "ABC Corp",
-        "position": "Software Engineer",
-        "years": 3,
+      "tenth": {
+        "school_name": "St Micheal's Senior Secondary School",
+        "board": "CBSE",
+        "year_of_completion": 2019,
+        "percentage": "78%",
         "location": {
           "country": "India",
           "city": "Delhi",
-          "region": "Delhi NCR"
-        },
-        "responsibilities": [
-          "Developed and maintained web applications using React and Node.js.",
-          "Collaborated with cross-functional teams to define and implement new features.",
-          "Optimized applications for maximum speed and scalability."
-        ]
+          "region": "karol Bagh"
+        }
       },
-      {
-        "company": "DEF Inc",
-        "position": "Senior Developer",
-        "years": 2,
+      "twelfth": {
+        "school_name": "St Micheal's Senior Secondary School",
+        "board": "CBSE",
+        "stream": "Commerce",
+        "year_of_completion": 2021,
+        "percentage": "78%",
         "location": {
-          "country": "Remote",
-          "city": "Remote",
-          "region": "Global"
-        },
-        "responsibilities": [
-          "Led a team of 5 developers for large-scale projects.",
-          "Architected and deployed cloud solutions using AWS.",
-          "Mentored junior developers and conducted code reviews."
+          "country": "India",
+          "city": "Delhi",
+          "region": "karol Bagh"
+        }
+      },
+      "bachelor": {
+        "degree": "Bachelor's",
+        "major": "Computer Science",
+        "university": "Galgotias University",
+        "graduation_year": 2024,
+        "cgpa": "8.8/10.0",
+        "location": {
+          "country": "India",
+          "city": "Greater Noida",
+          "region": "Uttar Pradesh"
+        }
+      }
+    },
+    "personal_experience": [
+      {
+        "role": "Personal Projects",
+        "position": "Full Stack Developer",
+        "projects": [
+          {
+            "title": "Portfolio Website",
+            "description": "Built a personal portfolio website using React, TailwindCSS, and Vercel hosting.",
+            "link": "https://karan.dev"
+          },
+          {
+            "title": "Chat Application",
+            "description": "Created a real-time chat application using Socket.io and Node.js backend.",
+            "link": "https://github.com/karan/chat-app"
+          }
+        ],
+        "skills": [
+          "JavaScript",
+          "Python",
+          "Java",
+          "React",
+          "Node.js",
+          "AWS",
+          "Docker",
+          "SQL",
+          "TypeScript"
         ]
       }
     ],
-    "skills": [
-      "JavaScript",
-      "Python",
-      "Java",
-      "React",
-      "Node.js",
-      "AWS",
-      "Docker",
-      "SQL",
-      "TypeScript"
-    ],
+
     "certifications": [
       {
         "name": "AWS Certified Solutions Architect",
         "issuer": "Amazon Web Services",
         "year": 2023
-      },
-      {
-        "name": "Certified Kubernetes Application Developer",
-        "issuer": "The Linux Foundation",
-        "year": 2024
       }
     ],
     "languages": {
@@ -82,33 +95,7 @@
       "French": "Basic",
       "Hindi": "Native"
     },
-    "projects": [
-      {
-        "title": "Portfolio Website",
-        "description": "Built a personal portfolio website using React, TailwindCSS, and Vercel hosting.",
-        "link": "https://karan.dev"
-      },
-      {
-        "title": "Chat Application",
-        "description": "Created a real-time chat application using Socket.io and Node.js backend.",
-        "link": "https://github.com/karan/chat-app"
-      }
-    ],
-    "awards": [
-      {
-        "title": "Best Developer Award",
-        "organization": "ABC Corp",
-        "year": 2021
-      }
-    ],
-    "volunteering": [
-      {
-        "organization": "Code for Good",
-        "role": "Mentor",
-        "years": 1,
-        "description": "Mentored underprivileged students in basic programming and computer science concepts."
-      }
-    ],
+
     "interests": ["Reading", "Traveling", "Gaming", "Photography", "Open Source Contribution"],
     "availability": "Open to remote opportunities and relocation."
   }
