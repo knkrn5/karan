@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 dotenv.config();
-// console.log("MongoDB URL:", process.env.MONGO_URL);
 
 const connectMongoDB = async () => {
   try {
