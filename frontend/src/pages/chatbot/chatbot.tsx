@@ -63,9 +63,6 @@ export default function Chatbot() {
     setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
     setInputMessage('');
 
-    // adding bot msg to be replaced
-    setMessages(prev => [...prev, { role: 'system', content: '' }]);
-
     try {
       const response = await fetch(`${BACKEND_URL}/api/chatbot/send-msg-to-chatbot`, {
         method: 'POST',
@@ -79,6 +76,10 @@ export default function Chatbot() {
           historyMsgs: messages,
         }),
       });
+
+      // adding bot msg to be replaced
+      setIsGettingChatbotRes(false);
+      setMessages(prev => [...prev, { role: 'system', content: '' }]);
 
       if (!response.body) throw new Error('No response body');
 
