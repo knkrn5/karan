@@ -85,7 +85,7 @@ export default function Chatbot() {
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder('utf-8');
-      let result = '';
+      let responseInChunk = '';
 
       while (true) {
         const { done, value } = await reader.read();
@@ -102,16 +102,16 @@ export default function Chatbot() {
 
           try {
             const parsed = JSON.parse(data);
-            result += parsed;
-            const htmlText = await marked.parse(result);
+            responseInChunk += parsed;
+            const htmlText = await marked.parse(responseInChunk);
 
             setMessages(prev => {
-              const updated = [...prev];
-              updated[updated.length - 1] = {
-                ...updated[updated.length - 1],
+              const updatedMsgsArray = [...prev];
+              updatedMsgsArray[updatedMsgsArray.length - 1] = {
+                ...updatedMsgsArray[updatedMsgsArray.length - 1],
                 content: htmlText,
               };
-              return updated;
+              return updatedMsgsArray;
             });
           } catch (err) {
             console.error('Error parsing streamed chunk', err, data);
