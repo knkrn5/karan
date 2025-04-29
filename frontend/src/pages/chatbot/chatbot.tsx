@@ -6,6 +6,7 @@ import { FaRobot } from 'react-icons/fa6';
 import { FaUser } from 'react-icons/fa';
 import { useAuthCheck } from '../../hooks/authCheckHook';
 import { useProfileStore } from '../../stores/profile/profileStore';
+import CBLoginMsg from './CBLoginMsg';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -48,11 +49,6 @@ export default function Chatbot() {
   }, [isDropdownOpen, showChatbot]);
 
   async function handleSend(userMsg: string) {
-    if (!isAuthenticated) {
-      alert('Please log in to send a message');
-      return;
-    }
-
     if (!userMsg.trim()) return;
     setIsGettingChatbotRes(true);
     if (suggestionBoxRef.current) {
@@ -201,69 +197,75 @@ export default function Chatbot() {
         {/* Messages container */}
         <div className="flex flex-col flex-1 gap-2 overflow-y-auto  p-2 rounded-lg border border-neutral-300 dark:border-gray-600 bg-white dark:bg-slate-800 ">
           {/* Suggestion box */}
-          <div
-            className="flex flex-col gap-2 px-2 py-4 rounded-lg bg-gray-200 dark:bg-dark"
-            ref={suggestionBoxRef}
-          >
-            {[
-              'What is this website about?',
-              'Tell me about Karan?',
-              'How can I contact karan?',
-            ].map(msg => (
-              <button
-                type="button"
-                key={msg}
-                className="px-4 py-2 w-fit max-w-xs border border-neutral-400 dark:border-gray-600 rounded-full hover:bg-neutral-50 dark:hover:bg-gray-700 transition-hover duration-300  cursor-pointer"
-                onClick={() => setInputMessage(msg)}
-              >
-                {msg}
-              </button>
-            ))}
-          </div>
+          {isAuthenticated ? (
+            <div
+              className="flex flex-col gap-2 px-2 py-4 rounded-lg bg-gray-200 dark:bg-dark"
+              ref={suggestionBoxRef}
+            >
+              {[
+                'What is this website about?',
+                'Tell me about Karan?',
+                'How can I contact karan?',
+              ].map(msg => (
+                <button
+                  type="button"
+                  key={msg}
+                  className="px-4 py-2 w-fit max-w-xs border border-neutral-400 dark:border-gray-600 rounded-full hover:bg-neutral-50 dark:hover:bg-gray-700 transition-hover duration-300  cursor-pointer"
+                  onClick={() => setInputMessage(msg)}
+                >
+                  {msg}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <CBLoginMsg CBLoginMsgStyling={``} />
+          )}
 
           {/* messages box */}
-          <div className="">
-            {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`flex items-start gap-2 mb-2 ${
-                  msg.role === 'user' ? 'justify-end' : 'justify-start'
-                }`}
-              >
+          {isAuthenticated && (
+            <div className="">
+              {messages.map((msg, i) => (
                 <div
-                  className={`p-2 rounded-lg max-w-[80%] ${
-                    msg.role === 'user'
-                      ? 'bg-blue-500 text-white rounded-tr-none shadow-lg '
-                      : 'bg-gray-300 dark:bg-slate-700 text-black dark:text-white rounded-tl-none'
+                  key={i}
+                  className={`flex items-start gap-2 mb-2 ${
+                    msg.role === 'user' ? 'justify-end' : 'justify-start'
                   }`}
                 >
-                  <div className="flex items-start gap-2">
-                    {msg.role === 'system' && (
-                      <FaRobot
-                        size={18}
-                        className="text-black dark:text-white mt-1 shrink-0 self-start"
+                  <div
+                    className={`p-2 rounded-lg max-w-[80%] ${
+                      msg.role === 'user'
+                        ? 'bg-blue-500 text-white rounded-tr-none shadow-lg '
+                        : 'bg-gray-300 dark:bg-slate-700 text-black dark:text-white rounded-tl-none'
+                    }`}
+                  >
+                    <div className="flex items-start gap-2">
+                      {msg.role === 'system' && (
+                        <FaRobot
+                          size={18}
+                          className="text-black dark:text-white mt-1 shrink-0 self-start"
+                        />
+                      )}
+                      <div
+                        className="break-words overflow-auto prose prose-code:inline-block prose-code:w-[50px] prose-a:text-blue-500 dark:prose-invert max-w-none"
+                        dangerouslySetInnerHTML={{ __html: msg.content }}
                       />
-                    )}
-                    <div
-                      className="break-words overflow-auto prose prose-code:inline-block prose-code:w-[50px] prose-a:text-blue-500 dark:prose-invert max-w-none"
-                      dangerouslySetInnerHTML={{ __html: msg.content }}
-                    />
-                    {msg.role === 'user' && (
-                      <FaUser size={18} className="text-white mt-1 shrink-0 self-start" />
-                    )}
+                      {msg.role === 'user' && (
+                        <FaUser size={18} className="text-white mt-1 shrink-0 self-start" />
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-            {/* Scroll to the bottom */}
-            <div ref={messagesEndRef} />
-            {/* Loading indicator */}
-            {isGettingChatbotRes && (
-              <div className="flex  items-center gap-2 w-fit mb-2 p-2 rounded-lg bg-gray-200 dark:bg-gray-600 justify-start">
-                <FaRobot className="animate-zoom-in-out" />
-              </div>
-            )}
-          </div>
+              ))}
+              {/* Scroll to the bottom */}
+              <div ref={messagesEndRef} />
+              {/* Loading indicator */}
+              {isGettingChatbotRes && (
+                <div className="flex  items-center gap-2 w-fit mb-2 p-2 rounded-lg bg-gray-200 dark:bg-gray-600 justify-start">
+                  <FaRobot className="animate-zoom-in-out" />
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Input section  */}
@@ -290,7 +292,7 @@ export default function Chatbot() {
             title="Send message"
             aria-label="Send message"
             onClick={() => handleSend(inputMessage)}
-            disabled={!inputMessage.trim() || isGettingChatbotRes}
+            disabled={!inputMessage.trim() || isGettingChatbotRes || !isAuthenticated}
             className={` px-3 py-1 rounded-full transition-colors duration-200 ease-in-out cursor-pointer bg-blue-500 text-white disabled:bg-white disabled:text-black  disabled:opacity-50 disabled:cursor-not-allowed`}
           >
             <IoIosSend size={20} className="w-6 h-6" />
