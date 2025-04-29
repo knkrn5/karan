@@ -49,7 +49,6 @@ export default function Chatbot() {
   }, [isDropdownOpen, showChatbot]);
 
   async function handleSend(userMsg: string) {
-    // Check if the user is loged in
     if (!isAuthenticated) {
       alert('Please log in to send a message');
       return;
@@ -60,31 +59,71 @@ export default function Chatbot() {
     if (suggestionBoxRef.current) {
       suggestionBoxRef.current.style.display = 'none';
     }
+
+    // Show user message instantly
+    setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
+    setInputMessage('');
+
+    // Add system message with empty content (will stream into this)
+    setMessages(prev => [...prev, { role: 'system', content: '' }]);
+
     try {
-      setInputMessage('');
-      // Adding user message
-      setMessages(prevMessages => [...prevMessages, { role: 'user', content: inputMessage }]);
-      const response = await axios.post(`${BACKEND_URL}/api/chatbot/send-msg-to-chatbot`, {
-        userName: profileName,
-        userMsg,
-        llmName: selectedLLM,
-        historyMsgs: messages,
+      const response = await fetch(`${BACKEND_URL}/api/chatbot/send-msg-to-chatbot`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userName: profileName,
+          userMsg,
+          llmName: selectedLLM,
+          historyMsgs: messages,
+        }),
       });
-      const markdownText = response.data;
-      const htmlText = await marked.parse(markdownText);
-      setMessages(prevMessages => [...prevMessages, { role: 'system', content: htmlText }]);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setMessages(prevMessages => [
-          ...prevMessages,
-          { role: 'system', content: error.response?.data.message ?? error.message },
-        ]);
-      } else {
-        setMessages(prevMessages => [
-          ...prevMessages,
-          { role: 'system', content: 'Unexpected error occurred' },
-        ]);
+
+      if (!response.body) throw new Error('No response body');
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let result = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split('\n');
+
+        for (let line of lines) {
+          line = line.trim();
+          if (!line.startsWith('data:')) continue;
+
+          const data = line.replace(/^data:\s*/, '');
+          if (data === '[DONE]') break;
+
+          try {
+            const parsed = JSON.parse(data); // <<=== Important
+            result += parsed;
+            const htmlText = await marked.parse(result);
+
+            setMessages(prev => {
+              const updated = [...prev];
+              updated[updated.length - 1] = {
+                ...updated[updated.length - 1],
+                content: htmlText,
+              };
+              return updated;
+            });
+          } catch (err) {
+            console.error('Error parsing streamed chunk', err, data);
+          }
+        }
       }
+    } catch (error) {
+      setMessages(prev => [
+        ...prev,
+        { role: 'system', content: 'Error streaming message: ' + (error as any).message },
+      ]);
     } finally {
       setIsGettingChatbotRes(false);
     }

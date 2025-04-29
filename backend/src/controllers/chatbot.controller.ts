@@ -6,7 +6,7 @@ export class ChatbotController {
     try {
       const { userName, userMsg, llmName, historyMsgs } = req.body;
 
-      const response = await ChatbotService.getChatbotResponse(userName, userMsg, llmName, historyMsgs);
+      const response = await ChatbotService.getChatbotResponse(userName, userMsg, llmName, historyMsgs, res);
       res.send(response);
     } catch (error) {
       res.status(500).send({ error: error });
