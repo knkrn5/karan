@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { marked } from 'marked';
 import { useEffect, useRef, useState } from 'react';
 import { IoIosSend, IoMdArrowDropdownCircle } from 'react-icons/io';
@@ -60,11 +59,11 @@ export default function Chatbot() {
       suggestionBoxRef.current.style.display = 'none';
     }
 
-    // Show user message instantly
+    // adding user msg
     setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
     setInputMessage('');
 
-    // Add system message with empty content (will stream into this)
+    // adding bot msg to be replaced
     setMessages(prev => [...prev, { role: 'system', content: '' }]);
 
     try {
@@ -94,15 +93,14 @@ export default function Chatbot() {
         const chunk = decoder.decode(value, { stream: true });
         const lines = chunk.split('\n');
 
-        for (let line of lines) {
-          line = line.trim();
+        for (const line of lines) {
           if (!line.startsWith('data:')) continue;
 
           const data = line.replace(/^data:\s*/, '');
           if (data === '[DONE]') break;
 
           try {
-            const parsed = JSON.parse(data); // <<=== Important
+            const parsed = JSON.parse(data);
             result += parsed;
             const htmlText = await marked.parse(result);
 
@@ -122,7 +120,12 @@ export default function Chatbot() {
     } catch (error) {
       setMessages(prev => [
         ...prev,
-        { role: 'system', content: 'Error streaming message: ' + (error as any).message },
+        {
+          role: 'system',
+          content:
+            'Error streaming message: ' +
+            (error instanceof Error ? error.message : 'Unknown error'),
+        },
       ]);
     } finally {
       setIsGettingChatbotRes(false);
