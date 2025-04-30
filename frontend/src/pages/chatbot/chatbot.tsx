@@ -24,7 +24,10 @@ export default function Chatbot() {
   const suggestionBoxRef = useRef<HTMLDivElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  const profileName = useProfileStore(state => state.firstName);
+  //profile store data
+  const firstName = useProfileStore(state => state.firstName);
+  const lastName = useProfileStore(state => state.lastName);
+  const fullName = `${firstName} ${lastName}`;
 
   //authentication check
   const isAuthenticated = useAuthCheck();
@@ -77,7 +80,7 @@ export default function Chatbot() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userName: profileName,
+          userName: fullName,
           userMsg,
           llmName: selectedLLM,
           historyMsgs: messages,

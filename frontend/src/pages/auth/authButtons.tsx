@@ -65,7 +65,7 @@ export default function AuthButtons() {
       } catch (error) {
         console.log('user detail fetching error', error);
         if (axios.isAxiosError(error)) {
-          console.error(error.response?.data || error.response?.data?.message);
+          console.error(error.response?.data ?? error.response?.data?.message);
         }
       } finally {
         setIsFetchingProfileData(false);

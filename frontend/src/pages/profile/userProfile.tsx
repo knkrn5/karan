@@ -236,7 +236,7 @@ export default function UserProfile() {
         ) : (
           <div className="text-center mt-2">
             <h2 className="text-xl font-extrabold ">
-              {firstName.toUpperCase()} {lastName.toUpperCase()}
+              {firstName.toUpperCase()} {lastName?.toUpperCase()}
             </h2>
             <p className="text-gray-500 dark:text-gray-400 ">{email}</p>
           </div>

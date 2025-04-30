@@ -41,18 +41,20 @@ export default function ContactForm() {
     useContactInfoStore();
 
   //profile store data
-  const profileName = useProfileStore(state => state.firstName);
+  const firstName = useProfileStore(state => state.firstName);
+  const lastName = useProfileStore(state => state.lastName);
+  const fullName = `${firstName} ${lastName}`;
   const profileEmail = useProfileStore(state => state.email);
 
   //TRpopupNotificationStore
   const { setTRpopupNotificationMsg } = useTRpopupNotificationStore();
 
   useEffect(() => {
-    if (profileName && profileEmail) {
-      setName(profileName);
+    if (fullName && profileEmail) {
+      setName(fullName);
       setEmail(profileEmail);
     }
-  }, [profileName, setName, profileEmail, setEmail]);
+  }, [fullName, setName, profileEmail, setEmail]);
 
   const isAuthenticated = useAuthCheck();
 
@@ -169,7 +171,7 @@ export default function ContactForm() {
               maxLength={30}
               value={name}
               onChange={handleChange}
-              disabled={isLoading || profileName !== ''}
+              disabled={isLoading || fullName !== ''}
               className="mt-1 p-3 bg-white block w-full outline-none rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="Name"
             />
