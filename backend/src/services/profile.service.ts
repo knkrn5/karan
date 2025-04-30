@@ -7,7 +7,7 @@ export class ProfileService {
     const user = await User.findById(userId).select('-password');
     if (!user) throw new ApiResponse(404, false, 'User not found', null);
 
-    return new ApiResponse(200, true, 'User profile retrieved', user);
+    return new ApiResponse(200, true, 'User profile data retrieved', user);
   }
 
   /* static async updateProfile(userId: string, data: Partial<UserDTO>): Promise<UserDTO> {
