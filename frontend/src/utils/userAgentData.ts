@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-interface UserAgentDataPropTypes {
+export interface UserAgentDataPropTypes {
   dataAndTime?: string;
   brands?: { brand: string; version: string }[];
   mobile?: boolean;
@@ -11,6 +11,7 @@ interface UserAgentDataPropTypes {
   language?: string;
   ipAddress?: string;
   geoDetails?: {
+    ipAddress: string;
     country_name: string;
     city: string;
     region: string;
@@ -51,6 +52,7 @@ async function getGeoDetails() {
     const exactGeoData = await getExactGeoDetails(lat, lon);
 
     return {
+      ipAddress: userIpAddress,
       country_name: geoData.countryName,
       region: geoData.regionName,
       city: geoData.city,
@@ -59,6 +61,7 @@ async function getGeoDetails() {
   } catch (err) {
     console.error('Error fetching geo data:', err);
     return {
+      ipAddress: 'unknown',
       country_name: 'unknow',
       region: 'unknow',
       city: 'unknow',
@@ -139,7 +142,7 @@ export async function sendUserAgentDataEmail(email: string, subject: string, exc
 /* const geoip = require('geoip-lite');
 const NodeGeocoder = require('node-geocoder');
 
-// Declare geocoder 
+// Declare geocoder
 const geocoderOptions = {
     provider: 'openstreetmap',
 };

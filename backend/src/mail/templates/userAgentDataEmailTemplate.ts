@@ -1,3 +1,4 @@
+
 // Interface for user agent data
 interface UserAgentDataPropTypes {
   dataAndTime?: string;
@@ -8,6 +9,7 @@ interface UserAgentDataPropTypes {
   language?: string;
   ipAddress?: string;
   geoDetails?: {
+    ipAddress: string;
     country_name: string;
     city: string;
     region: string;
@@ -130,12 +132,12 @@ export function formatUserAgentDataHTML(data: UserAgentDataPropTypes): string {
         </h3>
         <div style="padding-left: 10px;">`;
 
-    if (data.geoDetails.city) {
+    if (data.geoDetails.ipAddress) {
       formattedHTML += `
-          <div style="margin-bottom: 5px; display: flex;">
-            <span style="min-width: 120px; font-weight: 500; color: #555555;">City:</span>
-            <span style="color: #333333;">${data.geoDetails.city}</span>
-          </div>`;
+            <div style="margin-bottom: 5px; display: flex;">
+              <span style="min-width: 120px; font-weight: 500; color: #555555;">IP Address:</span>
+              <span style="color: #333333;">The location is based on this IP address: <b>${data.geoDetails.ipAddress}</b></span>
+            </div>`;
     }
 
     if (data.geoDetails.country_name) {
@@ -143,6 +145,14 @@ export function formatUserAgentDataHTML(data: UserAgentDataPropTypes): string {
           <div style="margin-bottom: 5px; display: flex;">
             <span style="min-width: 120px; font-weight: 500; color: #555555;">Country:</span>
             <span style="color: #333333;">${data.geoDetails.country_name}</span>
+          </div>`;
+    }
+
+    if (data.geoDetails.city) {
+      formattedHTML += `
+          <div style="margin-bottom: 5px; display: flex;">
+            <span style="min-width: 120px; font-weight: 500; color: #555555;">City:</span>
+            <span style="color: #333333;">${data.geoDetails.city}</span>
           </div>`;
     }
 
