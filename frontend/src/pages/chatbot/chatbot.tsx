@@ -7,6 +7,7 @@ import { FaUser } from 'react-icons/fa';
 import { useAuthCheck } from '../../hooks/authCheckHook';
 import { useProfileStore } from '../../stores/profile/profileStore';
 import CBLoginMsg from './CBLoginMsg';
+import { useChatbotStore } from '../../stores/chatbot/chatbotStore';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -25,7 +26,11 @@ export default function Chatbot() {
 
   const profileName = useProfileStore(state => state.firstName);
 
+  //authentication check
   const isAuthenticated = useAuthCheck();
+  const msgWithoutAuth = useChatbotStore(state => state.msgWithoutAuth);
+  const { setMsgWithoutAuth } = useChatbotStore();
+  const MAX_MESSAGES_WITHOUT_AUTH = 3;
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -41,7 +46,6 @@ export default function Chatbot() {
         setShowChatbot(false);
       }
     };
-
     document.addEventListener('click', handleOutsideClick);
     return () => {
       document.removeEventListener('click', handleOutsideClick);
@@ -50,6 +54,7 @@ export default function Chatbot() {
 
   async function handleSend(userMsg: string) {
     if (!userMsg.trim()) return;
+
     setIsGettingChatbotRes(true);
     if (suggestionBoxRef.current) {
       suggestionBoxRef.current.style.display = 'none';
@@ -58,6 +63,12 @@ export default function Chatbot() {
     // adding user msg
     setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
     setInputMessage('');
+    setMsgWithoutAuth(messages.filter(msg => msg.role === 'user').length + 1);
+
+    // stoping sending messages if user is not authenticated
+    if (!isAuthenticated && msgWithoutAuth >= MAX_MESSAGES_WITHOUT_AUTH) {
+      return;
+    }
 
     try {
       const response = await fetch(`${BACKEND_URL}/api/chatbot/send-msg-to-chatbot`, {
@@ -197,7 +208,7 @@ export default function Chatbot() {
         {/* Messages container */}
         <div className="flex flex-col flex-1 gap-2 overflow-y-auto  p-2 rounded-lg border border-neutral-300 dark:border-gray-600 bg-white dark:bg-slate-800 ">
           {/* Suggestion box */}
-          {isAuthenticated ? (
+          {isAuthenticated || msgWithoutAuth <= MAX_MESSAGES_WITHOUT_AUTH ? (
             <div
               className="flex flex-col gap-2 px-2 py-4 rounded-lg bg-gray-200 dark:bg-dark"
               ref={suggestionBoxRef}
@@ -218,11 +229,11 @@ export default function Chatbot() {
               ))}
             </div>
           ) : (
-            <CBLoginMsg CBLoginMsgStyling={``} />
+            <CBLoginMsg />
           )}
 
           {/* messages box */}
-          {isAuthenticated && (
+          {isAuthenticated || msgWithoutAuth <= MAX_MESSAGES_WITHOUT_AUTH ? (
             <div className="">
               {messages.map((msg, i) => (
                 <div
@@ -265,6 +276,8 @@ export default function Chatbot() {
                 </div>
               )}
             </div>
+          ) : (
+            ''
           )}
         </div>
 
@@ -292,7 +305,11 @@ export default function Chatbot() {
             title="Send message"
             aria-label="Send message"
             onClick={() => handleSend(inputMessage)}
-            disabled={!inputMessage.trim() || isGettingChatbotRes || !isAuthenticated}
+            disabled={
+              !inputMessage.trim() ||
+              isGettingChatbotRes ||
+              (!isAuthenticated && msgWithoutAuth >= MAX_MESSAGES_WITHOUT_AUTH + 1)
+            }
             className={` px-3 py-1 rounded-full transition-colors duration-200 ease-in-out cursor-pointer bg-blue-500 text-white disabled:bg-white disabled:text-black  disabled:opacity-50 disabled:cursor-not-allowed`}
           >
             <IoIosSend size={20} className="w-6 h-6" />
