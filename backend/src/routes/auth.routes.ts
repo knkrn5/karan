@@ -3,7 +3,7 @@ import { AuthController } from '../controllers/auth.controller.js';
 import {
   isAccessTokenValid,
   registrationLimiter,
-  sendOtpLimiter,
+  sendOtpLimiter
 } from '../middlewares/auth.middleware.js';
 
 const router = Router();

@@ -1,6 +1,7 @@
 
 import { Router } from 'express';
-import { isAccessTokenValid } from '../middlewares/auth.middleware.js';
+
+import { isAccessTokenValid, verifyPassword, verifyOTP } from '../middlewares/auth.middleware.js';
 import { ProfileController } from '../controllers/profile.controller.js';
 
 
@@ -9,8 +10,8 @@ const router = Router();
 
 router.get('/details', isAccessTokenValid, ProfileController.getProfile);
 //  router.put('/', isAccessTokenValid, ProfileController.updateProfile);
-router.delete('/delete-account', isAccessTokenValid, ProfileController.deleteAccount); 
+router.delete('/delete-account', verifyPassword, verifyOTP, isAccessTokenValid, ProfileController.deleteAccount);
 
 
-export default router;  
+export default router;
 

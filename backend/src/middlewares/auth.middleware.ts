@@ -1,7 +1,11 @@
 import jwt from 'jsonwebtoken';
+import { User, IUser } from '../models/user.model.js';
 import { Request, Response, NextFunction } from 'express';
 import rateLimit from 'express-rate-limit';
 import { ApiResponse } from '../utils/apiResponse.js';
+import bcrypt from 'bcrypt';
+import { redisClient } from '../db/clients/uptashRedisDB.js';
+
 
 declare module 'express' {
   interface Request {
@@ -28,8 +32,6 @@ export const isAccessTokenValid = async (
 
     const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as string);
 
-    // console.log('decoded', decoded);
-
     req.user = decoded;
 
     next();
@@ -51,6 +53,77 @@ export const isAccessTokenValid = async (
       success: false,
       message,
     });
+  }
+};
+
+
+//password verification middleware
+export const verifyPassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const { email, password } = req.body;
+    // Input validation
+    if (!email) {
+      res.status(400).json(new ApiResponse(400, false, 'Email is required.', null));
+      return;
+    }
+    if (!password) {
+      res.status(400).json(new ApiResponse(400, false, 'Password is required', null));
+      return;
+    }
+
+    //matching password
+    const user: IUser | null = await User.findOne({ email });
+    if (!user) {
+      res.status(404).json(new ApiResponse(404, false, 'User not found', null));
+      return
+    }
+    const isPasswordMatch = await user.comparePassword(password);
+    if (!isPasswordMatch) {
+      res.status(401).json(new ApiResponse(401, false, 'Incorrect password', null));
+      return
+    }
+
+    next();
+  } catch (error) {
+    res.status(500).json(new ApiResponse(500, false, 'Internal server error', error));
+  }
+};
+
+
+
+//OTP verification middleware
+export const verifyOTP = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const { email, enteredOTP } = req.body;
+    // Input validation
+    if (!email) {
+      res.status(400).json(new ApiResponse(400, false, 'Email is required.', null));
+      return;
+    }
+    if (!enteredOTP) {
+      res.status(400).json(new ApiResponse(400, false, 'OTP is required', null));
+      return;
+    }
+
+    // matching OTP
+    const storedOTP = await redisClient.get(email);
+    if (!storedOTP) {
+      res.status(400).json(new ApiResponse(400, false, 'OTP not found. Please resend.', null));
+      return;
+    }
+    const isOtpMatch = await bcrypt.compare(String(enteredOTP), storedOTP);
+    if (!isOtpMatch) {
+      res.status(401).json(new ApiResponse(401, false, 'Incorrect OTP. Please Enter Valid OTP.', null));
+      return;
+    }
+
+    //deleting stored OTP
+    await redisClient.del(email);
+
+    next();
+  } catch (error) {
+    res.status(500).json(new ApiResponse(500, false, 'Server error during OTP verification', error));
+    return;
   }
 };
 
