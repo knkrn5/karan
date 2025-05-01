@@ -147,7 +147,7 @@ export class AuthController {
         path: '/',
       })
       .status(200)
-      .json({ success: true, message: 'Logout successful', data: null });
+      .json({ success: true, message: 'User LogedOut successful', data: null });
   }
 
   //validating user authentication

@@ -174,7 +174,7 @@ export class AuthService {
   //validating user authentication
   static async authenticateUser(userData: string) {
     if (!userData) throw new ApiResponse(404, false, 'User not found', null);
-    return new ApiResponse(200, true, ' user Authenticated successfully via service', userData);
+    return new ApiResponse(200, true, ' user Authenticated successfully ', userData);
   }
 
   //verifing password
