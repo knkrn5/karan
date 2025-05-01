@@ -240,7 +240,13 @@ export default function Register() {
     //registering user
     if (registrationVerification.isOptVerified) {
       try {
-        const response = await axios.post(`${BACKEND_URL}/api/v1/auth/register`, userData);
+        const response = await axios.post(`${BACKEND_URL}/api/v1/auth/register`, {
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          enteredOTP: userData.otp,
+          password: userData.password,
+        });
         const { data } = response;
         setICnotificationMsg({ success: data.message });
         setTRpopupNotificationMsg({ success: data.message });

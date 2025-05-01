@@ -90,7 +90,6 @@ export const verifyPassword = async (req: Request, res: Response, next: NextFunc
 };
 
 
-
 //OTP verification middleware
 export const verifyOTP = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -117,7 +116,7 @@ export const verifyOTP = async (req: Request, res: Response, next: NextFunction)
       return;
     }
 
-    //deleting stored OTP
+    //deleting stored OTP after verification
     await redisClient.del(email);
 
     next();
@@ -132,7 +131,7 @@ export const verifyOTP = async (req: Request, res: Response, next: NextFunction)
 //registration limiter
 export const registrationLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5,
+  max: 3,
   standardHeaders: true,
   legacyHeaders: false,
   message: new ApiResponse(429, false, 'Too many requests sent. Please try after 15 minutes', null),

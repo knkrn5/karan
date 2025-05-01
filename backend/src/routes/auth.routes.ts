@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { AuthController } from '../controllers/auth.controller.js';
 import {
+  verifyOTP,
   isAccessTokenValid,
   registrationLimiter,
   sendOtpLimiter
@@ -8,7 +9,7 @@ import {
 
 const router = Router();
 
-router.post('/register', registrationLimiter, AuthController.registerUser);
+router.post('/register', verifyOTP, registrationLimiter, AuthController.registerUser);
 router.post('/login', AuthController.loginUser);
 
 router.post('/verify-user', AuthController.verifyUser);

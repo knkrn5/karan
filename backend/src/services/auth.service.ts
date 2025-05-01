@@ -21,11 +21,7 @@ export class AuthService {
   static async sendEmailVerificationOTP(email: string, subject: string, excerpt: string) {
     if (!email) throw new ApiResponse(400, false, 'Email is required', null);
     if (!subject) throw new ApiResponse(400, false, 'Subject is required', null);
-
-    const existingOtp = await redisClient.get(email);
-    if (existingOtp) {
-      await redisClient.del(email);
-    }
+    if (!excerpt) throw new ApiResponse(400, false, 'Excerpt is required', null);
 
     const otp = Math.floor(100000 + Math.random() * 900000);
     const hashedOtp = await bcrypt.hash(String(otp), 10);
