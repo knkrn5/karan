@@ -25,4 +25,4 @@ This project is a web application built with a modern tech stack, including Reac
 
 ## Contact
 
-For any inquiries, please contact [your.email@example.com](mailto:mail@karan.email).
+For any inquiries, please contact [mail@karan.email](mailto:mail@karan.email).
