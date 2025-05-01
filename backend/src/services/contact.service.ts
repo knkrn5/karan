@@ -59,6 +59,7 @@ export class ContactService {
     if (!email) throw new ApiResponse(400, false, 'email is required', null);
     if (!subject) throw new ApiResponse(400, false, 'reason is required', null);
     if (!excerpt) throw new ApiResponse(400, false, 'excerpt is required', null);
+    if (!message) throw new ApiResponse(400, false, 'message is required', null);
 
     const response = await emailTransporter({
       email,

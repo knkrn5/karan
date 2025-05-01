@@ -58,6 +58,16 @@ export default function ContactForm() {
 
   const isAuthenticated = useAuthCheck();
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setContactMsgData({ [name]: value });
+
+    // Clearing error when user starts typing
+    if (error[name as keyof FormDataProp]) {
+      setError(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -123,16 +133,6 @@ export default function ContactForm() {
       'Thank you for Contacting Us',
       message
     );
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setContactMsgData({ [name]: value });
-
-    // Clearing error when user starts typing
-    if (error[name as keyof FormDataProp]) {
-      setError(prev => ({ ...prev, [name]: '' }));
-    }
   };
 
   // component switching
