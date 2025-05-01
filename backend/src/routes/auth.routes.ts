@@ -21,7 +21,7 @@ router.post('/refresh-token', AuthController.refreshToken);
 router.get('/authenticateUser', isAccessTokenValid, AuthController.authenticateUser);
 router.post('/verify-password', isAccessTokenValid, AuthController.verifyPassword);
 
-router.patch('/reset-password', AuthController.changePassword);
+router.patch('/reset-password', verifyOTP, AuthController.resetPassword);
 
 // Tracking the ip address of the user
 router.post('/get-user-ip-address', (req, res) => {

@@ -223,6 +223,7 @@ export default function ResetPassward() {
         const response = await axios.patch(`${BACKEND_URL}/api/v1/auth/reset-password`, {
           email: resetPasswardFieldData.email,
           newPassword: resetPasswardFieldData.newPassword,
+          enteredOTP: resetPasswardFieldData.otp,
         });
         setICnotificationMsg({ success: response.data.message });
         setTRpopupNotificationMsg({ success: response.data.message });

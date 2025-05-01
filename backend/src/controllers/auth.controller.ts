@@ -182,10 +182,10 @@ export class AuthController {
   }
 
   //change password
-  static async changePassword(req: Request, res: Response) {
+  static async resetPassword(req: Request, res: Response) {
     try {
       const { email, newPassword } = req.body;
-      const response = await AuthService.changePassword(email, newPassword);
+      const response = await AuthService.resetPassword(email, newPassword);
       res.status(response.statusCode).json(response);
     } catch (error: any) {
       if (error instanceof ApiResponse) {
