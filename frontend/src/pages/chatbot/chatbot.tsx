@@ -192,6 +192,7 @@ export default function Chatbot() {
               'mistralai/mistral-small-24b-instruct',
               'google/gemma-3-1b-it',
               'microsoft/phi-3.5-mini-instruct',
+              'tiiuae/falcon3-7b-instruct',
             ].map(model => (
               <button
                 type="button"
