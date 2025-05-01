@@ -259,10 +259,14 @@ export default function Chatbot() {
                           className="text-black dark:text-white mt-1 shrink-0 self-start"
                         />
                       )}
-                      <div
-                        className="break-words overflow-auto prose prose-code:inline-block prose-code:w-[50px] prose-a:text-blue-500 dark:prose-invert max-w-none"
-                        dangerouslySetInnerHTML={{ __html: msg.content }}
-                      />
+                      {msg.role === 'system' ? (
+                        <div
+                          className="break-words overflow-auto prose prose-code:inline-block prose-code:w-[50px] prose-a:text-blue-500 dark:prose-invert max-w-none"
+                          dangerouslySetInnerHTML={{ __html: msg.content }}
+                        />
+                      ) : (
+                        <div className="break-words overflow-auto max-w-none">{msg.content}</div>
+                      )}
                       {msg.role === 'user' && (
                         <FaUser size={18} className="text-white mt-1 shrink-0 self-start" />
                       )}
