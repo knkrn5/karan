@@ -66,7 +66,6 @@ export class AuthService {
       throw new ApiResponse(401, false, 'Incorrect OTP. Please Enter Valid OTP.', null);
     }
 
-    await redisClient.del(email);
     return new ApiResponse(200, true, 'OTP verified successfully', null);
   }
 

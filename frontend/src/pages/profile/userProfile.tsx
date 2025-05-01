@@ -24,7 +24,10 @@ export default function UserProfile() {
   const lastName = useProfileStore(state => state.lastName);
   const email = useProfileStore(state => state.email);
 
-  const [inputValue, setInputValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState<{ confirmPassword: string; otp: string }>({
+    confirmPassword: '',
+    otp: '',
+  });
   const [confirmationsBool, setConfirmationsBool] = useState<{
     editProfile: boolean;
     deleteAccount: boolean;
@@ -61,13 +64,16 @@ export default function UserProfile() {
     }, 10);
   }, []);
 
-  const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(prevState => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const handleEditProfile = async () => {
     if (confirmationsBool.deleteAccount) {
-      setInputValue('');
+      setInputValue({ confirmPassword: '', otp: '' });
       setConfirmationsBool(prevState => ({
         ...prevState,
         deleteAccount: false,
@@ -95,16 +101,15 @@ export default function UserProfile() {
     }
 
     if (confirmationsBool.deleteAccount && !confirmationsBool.isOtpSent) {
-      const response = await verifyPassword(inputValue);
+      const response = await verifyPassword(inputValue.confirmPassword);
       if (response.success) {
         setInputErrror('');
-        // return response.success;
       } else {
         setInputErrror(response.message);
         setIsDeleting(false);
         return response.success;
       }
-      setInputValue('');
+      setInputValue(prev => ({ ...prev, password: '' }));
     }
 
     if (confirmationsBool.deleteAccount && !confirmationsBool.isOtpSent) {
@@ -125,7 +130,7 @@ export default function UserProfile() {
     }
 
     if (confirmationsBool.isOtpSent && !confirmationsBool.isOtpVerified) {
-      const response = await verifyEmailOtp(email, inputValue);
+      const response = await verifyEmailOtp(email, inputValue.otp);
       if (response.success) {
         setConfirmationsBool(prevState => ({
           ...prevState,
@@ -139,13 +144,17 @@ export default function UserProfile() {
         return response.success;
       }
       setIsDeleting(false);
-      console.log('verifing otp');
     }
   };
 
   async function handleConfirmationDeletion() {
     try {
       const response = await axios.delete(`${BACKEND_URL}/api/v1/profile/delete-account`, {
+        data: {
+          email: email,
+          password: inputValue.confirmPassword,
+          enteredOTP: inputValue.otp,
+        },
         withCredentials: true,
       });
 
@@ -256,8 +265,8 @@ export default function UserProfile() {
             name={confirmationsBool.isOtpSent ? 'otp' : 'confirmPassword'}
             id={confirmationsBool.isOtpSent ? 'otp' : 'confirmPassword'}
             placeholder={confirmationsBool.isOtpSent ? 'OTP' : 'Confirm Password'}
-            value={inputValue}
-            onChange={handlePasswordInput}
+            value={confirmationsBool.isOtpSent ? inputValue.otp : inputValue.confirmPassword}
+            onChange={handleInputChange}
             className={`bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 `}
           />
           {InputErrror && <p className="text-red-600 text-sm mt-1">{InputErrror}</p>}

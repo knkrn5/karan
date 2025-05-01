@@ -23,8 +23,8 @@ export class ProfileController {
 
   static async deleteAccount(req: Request, res: Response) {
     try {
-      const userId = req.user.userId;
-      const response = await ProfileService.deleteAccount(userId);
+      const { email, password, enteredOTP } = req.body;
+      const response = await ProfileService.deleteAccount(email, password, enteredOTP);
       res.status(response.statusCode).json(response);
     } catch (error: any) {
       if (error instanceof ApiResponse) {
@@ -33,7 +33,7 @@ export class ProfileController {
       }
       res
         .status(500)
-        .json({ success: false, message: error.message || 'An unknown error occurred.' });
+        .json({ success: false, message: error.message ?? 'An unknown error occurred.' });
     }
   }
 }
