@@ -25,7 +25,7 @@ function Home() {
       'WealthPsychology: -',
       `Teaches the principles of financial psychology, and explains different financial concepts.`,
       'bg-lime-500',
-      'https://wealthpsychology.in'
+      'https://wealthpsychology.karan.email/'
     ),
     new MyProjects(
       'https://res.cloudinary.com/dywuvwqth/image/upload/v1743587227/karan.email/m8yyptura5kuao1nzugt.jpg',
