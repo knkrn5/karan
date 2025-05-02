@@ -1,4 +1,5 @@
 import express from 'express';
+import helmet from 'helmet';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
@@ -26,6 +27,28 @@ app.use(express.urlencoded({ limit: '16kb', extended: true }));
 app.use(cookieParser());
 app.set('trust proxy', true); // Trust only the leftmost IP address
 
+// Helmet Security
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'"],
+        connectSrc: ["'self'"],
+      },
+    },
+    strictTransportSecurity: {
+      maxAge: 31536000,
+      includeSubDomains: true,
+    },
+    referrerPolicy: {
+      policy: 'strict-origin-when-cross-origin',
+    },
+  })
+);
+
 // Health Check
 app.get('/health', (req, res) => {
   res.send('health ok :)');
@@ -48,8 +71,8 @@ app.use('/api/email-notifications/', emailNotificationsRoutes);
 app.use('/api/chatbot/', chatbotRoutes);
 
 // Catching-all  non-matching routes
-app.get('*', (req, res) => {
-  res.status(404).send('🚫Not Found');
+app.use('*', (req, res) => {
+  res.status(404).json({ success: false, message: 'Resource not found' });
 });
 
 export { app };
