@@ -7,7 +7,7 @@ export function HomePageSeoMetaTags() {
       <title>Portfolio - karan</title>
       <meta
         name="description"
-        content="Explore the portfolio of Knkrn5, showcasing web development projects, AI applications, and financial psychology resources. Discover innovative solutions and technologies."
+        content="Explore the portfolio of Knkrn5 | karan, showcasing web development projects, AI applications, and financial psychology resources. Discover innovative solutions and technologies."
       />
       <meta
         name="keywords"
@@ -21,7 +21,7 @@ export function HomePageSeoMetaTags() {
       <meta property="og:title" content="Portfolio - Knkrn5 | Web Development & AI Projects" />
       <meta
         property="og:description"
-        content="View a diverse range of projects including web development, AI chatbots, and financial insights. See what Knkrn5 is creating."
+        content="View a diverse range of projects including  AI chatbots, and financial insights. See what Knkrn5 | karan is creating."
       />
       <meta property="og:image" content="https://karan.email/favicons/K.svg" />
       <meta property="og:url" content="https://yourwebsite.com" />

@@ -32,7 +32,7 @@ export default function SocialLinks() {
     {
       platform: 'linkedin',
       title: 'LinkedIn',
-      url: 'https://linkedin.com/in/ka-r-an5',
+      url: 'https://linkedin.com/in/knkrn5',
       fgColor: 'text-white',
       bgColor: 'bg-blue-600',
       ariaLabel: 'Visit LinkedIn profile',
@@ -48,7 +48,7 @@ export default function SocialLinks() {
     {
       platform: 'ig',
       title: 'Instagram',
-      url: 'https://instagram.com/ka_r_an5',
+      url: 'https://instagram.com/knkrn5',
       fgColor: 'text-white',
       bgColor: 'bg-orange-500',
       ariaLabel: 'Visit Instagram profile',
