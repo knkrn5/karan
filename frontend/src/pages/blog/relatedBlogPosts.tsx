@@ -11,11 +11,24 @@ export default function RelatedBlogPosts({
 }) {
   const navigate = useNavigate();
 
-  const relatedBlogPosts = blogsPosts.filter(
-    (blog: BlogPostPropsType) =>
-      (blog.category === soloPost?.category && blog.slug !== soloPost?.slug) ||
-      (blog.tags === soloPost?.tags && blog.slug !== soloPost?.slug)
-  );
+  const tagArray = (soloPost?.tags ?? '').split(/\s*,\s*/).map(tag => tag.toLowerCase());
+
+  const relatedBlogPosts = blogsPosts.filter((blog: BlogPostPropsType) => {
+    const blogTagArray =
+      typeof blog.tags === 'string' ? blog.tags.split(/\s*,\s*/).map(tag => tag.toLowerCase()) : [];
+
+    const hasMatchingTag = blogTagArray.some(tag => tagArray.includes(tag));
+    const sameCategory = blog.category === soloPost?.category;
+    const isDifferentPost = blog.slug !== soloPost?.slug;
+
+    return (hasMatchingTag || sameCategory) && isDifferentPost;
+  });
+
+  //   const relatedBlogPosts = blogsPosts.filter(
+  //     (blog: BlogPostPropsType) =>
+  //       (blog.category === soloPost?.category && blog.slug !== soloPost?.slug) ||
+  //       (blog?.tags === soloPost?.tags && blog.slug !== soloPost?.slug)
+  //   );
 
   return (
     <div className=" sm:w-50 pb-1 bg-white dark:bg-dark rounded ">
