@@ -98,3 +98,16 @@ export function SoloBlogPostSkeletonLoadingTwo() {
     </div>
   );
 }
+
+export function RelatedBlogPostSkeletonLoading() {
+  return (
+    <div className=" p-2 m-2 rounded-lg border border-neutral-500 dark:border-gray-500 bg-neutral-100 dark:bg-gray-900  max-sm:grid max-sm:grid-cols-2">
+      <div className="p-1 h-25 rounded bg-neutral-300 dark:bg-slate-800"></div>
+      <div className="p-1">
+        <div className="   h-10 rounded bg-neutral-300 dark:bg-gray-800 animate-shimmer"></div>
+        <div className="  mt-1 h-5 w-3/4 rounded bg-neutral-300 dark:bg-gray-800 animate-shimmer"></div>
+        <div className="  mt-1 h-2 w-1/2 rounded bg-neutral-300 dark:bg-gray-800 animate-shimmer"></div>
+      </div>
+    </div>
+  );
+}
