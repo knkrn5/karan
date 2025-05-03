@@ -79,7 +79,7 @@ export default function BlogPage() {
   // Filtering the blog posts based on search or category value
   const filteredBlogPosts = blogPosts.filter((post: BlogPostPropsType) => {
     const title = post?.title || '';
-    const category = post?.category || '';
+    const category = post?.category ?? '';
     const tags = post?.tags || '';
     if (searchOrCategoryValue === '' || searchOrCategoryValue === 'All-Category') return true;
     return (

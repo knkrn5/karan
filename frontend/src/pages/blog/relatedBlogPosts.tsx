@@ -22,6 +22,12 @@ export default function RelatedBlogPosts({
     const isDifferentPost = blog.slug !== soloPost?.slug;
 
     return (hasMatchingTag || sameCategory) && isDifferentPost;
+
+    // return (
+    //   (blogTagArray.some(tag => soloPosttagArray.includes(tag)) ||
+    //     blog.category === soloPost?.category) &&
+    //   blog.slug !== soloPost?.slug
+    // );
   });
 
   return (
