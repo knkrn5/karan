@@ -48,7 +48,6 @@ export default function BlogPaginaton({
     setCurrentPage(rightNowOnThisPage);
   }, [searchParams]);
 
-
   //pagination update on reload and on pagination click
   useEffect(() => {
     const newStartPagination = Math.floor((currentPage - 1) / PER_PAGINATION) * PER_PAGINATION;

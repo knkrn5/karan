@@ -11,6 +11,7 @@ import { CiShare2 } from 'react-icons/ci';
 import { Document, TopLevelBlock, BLOCKS } from '@contentful/rich-text-types';
 import { BlogMetaTags } from './soloBlogPostSeoMetaTags';
 import ServerErrorPage from '../errors/serverErrorPage';
+import RelatedBlogPosts from './relatedBlogPosts';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -75,8 +76,8 @@ export default function SoloBlogPost() {
         }
       />
       <div className="min-h-screen  p-4 text-black dark:text-white bg-gray-200 dark:bg-gray-800">
-        <div className="max-w-2xl mx-auto mb-4">
-          <div className="rounded-lg shadow-2xl dark:shadow-neutral-900 bg-gray-100 dark:bg-gray-900 p-4">
+        <div className="max-w-3xl mx-auto mb-4 grid sm:grid-cols-[1fr_auto] gap-2 max-sm:gap-5">
+          <div className="max-w-xl rounded-lg shadow-2xl dark:shadow-neutral-900 bg-gray-100 dark:bg-gray-900 p-4">
             {isLoading ? (
               <SoloBlogPostSkeletonLoadingTwo />
             ) : error ? (
@@ -130,6 +131,11 @@ export default function SoloBlogPost() {
               </div>
             )}
           </div>
+
+          <div>
+            <RelatedBlogPosts blogsPosts={blogPosts} soloPost={soloPost} />
+          </div>
+
           {!isLoading && !error && soloPost && (
             <div className="flex justify-between mt-4">
               <button
