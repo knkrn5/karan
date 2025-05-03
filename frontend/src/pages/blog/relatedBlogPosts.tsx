@@ -11,7 +11,9 @@ export default function RelatedBlogPosts({
   const navigate = useNavigate();
 
   const relatedBlogPosts = blogsPosts.filter(
-    (blog: BlogPostPropsType) => blog.category === soloPost?.category
+    (blog: BlogPostPropsType) =>
+      (blog.category === soloPost?.category && blog.slug !== soloPost?.slug) ||
+      (blog.tags === soloPost?.tags && blog.slug !== soloPost?.slug)
   );
 
   return (
