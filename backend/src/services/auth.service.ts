@@ -1,4 +1,4 @@
-import { User, IUser } from '../models/user.model.js';
+import { UserModel, IUser } from '../models/user.model.js';
 import { UserDTO } from '../dtos/user.dto.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 import jwt from 'jsonwebtoken';
@@ -11,7 +11,7 @@ export class AuthService {
   //verify existing user
   static async verifyUser(email: string) {
     if (!email) throw new ApiResponse(400, false, 'email is required', null);
-    const existingUser = await User.findOne({ email });
+    const existingUser = await UserModel.findOne({ email });
 
     if (!existingUser) throw new ApiResponse(404, false, 'User not found, Please Signup', null);
     return new ApiResponse(200, true, 'User already exists, Please Login', null);
@@ -72,10 +72,10 @@ export class AuthService {
     email: string,
     password: string
   ) {
-    const existingUser = await User.findOne({ email });
+    const existingUser = await UserModel.findOne({ email });
     if (existingUser) throw new ApiResponse(409, false, 'User already exists, Please Login', null);
 
-    const user: IUser = await User.create({
+    const user: IUser = await UserModel.create({
       firstName,
       lastName,
       email: email.toLowerCase(),
@@ -104,7 +104,7 @@ export class AuthService {
 
   //loginning in user
   static async loginUser(email: string, password: string) {
-    const user: IUser | null = await User.findOne({ email });
+    const user: IUser | null = await UserModel.findOne({ email });
     if (!user) throw new ApiResponse(404, false, 'User not found, Please Signup', null);
 
     const isPasswordMatch = await user.comparePassword(password);
@@ -150,7 +150,7 @@ export class AuthService {
         userId: string;
       };
 
-      const user = await User.findById(verifiedToken.userId);
+      const user = await UserModel.findById(verifiedToken.userId);
       if (!user || user.refreshToken !== refreshToken) {
         throw new ApiResponse(401, false, 'Invalid refresh token comparing', null);
       }
@@ -179,7 +179,7 @@ export class AuthService {
 
   //verifing password
   static async verifyPassword(userId: string, password: string) {
-    const user = await User.findById(userId);
+    const user = await UserModel.findById(userId);
     if (!user) throw new ApiResponse(404, false, 'User not found', null);
 
     const isPasswordMatch = await user.comparePassword(password);
@@ -190,7 +190,7 @@ export class AuthService {
 
   //change password
   static async resetPassword(email: string, newPassword: string) {
-    const user = await User.findOne({ email });
+    const user = await UserModel.findOne({ email });
     if (!user) throw new ApiResponse(404, false, 'User not found', null);
     if (!newPassword) throw new ApiResponse(400, false, 'New password is required', null);
 

@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { User, IUser } from '../models/user.model.js';
+import { UserModel, IUser } from '../models/user.model.js';
 import { Request, Response, NextFunction } from 'express';
 import rateLimit from 'express-rate-limit';
 import { ApiResponse } from '../utils/apiResponse.js';
@@ -72,7 +72,7 @@ export const verifyPassword = async (req: Request, res: Response, next: NextFunc
     }
 
     //matching password
-    const user: IUser | null = await User.findOne({ email });
+    const user: IUser | null = await UserModel.findOne({ email });
     if (!user) {
       res.status(404).json(new ApiResponse(404, false, 'User not found', null));
       return

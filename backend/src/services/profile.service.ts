@@ -1,11 +1,11 @@
-import { User } from '../models/user.model.js';
+import { UserModel } from '../models/user.model.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 
 
 
 export class ProfileService {
   static async getProfile(userId: string) {
-    const user = await User.findById(userId).select('-_id -password -refreshToken -createdAt -updatedAt');
+    const user = await UserModel.findById(userId).select('-_id -password -refreshToken -createdAt -updatedAt');
     if (!user) throw new ApiResponse(400, false, 'User not found', null);
 
     return new ApiResponse(200, true, 'User profile data retrieved', user);
@@ -29,7 +29,7 @@ export class ProfileService {
 
     //deleting account
     try {
-      const deletedUser = await User.findByIdAndDelete(userId);
+      const deletedUser = await UserModel.findByIdAndDelete(userId);
       if (!deletedUser) {
         throw new ApiResponse(404, false, 'User not found', null);
       }

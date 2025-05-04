@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 export interface IContact {
     name: string;
@@ -6,9 +6,8 @@ export interface IContact {
     message: string;
 }
 
-import { Schema } from "mongoose";
 
-const blogSchema = new Schema({
+const contactMsgSchema = new Schema({
     name: {
         type: String,
         required: true
@@ -24,4 +23,4 @@ const blogSchema = new Schema({
 }, { timestamps: true })
 
 
-export const Contact = mongoose.model<IContact>("Contact", blogSchema);
+export const ContactModel = mongoose.model<IContact>("Contact", contactMsgSchema);

@@ -1,5 +1,5 @@
 import { ApiResponse } from '../utils/apiResponse.js';
-import { Contact } from '../models/contact.model.js';
+import { ContactModel } from '../models/contact.model.js';
 import { emailTransporter } from '../utils/emailTransporter.js';
 import { contactMsgEmailTemplate } from '../mail/templates/contactMsgEmailTemplate.js';
 
@@ -12,7 +12,7 @@ export class ContactService {
     }
 
     // Create the contact message in the db
-    const contactMsg = await Contact.create({
+    const contactMsg = await ContactModel.create({
       name,
       email,
       message,
@@ -29,7 +29,7 @@ export class ContactService {
   static async updateContactMessages(id: string, message: string) {
     if (!id) throw new ApiResponse(401, false, 'Invalid ID.', null);
 
-    const updatedContact = await Contact.findByIdAndUpdate(
+    const updatedContact = await ContactModel.findByIdAndUpdate(
       id,
       { $set: { message: message, status: 'updated' } },
       { new: true }
@@ -43,7 +43,7 @@ export class ContactService {
   static async deleteContactMessages(id: string) {
     if (!id) throw new ApiResponse(404, false, 'Invalid ID.', null);
 
-    const deletedContactMsg = await Contact.findByIdAndDelete(id);
+    const deletedContactMsg = await ContactModel.findByIdAndDelete(id);
 
     if (!deletedContactMsg) throw new ApiResponse(400, false, 'Message not found.', null);
 
