@@ -14,15 +14,37 @@ export default function GetContactMsgFromDb() {
     }[]
   >([]);
 
+  const [isGettingUserMsgs, setIsGettingUserMsgs] = useState<boolean>(false);
+
   //email from profile store
   const profileEmail = useProfileStore(state => state.email);
 
   const { setSeeContactMsgFromDb } = useContactInfoStore();
 
   const getContactMsg = async () => {
-    const res = await axios.get(`${BACKEND_URL}/api/contact/message`, { withCredentials: true });
-    const data = res.data;
-    setUserContactMsgsFromDb(data.data);
+    try {
+      setIsGettingUserMsgs(true);
+      const res = await axios.get(`${BACKEND_URL}/api/contact/message`, { withCredentials: true });
+      const data = res.data;
+      setUserContactMsgsFromDb(data.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setUserContactMsgsFromDb([
+          { message: error.response?.data.message, createdAt: new Date().toString() },
+        ]);
+      } else {
+        console.log(error);
+        if (error instanceof Error) {
+          setUserContactMsgsFromDb([{ message: error.message, createdAt: new Date().toString() }]);
+        } else {
+          setUserContactMsgsFromDb([
+            { message: 'An unknown error occurred', createdAt: new Date().toString() },
+          ]);
+        }
+      }
+    } finally {
+      setIsGettingUserMsgs(false);
+    }
   };
 
   useEffect(() => {
@@ -36,30 +58,33 @@ export default function GetContactMsgFromDb() {
           {profileEmail}
         </h4>
       </span>
-      <div className="max-h-80 overflow-auto ">
-        {userContactMsgsFromDb.map((msg, index) => (
-          <div
-            key={index}
-            className="flex flex-col  odd:bg-gray-300 dark:odd:bg-gray-800 even:bg-gray-100 dark:even:bg-gray-700 p-2 shadow  "
-          >
-            <div className="font-serif text-black dark:text-white">
-              {`${index + 1}.`} {msg.message}
-            </div>
-            <span className="text-xs text-right font-mono font-semibold text-gray-500 block mt-1">
-              {new Date(msg.createdAt).toLocaleString()}
-            </span>
-          </div>
-        ))}
-        {userContactMsgsFromDb.length === 0 ? (
-          <div className="flex flex-col w-full  odd:bg-gray-300 dark:odd:bg-gray-800 even:bg-gray-100 dark:even:bg-gray-700 p-2 shadow  ">
+      <div className="max-h-80 overflow-auto">
+        {isGettingUserMsgs ? (
+          <div className="flex justify-center items-center h-full">Loading...</div>
+        ) : userContactMsgsFromDb.length === 0 ? (
+          <div className="flex flex-col w-full odd:bg-gray-300 dark:odd:bg-gray-800 even:bg-gray-100 dark:even:bg-gray-700 p-2 shadow">
             <div className="font-serif w-full text-black dark:text-white">
-              No Messages Avialible
+              No Messages Available
             </div>
             <span className="text-xs text-right font-mono font-semibold text-gray-500 block mt-1">
               N/A
             </span>
           </div>
-        ) : null}
+        ) : (
+          userContactMsgsFromDb.map((msg, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-end odd:bg-gray-300 dark:odd:bg-gray-800 even:bg-gray-100 dark:even:bg-gray-700 p-2 shadow"
+            >
+              <div className="font-serif text-black dark:text-white text-right w-full">
+                {`${index + 1}.`} {msg.message}
+              </div>
+              <span className="text-xs font-mono font-semibold text-gray-500 mt-1">
+                {new Date(msg.createdAt).toLocaleString()}
+              </span>
+            </div>
+          ))
+        )}
       </div>
 
       <button
