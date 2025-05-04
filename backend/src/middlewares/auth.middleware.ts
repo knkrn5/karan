@@ -45,7 +45,7 @@ export const isAccessTokenValid = async (
     }
 
     if (error.name === 'JsonWebTokenError') {
-      message = 'Invalid token';
+      message = 'Invalid Access token';
       statusCode = 401;
     }
 
