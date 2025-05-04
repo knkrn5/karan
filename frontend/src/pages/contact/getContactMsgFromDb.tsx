@@ -63,7 +63,7 @@ export default function GetContactMsgFromDb() {
         {isGettingUserMsgs ? (
           <SeeContactMsgFromDbSkeletonLoading />
         ) : userContactMsgsFromDb.length === 0 ? (
-          <div className="flex flex-col w-full  odd:bg-gray-300 dark:odd:bg-gray-800 even:bg-gray-100 dark:even:bg-gray-700 p-2 shadow  ">
+          <div className="flex flex-col mt-2 w-[40vw] max-md:w-[80vw] odd:bg-gray-300 dark:odd:bg-gray-800 even:bg-gray-100 dark:even:bg-gray-700 p-2 shadow  ">
             <div className="font-serif w-full text-black dark:text-white">
               No Messages Available
             </div>
