@@ -11,7 +11,7 @@ export class AuthService {
   //verify existing user
   static async verifyUser(email: string) {
     if (!email) throw new ApiResponse(400, false, 'email is required', null);
-    const existingUser = await UserModel.findOne({ email });
+    const existingUser = await UserModel.exists({ email });
 
     if (!existingUser) throw new ApiResponse(404, false, 'User not found, Please Signup', null);
     return new ApiResponse(200, true, 'User already exists, Please Login', null);

@@ -2,6 +2,7 @@ import { ApiResponse } from '../utils/apiResponse.js';
 import { ContactModel } from '../models/contact.model.js';
 import { emailTransporter } from '../utils/emailTransporter.js';
 import { contactMsgEmailTemplate } from '../mail/templates/contactMsgEmailTemplate.js';
+import { UserModel } from '../models/user.model.js';
 
 export class ContactService {
   static async addContactMessages(userId: string, message: string) {
@@ -9,6 +10,12 @@ export class ContactService {
 
     if (isFieldEmpty) {
       throw new ApiResponse(404, false, 'All fields are required', null);
+    }
+
+    //checking existing user
+    const existingUser = await UserModel.exists({ _id: userId });
+    if (!existingUser) {
+      throw new ApiResponse(404, false, 'User not found', null);
     }
 
     //creating/adding contact message in the db

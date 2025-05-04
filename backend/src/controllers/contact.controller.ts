@@ -18,7 +18,7 @@ export class ContactController {
       }
       res.status(500).json({
         success: false,
-        message: 'Failed to send message controller',
+        message: 'Failed to send message',
         error: error instanceof Error ? error.message : 'An unknown error occurred.',
       });
     }
