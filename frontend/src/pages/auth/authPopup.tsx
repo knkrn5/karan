@@ -10,7 +10,7 @@ export default function AuthPopup() {
         <div className="p-4 text-center">
           <FaUnlockAlt className="mx-auto mb-4 text-gray-600 w-12 h-12 dark:text-gray-200" />
           <h3 className="mb-5 text-lg font-bold text-gray-500 dark:text-gray-400">
-            Please Log In to send a message
+            Please Log In to send/see a message
           </h3>
           <button
             data-modal-hide="popup-modal"
