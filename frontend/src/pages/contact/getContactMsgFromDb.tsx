@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useProfileStore } from '../../stores/profile/profileStore';
 import { useContactInfoStore } from '../../stores/contact/contactMsgStore';
 import { FaEyeSlash } from 'react-icons/fa';
+import { SeeContactMsgFromDbSkeletonLoading } from './contactSkeletonLoading';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -58,9 +59,9 @@ export default function GetContactMsgFromDb() {
           {profileEmail}
         </h4>
       </span>
-      <div className="max-h-80 overflow-auto ">
+      <div className="max-h-80 overflow-auto">
         {isGettingUserMsgs ? (
-          <div className="flex justify-center items-center">Loading...</div>
+          <SeeContactMsgFromDbSkeletonLoading />
         ) : userContactMsgsFromDb.length === 0 ? (
           <div className="flex flex-col w-full  odd:bg-gray-300 dark:odd:bg-gray-800 even:bg-gray-100 dark:even:bg-gray-700 p-2 shadow  ">
             <div className="font-serif w-full text-black dark:text-white">
@@ -74,7 +75,7 @@ export default function GetContactMsgFromDb() {
           userContactMsgsFromDb.map((msg, index) => (
             <div
               key={index}
-              className="flex flex-col  odd:bg-gray-300 dark:odd:bg-gray-800 even:bg-gray-100 dark:even:bg-gray-700 p-2 shadow  "
+              className="flex flex-col  odd:bg-gray-300 dark:odd:bg-gray-800 even:bg-gray-100 dark:even:bg-gray-700 p-2 shadow border-b border-neutral-500 dark:border-gray-600  "
             >
               <div className="font-serif text-black dark:text-white">
                 {`${index + 1}.`} {msg.message}
@@ -92,7 +93,7 @@ export default function GetContactMsgFromDb() {
         className="inline-flex items-center  p-2 mt-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white cursor-pointer transition-colors bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500"
         onClick={prev => setSeeContactMsgFromDb(!prev)}
       >
-        hide Messages
+        Hide Messages
         <FaEyeSlash size={20} className="ml-1 -mr-1" />
       </button>
     </div>
