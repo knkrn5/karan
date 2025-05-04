@@ -270,7 +270,7 @@ export default function ContactForm() {
               className="inline-flex items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white cursor-pointer transition-colors bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={() => setSeeContactMsgFromDb(true)}
             >
-              See Messages
+              Show Messages
               <FaEye size={20} className="ml-1 -mr-1" />
             </button>
           </div>

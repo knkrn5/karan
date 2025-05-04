@@ -8,18 +8,11 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function GetContactMsgFromDb() {
   const [userContactMsgsFromDb, setUserContactMsgsFromDb] = useState<
-    [
-      {
-        message: string;
-        createdAt: string;
-      }
-    ]
-  >([
     {
-      message: '',
-      createdAt: '',
-    },
-  ]);
+      message: string;
+      createdAt: string;
+    }[]
+  >([]);
 
   //email from profile store
   const profileEmail = useProfileStore(state => state.email);
@@ -43,7 +36,7 @@ export default function GetContactMsgFromDb() {
           {profileEmail}
         </h4>
       </span>
-      <div className="h-80 overflow-auto">
+      <div className="max-h-80 overflow-auto ">
         {userContactMsgsFromDb.map((msg, index) => (
           <div
             key={index}
@@ -57,10 +50,21 @@ export default function GetContactMsgFromDb() {
             </span>
           </div>
         ))}
+        {userContactMsgsFromDb.length === 0 ? (
+          <div className="flex flex-col w-full  odd:bg-gray-300 dark:odd:bg-gray-800 even:bg-gray-100 dark:even:bg-gray-700 p-2 shadow  ">
+            <div className="font-serif w-full text-black dark:text-white">
+              No Messages Avialible
+            </div>
+            <span className="text-xs text-right font-mono font-semibold text-gray-500 block mt-1">
+              N/A
+            </span>
+          </div>
+        ) : null}
       </div>
+
       <button
         type="button"
-        className="inline-flex items-center p-2 mt-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white cursor-pointer transition-colors bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500"
+        className="inline-flex items-center  p-2 mt-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white cursor-pointer transition-colors bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500"
         onClick={prev => setSeeContactMsgFromDb(!prev)}
       >
         hide Messages
