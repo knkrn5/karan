@@ -25,7 +25,7 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '16kb' }));
 app.use(express.urlencoded({ limit: '16kb', extended: true }));
 app.use(cookieParser());
-app.set('trust proxy', true); // Trust only the leftmost IP address
+// app.set('trust proxy', true); // Trust only the leftmost IP address
 
 // Helmet Security
 app.use(

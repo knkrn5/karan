@@ -54,7 +54,13 @@ export default function ContactForm() {
       setName(fullName);
       setEmail(profileEmail);
     }
-  }, [fullName, setName, profileEmail, setEmail]);
+
+    //storing name and email in store
+    setContactMsgData({
+      name: fullName,
+      email: profileEmail,
+    });
+  }, [fullName, setName, profileEmail, setEmail, setContactMsgData]);
 
   const isAuthenticated = useAuthCheck();
 
@@ -78,9 +84,6 @@ export default function ContactForm() {
       return;
     }
 
-    // storing form data in an object
-    const currentFormData = { name, email, message };
-
     // Calculating errors synchronously
     const formFieldErrors = {
       name: !name.trim() ? 'Name is required' : '',
@@ -101,13 +104,15 @@ export default function ContactForm() {
     }
 
     try {
-      const response = await axios.post(`${BACKEND_URL}/api/contact/message`, currentFormData);
+      const response = await axios.post(
+        `${BACKEND_URL}/api/contact/message`,
+        { message },
+        { withCredentials: true }
+      );
       const { data } = response;
 
-      // Storing data in zustand store
+      // Storing message in store
       setContactMsgData({
-        name: data.data.name,
-        email: data.data.email,
         message: data.data.message,
       });
       setIsSuccess(data.success);
@@ -115,8 +120,8 @@ export default function ContactForm() {
       setContactMsgId(data.data._id);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        setIsSuccess(error.response?.data?.success || false);
-        setTRpopupNotificationMsg({ error: error.response?.data?.message || error.message });
+        setIsSuccess(error.response?.data?.success ?? false);
+        setTRpopupNotificationMsg({ error: error.response?.data?.message ?? error.message });
       } else {
         setTRpopupNotificationMsg({ error: 'An unexpected error occurred' });
       }

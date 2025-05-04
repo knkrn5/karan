@@ -1,26 +1,29 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Document, Types } from "mongoose";
 
-export interface IContact {
-    name: string;
-    email: string;
+export interface IContact extends Document {
+    user: Types.ObjectId;
     message: string;
+    status?: 'notUpdated' | 'updated';
 }
 
-
-const contactMsgSchema = new Schema({
-    name: {
-        type: String,
-        required: true
+const contactMsgSchema = new Schema<IContact>(
+    {
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
+        message: {
+            type: String,
+            required: true,
+        },
+        status: {
+            type: String,
+            enum: ['notUpdated', 'updated'],
+            default: 'notUpdated',
+        },
     },
-    email: {
-        type: String,
-        required: true
-    },
-    message: {
-        type: String,
-        required: true
-    }
-}, { timestamps: true })
-
+    { timestamps: true }
+);
 
 export const ContactModel = mongoose.model<IContact>("Contact", contactMsgSchema);

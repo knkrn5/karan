@@ -78,7 +78,7 @@ export class AuthService {
     const user: IUser = await UserModel.create({
       firstName,
       lastName,
-      email: email.toLowerCase(),
+      email,
       password,
     });
 

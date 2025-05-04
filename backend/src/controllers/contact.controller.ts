@@ -4,10 +4,11 @@ import { ApiResponse } from '../utils/apiResponse.js';
 
 export class ContactController {
   // Adding contact message to the db
-  static addContactMessage = async (req: Request, res: Response): Promise<void> => {
+  static async addContactMessage(req: Request, res: Response): Promise<void> {
     try {
-      const { name, email, message } = req.body;
-      const response = await ContactService.addContactMessages(name, email, message);
+      const userId = req.user.userId;
+      const { message } = req.body;
+      const response = await ContactService.addContactMessages(userId, message);
 
       res.status(response.statusCode).json(response);
     } catch (error: any) {
@@ -17,7 +18,7 @@ export class ContactController {
       }
       res.status(500).json({
         success: false,
-        message: 'Failed to send message',
+        message: 'Failed to send message controller',
         error: error instanceof Error ? error.message : 'An unknown error occurred.',
       });
     }

@@ -4,19 +4,18 @@ import { emailTransporter } from '../utils/emailTransporter.js';
 import { contactMsgEmailTemplate } from '../mail/templates/contactMsgEmailTemplate.js';
 
 export class ContactService {
-  static async addContactMessages(name: string, email: string, message: string) {
-    const isFieldEmpty: boolean = [name, email, message].some(field => !field.trim());
+  static async addContactMessages(userId: string, message: string) {
+    const isFieldEmpty: boolean = [userId, message].some(field => !field.trim());
 
     if (isFieldEmpty) {
       throw new ApiResponse(404, false, 'All fields are required', null);
     }
 
-    // Create the contact message in the db
+    //creating/adding contact message in the db
     const contactMsg = await ContactModel.create({
-      name,
-      email,
+      user: userId,
       message,
-      status: 'unread',
+      status: 'notUpdated',
     });
 
     if (!contactMsg) {
@@ -31,7 +30,7 @@ export class ContactService {
 
     const updatedContact = await ContactModel.findByIdAndUpdate(
       id,
-      { $set: { message: message, status: 'updated' } },
+      { $set: { message, status: 'updated' } },
       { new: true }
     );
 
