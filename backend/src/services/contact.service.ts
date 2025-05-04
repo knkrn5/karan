@@ -76,4 +76,15 @@ export class ContactService {
 
     return new ApiResponse(200, true, 'Contact Message Emailed successfully', response);
   }
+
+
+  static async getContactMessages(userId: string) {
+    const messages = await ContactModel.find({ user: userId })
+      .select('message createdAt')
+      .sort({ createdAt: -1 });
+
+    return new ApiResponse(200, true, 'User messages fetched successfully', messages);
+  }
+
+
 }

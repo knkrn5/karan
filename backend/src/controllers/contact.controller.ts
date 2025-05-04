@@ -79,4 +79,22 @@ export class ContactController {
       res.status(500).json({ success: false, message: error.message, data: null });
     }
   }
+
+  static async getContactMessages(req: Request, res: Response): Promise<void> {
+    try {
+      const response = await ContactService.getContactMessages('68122cea2aa1b0852309c095');
+      res.status(response.statusCode).json(response);
+    } catch (error: any) {
+      if (error instanceof ApiResponse) {
+        res.status(error.statusCode).json(error);
+        return;
+      }
+      res.status(500).json({
+        success: false,
+        message: 'Failed to fetch messages',
+        error: error instanceof Error ? error.message : 'An unknown error occurred.',
+      });
+    }
+  }
+
 }
