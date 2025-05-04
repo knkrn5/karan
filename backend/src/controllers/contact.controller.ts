@@ -62,8 +62,8 @@ export class ContactController {
   }
 
   static async sendContactMsgCopyEmail(req: Request, res: Response): Promise<void> {
-    const { email, subject, excerpt, message } = req.body;
     try {
+      const { email, subject, excerpt, message } = req.body;
       const response = await ContactService.sendContactMsgCopyEmail(
         email,
         subject,
@@ -82,7 +82,8 @@ export class ContactController {
 
   static async getContactMessages(req: Request, res: Response): Promise<void> {
     try {
-      const response = await ContactService.getContactMessages('68122cea2aa1b0852309c095');
+      const userId = req.user.userId;
+      const response = await ContactService.getContactMessages(userId);
       res.status(response.statusCode).json(response);
     } catch (error: any) {
       if (error instanceof ApiResponse) {

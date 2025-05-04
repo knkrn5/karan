@@ -13,6 +13,7 @@ import Popup from '../../components/popups/mainPopup';
 import AuthPopup from '../auth/authPopup';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore';
 import { sendContactMsgCopyEmail } from '../../utils/contact.utils';
+import GetContactMsgFromDb from './getContactMsgFromDb';
 
 interface FormDataProp {
   name: string;
@@ -249,6 +250,7 @@ export default function ContactForm() {
           </button>
         </form>
       </div>
+      <GetContactMsgFromDb />
     </div>
   );
 }
