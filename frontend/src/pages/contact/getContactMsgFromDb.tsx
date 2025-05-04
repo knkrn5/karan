@@ -53,16 +53,16 @@ export default function GetContactMsgFromDb() {
 
   return (
     <div className="p-4 flex flex-col items-center bg-gradient-to-br from-gray-300 via-gray-100 to-gray-300 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 rounded-lg hover:shadow-lg transition-hover duration-300">
-      <span className="relative inline-block before:absolute before:inset-0 before:block before:-skew-y-1 before:bg-neutral-600 dark:before:bg-neutral-300">
+      <span className="relative inline-block before:absolute before:inset-0 before:block before:-skew-y-0 before:bg-neutral-600 dark:before:bg-neutral-400">
         <h4 className="relative font-bold text-lg mb-2 text-white dark:text-black ">
           {profileEmail}
         </h4>
       </span>
-      <div className="max-h-80 overflow-auto">
+      <div className="max-h-80 overflow-auto ">
         {isGettingUserMsgs ? (
-          <div className="flex justify-center items-center h-full">Loading...</div>
+          <div className="flex justify-center items-center">Loading...</div>
         ) : userContactMsgsFromDb.length === 0 ? (
-          <div className="flex flex-col w-full odd:bg-gray-300 dark:odd:bg-gray-800 even:bg-gray-100 dark:even:bg-gray-700 p-2 shadow">
+          <div className="flex flex-col w-full  odd:bg-gray-300 dark:odd:bg-gray-800 even:bg-gray-100 dark:even:bg-gray-700 p-2 shadow  ">
             <div className="font-serif w-full text-black dark:text-white">
               No Messages Available
             </div>
@@ -74,12 +74,12 @@ export default function GetContactMsgFromDb() {
           userContactMsgsFromDb.map((msg, index) => (
             <div
               key={index}
-              className="flex flex-col items-end odd:bg-gray-300 dark:odd:bg-gray-800 even:bg-gray-100 dark:even:bg-gray-700 p-2 shadow"
+              className="flex flex-col  odd:bg-gray-300 dark:odd:bg-gray-800 even:bg-gray-100 dark:even:bg-gray-700 p-2 shadow  "
             >
-              <div className="font-serif text-black dark:text-white text-right w-full">
+              <div className="font-serif text-black dark:text-white">
                 {`${index + 1}.`} {msg.message}
               </div>
-              <span className="text-xs font-mono font-semibold text-gray-500 mt-1">
+              <span className="text-xs text-right font-mono font-semibold text-gray-500 block mt-1">
                 {new Date(msg.createdAt).toLocaleString()}
               </span>
             </div>
