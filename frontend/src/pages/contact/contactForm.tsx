@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IoIosSend } from 'react-icons/io';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { FaEye } from 'react-icons/fa';
 import axios from 'axios';
 import { useContactInfoStore } from '../../stores/contact/contactMsgStore';
 
@@ -38,8 +39,16 @@ export default function ContactForm() {
   const isSubmitted = useContactInfoStore(state => state.isSubmitted);
 
   //contact message store data
-  const { setIsSuccess, setContactMsgData, setName, setEmail, setIsSubmitted, setContactMsgId } =
-    useContactInfoStore();
+  const seeContactMsgFromDb = useContactInfoStore(state => state.seeContactMsgFromDb);
+  const {
+    setIsSuccess,
+    setContactMsgData,
+    setName,
+    setEmail,
+    setIsSubmitted,
+    setContactMsgId,
+    setSeeContactMsgFromDb,
+  } = useContactInfoStore();
 
   //profile store data
   const firstName = useProfileStore(state => state.firstName);
@@ -141,7 +150,12 @@ export default function ContactForm() {
     );
   };
 
-  // component switching
+  // getcontactmsgfromdb component switching
+  if (seeContactMsgFromDb) {
+    return <GetContactMsgFromDb />;
+  }
+
+  // seecontactmsg component switching
   if (isSubmitted) {
     return <SeeContactMsg />;
   }
@@ -231,26 +245,37 @@ export default function ContactForm() {
             </div>
           </div>
 
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="inline-flex items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white cursor-pointer transition-colors bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? (
-              <>
-                <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 mr-2" />
-                Sending...
-              </>
-            ) : (
-              <>
-                Send Message
-                <IoIosSend className="ml-1 -mr-1 h-6 w-6" />
-              </>
-            )}
-          </button>
+          <div className="flex justify-between gap-1.5 max-sm:flex-col max-sm:w-fit max-sm:mx-auto">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="inline-flex items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white cursor-pointer transition-colors bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading ? (
+                <>
+                  <AiOutlineLoading3Quarters size={20} className="animate-spin mr-2" />
+                  Sending...
+                </>
+              ) : (
+                <>
+                  Send Message
+                  <IoIosSend className="ml-1 -mr-1 h-6 w-6" />
+                </>
+              )}
+            </button>
+
+            <button
+              type="button"
+              disabled={isLoading}
+              className="inline-flex items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white cursor-pointer transition-colors bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => setSeeContactMsgFromDb(true)}
+            >
+              See Messages
+              <FaEye size={20} className="ml-1 -mr-1" />
+            </button>
+          </div>
         </form>
       </div>
-      <GetContactMsgFromDb />
     </div>
   );
 }
