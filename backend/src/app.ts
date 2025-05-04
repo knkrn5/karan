@@ -12,7 +12,7 @@ const corsOptions = {
   origin: [
     'https://karan.email',
     'https://www.karan.email',
-    'https://karan-frontend.onrender.com',
+    'https://api.karan.email/',
     'http://localhost:5173',
   ],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
