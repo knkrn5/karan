@@ -265,8 +265,8 @@ export default function Chatbot() {
           {!isAuthenticated && msgWithoutAuth > MAX_MESSAGES_WITHOUT_AUTH && <CBLoginMsg />}
 
           {/* messages box */}
-          {isAuthenticated ||
-            (msgWithoutAuth <= MAX_MESSAGES_WITHOUT_AUTH && (
+          {/* {isAuthenticated || */}
+            {/* (msgWithoutAuth <= MAX_MESSAGES_WITHOUT_AUTH && ( */}
               <div>
                 {messages.map((msg, i) => (
                   <div
@@ -313,7 +313,7 @@ export default function Chatbot() {
                   </div>
                 )}
               </div>
-            ))}
+             {/* ))} */}
         </div>
 
         {/* Input section  */}
