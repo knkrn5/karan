@@ -86,5 +86,4 @@ export class ContactService {
     return new ApiResponse(200, true, 'User messages fetched successfully', messages);
   }
 
-
 }

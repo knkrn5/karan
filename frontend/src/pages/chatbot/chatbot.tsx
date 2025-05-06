@@ -32,8 +32,7 @@ export default function Chatbot() {
   //authentication check
   const isAuthenticated = useAuthCheck();
   const msgWithoutAuth = useChatbotStore(state => state.msgWithoutAuth);
-  const cbMsgSessionHistory = useChatbotStore(state => state.cbMsgSessionHistory);
-  const { setMsgWithoutAuth, setCbMsgSessionHistory } = useChatbotStore();
+  const { setMsgWithoutAuth } = useChatbotStore();
   const MAX_MESSAGES_WITHOUT_AUTH = 3;
 
   useEffect(() => {
@@ -88,11 +87,7 @@ export default function Chatbot() {
     //storing chatbot data in sessionstorage if user is not authenticated
     if (!isAuthenticated) {
       setMsgWithoutAuth();
-      setCbMsgSessionHistory(messages);
     } else {
-      // if (cbMsgSessionHistory) {
-      //   setMessages(cbMsgSessionHistory);
-      // }
       sessionStorage.removeItem('chatbot');
     }
 
