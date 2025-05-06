@@ -22,7 +22,6 @@ export default function Chatbot() {
 
   const dropdownButtonRef = useRef<HTMLButtonElement>(null);
   const chatbotContainerRef = useRef<HTMLDivElement>(null);
-  const suggestionBoxRef = useRef<HTMLDivElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   //profile store data
@@ -41,7 +40,6 @@ export default function Chatbot() {
   }, [messages]);
 
   useEffect(() => {
-    
     getChatbotMsgFromdb();
 
     const handleOutsideClick = (event: MouseEvent) => {
@@ -67,12 +65,6 @@ export default function Chatbot() {
       setMessages(data.data.message);
     } catch (error) {
       console.error('Error fetching chatbot messages:', error);
-    } finally {
-      // if (messages.length > 0) {
-      //   if (suggestionBoxRef.current) {
-      //     suggestionBoxRef.current.style.display = 'none';
-      //   }
-      // }
     }
   }
 
@@ -230,11 +222,8 @@ export default function Chatbot() {
         {/* Messages container */}
         <div className="flex flex-col flex-1 gap-2 overflow-y-auto  p-2 rounded-lg border border-neutral-300 dark:border-gray-600 bg-white dark:bg-slate-800 ">
           {/* Suggestion box */}
-          {isAuthenticated || msgWithoutAuth <= MAX_MESSAGES_WITHOUT_AUTH ? (
-            <div
-              className="flex flex-col gap-2 px-2 py-4 rounded-lg bg-gray-200 dark:bg-dark"
-              ref={suggestionBoxRef}
-            >
+          {messages.length === 0 && (
+            <div className="flex flex-col gap-2 px-2 py-4 rounded-lg bg-gray-200 dark:bg-dark">
               {[
                 'What is this website about?',
                 'Tell me about Karan?',
@@ -250,9 +239,9 @@ export default function Chatbot() {
                 </button>
               ))}
             </div>
-          ) : (
-            <CBLoginMsg />
           )}
+
+          {!isAuthenticated && msgWithoutAuth > MAX_MESSAGES_WITHOUT_AUTH && <CBLoginMsg />}
 
           {/* messages box */}
           {isAuthenticated || msgWithoutAuth <= MAX_MESSAGES_WITHOUT_AUTH ? (
