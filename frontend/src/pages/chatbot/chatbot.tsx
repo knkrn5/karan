@@ -41,7 +41,9 @@ export default function Chatbot() {
   }, [messages]);
 
   useEffect(() => {
-    getChatbotMsgFromdb();
+    if (isAuthenticated) {
+      getChatbotMsgFromdb();
+    }
 
     const handleOutsideClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -56,7 +58,7 @@ export default function Chatbot() {
     return () => {
       document.removeEventListener('click', handleOutsideClick);
     };
-  }, [cbMsgSessionHistory, isDropdownOpen, showChatbot]);
+  }, [isAuthenticated, isDropdownOpen, showChatbot]);
 
   async function getChatbotMsgFromdb() {
     try {

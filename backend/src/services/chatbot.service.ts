@@ -1,3 +1,4 @@
+import { Response } from 'express';
 import OpenAI from 'openai';
 import dotenv from 'dotenv';
 import { readFileSync } from 'fs';
@@ -14,7 +15,7 @@ const openai = new OpenAI({
 
 export class ChatbotService {
 
-  static async getChatbotResponse(userId: string, userName: string, userMsg: string, llmName: string, historyMsgs: Array<{ role: 'user' | 'system'; content: string }>, res: any) {
+  static async getChatbotResponse(userId: string, userName: string, userMsg: string, llmName: string, historyMsgs: Array<{ role: 'user' | 'system'; content: string }>, res: Response) {
     if (!userMsg) throw new ApiResponse(400, false, 'User message not found', null);
     if (!llmName) throw new ApiResponse(400, false, 'LLM not found', null);
 
@@ -68,7 +69,7 @@ export class ChatbotService {
     //stroing chat history in database
     if (userId) {
       await ChatbotModel.findOneAndUpdate(
-        { user: userId }, // query
+        { user: userId },
         {
           $push: {
             message: {
