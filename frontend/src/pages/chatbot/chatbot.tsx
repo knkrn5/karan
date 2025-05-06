@@ -3,12 +3,14 @@ import { useEffect, useRef, useState } from 'react';
 import { IoIosSend, IoMdArrowDropdownCircle } from 'react-icons/io';
 import { LuBot } from 'react-icons/lu';
 import { FaRobot } from 'react-icons/fa6';
+import { CiSquarePlus } from 'react-icons/ci';
 import { FaUser } from 'react-icons/fa';
 import { useAuthCheck } from '../../hooks/authCheckHook';
 import { useProfileStore } from '../../stores/profile/profileStore';
 import CBLoginMsg from './CBLoginMsg';
 import { useChatbotStore } from '../../stores/chatbot/chatbotStore';
 import axios from 'axios';
+import CbShowMore from './cbShowMore';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -19,10 +21,12 @@ export default function Chatbot() {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isGettingChatbotRes, setIsGettingChatbotRes] = useState<boolean>(false);
   const [messages, setMessages] = useState<{ role: 'user' | 'system'; content: string }[]>([]);
+  const [showMore, setShowMore] = useState<boolean>(false);
 
   const dropdownButtonRef = useRef<HTMLButtonElement>(null);
   const chatbotContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const showMoreRef = useRef<HTMLDivElement | null>(null);
 
   //profile store data
   const firstName = useProfileStore(state => state.firstName);
@@ -52,12 +56,15 @@ export default function Chatbot() {
       if (!chatbotContainerRef.current?.contains(target) && showChatbot) {
         setShowChatbot(false);
       }
+      if (!showMoreRef.current?.contains(target) && showMore) {
+        setShowMore(false);
+      }
     };
     document.addEventListener('click', handleOutsideClick);
     return () => {
       document.removeEventListener('click', handleOutsideClick);
     };
-  }, [isAuthenticated, isDropdownOpen, showChatbot]);
+  }, [isAuthenticated, isDropdownOpen, showChatbot, showMore]);
 
   async function getChatbotMsgFromdb() {
     try {
@@ -259,7 +266,7 @@ export default function Chatbot() {
 
           {/* messages box */}
           {isAuthenticated || msgWithoutAuth <= MAX_MESSAGES_WITHOUT_AUTH ? (
-            <div className="">
+            <div>
               {messages.map((msg, i) => (
                 <div
                   key={i}
@@ -329,20 +336,47 @@ export default function Chatbot() {
             }}
             className="w-full p-2 outline-none text-black dark:text-white placeholder-gray-400 rounded bg-white dark:bg-slate-800 resize-none min-h-[40px] max-h-[120px] overflow-y-auto"
           />
-          <button
-            type="button"
-            title="Send message"
-            aria-label="Send message"
-            onClick={() => handleSend(inputMessage)}
-            disabled={
-              !inputMessage.trim() ||
-              isGettingChatbotRes ||
-              (!isAuthenticated && msgWithoutAuth >= MAX_MESSAGES_WITHOUT_AUTH + 1)
-            }
-            className={` px-3 py-1 rounded-full transition-colors duration-200 ease-in-out cursor-pointer bg-blue-500 text-white disabled:bg-white disabled:text-black  disabled:opacity-50 disabled:cursor-not-allowed`}
-          >
-            <IoIosSend size={20} className="w-6 h-6" />
-          </button>
+          <div className="flex flex-col items-center gap-1">
+            <div className="relative" ref={showMoreRef}>
+              <button
+                type="button"
+                aria-label="Send message"
+                onClick={() => setShowMore(!showMore)}
+                disabled={isGettingChatbotRes}
+                className={` rounded cursor-pointer  disabled:bg-white disabled:text-black  disabled:opacity-50 disabled:cursor-not-allowed`}
+              >
+                <CiSquarePlus
+                  size={25}
+                  className={` rounded bg-neutral-300 dark:bg-gray-800 hover:text-black dark:hover:text-white duration-300 transition-transform ${
+                    showMore
+                      ? 'rotate-45 text-black dark:text-white'
+                      : 'text-neutral-600 dark:text-gray-400'
+                  }`}
+                />
+              </button>
+              <div
+                className={`absolute bottom-12 -right-5 ${
+                  showMore ? 'scale-x-100' : 'scale-x-0'
+                } duration-300 transition-transform`}
+              >
+                <CbShowMore />
+              </div>
+            </div>
+            <button
+              type="button"
+              title="Send message"
+              aria-label="Send message"
+              onClick={() => handleSend(inputMessage)}
+              disabled={
+                !inputMessage.trim() ||
+                isGettingChatbotRes ||
+                (!isAuthenticated && msgWithoutAuth >= MAX_MESSAGES_WITHOUT_AUTH + 1)
+              }
+              className={` px-3 py-1 rounded-full transition-colors duration-200 ease-in-out cursor-pointer bg-blue-500 text-white disabled:bg-white disabled:text-black  disabled:opacity-50 disabled:cursor-not-allowed`}
+            >
+              <IoIosSend size={20} className="w-6 h-6" />
+            </button>
+          </div>
         </div>
         <p className="mt-1 text-sm font-extrabold text-center text-gray-500 dark:text-gray-400">
           Karan.email
