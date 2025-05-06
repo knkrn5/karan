@@ -15,7 +15,7 @@ export const useChatbotStore = create<chatbotStore>()(
             setMsgWithoutAuth: (value: number) => set({ msgWithoutAuth: value }),
 
             cbMsgSessionHistory: [],
-            setCbMsgSessionHistory: (value: { role: 'user' | 'system'; content: string }[]) => set({ cbMsg: value }),
+            setCbMsgSessionHistory: (value: { role: 'user' | 'system'; content: string }[]) => set({ cbMsgSessionHistory: value }),
 
         }),
         {
