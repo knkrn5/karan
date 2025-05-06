@@ -32,7 +32,8 @@ export default function Chatbot() {
   //authentication check
   const isAuthenticated = useAuthCheck();
   const msgWithoutAuth = useChatbotStore(state => state.msgWithoutAuth);
-  const { setMsgWithoutAuth } = useChatbotStore();
+  const cbMsgSessionHistory = useChatbotStore(state => state.cbMsgSessionHistory);
+  const { setMsgWithoutAuth, setCbMsgSessionHistory } = useChatbotStore();
   const MAX_MESSAGES_WITHOUT_AUTH = 3;
 
   useEffect(() => {
@@ -40,7 +41,11 @@ export default function Chatbot() {
   }, [messages]);
 
   useEffect(() => {
-    getChatbotMsgFromdb();
+    if (cbMsgSessionHistory) {
+      setMessages(cbMsgSessionHistory);
+    }
+
+    // getChatbotMsgFromdb();
 
     const handleOutsideClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -59,12 +64,17 @@ export default function Chatbot() {
 
   async function getChatbotMsgFromdb() {
     try {
-      const response = await axios.get(`${BACKEND_URL}/api/chatbot/get-msgs-from-db`, {});
+      const response = await axios.get(`${BACKEND_URL}/api/chatbot/get-msgs-from-db`, {
+        withCredentials: true,
+      });
       const data = response.data;
-      console.log(data.data.message);
       setMessages(data.data.message);
     } catch (error) {
-      console.error('Error fetching chatbot messages:', error);
+      if (axios.isAxiosError(error)) {
+        console.error('Error fetching chatbot messages:', error.response?.data);
+      } else {
+        console.error('Error fetching chatbot messages:', error);
+      }
     }
   }
 
@@ -76,7 +86,14 @@ export default function Chatbot() {
     // adding user msg
     setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
     setInputMessage('');
-    setMsgWithoutAuth(messages.filter(msg => msg.role === 'user').length + 1);
+
+    //storing chatbot data in sessionstorage if user is not authenticated
+    if (!isAuthenticated) {
+      setMsgWithoutAuth(messages.filter(msg => msg.role === 'user').length + 1);
+      setCbMsgSessionHistory(messages);
+    } else {
+      sessionStorage.removeItem('chatbot');
+    }
 
     // stoping sending messages if user is not authenticated
     if (!isAuthenticated && msgWithoutAuth >= MAX_MESSAGES_WITHOUT_AUTH) {
@@ -89,6 +106,7 @@ export default function Chatbot() {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({
           userName: fullName,
           userMsg,

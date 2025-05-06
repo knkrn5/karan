@@ -5,6 +5,7 @@ import { ApiResponse } from '../utils/apiResponse.js';
 export class ChatbotController {
   static async getChatbotResponse(req: Request, res: Response) {
     try {
+      // const userId = req.user.userId;
       const { userName, userMsg, llmName, historyMsgs } = req.body;
 
       await ChatbotService.getChatbotResponse('6804e17625d5c4e27ad2e248', userName, userMsg, llmName, historyMsgs, res);
