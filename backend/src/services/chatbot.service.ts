@@ -2,6 +2,9 @@ import OpenAI from 'openai';
 import dotenv from 'dotenv';
 import { readFileSync } from 'fs';
 import { ApiResponse } from '../utils/apiResponse.js';
+import { ChatbotModel } from '../models/chatbot.model.js';
+
+
 dotenv.config();
 
 const openai = new OpenAI({
@@ -11,7 +14,7 @@ const openai = new OpenAI({
 
 export class ChatbotService {
 
-  static async getChatbotResponse(userName: string, userMsg: string, llmName: string, historyMsgs: Array<{ role: 'user' | 'system'; content: string }>, res: any) {
+  static async getChatbotResponse(userId: string, userName: string, userMsg: string, llmName: string, historyMsgs: Array<{ role: 'user' | 'system'; content: string }>, res: any) {
     if (!userMsg) throw new ApiResponse(400, false, 'User message not found', null);
     if (!llmName) throw new ApiResponse(400, false, 'LLM not found', null);
 
@@ -49,16 +52,43 @@ export class ChatbotService {
     res.setHeader('Connection', 'keep-alive');
     res.flushHeaders();
 
+    let assistantFullResponse = '';
     for await (const chunk of completion) {
       const text = chunk.choices[0]?.delta?.content ?? '';
       if (text) {
+        assistantFullResponse += text;
         res.write(`data: ${JSON.stringify(text)}\n\n`);
       }
     }
 
     res.write(`data: [DONE]\n\n`);
     res.end();
+
+
+    //stroing chat history in database
+    await ChatbotModel.findOneAndUpdate(
+      { user: userId },
+      {
+        $push: {
+          message: {
+            $each: [
+              { role: "user", content: userMsg },
+              { role: "system", content: assistantFullResponse }
+            ]
+          }
+        }
+      },
+      { upsert: true, new: true }
+    );
   }
+
+  static async getChatbotMsgsFromDb(userId: string) {
+    if (!userId) throw new ApiResponse(400, false, 'User ID is required', null);
+
+    const chatbotMsgs = await ChatbotModel.findOne({ user: userId }).select('message');
+    return new ApiResponse(200, true, 'Chat history retrieved successfully', chatbotMsgs);
+  }
+
 }
 
 

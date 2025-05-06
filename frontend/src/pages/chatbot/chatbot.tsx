@@ -8,6 +8,7 @@ import { useAuthCheck } from '../../hooks/authCheckHook';
 import { useProfileStore } from '../../stores/profile/profileStore';
 import CBLoginMsg from './CBLoginMsg';
 import { useChatbotStore } from '../../stores/chatbot/chatbotStore';
+import axios from 'axios';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -40,6 +41,9 @@ export default function Chatbot() {
   }, [messages]);
 
   useEffect(() => {
+    
+    getChatbotMsgFromdb();
+
     const handleOutsideClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       if (!dropdownButtonRef.current?.contains(target) && isDropdownOpen) {
@@ -55,13 +59,27 @@ export default function Chatbot() {
     };
   }, [isDropdownOpen, showChatbot]);
 
+  async function getChatbotMsgFromdb() {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/api/chatbot/get-msgs-from-db`, {});
+      const data = response.data;
+      console.log(data.data.message);
+      setMessages(data.data.message);
+    } catch (error) {
+      console.error('Error fetching chatbot messages:', error);
+    } finally {
+      // if (messages.length > 0) {
+      //   if (suggestionBoxRef.current) {
+      //     suggestionBoxRef.current.style.display = 'none';
+      //   }
+      // }
+    }
+  }
+
   async function handleSend(userMsg: string) {
     if (!userMsg.trim()) return;
 
     setIsGettingChatbotRes(true);
-    if (suggestionBoxRef.current) {
-      suggestionBoxRef.current.style.display = 'none';
-    }
 
     // adding user msg
     setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
