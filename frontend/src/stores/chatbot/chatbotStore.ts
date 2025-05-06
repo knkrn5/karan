@@ -4,15 +4,15 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 type chatbotStore = {
     msgWithoutAuth: number
     cbMsgSessionHistory: { role: 'user' | 'system'; content: string }[]
-    setMsgWithoutAuth: (value: number) => void
+    setMsgWithoutAuth: () => void
     setCbMsgSessionHistory: (value: { role: 'user' | 'system'; content: string }[]) => void
 }
 
 export const useChatbotStore = create<chatbotStore>()(
     persist(
-        (set) => ({
+        (set, get) => ({
             msgWithoutAuth: 0,
-            setMsgWithoutAuth: (value: number) => set({ msgWithoutAuth: value }),
+            setMsgWithoutAuth: () => set({ msgWithoutAuth: get().msgWithoutAuth + 1 }),
 
             cbMsgSessionHistory: [],
             setCbMsgSessionHistory: (value: { role: 'user' | 'system'; content: string }[]) => set({ cbMsgSessionHistory: value }),

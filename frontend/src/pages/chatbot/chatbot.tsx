@@ -41,11 +41,7 @@ export default function Chatbot() {
   }, [messages]);
 
   useEffect(() => {
-    if (cbMsgSessionHistory) {
-      setMessages(cbMsgSessionHistory);
-    }
-
-    // getChatbotMsgFromdb();
+    getChatbotMsgFromdb();
 
     const handleOutsideClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -60,7 +56,7 @@ export default function Chatbot() {
     return () => {
       document.removeEventListener('click', handleOutsideClick);
     };
-  }, [isDropdownOpen, showChatbot]);
+  }, [cbMsgSessionHistory, isDropdownOpen, showChatbot]);
 
   async function getChatbotMsgFromdb() {
     try {
@@ -89,9 +85,12 @@ export default function Chatbot() {
 
     //storing chatbot data in sessionstorage if user is not authenticated
     if (!isAuthenticated) {
-      setMsgWithoutAuth(messages.filter(msg => msg.role === 'user').length + 1);
+      setMsgWithoutAuth();
       setCbMsgSessionHistory(messages);
     } else {
+      // if (cbMsgSessionHistory) {
+      //   setMessages(cbMsgSessionHistory);
+      // }
       sessionStorage.removeItem('chatbot');
     }
 

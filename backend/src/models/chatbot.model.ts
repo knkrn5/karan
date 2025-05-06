@@ -16,7 +16,7 @@ const chatbotMsgSchema = new Schema<IChatbot>(
         user: {
             type: Schema.Types.ObjectId,
             ref: "User",
-            required: true,
+            required: false,
         },
         message: [
             {
