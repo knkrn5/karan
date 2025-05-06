@@ -40,10 +40,6 @@ export default function Chatbot() {
   const MAX_MESSAGES_WITHOUT_AUTH = 3;
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
-  useEffect(() => {
     if (isAuthenticated) {
       getChatbotMsgFromdb();
     }
@@ -65,6 +61,10 @@ export default function Chatbot() {
       document.removeEventListener('click', handleOutsideClick);
     };
   }, [isAuthenticated, isDropdownOpen, showChatbot, showMore]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   async function getChatbotMsgFromdb() {
     try {
