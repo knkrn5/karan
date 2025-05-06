@@ -66,21 +66,37 @@ export class ChatbotService {
 
 
     //stroing chat history in database
-    await ChatbotModel.findOneAndUpdate(
-      { user: userId },
-      {
-        $push: {
-          message: {
-            $each: [
-              { role: "user", content: userMsg },
-              { role: "system", content: assistantFullResponse }
-            ]
+    if (userId) {
+      await ChatbotModel.findOneAndUpdate(
+        { user: userId }, // query
+        {
+          $push: {
+            message: {
+              $each: [
+                { role: "user", content: userMsg },
+                { role: "system", content: assistantFullResponse }
+              ]
+            }
           }
-        }
-      },
-      { upsert: true, new: true }
-    );
-
+        }, // update
+        { upsert: true, new: true }
+      );
+    } else {
+      await ChatbotModel.findOneAndUpdate(
+        {},
+        {
+          $push: {
+            message: {
+              $each: [
+                { role: "user", content: userMsg },
+                { role: "system", content: assistantFullResponse }
+              ]
+            }
+          }
+        },
+        { upsert: true, new: true }
+      );
+    }
 
   }
 

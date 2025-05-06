@@ -14,7 +14,7 @@ export class ChatbotController {
         userId = decoded.userId;
       } else {
         console.log('Invalid token payload');
-        userId = '6804e17625d5c4e27ad2e248';
+        // userId = '6804e17625d5c4e27ad2e248';
       }
       const { userName, userMsg, llmName, historyMsgs } = req.body;
 
