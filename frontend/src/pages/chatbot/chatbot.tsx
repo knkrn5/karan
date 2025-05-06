@@ -265,56 +265,55 @@ export default function Chatbot() {
           {!isAuthenticated && msgWithoutAuth > MAX_MESSAGES_WITHOUT_AUTH && <CBLoginMsg />}
 
           {/* messages box */}
-          {isAuthenticated || msgWithoutAuth <= MAX_MESSAGES_WITHOUT_AUTH ? (
-            <div>
-              {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`flex items-start gap-2 mb-2 ${
-                    msg.role === 'user' ? 'justify-end' : 'justify-start'
-                  }`}
-                >
+          {isAuthenticated ||
+            (msgWithoutAuth <= MAX_MESSAGES_WITHOUT_AUTH && (
+              <div>
+                {messages.map((msg, i) => (
                   <div
-                    className={`p-2 rounded-lg max-w-[80%] ${
-                      msg.role === 'user'
-                        ? 'bg-blue-500 text-white rounded-tr-none shadow-lg '
-                        : 'bg-gray-300 dark:bg-slate-700 text-black dark:text-white rounded-tl-none'
+                    key={i}
+                    className={`flex items-start gap-2 mb-2 ${
+                      msg.role === 'user' ? 'justify-end' : 'justify-start'
                     }`}
                   >
-                    <div className="flex items-start gap-2">
-                      {msg.role === 'system' && (
-                        <FaRobot
-                          size={18}
-                          className="text-black dark:text-white mt-1 shrink-0 self-start"
-                        />
-                      )}
-                      {msg.role === 'system' ? (
-                        <div
-                          className="break-words overflow-auto prose prose-code:inline-block prose-code:w-[50px] prose-a:text-blue-500 dark:prose-invert max-w-none"
-                          dangerouslySetInnerHTML={{ __html: msg.content }}
-                        />
-                      ) : (
-                        <div className="break-words overflow-auto max-w-none">{msg.content}</div>
-                      )}
-                      {msg.role === 'user' && (
-                        <FaUser size={18} className="text-white mt-1 shrink-0 self-start" />
-                      )}
+                    <div
+                      className={`p-2 rounded-lg max-w-[80%] ${
+                        msg.role === 'user'
+                          ? 'bg-blue-500 text-white rounded-tr-none shadow-lg '
+                          : 'bg-gray-300 dark:bg-slate-700 text-black dark:text-white rounded-tl-none'
+                      }`}
+                    >
+                      <div className="flex items-start gap-2">
+                        {msg.role === 'system' && (
+                          <FaRobot
+                            size={18}
+                            className="text-black dark:text-white mt-1 shrink-0 self-start"
+                          />
+                        )}
+                        {msg.role === 'system' ? (
+                          <div
+                            className="break-words overflow-auto prose prose-code:inline-block prose-code:w-[50px] prose-a:text-blue-500 dark:prose-invert max-w-none"
+                            dangerouslySetInnerHTML={{ __html: msg.content }}
+                          />
+                        ) : (
+                          <div className="break-words overflow-auto max-w-none">{msg.content}</div>
+                        )}
+                        {msg.role === 'user' && (
+                          <FaUser size={18} className="text-white mt-1 shrink-0 self-start" />
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-              {/* Scroll to the bottom */}
-              <div ref={messagesEndRef} />
-              {/* Loading indicator */}
-              {isGettingChatbotRes && (
-                <div className="flex  items-center gap-2 w-fit mb-2 p-2 rounded-lg bg-gray-200 dark:bg-gray-600 justify-start">
-                  <FaRobot className="animate-zoom-in-out" />
-                </div>
-              )}
-            </div>
-          ) : (
-            ''
-          )}
+                ))}
+                {/* Scroll to the bottom */}
+                <div ref={messagesEndRef} />
+                {/* Loading indicator */}
+                {isGettingChatbotRes && (
+                  <div className="flex  items-center gap-2 w-fit mb-2 p-2 rounded-lg bg-gray-200 dark:bg-gray-600 justify-start">
+                    <FaRobot className="animate-zoom-in-out" />
+                  </div>
+                )}
+              </div>
+            ))}
         </div>
 
         {/* Input section  */}
