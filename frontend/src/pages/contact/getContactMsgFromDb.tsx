@@ -27,7 +27,7 @@ export default function GetContactMsgFromDb() {
       setIsGettingUserMsgs(true);
       const res = await axios.get(`${BACKEND_URL}/api/contact/message`, { withCredentials: true });
       const data = res.data;
-      setUserContactMsgsFromDb(data.data);
+      setUserContactMsgsFromDb(data.data[0].messages);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setUserContactMsgsFromDb([

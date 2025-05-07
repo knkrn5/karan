@@ -4,7 +4,7 @@ import { ApiResponse } from '../utils/apiResponse.js';
 export class ConactMiddleware {
   static ContactPostLimiter = rateLimit({
     windowMs: 60 * 60 * 1000,
-    max: 30,
+    max: 3,
     standardHeaders: true,
     legacyHeaders: false,
     message: new ApiResponse(429, false, 'Too many requests sent...', null),

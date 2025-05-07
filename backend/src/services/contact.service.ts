@@ -90,8 +90,8 @@ export class ContactService {
 
   static async getContactMessages(userId: string) {
     const messages = await ContactModel.find({ user: userId })
-      .select('message createdAt')
-      .sort({ createdAt: -1 });
+      .select('messages')
+      .sort({ "messages.createdAt": -1 });
 
     return new ApiResponse(200, true, 'User messages fetched successfully', messages);
   }
