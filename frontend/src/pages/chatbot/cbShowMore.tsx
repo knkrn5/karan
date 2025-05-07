@@ -10,7 +10,10 @@ export default function CbShowMore() {
   const handleClearChat = () => {
     if (!isAuthenticated) {
       alert('Login required');
+      return;
     }
+
+    alert('Coming soon');
   };
 
   return (
