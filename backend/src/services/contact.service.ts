@@ -3,6 +3,7 @@ import { ContactModel } from '../models/contact.model.js';
 import { emailTransporter } from '../utils/emailTransporter.js';
 import { contactMsgEmailTemplate } from '../mail/templates/contactMsgEmailTemplate.js';
 import { UserModel } from '../models/user.model.js';
+import mongoose from 'mongoose';
 
 export class ContactService {
   static async addContactMessages(userId: string, message: string) {
@@ -89,12 +90,24 @@ export class ContactService {
   }
 
   static async getContactMessages(userId: string) {
-    const messages = await ContactModel.find({ user: userId })
-      .select('messages')
-      .sort({ "messages.createdAt": -1 });
+    const result = await ContactModel.aggregate([
+      { $match: { user: new mongoose.Types.ObjectId(userId) } },
+      { $unwind: "$messages" },
+      { $sort: { "messages.createdAt": -1 } },
+      {
+        $group: {
+          _id: "$_id",
+          user: { $first: "$user" },
+          messages: { $push: "$messages" },
+          createdAt: { $first: "$createdAt" },
+          updatedAt: { $first: "$updatedAt" },
+        },
+      },
+    ]);
 
-    return new ApiResponse(200, true, 'User messages fetched successfully', messages);
+    return new ApiResponse(200, true, "User messages fetched successfully", result[0]);
   }
+
 
   static async sendContactMsgCopyEmail(
     email: string,
