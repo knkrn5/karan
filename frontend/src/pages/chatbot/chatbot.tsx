@@ -326,7 +326,7 @@ export default function Chatbot() {
 
           {/* recent chats */}
           <div
-            className={`absolute w-35 h-96  bottom-0 text-black dark:text-white bg-neutral-200 dark:bg-slate-800 rounded-lg p-2 z-10 border border-gray-600 ${
+            className={`absolute w-35 h-96  bottom-0 text-black dark:text-white bg-gray-200 dark:bg-slate-800 rounded-lg p-2 z-10 border border-gray-600 ${
               showMore ? 'scale-x-full' : 'scale-x-0'
             } origin-left duration-300 transition-transform`}
           >
