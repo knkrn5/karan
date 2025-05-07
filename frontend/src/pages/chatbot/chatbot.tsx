@@ -251,75 +251,96 @@ export default function Chatbot() {
         </div>
 
         {/* Messages container */}
-        <div className="flex flex-col flex-1 gap-2 overflow-y-auto  p-2 rounded-lg border border-neutral-300 dark:border-gray-600 bg-white dark:bg-slate-800 ">
-          {/* Suggestion box */}
-          {messages.length === 0 && (
-            <div className="flex flex-col gap-2 px-2 py-4 rounded-lg bg-gray-200 dark:bg-dark">
-              {[
-                'What is this website about?',
-                'Tell me about Karan?',
-                'How can I contact karan?',
-              ].map(msg => (
-                <button
-                  type="button"
-                  key={msg}
-                  className="px-4 py-2 w-fit max-w-xs border border-neutral-400 dark:border-gray-600 rounded-full hover:bg-neutral-50 dark:hover:bg-gray-700 transition-hover duration-300  cursor-pointer"
-                  onClick={() => setInputMessage(msg)}
-                >
-                  {msg}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {!isAuthenticated && msgWithoutAuth > MAX_MESSAGES_WITHOUT_AUTH && <CBLoginMsg />}
-
-          {/* messages box */}
-          <div>
-            {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`flex items-start gap-2 mb-2 ${
-                  msg.role === 'user' ? 'justify-end' : 'justify-start'
-                }`}
-              >
-                <div
-                  className={`p-2 rounded-lg max-w-[80%] ${
-                    msg.role === 'user'
-                      ? 'bg-blue-500 text-white rounded-tr-none shadow-lg '
-                      : 'bg-gray-300 dark:bg-slate-700 text-black dark:text-white rounded-tl-none'
-                  }`}
-                >
-                  <div className="flex items-start gap-2">
-                    {msg.role === 'system' && (
-                      <FaRobot
-                        size={18}
-                        className="text-black dark:text-white mt-1 shrink-0 self-start"
-                      />
-                    )}
-                    {msg.role === 'system' ? (
-                      <div
-                        className="break-words overflow-auto prose prose-code:inline-block prose-code:w-[50px] prose-a:text-blue-500 dark:prose-invert max-w-none"
-                        dangerouslySetInnerHTML={{ __html: msg.content }}
-                      />
-                    ) : (
-                      <div className="break-words overflow-auto max-w-none">{msg.content}</div>
-                    )}
-                    {msg.role === 'user' && (
-                      <FaUser size={18} className="text-white mt-1 shrink-0 self-start" />
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-            {/* Scroll to the bottom */}
-            <div ref={messagesEndRef} />
-            {/* Loading indicator */}
-            {isGettingChatbotRes && (
-              <div className="flex  items-center gap-2 w-fit mb-2 p-2 rounded-lg bg-gray-200 dark:bg-gray-600 justify-start">
-                <FaRobot className="animate-zoom-in-out" />
+        <div className="relative flex flex-col flex-1 rounded-lg border border-neutral-300 dark:border-gray-600 bg-white dark:bg-slate-800">
+          <div className=" h-95 overflow-y-auto p-2">
+            {/* Suggestion box */}
+            {messages.length === 0 && (
+              <div className="flex flex-col gap-2 px-2 py-4 rounded-lg bg-gray-200 dark:bg-dark">
+                {[
+                  'What is this website about?',
+                  'Tell me about Karan?',
+                  'How can I contact karan?',
+                ].map(msg => (
+                  <button
+                    type="button"
+                    key={msg}
+                    className="px-4 py-2 w-fit max-w-xs border border-neutral-400 dark:border-gray-600 rounded-full hover:bg-neutral-50 dark:hover:bg-gray-700 transition-hover duration-300  cursor-pointer"
+                    onClick={() => setInputMessage(msg)}
+                  >
+                    {msg}
+                  </button>
+                ))}
               </div>
             )}
+
+            {!isAuthenticated && msgWithoutAuth > MAX_MESSAGES_WITHOUT_AUTH && <CBLoginMsg />}
+
+            {/* messages box */}
+            <div>
+              {messages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`flex items-start gap-2 mb-2 ${
+                    msg.role === 'user' ? 'justify-end' : 'justify-start'
+                  }`}
+                >
+                  <div
+                    className={`p-2 rounded-lg max-w-[80%] ${
+                      msg.role === 'user'
+                        ? 'bg-blue-500 text-white rounded-tr-none shadow-lg '
+                        : 'bg-gray-300 dark:bg-slate-700 text-black dark:text-white rounded-tl-none'
+                    }`}
+                  >
+                    <div className="flex items-start gap-2">
+                      {msg.role === 'system' && (
+                        <FaRobot
+                          size={18}
+                          className="text-black dark:text-white mt-1 shrink-0 self-start"
+                        />
+                      )}
+                      {msg.role === 'system' ? (
+                        <div
+                          className="break-words overflow-auto prose prose-code:inline-block prose-code:w-[50px] prose-a:text-blue-500 dark:prose-invert max-w-none"
+                          dangerouslySetInnerHTML={{ __html: msg.content }}
+                        />
+                      ) : (
+                        <div className="break-words overflow-auto max-w-none">{msg.content}</div>
+                      )}
+                      {msg.role === 'user' && (
+                        <FaUser size={18} className="text-white mt-1 shrink-0 self-start" />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {/* Scroll to the bottom */}
+              <div ref={messagesEndRef} />
+              {/* Loading indicator */}
+              {isGettingChatbotRes && (
+                <div className="flex  items-center gap-2 w-fit mb-2 p-2 rounded-lg bg-gray-200 dark:bg-gray-600 justify-start">
+                  <FaRobot className="animate-zoom-in-out" />
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* recent chats */}
+          <div
+            className={`absolute w-35 h-96  bottom-0 text-black dark:text-white bg-neutral-200 dark:bg-slate-800 rounded-lg p-2 z-10 border border-gray-600 ${
+              showMore ? 'scale-x-full' : 'scale-x-0'
+            } origin-left duration-300 transition-transform`}
+          >
+            <h4 className="font-extrabold font-serif border-b border-gray-600 ">Recent Chats</h4>
+            <div className="h-88 py-1 overflow-auto space-y-1 ">
+              {['No Chat History'].map((msg, i) => (
+                <h5
+                  key={i}
+                  className="px-1 w-full hover:bg-neutral-300 dark:hover:bg-gray-900  rounded cursor-pointer"
+                >
+                  {msg}
+                </h5>
+              ))}
+            </div>
           </div>
         </div>
 

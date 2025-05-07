@@ -17,7 +17,7 @@ export default function CbShowMore() {
   };
 
   return (
-    <div className=" flex flex-col gap-2 w-56 rounded-lg bg-neutral-100 dark:bg-dark shadow-lg overflow-hidden border border-neutral-500 dark:border-slate-700">
+    <div className=" flex flex-col gap-2 w-40 rounded-lg bg-neutral-100 dark:bg-dark shadow-lg overflow-hidden border border-neutral-500 dark:border-slate-700">
       <div className="px-3 py-2 border-b border-slate-700 flex items-center justify-between">
         <span className="text-sm font-medium text-dark dark:text-slate-200">Menu</span>
         <IoChevronUp size={16} className="text-dark dark:text-slate-400" />
