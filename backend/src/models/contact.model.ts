@@ -36,7 +36,9 @@ const contactMsgSchema = new Schema<IContact>(
         },
         messages: [messageSchema],
     },
-    { timestamps: true }
+    {
+        timestamps: true,
+    }
 );
 
 export const ContactModel = mongoose.model<IContact>("Contact", contactMsgSchema);

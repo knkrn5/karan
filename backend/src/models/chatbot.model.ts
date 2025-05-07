@@ -31,7 +31,9 @@ const chatbotMsgSchema = new Schema<IChatbot>(
             },
         ],
     },
-    { timestamps: true }
+    {
+        timestamps: true,
+    }
 );
 
 export const ChatbotModel = mongoose.model<IChatbot>("Chatbot", chatbotMsgSchema);
