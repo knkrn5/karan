@@ -26,8 +26,9 @@ export class ContactController {
 
   static async updateContactMessages(req: Request, res: Response): Promise<void> {
     try {
-      const { id, message } = req.body;
-      const response = await ContactService.updateContactMessages(id, message);
+      const userId = req.user.userId;
+      const { msgId, message } = req.body;
+      const response = await ContactService.updateContactMessages(userId, msgId, message);
       res.status(response.statusCode).json(response);
     } catch (error: any) {
       if (error instanceof ApiResponse) {
@@ -44,8 +45,9 @@ export class ContactController {
 
   static async deleteContactMessages(req: Request, res: Response): Promise<void> {
     try {
-      const { id } = req.body;
-      const response = await ContactService.deleteContactMessages(id);
+      const userId = req.user.userId;
+      const { msgId } = req.body;
+      const response = await ContactService.deleteContactMessages(userId, msgId);
 
       res.status(response.statusCode).json(response);
     } catch (error: any) {
@@ -56,6 +58,24 @@ export class ContactController {
       res.status(500).json({
         success: false,
         message: 'Failed to delete message',
+        error: error instanceof Error ? error.message : 'An unknown error occurred.',
+      });
+    }
+  }
+
+  static async getContactMessages(req: Request, res: Response): Promise<void> {
+    try {
+      const userId = req.user.userId;
+      const response = await ContactService.getContactMessages(userId);
+      res.status(response.statusCode).json(response);
+    } catch (error: any) {
+      if (error instanceof ApiResponse) {
+        res.status(error.statusCode).json(error);
+        return;
+      }
+      res.status(500).json({
+        success: false,
+        message: 'Failed to fetch messages',
         error: error instanceof Error ? error.message : 'An unknown error occurred.',
       });
     }
@@ -80,22 +100,6 @@ export class ContactController {
     }
   }
 
-  static async getContactMessages(req: Request, res: Response): Promise<void> {
-    try {
-      const userId = req.user.userId;
-      const response = await ContactService.getContactMessages(userId);
-      res.status(response.statusCode).json(response);
-    } catch (error: any) {
-      if (error instanceof ApiResponse) {
-        res.status(error.statusCode).json(error);
-        return;
-      }
-      res.status(500).json({
-        success: false,
-        message: 'Failed to fetch messages',
-        error: error instanceof Error ? error.message : 'An unknown error occurred.',
-      });
-    }
-  }
+
 
 }

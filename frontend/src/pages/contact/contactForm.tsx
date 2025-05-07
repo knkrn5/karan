@@ -121,13 +121,15 @@ export default function ContactForm() {
       );
       const { data } = response;
 
+      // console.log(data.data.messages[data.data.messages.length - 1].message);
+
       // Storing message in store
       setContactMsgData({
-        message: data.data.message,
+        message: data.data.messages[data.data.messages.length - 1].message,
       });
       setIsSuccess(data.success);
       setTRpopupNotificationMsg({ success: data.message });
-      setContactMsgId(data.data._id);
+      setContactMsgId(data.data.messages[data.data.messages.length - 1]._id);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setIsSuccess(error.response?.data?.success ?? false);

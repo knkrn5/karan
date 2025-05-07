@@ -51,10 +51,14 @@ const SeeContactMsg = () => {
         setIsLoading(prev => ({ ...prev, edit: true }));
         setICnotificationMsg({ info: 'Saving changes...' });
 
-        const response = await axios.patch(`${BACKEND_URL}/api/contact/message`, {
-          id,
-          message: message,
-        });
+        const response = await axios.patch(
+          `${BACKEND_URL}/api/contact/message`,
+          {
+            msgId: id,
+            message: message,
+          },
+          { withCredentials: true }
+        );
 
         const { data } = response;
         setICnotificationMsg({ success: data.message });
@@ -95,14 +99,17 @@ const SeeContactMsg = () => {
     if (toDelete) {
       try {
         setIsLoading(prev => ({ ...prev, delete: true }));
-        const response = await axios.delete(`${BACKEND_URL}/api/contact/message`, { data: { id } });
+        const response = await axios.delete(`${BACKEND_URL}/api/contact/message`, {
+          data: { msgId: id },
+          withCredentials: true,
+        });
         const { data } = response;
         setICnotificationMsg({ success: data.message });
         setIsSuccess(!data.success);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           setICnotificationMsg({
-            error: error.response?.data?.message || error.message,
+            error: error.response?.data?.message ?? error.message,
           });
           setIsSuccess(!error.response?.data?.success);
         } else {
