@@ -181,7 +181,6 @@ export default function Chatbot() {
       ]);
     } finally {
       setIsGettingChatbotRes(false);
-      console.log('expressRateLimiterHeaderData', expressRateLimiterHeaderData);
     }
   }
 
