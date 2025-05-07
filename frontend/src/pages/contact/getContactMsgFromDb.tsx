@@ -55,7 +55,7 @@ export default function GetContactMsgFromDb() {
 
   return (
     <div className="p-4 flex flex-col items-center bg-gradient-to-br from-gray-300 via-gray-100 to-gray-300 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 rounded-lg hover:shadow-lg transition-hover duration-300">
-      <h4 className="relative font-extrabold text-lg mb-2 text-black dark:text-white ">
+      <h4 className="relative font-extrabold text-lg mb-2 px-2 rounded-lg shadow-lg text-black dark:text-white bg-linear-to-t from-neutral-300 via-neutral-50 to-neutral-500 dark:from-gray-800 dark:via-gray-900 dark:to-gray-700 ">
         {profileEmail}
       </h4>
       <div className="max-h-80 overflow-auto">
