@@ -11,6 +11,8 @@ export class ChatbotController {
       const decoded = accessTokenRetriever(req);
       if (typeof decoded !== 'string' && decoded?.userId) {
         userId = decoded.userId;
+      } else {
+        userId = '681ac87324dc59112b9e2a61';
       }
 
       const { userName, userMsg, llmName, historyMsgs } = req.body;

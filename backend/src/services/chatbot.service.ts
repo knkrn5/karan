@@ -67,37 +67,20 @@ export class ChatbotService {
 
 
     //stroing chat history in database
-    if (userId) {
-      await ChatbotModel.findOneAndUpdate(
-        { user: userId },
-        {
-          $push: {
-            message: {
-              $each: [
-                { role: "user", content: userMsg },
-                { role: "system", content: assistantFullResponse }
-              ]
-            }
+    await ChatbotModel.findOneAndUpdate(
+      { user: userId },
+      {
+        $push: {
+          message: {
+            $each: [
+              { role: "user", content: userMsg },
+              { role: "system", content: assistantFullResponse }
+            ]
           }
-        }, 
-        { upsert: true, new: true }
-      );
-    } else {
-      await ChatbotModel.findOneAndUpdate(
-        {},
-        {
-          $push: {
-            message: {
-              $each: [
-                { role: "user", content: userMsg },
-                { role: "system", content: assistantFullResponse }
-              ]
-            }
-          }
-        },
-        { upsert: true, new: true }
-      );
-    }
+        }
+      },
+      { upsert: true, new: true }
+    );
 
   }
 
@@ -108,7 +91,6 @@ export class ChatbotService {
     return new ApiResponse(200, true, 'Chat history retrieved successfully', chatbotMsgs);
   }
 
-  
 
 }
 
