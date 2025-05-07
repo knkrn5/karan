@@ -4,7 +4,7 @@ import { IoIosSend, IoMdArrowDropdownCircle } from 'react-icons/io';
 import { LuBot } from 'react-icons/lu';
 import { FaRobot } from 'react-icons/fa6';
 import { CiSquarePlus } from 'react-icons/ci';
-import { FaUser } from 'react-icons/fa';
+import { FaUser, FaRegCheckCircle } from 'react-icons/fa';
 import { useAuthCheck } from '../../hooks/authCheckHook';
 import { useProfileStore } from '../../stores/profile/profileStore';
 import CBLoginMsg from './CBLoginMsg';
@@ -22,6 +22,11 @@ export default function Chatbot() {
   const [isGettingChatbotRes, setIsGettingChatbotRes] = useState<boolean>(false);
   const [messages, setMessages] = useState<{ role: 'user' | 'system'; content: string }[]>([]);
   const [showMore, setShowMore] = useState<boolean>(false);
+
+  const [expressRateLimiterHeaderData, setExpressRateLimiterHeaderData] = useState<{
+    'ratelimit-remaining': number;
+    'ratelimit-reset': number;
+  }>({ 'ratelimit-remaining': 0, 'ratelimit-reset': 0 });
 
   const dropdownButtonRef = useRef<HTMLButtonElement>(null);
   const chatbotContainerRef = useRef<HTMLDivElement>(null);
@@ -118,6 +123,11 @@ export default function Chatbot() {
         }),
       });
 
+      setExpressRateLimiterHeaderData({
+        'ratelimit-remaining': Number(response.headers.get('ratelimit-remaining')),
+        'ratelimit-reset': Number(response.headers.get('ratelimit-reset')),
+      });
+
       // adding bot msg to be replaced
       setIsGettingChatbotRes(false);
       setMessages(prev => [...prev, { role: 'system', content: '' }]);
@@ -171,6 +181,7 @@ export default function Chatbot() {
       ]);
     } finally {
       setIsGettingChatbotRes(false);
+      console.log('expressRateLimiterHeaderData', expressRateLimiterHeaderData);
     }
   }
 
@@ -380,6 +391,13 @@ export default function Chatbot() {
         <p className="mt-1 text-sm font-extrabold text-center text-gray-500 dark:text-gray-400">
           Karan.email
         </p>
+        <div className=" flex items-center justify-center -mb-3  space-x-1 text-xs text-gray-500 dark:text-gray-400">
+          <FaRegCheckCircle className="text-green-500" />
+          <span>Requests remaining:</span>
+          <span className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded-md font-mono font-bold">
+            {expressRateLimiterHeaderData['ratelimit-remaining']}
+          </span>
+        </div>
       </div>
     </div>
   );

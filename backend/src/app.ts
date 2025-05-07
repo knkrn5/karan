@@ -19,6 +19,7 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
   optionsSuccessStatus: 200, // Fixes legacy browser issues
+  exposedHeaders: ['ratelimit-limit', 'ratelimit-remaining', 'ratelimit-reset']
 };
 
 app.use(cors(corsOptions));
