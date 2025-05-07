@@ -26,7 +26,7 @@ export default function Chatbot() {
   const [expressRateLimiterHeaderData, setExpressRateLimiterHeaderData] = useState<{
     'ratelimit-remaining': number;
     'ratelimit-reset': number;
-  }>({ 'ratelimit-remaining': 0, 'ratelimit-reset': 0 });
+  }>({ 'ratelimit-remaining': 50, 'ratelimit-reset': 0 });
 
   const dropdownButtonRef = useRef<HTMLButtonElement>(null);
   const chatbotContainerRef = useRef<HTMLDivElement>(null);
