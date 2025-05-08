@@ -32,6 +32,7 @@ export default function Chatbot() {
   const chatbotContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const showMoreRef = useRef<HTMLDivElement | null>(null);
+  const recentChatsRef = useRef<HTMLDivElement | null>(null);
 
   //profile store data
   const firstName = useProfileStore(state => state.firstName);
@@ -57,7 +58,11 @@ export default function Chatbot() {
       if (!chatbotContainerRef.current?.contains(target) && showChatbot) {
         setShowChatbot(false);
       }
-      if (!showMoreRef.current?.contains(target) && showMore) {
+      if (
+        !showMoreRef.current?.contains(target) &&
+        !recentChatsRef.current?.contains(target) &&
+        showMore
+      ) {
         setShowMore(false);
       }
     };
@@ -329,6 +334,7 @@ export default function Chatbot() {
             className={`absolute w-35 h-96  bottom-0 text-black dark:text-white bg-gray-200 dark:bg-slate-800 rounded-lg p-2 z-10 border border-gray-600 ${
               showMore ? 'scale-x-full' : 'scale-x-0'
             } origin-left duration-300 transition-transform`}
+            ref={recentChatsRef}
           >
             <h4 className="font-extrabold font-serif border-b border-gray-600 ">Recent Chats</h4>
             <div className="h-88 py-1 overflow-auto space-y-1 ">
