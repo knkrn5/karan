@@ -4,6 +4,9 @@ import HeroSectionOne from './heroSectionOne';
 import HeroSectionTwo from './heroSectionTwo';
 import { HomePageSeoMetaTags } from './homePageSeoMetaTags';
 import { AiFillDislike, AiFillLike, AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
+import axios from 'axios';
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 interface MyProject {
   id: string;
@@ -44,22 +47,48 @@ function Home() {
 
   const [userLikeDislike, setUserLikeDislike] = useState<Record<string, string>>({});
 
-  function handleLikeDislike(e: React.MouseEvent<HTMLButtonElement>, projectId: string) {
-    const value = e.currentTarget?.value ?? 'null';
-    if (userLikeDislike[projectId] === value) {
+  async function sendLikeDislike(projectId: string, likeDislike: string) {
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/api/projects/projects-like-dislike-interaction`,
+        {
+          projectId,
+          likeDislike,
+        },
+        { withCredentials: true }
+      );
+      const { data } = response.data;
+      console.log('axios', data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error send like or dislike:', error.response?.data);
+      } else {
+        console.error('unexpected Error send like or dislike:', error);
+      }
+    }
+  }
+
+  async function handleLikeDislike(e: React.MouseEvent<HTMLButtonElement>, projectId: string) {
+    let likeDislikevalue = e.currentTarget?.value ?? 'null';
+    if (userLikeDislike[projectId] === likeDislikevalue) {
       setUserLikeDislike(prevState => ({
         ...prevState,
         [projectId]: 'null',
       }));
+      likeDislikevalue = 'null';
+      console.log(likeDislikevalue);
+      await sendLikeDislike(projectId, likeDislikevalue);
       return;
     }
     setUserLikeDislike(prevState => ({
       ...prevState,
-      [projectId]: value,
+      [projectId]: likeDislikevalue,
     }));
+    console.log(likeDislikevalue);
+    await sendLikeDislike(projectId, likeDislikevalue);
   }
 
-  console.log(userLikeDislike);
+  // console.log(userLikeDislike);
 
   return (
     <>

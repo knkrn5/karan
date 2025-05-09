@@ -1,18 +1,25 @@
-import { model, Schema } from "mongoose";
+import { model, Schema, Document, Types } from "mongoose";
 
-const projectSchema = new Schema(
+export interface Project extends Document {
+    user: Types.ObjectId;
+    projectId: string;
+    likeDislike: "like" | "dislike" | null;
+}
+
+const projectSchema = new Schema<Project>(
     {
         user: {
             type: Schema.Types.ObjectId,
             ref: "User",
             required: true,
         },
-        projecId: {
+        projectId: {
             type: String,
             required: true,
         },
         likeDislike: {
             type: String,
+            enum: ["like", "dislike", null],
             required: true,
         }
     },
@@ -21,4 +28,7 @@ const projectSchema = new Schema(
     }
 );
 
-export const ProjectModel = model("Project", projectSchema);
+// Uncomment this to prevent duplicate like/dislike per user/project
+// projectSchema.index({ user: 1, projectId: 1 }, { unique: true });
+
+export const ProjectModel = model<Project>("Project", projectSchema);
