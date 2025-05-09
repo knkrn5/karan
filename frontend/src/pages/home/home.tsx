@@ -4,16 +4,16 @@ import HeroSectionTwo from './heroSectionTwo';
 import { HomePageSeoMetaTags } from './homePageSeoMetaTags';
 import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
 
-function Home() {
-  interface MyProject {
-    id: string;
-    img: string;
-    name: string;
-    description: string;
-    bgColor: string;
-    link: string;
-  }
+interface MyProject {
+  id: string;
+  img: string;
+  name: string;
+  description: string;
+  bgColor: string;
+  link: string;
+}
 
+function Home() {
   const projects: MyProject[] = [
     {
       id: 'wealthpsychology',
