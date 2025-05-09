@@ -22,4 +22,39 @@ export class ProjectsController {
             });
         }
     }
+
+    static async getUserProjectsLikeDislikeInteraction(req: Request, res: Response): Promise<void> {
+        try {
+            const userId = req.user.userId;
+            const response = await ProjectsService.getUserProjectsLikeDislikeInteraction(userId);
+            res.status(response.statusCode).json(response);
+        } catch (error: any) {
+            if (error instanceof ApiResponse) {
+                res.status(error.statusCode).json(error);
+                return;
+            }
+            res.status(500).json({
+                success: false,
+                message: 'Failed to get projects',
+                error: error instanceof Error ? error.message : 'An unknown error occurred.',
+            });
+        }
+    }
+
+    static async getAllProjectsLikeDislikeInteraction(req: Request, res: Response): Promise<void> {
+        try {
+            const response = await ProjectsService.getAllProjectsLikeDislikeInteraction();
+            res.status(response.statusCode).json(response);
+        } catch (error: any) {
+            if (error instanceof ApiResponse) {
+                res.status(error.statusCode).json(error);
+                return;
+            }
+            res.status(500).json({
+                success: false,
+                message: 'Failed to get projects',
+                error: error instanceof Error ? error.message : 'An unknown error occurred.',
+            });
+        }
+    }
 }

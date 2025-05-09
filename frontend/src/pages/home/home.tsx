@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Chatbot from '../chatbot/chatbot';
 import HeroSectionOne from './heroSectionOne';
 import HeroSectionTwo from './heroSectionTwo';
 import { HomePageSeoMetaTags } from './homePageSeoMetaTags';
 import { AiFillDislike, AiFillLike, AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
 import axios from 'axios';
+import { useAuthCheck } from '../../hooks/authCheckHook';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -45,12 +46,17 @@ function Home() {
     },
   ];
 
+  const isAuthenticated = useAuthCheck();
+
   const [userLikeDislike, setUserLikeDislike] = useState<Record<string, string>>({});
+  const [allProjectsLikeDislikeCounts, setallProjectsLikeDislikeCounts] = useState<
+    { projectId: string; likeCount: number; dislikeCount: number }[]
+  >([]);
 
   async function sendLikeDislike(projectId: string, likeDislike: string) {
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/api/projects/projects-like-dislike-interaction`,
+        `${BACKEND_URL}/api/projects/add-projects-like-dislike-interaction`,
         {
           projectId,
           likeDislike,
@@ -69,6 +75,11 @@ function Home() {
   }
 
   async function handleLikeDislike(e: React.MouseEvent<HTMLButtonElement>, projectId: string) {
+    if (!isAuthenticated) {
+      alert('Please login to like or dislike projects.');
+      return;
+    }
+
     let likeDislikevalue = e.currentTarget?.value ?? 'null';
     if (userLikeDislike[projectId] === likeDislikevalue) {
       setUserLikeDislike(prevState => ({
@@ -88,7 +99,36 @@ function Home() {
     await sendLikeDislike(projectId, likeDislikevalue);
   }
 
-  // console.log(userLikeDislike);
+  async function getUserProjectsLikeDislike() {
+    const response = await axios.get(
+      `${BACKEND_URL}/api/projects/get-projects-like-dislike-interaction`,
+      {
+        withCredentials: true,
+      }
+    );
+    const { data } = response.data;
+    data.forEach((project: { projectId: string; likeDislike: string }) => {
+      setUserLikeDislike(prevState => ({
+        ...prevState,
+        [project.projectId]: project.likeDislike,
+      }));
+    });
+  }
+
+  async function getAllProjectsLikeDislike() {
+    const response = await axios.get(
+      `${BACKEND_URL}/api/projects/get-all-projects-like-dislike-interaction`
+    );
+    const { data } = response.data;
+    setallProjectsLikeDislikeCounts(data);
+  }
+
+  console.log(allProjectsLikeDislikeCounts);
+
+  useEffect(() => {
+    getUserProjectsLikeDislike();
+    getAllProjectsLikeDislike();
+  }, []);
 
   return (
     <>
@@ -167,7 +207,10 @@ function Home() {
                       className="hover:text-blue-600 hover:scale-105 duration-300 transition-transform "
                     />
                   )}
-                  <span className="font-bold ">5</span>
+                  <span className="font-bold ">
+                    {allProjectsLikeDislikeCounts.find(item => item.projectId === project.id)
+                      ?.likeCount ?? 0}
+                  </span>
                 </button>
                 <div className="h-4 w-px  bg-gray-200"></div>
                 <button
@@ -185,7 +228,10 @@ function Home() {
                       className=" hover:scale-105 duration-300 transition-transform hover:text-red-600  "
                     />
                   )}
-                  <span className="font-bold">12</span>
+                  <span className="font-bold">
+                    {allProjectsLikeDislikeCounts.find(item => item.projectId === project.id)
+                      ?.dislikeCount ?? 0}
+                  </span>
                 </button>
               </div>
             </div>
