@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import Chatbot from '../chatbot/chatbot';
 import HeroSectionOne from './heroSectionOne';
 import HeroSectionTwo from './heroSectionTwo';
 import { HomePageSeoMetaTags } from './homePageSeoMetaTags';
-import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
+import { AiFillDislike, AiFillLike, AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
 
 interface MyProject {
   id: string;
@@ -16,7 +17,7 @@ interface MyProject {
 function Home() {
   const projects: MyProject[] = [
     {
-      id: 'wealthpsychology',
+      id: 'proj_wealthpsychology',
       img: 'https://res.cloudinary.com/dywuvwqth/image/upload/v1743429589/karan.email/rinkpptt11gjweedg7mx.png',
       name: 'WealthPsychology: -',
       description: `Teaches the principles of financial psychology, and explains different financial concepts.`,
@@ -24,7 +25,7 @@ function Home() {
       link: 'https://wealthpsychology.karan.email/',
     },
     {
-      id: 'explanatorai',
+      id: 'proj_explanatorai',
       img: 'https://res.cloudinary.com/dywuvwqth/image/upload/v1743587227/karan.email/m8yyptura5kuao1nzugt.jpg',
       name: 'Explanator AI: -',
       description: `Include the Chatbots, and custom Datasets of Different models and APIs.`,
@@ -32,7 +33,7 @@ function Home() {
       link: 'https://explanatorai.site',
     },
     {
-      id: 'otherprojects',
+      id: 'proj_otherprojects',
       img: 'https://res.cloudinary.com/dywuvwqth/image/upload/v1743587228/karan.email/vrqkgi7qwemhcttfsvvl.jpg',
       name: 'Other Projects: -',
       description: `Developing some other projects, and working on some new ideas. Using different technologies.`,
@@ -40,6 +41,25 @@ function Home() {
       link: 'https://github.com/knkrn5',
     },
   ];
+
+  const [userLikeDislike, setUserLikeDislike] = useState<Record<string, string>>({});
+
+  function handleLikeDislike(e: React.MouseEvent<HTMLButtonElement>, projectId: string) {
+    const value = e.currentTarget?.value ?? 'unknown'; // Capture value immediately before async stuff
+    if (userLikeDislike[projectId] === value) {
+      setUserLikeDislike(prevState => ({
+        ...prevState,
+        [projectId]: 'null',
+      }));
+      return;
+    }
+    setUserLikeDislike(prevState => ({
+      ...prevState,
+      [projectId]: value,
+    }));
+  }
+
+  console.log(userLikeDislike);
 
   return (
     <>
@@ -55,7 +75,7 @@ function Home() {
         <div className="space-y-10">
           {projects.map((project, index) => (
             <div
-              key={index}
+              key={project.id}
               className={`relative flex items-center ${
                 index % 2 === 0 ? 'justify-start' : 'justify-end'
               }`}
@@ -105,25 +125,37 @@ function Home() {
               >
                 <button
                   type="button"
-                  className="flex p-1.5 rounded-full bg-blue-50 text-gray-500  transition-colors duration-200"
+                  value={'like'}
+                  className="flex p-1.5 rounded-full bg-blue-50 text-gray-500  transition-colors duration-200 cursor-pointer"
                   aria-label="Like"
+                  onClick={e => handleLikeDislike(e, project.id)}
                 >
-                  <AiOutlineLike
-                    size={20}
-                    className="hover:text-blue-600 hover:scale-105 duration-300 transition-transform cursor-pointer"
-                  />
+                  {userLikeDislike[project.id] === 'like' ? (
+                    <AiFillLike size={20} className="text-blue-600" />
+                  ) : (
+                    <AiOutlineLike
+                      size={20}
+                      className="hover:text-blue-600 hover:scale-105 duration-300 transition-transform "
+                    />
+                  )}
                   <span className="font-bold ">5</span>
                 </button>
                 <div className="h-4 w-px  bg-gray-200"></div>
                 <button
                   type="button"
-                  className="flex p-1.5 rounded-full bg-red-50 text-gray-500  transition-colors duration-200"
+                  value={'dislike'}
+                  className="flex p-1.5 rounded-full bg-red-50 text-gray-500  transition-colors duration-200 cursor-pointer"
                   aria-label="Dislike"
+                  onClick={e => handleLikeDislike(e, project.id)}
                 >
-                  <AiOutlineDislike
-                    size={20}
-                    className=" hover:scale-105 duration-300 transition-transform hover:text-red-600 cursor-pointer "
-                  />
+                  {userLikeDislike[project.id] === 'dislike' ? (
+                    <AiFillDislike size={20} className="text-red-600" />
+                  ) : (
+                    <AiOutlineDislike
+                      size={20}
+                      className=" hover:scale-105 duration-300 transition-transform hover:text-red-600  "
+                    />
+                  )}
                   <span className="font-bold">12</span>
                 </button>
               </div>
