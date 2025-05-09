@@ -6,7 +6,7 @@ import { isAccessTokenValid } from "../middlewares/auth.middleware.js";
 import { ProjectsController } from "../controllers/projects.controller.js";
 
 
-router.post('/projects-like-dislike-interaction', ProjectsController.projectsLikeDislikeInteraction);
+router.post('/projects-like-dislike-interaction', isAccessTokenValid, ProjectsController.projectsLikeDislikeInteraction);
 // router.get('/get-projects', isAccessTokenValid, ProjectController.getProjects);
 // router.get('/get-project', isAccessTokenValid, ProjectController.getProject);
 // router.patch('/update-project', isAccessTokenValid, ProjectController.updateProject);

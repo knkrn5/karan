@@ -6,9 +6,9 @@ import { ApiResponse } from "../utils/apiResponse.js";
 export class ProjectsController {
     static async projectsLikeDislikeInteraction(req: Request, res: Response): Promise<void> {
         try {
-            // const userId = req.user.userId;
+            const userId = req.user.userId;
             const { projectId, likeDislike } = req.body;
-            const response = await ProjectsService.projectsLikeDislikeInteraction('680f515320b3d1b8d87607b4', projectId, likeDislike);
+            const response = await ProjectsService.projectsLikeDislikeInteraction(userId, projectId, likeDislike);
             res.status(response.statusCode).json(response);
         } catch (error: any) {
             if (error instanceof ApiResponse) {
