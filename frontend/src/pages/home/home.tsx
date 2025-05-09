@@ -45,7 +45,7 @@ function Home() {
   const [userLikeDislike, setUserLikeDislike] = useState<Record<string, string>>({});
 
   function handleLikeDislike(e: React.MouseEvent<HTMLButtonElement>, projectId: string) {
-    const value = e.currentTarget?.value ?? 'unknown'; // Capture value immediately before async stuff
+    const value = e.currentTarget?.value ?? 'null';
     if (userLikeDislike[projectId] === value) {
       setUserLikeDislike(prevState => ({
         ...prevState,
