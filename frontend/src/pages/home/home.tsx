@@ -2,45 +2,43 @@ import Chatbot from '../chatbot/chatbot';
 import HeroSectionOne from './heroSectionOne';
 import HeroSectionTwo from './heroSectionTwo';
 import { HomePageSeoMetaTags } from './homePageSeoMetaTags';
+import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
 
 function Home() {
-  class MyProjects {
+  interface MyProject {
+    id: string;
     img: string;
     name: string;
     description: string;
     bgColor: string;
     link: string;
-    constructor(img: string, name: string, description: string, bgColor: string, link: string) {
-      this.img = img;
-      this.name = name;
-      this.description = description;
-      this.bgColor = bgColor;
-      this.link = link;
-    }
   }
 
-  const projects: MyProjects[] = [
-    new MyProjects(
-      'https://res.cloudinary.com/dywuvwqth/image/upload/v1743429589/karan.email/rinkpptt11gjweedg7mx.png',
-      'WealthPsychology: -',
-      `Teaches the principles of financial psychology, and explains different financial concepts.`,
-      'bg-lime-500',
-      'https://wealthpsychology.karan.email/'
-    ),
-    new MyProjects(
-      'https://res.cloudinary.com/dywuvwqth/image/upload/v1743587227/karan.email/m8yyptura5kuao1nzugt.jpg',
-      'Explanator AI: -',
-      `Include the Chatbots, and custom Datasets of Different models and APIs.`,
-      'bg-blue-500',
-      'https://explanatorai.site'
-    ),
-    new MyProjects(
-      'https://res.cloudinary.com/dywuvwqth/image/upload/v1743587228/karan.email/vrqkgi7qwemhcttfsvvl.jpg',
-      'Other Projects: -',
-      `Developing some other projects, and working on some new ideas. Using different technologies.`,
-      'bg-orange-500',
-      'https://github.com/knkrn5'
-    ),
+  const projects: MyProject[] = [
+    {
+      id: 'wealthpsychology',
+      img: 'https://res.cloudinary.com/dywuvwqth/image/upload/v1743429589/karan.email/rinkpptt11gjweedg7mx.png',
+      name: 'WealthPsychology: -',
+      description: `Teaches the principles of financial psychology, and explains different financial concepts.`,
+      bgColor: 'bg-lime-500',
+      link: 'https://wealthpsychology.karan.email/',
+    },
+    {
+      id: 'explanatorai',
+      img: 'https://res.cloudinary.com/dywuvwqth/image/upload/v1743587227/karan.email/m8yyptura5kuao1nzugt.jpg',
+      name: 'Explanator AI: -',
+      description: `Include the Chatbots, and custom Datasets of Different models and APIs.`,
+      bgColor: 'bg-blue-500',
+      link: 'https://explanatorai.site',
+    },
+    {
+      id: 'otherprojects',
+      img: 'https://res.cloudinary.com/dywuvwqth/image/upload/v1743587228/karan.email/vrqkgi7qwemhcttfsvvl.jpg',
+      name: 'Other Projects: -',
+      description: `Developing some other projects, and working on some new ideas. Using different technologies.`,
+      bgColor: 'bg-orange-500',
+      link: 'https://github.com/knkrn5',
+    },
   ];
 
   return (
@@ -73,11 +71,11 @@ function Home() {
               <div
                 className={`w-[400px] rounded-lg overflow-hidden shadow-[6px_6px_12px_#333,-6px_-6px_120px_#444] dark:shadow-[6px_6px_12px_#111111,-6px_-6px_70px_#111] ${
                   project.bgColor
-                }  transform  transition-all duration-300 ease-in-out hover:scale-103 ${
+                }  transform  transition-all duration-300 ease-in-out hover:scale-101 ${
                   index % 2 === 0 ? 'md:mr-5' : 'md:ml-5'
                 }`}
               >
-                <div className="flex items-center max-[350px]:flex-col ">
+                <div className=" flex items-center max-[350px]:flex-col ">
                   <img alt="Project" className="w-48 h-48 object-cover " src={project.img} />
                   <div className=" p-2">
                     <h2 className="text-lg font-bold mb-2 after:block after:content-[''] after:h-[1px] after:w-full after:bg-black">
@@ -96,6 +94,38 @@ function Home() {
                     </div>
                   </div>
                 </div>
+              </div>
+              {/* like / dislike buttons */}
+              <div
+                className={`absolute flex items-center gap-1 -bottom-5 rounded-full ${
+                  project.bgColor
+                } shadow-md border border-gray-100 p-1 transition-all duration-300 hover:shadow-lg ${
+                  index % 2 === 0 ? 'left-2' : 'right-2'
+                }`}
+              >
+                <button
+                  type="button"
+                  className="flex p-1.5 rounded-full bg-blue-50 text-gray-500  transition-colors duration-200"
+                  aria-label="Like"
+                >
+                  <AiOutlineLike
+                    size={20}
+                    className="hover:text-blue-600 hover:scale-105 duration-300 transition-transform cursor-pointer"
+                  />
+                  <span className="font-bold ">5</span>
+                </button>
+                <div className="h-4 w-px  bg-gray-200"></div>
+                <button
+                  type="button"
+                  className="flex p-1.5 rounded-full bg-red-50 text-gray-500  transition-colors duration-200"
+                  aria-label="Dislike"
+                >
+                  <AiOutlineDislike
+                    size={20}
+                    className=" hover:scale-105 duration-300 transition-transform hover:text-red-600 cursor-pointer "
+                  />
+                  <span className="font-bold">12</span>
+                </button>
               </div>
             </div>
           ))}

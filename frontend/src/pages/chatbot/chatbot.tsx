@@ -193,7 +193,7 @@ export default function Chatbot() {
     <div className="fixed bottom-0 right-0 w-full z-10 " ref={chatbotContainerRef}>
       <img
         src="/favicons/K.svg"
-        alt="chatbot logo"
+        alt="chatbot"
         className={`fixed  z-50 bottom-0 -right-2 w-12 m-4 cursor-pointer hover:scale-105 transition-transform duration-300 ease-in-out ${
           showChatbot ? 'animate-spin ' : ''
         }`}
