@@ -22,27 +22,30 @@ export default function GetContactMsgFromDb() {
 
   const { setSeeContactMsgFromDb } = useContactInfoStore();
 
-  const getContactMsg = async () => {
+  const getContactMsgFromDb = async () => {
     try {
       setIsGettingUserMsgs(true);
       const res = await axios.get(`${BACKEND_URL}/api/contact/message`, { withCredentials: true });
       const data = res.data;
 
-      setUserContactMsgsFromDb(data.data.messages);
+      const messages = data?.data?.messages;
+
+      if (!Array.isArray(messages) || messages.length === 0) {
+        setUserContactMsgsFromDb([
+          { message: 'No messages found', createdAt: new Date().toString() },
+        ]);
+      } else {
+        setUserContactMsgsFromDb(messages);
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setUserContactMsgsFromDb([
           { message: error.response?.data.message, createdAt: new Date().toString() },
         ]);
       } else {
-        console.log(error);
-        if (error instanceof Error) {
-          setUserContactMsgsFromDb([{ message: error.message, createdAt: new Date().toString() }]);
-        } else {
-          setUserContactMsgsFromDb([
-            { message: 'An unknown error occurred', createdAt: new Date().toString() },
-          ]);
-        }
+        setUserContactMsgsFromDb([
+          { message: 'An unknown error occurred', createdAt: new Date().toString() },
+        ]);
       }
     } finally {
       setIsGettingUserMsgs(false);
@@ -50,7 +53,7 @@ export default function GetContactMsgFromDb() {
   };
 
   useEffect(() => {
-    getContactMsg();
+    getContactMsgFromDb();
   }, []);
 
   return (
