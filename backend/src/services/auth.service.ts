@@ -178,11 +178,14 @@ export class AuthService {
   }
 
   //verifing password
-  static async verifyPassword(userId: string, password: string) {
+  static async verifyPassword(userId: string, enteredPassword: string) {
+    if (!userId) throw new ApiResponse(400, false, 'User Id is required', null);
+    if (!enteredPassword) throw new ApiResponse(400, false, 'Password is required', null);
+
     const user = await UserModel.findById(userId);
     if (!user) throw new ApiResponse(404, false, 'User not found', null);
 
-    const isPasswordMatch = await user.comparePassword(password);
+    const isPasswordMatch = await user.comparePassword(enteredPassword);
     if (!isPasswordMatch) throw new ApiResponse(401, false, 'Incorrect password', null);
 
     return new ApiResponse(200, true, 'Password verified successfully', null);

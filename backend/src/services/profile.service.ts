@@ -2,7 +2,6 @@ import { UserModel } from '../models/user.model.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 
 
-
 export class ProfileService {
   static async getProfile(userId: string) {
     const user = await UserModel.findById(userId).select('-_id -password -refreshToken -createdAt -updatedAt');
@@ -30,9 +29,7 @@ export class ProfileService {
     //deleting account
     try {
       const deletedUser = await UserModel.findByIdAndDelete(userId);
-      if (!deletedUser) {
-        throw new ApiResponse(404, false, 'User not found', null);
-      }
+      if (!deletedUser) throw new ApiResponse(404, false, 'User not found', null);
 
       return new ApiResponse(200, true, 'Account deleted successfully', null);
     } catch (error) {
