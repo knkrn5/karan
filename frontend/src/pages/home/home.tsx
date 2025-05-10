@@ -79,7 +79,6 @@ function Home() {
     }
 
     let likeDislikeValue = e.currentTarget?.value ?? 'null';
-
     if (userLikeDislike[projectId] === likeDislikeValue) {
       likeDislikeValue = 'null';
     }
