@@ -78,21 +78,18 @@ function Home() {
       return;
     }
 
-    let likeDislikevalue = e.currentTarget?.value ?? 'null';
-    if (userLikeDislike[projectId] === likeDislikevalue) {
-      setUserLikeDislike(prevState => ({
-        ...prevState,
-        [projectId]: 'null',
-      }));
-      likeDislikevalue = 'null';
-      await sendLikeDislike(projectId, likeDislikevalue);
-      return;
+    let likeDislikeValue = e.currentTarget?.value ?? 'null';
+
+    if (userLikeDislike[projectId] === likeDislikeValue) {
+      likeDislikeValue = 'null';
     }
-    setUserLikeDislike(prevState => ({
-      ...prevState,
-      [projectId]: likeDislikevalue,
+
+    setUserLikeDislike(prev => ({
+      ...prev,
+      [projectId]: likeDislikeValue,
     }));
-    await sendLikeDislike(projectId, likeDislikevalue);
+
+    await sendLikeDislike(projectId, likeDislikeValue);
   }
 
   async function getUserProjectsLikeDislike() {
