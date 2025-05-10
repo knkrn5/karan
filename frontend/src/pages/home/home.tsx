@@ -78,17 +78,40 @@ function Home() {
       return;
     }
 
-    let likeDislikeValue = e.currentTarget?.value ?? 'null';
-    if (userLikeDislike[projectId] === likeDislikeValue) {
-      likeDislikeValue = 'null';
+    const clickedLikeDislikeValue = e.currentTarget?.value ?? 'null';
+    const currentValue = userLikeDislike[projectId];
+
+    let newLikeDislikeValue = clickedLikeDislikeValue;
+    if (currentValue === clickedLikeDislikeValue) {
+      newLikeDislikeValue = 'null';
     }
 
     setUserLikeDislike(prev => ({
       ...prev,
-      [projectId]: likeDislikeValue,
+      [projectId]: newLikeDislikeValue,
     }));
 
-    await sendLikeDislike(projectId, likeDislikeValue);
+    // update the like/dislike counts
+    setallProjectsLikeDislikeCounts(prevCounts =>
+      prevCounts.map(item => {
+        if (item.projectId !== projectId) return item;
+
+        let { likeCount, dislikeCount } = item;
+
+        // remove previous selection
+        if (currentValue === 'like') likeCount--;
+        if (currentValue === 'dislike') dislikeCount--;
+
+        // apply new selection
+        if (newLikeDislikeValue === 'like') likeCount++;
+        if (newLikeDislikeValue === 'dislike') dislikeCount++;
+
+        return { ...item, likeCount, dislikeCount };
+      })
+    );
+
+    // send to backend
+    await sendLikeDislike(projectId, newLikeDislikeValue);
   }
 
   async function getUserProjectsLikeDislike() {
