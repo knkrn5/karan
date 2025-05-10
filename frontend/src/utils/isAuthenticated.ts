@@ -48,7 +48,7 @@ async function scheduleTokenRefresh() {
 
   //pro-active call before the token expires
   if (remainingTime > 0) {
-    console.log('scheduled auto refresh');
+    // console.log('scheduled auto refresh');
     setTimeout(async () => {
       await autoRefreshAccessToken();
       scheduleTokenRefresh();

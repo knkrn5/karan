@@ -55,7 +55,7 @@ function Home() {
 
   async function sendLikeDislike(projectId: string, likeDislike: string) {
     try {
-      const response = await axios.post(
+      await axios.post(
         `${BACKEND_URL}/api/projects/add-projects-like-dislike-interaction`,
         {
           projectId,
@@ -63,8 +63,6 @@ function Home() {
         },
         { withCredentials: true }
       );
-      const { data } = response.data;
-      console.log('axios', data);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error('Error send like or dislike:', error.response?.data);
@@ -87,7 +85,6 @@ function Home() {
         [projectId]: 'null',
       }));
       likeDislikevalue = 'null';
-      console.log(likeDislikevalue);
       await sendLikeDislike(projectId, likeDislikevalue);
       return;
     }
@@ -95,7 +92,6 @@ function Home() {
       ...prevState,
       [projectId]: likeDislikevalue,
     }));
-    console.log(likeDislikevalue);
     await sendLikeDislike(projectId, likeDislikevalue);
   }
 

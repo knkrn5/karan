@@ -24,7 +24,7 @@ export class ProjectsService {
             }
         );
 
-        // If user interaction didn't exist before, push a new one
+        // If user interaction didn't exist before, pushing a new one
         if (!updatedProjectLikeDislike) {
             return await ProjectModel.findOneAndUpdate(
                 { projectId },
