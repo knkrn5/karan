@@ -115,29 +115,45 @@ function Home() {
   }
 
   async function getUserProjectsLikeDislike() {
-    const response = await axios.get(
-      `${BACKEND_URL}/api/projects/get-user-projects-like-dislike-interaction`,
-      {
-        withCredentials: true,
-      }
-    );
-    const { data } = response.data;
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/api/projects/get-user-projects-like-dislike-interaction`,
+        {
+          withCredentials: true,
+        }
+      );
+      const { data } = response.data;
 
-    data.forEach((project: { projectId: string; likeDislikeValue: string }) => {
-      setUserLikeDislike(prevState => ({
-        ...prevState,
-        [project.projectId]: project.likeDislikeValue,
-      }));
-    });
+      data.forEach((project: { projectId: string; likeDislikeValue: string }) => {
+        setUserLikeDislike(prevState => ({
+          ...prevState,
+          [project.projectId]: project.likeDislikeValue,
+        }));
+      });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error get user like or dislike:', error.response?.data);
+      } else {
+        console.error('unexpected Error get user like or dislike:', error);
+      }
+    }
   }
 
   async function getAllProjectsLikeDislike() {
-    const response = await axios.get(
-      `${BACKEND_URL}/api/projects/get-all-projects-like-dislike-interaction`
-    );
-    const { data } = response.data;
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/api/projects/get-all-projects-like-dislike-interaction`
+      );
+      const { data } = response.data;
 
-    setallProjectsLikeDislikeCounts(data);
+      setallProjectsLikeDislikeCounts(data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error get all projects like or dislike:', error.response?.data);
+      } else {
+        console.error('unexpected Error get all projects like or dislike:', error);
+      }
+    }
   }
 
   useEffect(() => {
