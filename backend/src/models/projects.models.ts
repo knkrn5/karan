@@ -1,27 +1,39 @@
 import { model, Schema, Document, Types } from "mongoose";
 
-export interface Project extends Document {
+interface LikeDislikeTypeProps extends Document {
     user: Types.ObjectId;
-    projectId: string;
     likeDislike: "like" | "dislike" | null;
 }
 
-const projectSchema = new Schema<Project>(
+export interface ProjectTypeProps extends Document {
+    projectId: string;
+    likeDislikeInteractions: LikeDislikeTypeProps[];
+}
+
+
+const likeDislikeSchema = new Schema<LikeDislikeTypeProps>({
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
+    likeDislike: {
+        type: String,
+        enum: ["like", "dislike", null],
+        required: true,
+    }
+}, {
+    timestamps: true,
+    _id: false
+});
+
+const projectSchema = new Schema<ProjectTypeProps>(
     {
-        user: {
-            type: Schema.Types.ObjectId,
-            ref: "User",
-            required: true,
-        },
         projectId: {
             type: String,
             required: true,
         },
-        likeDislike: {
-            type: String,
-            enum: ["like", "dislike", null],
-            required: true,
-        }
+        likeDislikeInteractions: [likeDislikeSchema],
     },
     {
         timestamps: true
@@ -31,4 +43,4 @@ const projectSchema = new Schema<Project>(
 // Uncomment this to prevent duplicate like/dislike per user/project
 // projectSchema.index({ user: 1, projectId: 1 }, { unique: true });
 
-export const ProjectModel = model<Project>("Project", projectSchema);
+export const ProjectModel = model<ProjectTypeProps>("Project", projectSchema);

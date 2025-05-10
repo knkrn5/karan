@@ -9,29 +9,64 @@ export class ProjectsService {
         if (!projectId) throw new ApiResponse(400, false, 'Project Id is required', null);
         if (!likeDislike) throw new ApiResponse(400, false, 'Like Dislike is required', null);
 
-        const project = await ProjectModel.findOneAndUpdate(
-            { user: userId, projectId },
-            { likeDislike },
-            { upsert: true, new: true }
+        const updatedProjectLikeDislike = await ProjectModel.findOneAndUpdate(
+            {
+                projectId,
+                "likeDislikeInteractions.user": new mongoose.Types.ObjectId(userId),
+            },
+            {
+                $set: {
+                    "likeDislikeInteractions.$.likeDislike": likeDislike,
+                },
+            },
+            {
+                new: true,
+            }
         );
 
-        return new ApiResponse(200, true, 'Added Like/Dislike  to Project successfully', project);
+        // If user interaction didn't exist before, push a new one
+        if (!updatedProjectLikeDislike) {
+            return await ProjectModel.findOneAndUpdate(
+                { projectId },
+                {
+                    $push: {
+                        likeDislikeInteractions: {
+                            user: new mongoose.Types.ObjectId(userId),
+                            likeDislike: likeDislike,
+                        },
+                    },
+                },
+                {
+                    upsert: true,
+                    new: true,
+                }
+            );
+        }
+
+        return new ApiResponse(200, true, 'Added Like/Dislike  to Project successfully', updatedProjectLikeDislike);
     }
 
     static async getUserProjectsLikeDislikeInteraction(userId: string) {
         if (!userId) throw new ApiResponse(400, false, 'User is required', null);
-        // const projectsLikeDislike = await ProjectModel.find({ user: userId }).select('projectId likeDislike');
         const userProjectsLikeDislike = await ProjectModel.aggregate([
             {
                 $match: {
-                    user: new mongoose.Types.ObjectId(userId)
+                    "likeDislikeInteractions.user": new mongoose.Types.ObjectId(userId)
+                }
+            },
+            {
+                $unwind: "$likeDislikeInteractions"
+            },
+            {
+                $match: {
+                    "likeDislikeInteractions.user": new mongoose.Types.ObjectId(userId)
                 }
             },
             {
                 $project: {
                     _id: 0,
                     projectId: 1,
-                    likeDislike: 1,
+                    likeDislikeValue: "$likeDislikeInteractions.likeDislike"
                 }
             }
         ]);

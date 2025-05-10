@@ -9,7 +9,11 @@ export class ProjectsController {
             const userId = req.user.userId;
             const { projectId, likeDislike } = req.body;
             const response = await ProjectsService.addProjectsLikeDislikeInteraction(userId, projectId, likeDislike);
-            res.status(response.statusCode).json(response);
+            if (response instanceof ApiResponse) {
+                res.status(response.statusCode).json(response);
+            } else {
+                res.status(200).json(response);
+            }
         } catch (error: any) {
             if (error instanceof ApiResponse) {
                 res.status(error.statusCode).json(error);

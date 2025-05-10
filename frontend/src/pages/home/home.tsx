@@ -101,16 +101,18 @@ function Home() {
 
   async function getUserProjectsLikeDislike() {
     const response = await axios.get(
-      `${BACKEND_URL}/api/projects/get-projects-like-dislike-interaction`,
+      `${BACKEND_URL}/api/projects/get-user-projects-like-dislike-interaction`,
       {
         withCredentials: true,
       }
     );
     const { data } = response.data;
-    data.forEach((project: { projectId: string; likeDislike: string }) => {
+
+    console.log(data);
+    data.forEach((project: { projectId: string; likeDislikeValue: string }) => {
       setUserLikeDislike(prevState => ({
         ...prevState,
-        [project.projectId]: project.likeDislike,
+        [project.projectId]: project.likeDislikeValue,
       }));
     });
   }
@@ -123,7 +125,7 @@ function Home() {
     setallProjectsLikeDislikeCounts(data);
   }
 
-  console.log(allProjectsLikeDislikeCounts);
+  // console.log(allProjectsLikeDislikeCounts);
 
   useEffect(() => {
     getUserProjectsLikeDislike();
