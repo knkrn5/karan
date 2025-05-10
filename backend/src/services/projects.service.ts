@@ -79,14 +79,15 @@ export class ProjectsService {
     static async getAllProjectsLikeDislikeInteraction() {
 
         const allProjectsLikeDislikeSummary = await ProjectModel.aggregate([
+            { $unwind: "$likeDislikeInteractions" },
             {
                 $group: {
                     _id: "$projectId",
                     likeCount: {
-                        $sum: { $cond: [{ $eq: ["$likeDislike", "like"] }, 1, 0] }
+                        $sum: { $cond: [{ $eq: ["$likeDislikeInteractions.likeDislike", "like"] }, 1, 0] }
                     },
                     dislikeCount: {
-                        $sum: { $cond: [{ $eq: ["$likeDislike", "dislike"] }, 1, 0] }
+                        $sum: { $cond: [{ $eq: ["$likeDislikeInteractions.likeDislike", "dislike"] }, 1, 0] }
                     }
                 }
             },

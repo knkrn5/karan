@@ -108,7 +108,6 @@ function Home() {
     );
     const { data } = response.data;
 
-    console.log(data);
     data.forEach((project: { projectId: string; likeDislikeValue: string }) => {
       setUserLikeDislike(prevState => ({
         ...prevState,
@@ -122,10 +121,9 @@ function Home() {
       `${BACKEND_URL}/api/projects/get-all-projects-like-dislike-interaction`
     );
     const { data } = response.data;
+
     setallProjectsLikeDislikeCounts(data);
   }
-
-  // console.log(allProjectsLikeDislikeCounts);
 
   useEffect(() => {
     getUserProjectsLikeDislike();
