@@ -91,18 +91,18 @@ function Home() {
       [projectId]: newLikeDislikeValue,
     }));
 
-    // update the like/dislike counts
+    // updating the like/dislike counts optimistically
     setallProjectsLikeDislikeCounts(prevCounts =>
       prevCounts.map(item => {
         if (item.projectId !== projectId) return item;
 
         let { likeCount, dislikeCount } = item;
 
-        // remove previous selection
+        // removing previous selection
         if (currentValue === 'like') likeCount--;
         if (currentValue === 'dislike') dislikeCount--;
 
-        // apply new selection
+        // appling new selection
         if (newLikeDislikeValue === 'like') likeCount++;
         if (newLikeDislikeValue === 'dislike') dislikeCount++;
 
@@ -110,7 +110,6 @@ function Home() {
       })
     );
 
-    // send to backend
     await sendLikeDislike(projectId, newLikeDislikeValue);
   }
 
