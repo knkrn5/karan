@@ -48,6 +48,7 @@ export class ProjectsService {
 
     static async getUserProjectsLikeDislikeInteraction(userId: string) {
         if (!userId) throw new ApiResponse(400, false, 'User is required', null);
+
         const userProjectsLikeDislike = await ProjectModel.aggregate([
             {
                 $match: {
@@ -70,6 +71,7 @@ export class ProjectsService {
                 }
             }
         ]);
+
         return new ApiResponse(200, true, 'Projects Like/Dislike retrieved successfully', userProjectsLikeDislike);
     }
 
