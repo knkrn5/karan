@@ -11,7 +11,6 @@ export default function RelatedBlogPosts({
 }>) {
   const navigate = useNavigate();
 
-
   const relatedBlogPosts = blogsPosts.filter((blog: BlogPostPropsType) => {
     const soloPostCategoryArray = soloPost?.category
       ?.split(/\s*,\s*/)
