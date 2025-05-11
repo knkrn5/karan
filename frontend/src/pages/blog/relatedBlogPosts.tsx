@@ -11,21 +11,29 @@ export default function RelatedBlogPosts({
 }>) {
   const navigate = useNavigate();
 
+
   const relatedBlogPosts = blogsPosts.filter((blog: BlogPostPropsType) => {
+    const soloPostCategoryArray = soloPost?.category
+      ?.split(/\s*,\s*/)
+      .map(cat => cat.toLowerCase());
     const soloPosttagArray = (soloPost?.tags ?? '').split(/\s*,\s*/).map(tag => tag.toLowerCase());
 
+    const blogCategoryArray =
+      typeof blog.category === 'string'
+        ? blog.category.split(/\s*,\s*/).map(cat => cat.toLowerCase())
+        : [];
     const blogTagArray =
       typeof blog.tags === 'string' ? blog.tags.split(/\s*,\s*/).map(tag => tag.toLowerCase()) : [];
 
     const hasMatchingTag = blogTagArray.some(tag => soloPosttagArray.includes(tag));
-    const sameCategory = blog.category === soloPost?.category;
+    const sameCategory = blogCategoryArray.some(cat => soloPostCategoryArray?.includes(cat));
     const isDifferentPost = blog.slug !== soloPost?.slug;
 
     return (hasMatchingTag || sameCategory) && isDifferentPost;
 
     // return (
     //   (blogTagArray.some(tag => soloPosttagArray.includes(tag)) ||
-    //     blog.category === soloPost?.category) &&
+    //     blogCategoryArray.some(cat => soloPostCategoryArray?.includes(cat))) &&
     //   blog.slug !== soloPost?.slug
     // );
   });
