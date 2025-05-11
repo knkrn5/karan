@@ -40,7 +40,5 @@ const projectSchema = new Schema<ProjectTypeProps>(
     }
 );
 
-// Uncomment this to prevent duplicate like/dislike per user/project
-// projectSchema.index({ user: 1, projectId: 1 }, { unique: true });
 
 export const ProjectModel = model<ProjectTypeProps>("Project", projectSchema);

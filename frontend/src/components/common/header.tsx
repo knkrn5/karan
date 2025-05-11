@@ -86,6 +86,7 @@ export default function MegaMenu1() {
                 <ul className="block lg:flex" ref={menubuttonRef}>
                   <li className="relative">
                     <button
+                      type="button"
                       onClick={() => setShowMegaMenu(!showMegaMenu)}
                       className={`flex w-full items-center justify-between gap-2 py-2 text-base font-medium text-black duration-300 hover:text-primary lg:ml-12 lg:inline-flex lg:w-auto lg:justify-center dark:text-gray-300 dark:hover:text-white ${
                         showMegaMenu && 'text-black underline dark:text-white'
