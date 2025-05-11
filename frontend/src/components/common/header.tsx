@@ -61,7 +61,7 @@ export default function MegaMenu1() {
             <div>
               <label className="absolute right-4 top-1/2 block -translate-y-1/2 lg:hidden">
                 <div
-                  className="w-9 h-9 mr-4 cursor-pointer flex flex-col items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800"
+                  className="w-9 h-9 cursor-pointer flex flex-col items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800"
                   ref={menuIconRef}
                 >
                   <input

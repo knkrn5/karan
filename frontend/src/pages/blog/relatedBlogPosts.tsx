@@ -60,6 +60,9 @@ export default function RelatedBlogPosts({
         Array(2)
           .fill(null)
           .map((_, index) => <RelatedBlogPostSkeletonLoading key={index} />)}
+      {relatedBlogPosts.length === 0 && blogsPosts.length !== 0 && (
+        <h3 className=" text-center pt-2  ">No Related Posts Found</h3>
+      )}
     </div>
   );
 }
