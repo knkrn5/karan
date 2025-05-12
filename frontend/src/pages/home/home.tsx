@@ -6,6 +6,7 @@ import { HomePageSeoMetaTags } from './homePageSeoMetaTags';
 import { AiFillDislike, AiFillLike, AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
 import axios from 'axios';
 import { useAuthCheck } from '../../hooks/authCheckHook';
+import { useMainPopupStore } from '../../stores/popup/mainPopupStore';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -48,6 +49,9 @@ function Home() {
 
   const isAuthenticated = useAuthCheck();
 
+  //main popup store
+  const { setMainPopupMsg } = useMainPopupStore();
+
   const [userLikeDislike, setUserLikeDislike] = useState<Record<string, string>>({});
   const [allProjectsLikeDislikeCounts, setallProjectsLikeDislikeCounts] = useState<
     { projectId: string; likeCount: number; dislikeCount: number }[]
@@ -74,7 +78,7 @@ function Home() {
 
   async function handleLikeDislike(e: React.MouseEvent<HTMLButtonElement>, projectId: string) {
     if (!isAuthenticated) {
-      alert('Please login to like or dislike projects.');
+      setMainPopupMsg('Please login to like or dislike projects.');
       return;
     }
 

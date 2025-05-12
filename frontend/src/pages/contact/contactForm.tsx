@@ -5,17 +5,15 @@ import { FaEye } from 'react-icons/fa';
 import axios from 'axios';
 import { useContactInfoStore } from '../../stores/contact/contactMsgStore';
 
-
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 import SeeContactMsg from './seeContactMsg';
 import { useProfileStore } from '../../stores/profile/profileStore';
 import { useAuthCheck } from '../../hooks/authCheckHook';
-import Popup from '../../components/popups/mainPopup';
-import AuthPopup from '../auth/authPopup';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore';
 import { sendContactMsgCopyEmail } from '../../utils/contact.utils';
 import GetContactMsgFromDb from './getContactMsgFromDb';
+import { useMainPopupStore } from '../../stores/popup/mainPopupStore';
 
 interface FormDataProp {
   name: string;
@@ -32,7 +30,8 @@ export default function ContactForm() {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+  //main popup store
+  const { setMainPopupMsg } = useMainPopupStore();
 
   const name = useContactInfoStore(state => state.name);
   const email = useContactInfoStore(state => state.email);
@@ -90,7 +89,7 @@ export default function ContactForm() {
     setIsLoading(true);
 
     if (!isAuthenticated) {
-      setIsPopupOpen(true);
+      setMainPopupMsg('Please login to send the message');
       setIsLoading(false);
       return;
     }
@@ -121,8 +120,6 @@ export default function ContactForm() {
         { withCredentials: true }
       );
       const { data } = response;
-
-      // console.log(data.data.messages[data.data.messages.length - 1].message);
 
       // Storing message in store
       setContactMsgData({
@@ -165,18 +162,6 @@ export default function ContactForm() {
 
   return (
     <div className="relative">
-      {/*login popup */}
-      {isPopupOpen && (
-        <Popup
-          header="Login Required"
-          footer="karan.email"
-          isOpen={isPopupOpen}
-          onClose={() => setIsPopupOpen(false)}
-        >
-          <AuthPopup />
-        </Popup>
-      )}
-
       {/* contact form */}
       <div className="bg-gradient-to-br from-gray-300 via-gray-100 to-gray-300 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-8 rounded-2xl shadow-lg duration-300 hover:drop-shadow-2xl">
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -273,7 +258,7 @@ export default function ContactForm() {
               className="inline-flex items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white cursor-pointer transition-colors bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={() => {
                 if (!isAuthenticated) {
-                  setIsPopupOpen(true);
+                  setMainPopupMsg('Please login to see messages');
                   return;
                 }
                 setSeeContactMsgFromDb(true);

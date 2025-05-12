@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { IoMdClose } from 'react-icons/io';
+import { useMainPopupStore } from '../../stores/popup/mainPopupStore';
 
 type ModalProps = {
   isOpen: boolean;
-  onClose: () => void;
   children: React.ReactNode;
   header: string;
   footer: string;
 };
 
-const PopupModel = ({ isOpen, onClose, children, header, footer }: ModalProps) => {
+const PopupModel = ({ children, header, footer }: ModalProps) => {
   const [isVisible, setIsVisible] = useState(false);
+  // const [isPopupOpen, setIsPopupOpen] = useState<boolean>(isOpen);
+
+  //main popup store
+  const popupMsg = useMainPopupStore(state => state.mainPopupMsg);
+  const { setMainPopupMsg } = useMainPopupStore();
 
   useEffect(() => {
     setIsVisible(false);
@@ -20,13 +25,13 @@ const PopupModel = ({ isOpen, onClose, children, header, footer }: ModalProps) =
     }, 10);
   }, []);
 
-  if (!isOpen) return null;
-
   return createPortal(
     // <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-brightness-100 backdrop-blur-sm">
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/10 backdrop-blur-[3px]"
-      onClick={onClose}
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/10 backdrop-blur-[3px] ${
+        popupMsg ? 'block' : 'hidden'
+      }`}
+      onClick={() => setMainPopupMsg('')}
     >
       <div
         className={`max-w-[400px] bg-white dark:bg-slate-900 shadow-2xl hover:shadow-xl dark:shadow-black px-6 py-2 m-1 rounded-2xl relative 
@@ -36,7 +41,7 @@ const PopupModel = ({ isOpen, onClose, children, header, footer }: ModalProps) =
         <button
           title="close popup"
           type="button"
-          onClick={onClose}
+          onClick={() => setMainPopupMsg('')}
           className="absolute top-3 right-3 p-1 text-black bg-gray-300 hover:bg-gray-400  dark:text-gray-300 dark:bg-gray-600 dark:hover:text-white dark:hover:bg-gray-700  rounded-xl duration-300 cursor-pointer"
         >
           <IoMdClose />

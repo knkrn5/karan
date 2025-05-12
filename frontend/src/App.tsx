@@ -19,12 +19,16 @@ import UserProfile from './pages/profile/userProfile';
 import SoloBlogPost from './pages/blog/soloBlogPostPage';
 import { TRpopupNotificationModel } from './components/popups/TRpopupNotification';
 import ResetPassward from './pages/auth/resetPassward';
+import AuthPopup from './pages/auth/authPopup';
 
 function App() {
   return (
     <Router>
       {/* notification popup */}
       <TRpopupNotificationModel />
+
+      {/*Authentication popup */}
+      <AuthPopup />
 
       <Header />
       <main>
