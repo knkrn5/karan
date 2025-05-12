@@ -4,7 +4,6 @@ import { IoMdClose } from 'react-icons/io';
 import { useMainPopupStore } from '../../stores/popup/mainPopupStore';
 
 type ModalProps = {
-  isOpen: boolean;
   children: React.ReactNode;
   header: string;
   footer: string;

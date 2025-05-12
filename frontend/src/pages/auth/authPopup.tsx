@@ -11,7 +11,7 @@ export default function AuthPopup() {
   const navigate = useNavigate();
 
   return (
-    <PopupModel header="Login Required" footer="karan.email" isOpen={popupMsg !== ''}>
+    <PopupModel header="Login Required" footer="karan.email">
       <div className="relative  w-full max-w-md max-h-full">
         <div className="relative bg-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
           <div className="p-4 text-center">

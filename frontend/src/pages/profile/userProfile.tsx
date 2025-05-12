@@ -9,16 +9,16 @@ import BrandLoadingPage from '../brandLoadingPage';
 import { TwoSmallLinesSkeletonLoading } from '../../components/ui/skeletonLoadings.js';
 import { verifyPassword, sendEmailOtp, verifyEmailOtp, logout } from '../../utils/auth.utils';
 import { ICnotificationMsg } from '../../components/notifications/ICnotificationMsg.js';
-import PopupModel from '../../components/popups/mainPopup.js';
 import DeleteConfirmationPopup from './deletePopup';
 import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore.js';
 import { useICnotificationMsgStore } from '../../stores/notificationMsg/ICnotificationMsgStore.js';
+import { useMainPopupStore } from '../../stores/popup/mainPopupStore.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function UserProfile() {
   const [isVisible, setIsVisible] = useState(false);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  // const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const firstName = useProfileStore(state => state.firstName);
   const lastName = useProfileStore(state => state.lastName);
@@ -55,6 +55,9 @@ export default function UserProfile() {
 
   //ICnotification popup store data
   const { setICnotificationMsg } = useICnotificationMsgStore();
+
+  //main popup store
+  const { setMainPopupMsg } = useMainPopupStore();
 
   // animation trigger
   useEffect(() => {
@@ -137,7 +140,7 @@ export default function UserProfile() {
           isOtpVerified: true,
         }));
         setICnotificationMsg({ success: response.message });
-        setIsPopupOpen(true);
+        setMainPopupMsg('Are you sure you want to delete your account?');
       } else {
         setICnotificationMsg({ error: response.message });
         setIsDeleting(false);
@@ -197,28 +200,14 @@ export default function UserProfile() {
       bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white"
     >
       {/* deletion popup */}
-      {isPopupOpen && (
-        <PopupModel
-          header="Confirm Deletion"
-          footer="karan.email"
-          isOpen={isPopupOpen}
-          onClose={() => {
-            setIsPopupOpen(false);
-            handleEditProfile();
-          }}
-        >
-          <DeleteConfirmationPopup
-            onDelete={() => {
-              handleConfirmationDeletion();
-              setIsPopupOpen(false);
-            }}
-            onCancel={() => {
-              handleEditProfile();
-              setIsPopupOpen(false);
-            }}
-          />
-        </PopupModel>
-      )}
+      <DeleteConfirmationPopup
+        onDelete={() => {
+          handleConfirmationDeletion();
+        }}
+        onCancel={() => {
+          handleEditProfile();
+        }}
+      />
 
       {/* Card */}
       <div
