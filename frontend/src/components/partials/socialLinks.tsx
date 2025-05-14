@@ -1,4 +1,4 @@
-import { FaGithub, FaLinkedin, FaInstagram } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaKaggle } from 'react-icons/fa';
 import { SiHuggingface } from 'react-icons/si';
 import { FaXTwitter } from 'react-icons/fa6';
 
@@ -15,7 +15,7 @@ const iconMap = {
   x: <FaXTwitter size={24} />,
   linkedin: <FaLinkedin size={24} />,
   github: <FaGithub size={24} />,
-  ig: <FaInstagram size={24} />,
+  kaggle: <FaKaggle size={24} />,
   hf: <SiHuggingface size={24} />,
 };
 
@@ -46,11 +46,11 @@ export default function SocialLinks() {
       ariaLabel: 'Visit GitHub profile',
     },
     {
-      platform: 'ig',
-      title: 'Instagram',
-      url: 'https://instagram.com/knkrn5',
-      fgColor: 'text-white',
-      bgColor: 'bg-orange-500',
+      platform: 'kaggle',
+      title: 'kaggle',
+      url: 'https://www.kaggle.com/knkrn5',
+      fgColor: 'text-blue-600',
+      bgColor: 'bg-neutral-200',
       ariaLabel: 'Visit Instagram profile',
     },
     {

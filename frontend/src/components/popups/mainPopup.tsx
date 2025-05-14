@@ -11,7 +11,6 @@ type ModalProps = {
 
 const PopupModel = ({ children, header, footer }: ModalProps) => {
   const [isVisible, setIsVisible] = useState(false);
-  // const [isPopupOpen, setIsPopupOpen] = useState<boolean>(isOpen);
 
   //main popup store
   const popupMsg = useMainPopupStore(state => state.mainPopupMsg);
