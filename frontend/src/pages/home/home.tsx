@@ -243,7 +243,7 @@ function Home() {
                   )}
                   <span className="font-bold ">
                     {allProjectsLikeDislikeCounts.find(item => item.projectId === project.id)
-                      ?.likeCount ?? 0}
+                      ?.likeCount ?? ''}
                   </span>
                 </button>
                 <div className="h-4 w-px  bg-gray-200"></div>
@@ -264,7 +264,7 @@ function Home() {
                   )}
                   <span className="font-bold">
                     {allProjectsLikeDislikeCounts.find(item => item.projectId === project.id)
-                      ?.dislikeCount ?? 0}
+                      ?.dislikeCount ?? ''}
                   </span>
                 </button>
               </div>
