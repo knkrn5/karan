@@ -35,7 +35,9 @@ function AffiliateLayout() {
   }, [openMenu, isSmallScreen]);
 
   return (
-    <div className={`md:grid md:grid-cols-[250px_1fr] h-screen transition-all duration-500`}>
+    <div
+      className={`h-screen md:grid md:grid-cols-[250px_1fr] gap-2 bg-neutral-50 dark:bg-slate-800  transition-all duration-500`}
+    >
       {/* Sidebar */}
       <div
         ref={sidebarRef}
@@ -46,22 +48,25 @@ function AffiliateLayout() {
           }`
         }`}
       >
+        {/* menu bar button */}
+        {isSmallScreen && (
+          <button
+            type="button"
+            title={openMenu ? 'Close menu' : 'Open menu'}
+            aria-label={openMenu ? 'Close menu' : 'Open menu'}
+            ref={menuBarButtonRef}
+            className="absolute w-fit top-0 -right-13 m-1 p-2 rounded-r-lg bg-black text-white hover:bg-gray-700 duration-300 cursor-pointer"
+            onClick={() => setOpenMenu(!openMenu)}
+          >
+            {!openMenu ? <IoMenu size={32} /> : <TbXboxX size={32} />}
+          </button>
+        )}
+
         <div className="relative">Sidebar</div>
       </div>
 
       {/* Main Content  */}
       <div className=" bg-green-500 text-white transition-transform h-screen overflow-y-auto ">
-        {/* menu bar button */}
-        {!openMenu && isSmallScreen && (
-          <button
-            type="button"
-            ref={menuBarButtonRef}
-            className="absolute z-20 w-fit m-1 p-2 rounded-2xl bg-black text-white hover:bg-gray-700 duration-300 cursor-pointer"
-            onClick={() => setOpenMenu(true)}
-          >
-            {!openMenu ? <IoMenu size={32} /> : <TbXboxX size={32} />}
-          </button>
-        )}
         <Outlet />
       </div>
     </div>
