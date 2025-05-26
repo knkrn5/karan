@@ -3,7 +3,7 @@ import { TbXboxX } from 'react-icons/tb';
 import { useEffect, useRef, useState } from 'react';
 import { Outlet } from 'react-router';
 
-function AffiliatesLayout() {
+function AffiliateLayout() {
   const [openMenu, setOpenMenu] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
 
@@ -35,7 +35,7 @@ function AffiliatesLayout() {
   }, [openMenu, isSmallScreen]);
 
   return (
-    <div className={`md:grid md:grid-cols-[250px_1fr] h-screen  transition-all duration-500`}>
+    <div className={`md:grid md:grid-cols-[250px_1fr] h-screen transition-all duration-500`}>
       {/* Sidebar */}
       <div
         ref={sidebarRef}
@@ -50,7 +50,7 @@ function AffiliatesLayout() {
       </div>
 
       {/* Main Content  */}
-      <div className=" min-h-screen bg-green-500 text-white transition-all  ">
+      <div className=" bg-green-500 text-white transition-transform h-screen overflow-y-auto ">
         {/* menu bar button */}
         {!openMenu && isSmallScreen && (
           <button
@@ -68,4 +68,4 @@ function AffiliatesLayout() {
   );
 }
 
-export default AffiliatesLayout;
+export default AffiliateLayout;

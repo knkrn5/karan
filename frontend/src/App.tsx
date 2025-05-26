@@ -6,7 +6,8 @@ import ErrorPage404 from './pages/errors/404-error-page';
 import Header from './components/common/header';
 import Footer from './components/common/footer';
 
-import AffiliatesLayout from './pages/affiliates/affiliatesLayout';
+import AffiliateLayout from './pages/affiliates/affiliateLayout';
+import AffiliateProductsPage from './pages/affiliates/affiliateProductsPage';
 
 import ResourcesInfo from './pages/resources/resoursesPage';
 import BlogPage from './pages/blog/blogPostsPage';
@@ -41,7 +42,8 @@ function App() {
           <Route path="*" element={<ErrorPage404 />} />
 
           {/* Affiliates parent route with nested routes */}
-          <Route path="/affiliates/*" element={<AffiliatesLayout />}>
+          <Route path="/affiliates/*" element={<AffiliateLayout />}>
+            <Route index element={<AffiliateProductsPage />} />
             {/* <Route path="team" element={<TeamPage />} />
           <Route path="settings" element={<SettingsPage />} /> */}
           </Route>
