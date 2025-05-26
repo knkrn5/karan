@@ -1,9 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router';
 
-import Header from './components/common/header';
-import Footer from './components/common/footer';
 import Home from './pages/home/home';
 import ErrorPage404 from './pages/errors/404-error-page';
+
+import Header from './components/common/header';
+import Footer from './components/common/footer';
+
+import AffiliatesLayout from './pages/affiliates/affiliatesLayout';
+
 import ResourcesInfo from './pages/resources/resoursesPage';
 import BlogPage from './pages/blog/blogPostsPage';
 
@@ -35,6 +39,12 @@ function App() {
         <Routes>
           <Route index element={<Home />} />
           <Route path="*" element={<ErrorPage404 />} />
+
+          {/* Affiliates parent route with nested routes */}
+          <Route path="/affiliates/*" element={<AffiliatesLayout />}>
+            {/* <Route path="team" element={<TeamPage />} />
+          <Route path="settings" element={<SettingsPage />} /> */}
+          </Route>
 
           <Route path="/resources" element={<ResourcesInfo />} />
           <Route path="/blog" element={<BlogPage />} />
