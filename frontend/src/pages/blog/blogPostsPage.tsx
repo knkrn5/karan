@@ -67,11 +67,10 @@ export default function BlogPage() {
     fetchBlogPosts();
   }, [NumberOfPosts.start, NumberOfPosts.end]);
 
-  // console.log(blogPosts.map((post: BlogPostPropsType) => console.log(post?.content?.content) ));
 
   useEffect(() => {
-    const startNumber = searchParams.get('startNumber') || '0';
-    const endNumber = searchParams.get('endNumber') || '6';
+    const startNumber = searchParams.get('startNumber') ?? '0';
+    const endNumber = searchParams.get('endNumber') ?? '6';
 
     setNumberOfPosts({ start: Number(startNumber), end: Number(endNumber) });
   }, [searchParams]);

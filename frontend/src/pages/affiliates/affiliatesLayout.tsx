@@ -19,19 +19,20 @@ function AffiliatesLayout() {
     function handleClickOutside(event: MouseEvent | TouchEvent) {
       if (
         openMenu &&
-        sidebarRef.current &&
-        !sidebarRef.current.contains(event.target as Node) &&
-        menuBarButtonRef.current &&
-        !menuBarButtonRef.current.contains(event.target as Node)
+        !sidebarRef.current?.contains(event.target as Node) &&
+        !menuBarButtonRef.current?.contains(event.target as Node)
       ) {
         setOpenMenu(false);
       }
     }
 
-    document.addEventListener('click', handleClickOutside);
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [openMenu]);
+    document.addEventListener('pointerdown', handleClickOutside);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('pointerdown', handleClickOutside);
+    };
+  }, [openMenu, isSmallScreen]);
 
   return (
     <div className={`md:grid md:grid-cols-[250px_1fr] h-screen  transition-all duration-500`}>
@@ -45,16 +46,6 @@ function AffiliatesLayout() {
           }`
         }`}
       >
-        {/* menu bar button */}
-        {isSmallScreen && (
-          <div
-            className="absolute z-20 w-fit m-1 p-2 rounded-2xl bg-black text-white hover:bg-gray-700 duration-500 cursor-pointer"
-            onClick={() => setOpenMenu(!openMenu)}
-          >
-            {!openMenu ? <IoMenu size={32} /> : <TbXboxX size={32} />}
-          </div>
-        )}
-
         <div className="relative">Sidebar</div>
       </div>
 
@@ -66,13 +57,12 @@ function AffiliatesLayout() {
             type="button"
             ref={menuBarButtonRef}
             className="absolute z-20 w-fit m-1 p-2 rounded-2xl bg-black text-white hover:bg-gray-700 duration-300 cursor-pointer"
-            onClick={() => setOpenMenu(!openMenu)}
+            onClick={() => setOpenMenu(true)}
           >
             {!openMenu ? <IoMenu size={32} /> : <TbXboxX size={32} />}
           </button>
         )}
-        {/* <Outlet /> */}
-        main content
+        <Outlet />
       </div>
     </div>
   );
