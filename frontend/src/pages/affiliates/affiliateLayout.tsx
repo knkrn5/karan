@@ -1,5 +1,4 @@
-import { IoMenu } from 'react-icons/io5';
-import { TbXboxX } from 'react-icons/tb';
+import { RiMenuUnfold3Fill, RiMenuFold3Fill } from 'react-icons/ri';
 import { useEffect, useRef, useState } from 'react';
 import { Outlet } from 'react-router';
 
@@ -36,12 +35,12 @@ function AffiliateLayout() {
 
   return (
     <div
-      className={`h-screen md:grid md:grid-cols-[250px_1fr] gap-2 bg-neutral-50 dark:bg-slate-800  transition-all duration-500`}
+      className={`h-screen md:grid md:grid-cols-[250px_1fr] gap-2 bg-neutral-50 dark:bg-slate-900`}
     >
       {/* Sidebar */}
       <div
         ref={sidebarRef}
-        className={` bg-white text-black dark:bg-slate-700 dark:text-white transition-transform ${
+        className={`  text-black bg-neutral-100 dark:bg-slate-800 dark:text-white border-y-1 transition-transform ${
           isSmallScreen &&
           ` absolute top-18 h-full max-md:w-[280px] transition-transform duration-500 ease-in-out  z-10 ${
             openMenu ? 'translate-x-0' : '-translate-x-full'
@@ -55,14 +54,16 @@ function AffiliateLayout() {
             title={openMenu ? 'Close menu' : 'Open menu'}
             aria-label={openMenu ? 'Close menu' : 'Open menu'}
             ref={menuBarButtonRef}
-            className="absolute w-fit top-0 -right-13 m-1 p-2 rounded-r-lg bg-black text-white hover:bg-gray-700 duration-300 cursor-pointer"
+            className="absolute w-fit top-0 -right-13 m-1 p-2 rounded-r-lg bg-neutral-200 dark:bg-dark text-black dark:text-white "
             onClick={() => setOpenMenu(!openMenu)}
           >
-            {!openMenu ? <IoMenu size={32} /> : <TbXboxX size={32} />}
+            {!openMenu ? <RiMenuUnfold3Fill size={32} /> : <RiMenuFold3Fill size={32} />}
           </button>
         )}
 
-        <div className="relative">Sidebar</div>
+        <h3 className="font-extrabold text-2xl px-4 py-2 border-b border-neutral-500 dark:border-gray-500">
+          Filters
+        </h3>
       </div>
 
       {/* Main Content  */}

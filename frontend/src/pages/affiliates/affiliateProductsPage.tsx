@@ -3,7 +3,10 @@ const products = [
     id: 1,
     name: 'Product 1',
     image: 'https://picsum.photos/200/300',
+    category: 'electronics',
+    subCategory: 'gadgets',
     description: 'This is a test product',
+    tags: ['electronics', 'gadgets'],
     price: 10.99,
     affiliateLink: 'https://example.com/product1',
   },
@@ -11,7 +14,10 @@ const products = [
     id: 2,
     name: 'Product 2',
     image: 'https://picsum.photos/200/301',
+    category: 'electronics',
+    subCategory: 'gadgets',
     description: 'This is another test product',
+    tags: ['electronics', 'gadgets'],
     price: 19.99,
     affiliateLink: 'https://example.com/product2',
   },
@@ -19,7 +25,10 @@ const products = [
     id: 3,
     name: 'Product 3',
     image: 'https://picsum.photos/200/302',
+    category: 'electronics',
+    subCategory: 'gadgets',
     description: 'This is a third test product',
+    tags: ['electronics', 'gadgets'],
     price: 29.99,
     affiliateLink: 'https://example.com/product3',
   },
@@ -27,7 +36,7 @@ const products = [
 
 const AffiliateProductsPage = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-2">
       {products.map(product => (
         <div key={product.id} className="bg-white p-4 rounded-lg shadow-md">
           <img src={product.image} alt={product.name} className="w-full h-48" />
