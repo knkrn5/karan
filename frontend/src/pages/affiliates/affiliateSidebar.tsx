@@ -47,7 +47,8 @@ export default function AffiliateSidebar() {
             </span>
             {price !== 500 && (
               <span className="px-2 py-1 bg-orange-100 dark:bg-orange-800 text-orange-700 dark:text-orange-200 text-xs rounded-full">
-                Under {formatPrice(price)}
+                {/* Under {formatPrice(price)} */}
+                Under {price}
               </span>
             )}
           </div>
@@ -91,7 +92,44 @@ export default function AffiliateSidebar() {
           <h3 className="text-xl font-extrabold text-white ">Price</h3>
         </div>
 
-        <div className="flex flex-col gap-2"></div>
+        {/* <div className="flex flex-col gap-2"></div> */}
+        <div className="bg-gray-50 dark:bg-slate-700 p-4 rounded-xl">
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-sm text-gray-600 dark:text-gray-400">₹0</span>
+            <div className="px-3 py-1 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-full text-sm font-medium">
+              {/* {formatPrice(price)} */}
+              {price === 1000 ? '₹1000+' : `Under ₹${price}`}
+            </div>
+            <span className="text-sm text-gray-600 dark:text-gray-400">₹1000+</span>
+          </div>
+
+          <div className="relative">
+            <input
+              title="Price range slider"
+              aria-label="Price range slider"
+              type="range"
+              min="0"
+              max="1000"
+              value={price}
+              onChange={e => setPrice(parseInt(e.target.value))}
+              className="w-full h-2 bg-gray-200 dark:bg-slate-600 rounded-lg appearance-none cursor-pointer slider"
+              style={{
+                background: `linear-gradient(to right, #f97316 0%, #f97316 ${
+                  price / 10
+                }%, #e5e7eb ${price / 10}%, #e5e7eb 100%)`,
+              }}
+            />
+            <div
+              className="absolute top-1/2 transform -translate-y-1/2 w-4 h-4 bg-gradient-to-br from-orange-500 to-pink-500 rounded-full shadow-lg border-2 border-white pointer-events-none"
+              style={{ left: `calc(${price / 10}% - 8px)` }}
+            />
+          </div>
+
+          <div className="flex justify-between mt-2 text-xs text-gray-500 dark:text-gray-400">
+            <span>Budget</span>
+            <span>Premium</span>
+          </div>
+        </div>
       </div>
     </div>
   );
