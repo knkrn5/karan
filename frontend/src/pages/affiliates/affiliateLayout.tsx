@@ -72,7 +72,7 @@ function AffiliateLayout() {
       </div>
 
       {/* Main Content  */}
-      <div className=" bg-green-500 text-white transition-transform h-screen overflow-y-auto ">
+      <div className=" bg-neutral-100 dark:bg-slate-800 text-white transition-transform h-screen overflow-y-auto ">
         <Outlet />
       </div>
     </div>
