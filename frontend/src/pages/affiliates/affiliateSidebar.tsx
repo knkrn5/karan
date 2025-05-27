@@ -1,9 +1,14 @@
 import { IoPhonePortraitOutline } from 'react-icons/io5';
 import { FaTshirt, FaHome, FaGamepad } from 'react-icons/fa';
+import { AiFillDollarCircle } from 'react-icons/ai';
 import { FaDumbbell } from 'react-icons/fa6';
 import { BiCategory } from 'react-icons/bi';
+import { useState } from 'react';
 
 export default function AffiliateSidebar() {
+  const [price, setPrice] = useState(500);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+
   const categories = [
     { name: 'Electronics', icon: IoPhonePortraitOutline, color: 'bg-blue-500' },
     { name: 'Fashion', icon: FaTshirt, color: 'bg-pink-500' },
@@ -12,29 +17,81 @@ export default function AffiliateSidebar() {
     { name: 'Toys', icon: FaGamepad, color: 'bg-purple-500' },
   ];
 
+  const clearFilters = () => {
+    setSelectedCategory('');
+    setPrice(500);
+  };
+
   return (
-    <div className="p-4 bg-white dark:bg-slate-800 rounded-xl shadow-md">
-      <div className="flex items-center space-x-1 p-2 mb-2  pb-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg shadow-lg">
-        <BiCategory className="w-5 h-5 text-white" />
-        <h3 className="text-xl font-extrabold text-white ">Categories</h3>
+    <div className="p-4 bg-white dark:bg-slate-800 ">
+      {/* Active Filters Summary */}
+      {(selectedCategory.length > 0 || price !== 500) && (
+        <div className="mb-3 p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-800">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-orange-700 dark:text-orange-300">
+              Active Filters
+            </span>
+            <button
+              type="button"
+              title="Clear all filters"
+              aria-label="Clear all filters"
+              onClick={clearFilters}
+              className="text-xs text-orange-600 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-200 transition-colors cursor-pointer"
+            >
+              Clear All
+            </button>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <span className="px-2 py-1 bg-orange-100 dark:bg-orange-800 text-orange-700 dark:text-orange-200 text-xs rounded-full">
+              {selectedCategory}
+            </span>
+            {price !== 500 && (
+              <span className="px-2 py-1 bg-orange-100 dark:bg-orange-800 text-orange-700 dark:text-orange-200 text-xs rounded-full">
+                Under {formatPrice(price)}
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* categories filter */}
+      <div className="rounded-xl shadow-md">
+        <div className="flex items-center space-x-1 p-2 mb-2  pb-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg shadow-lg">
+          <BiCategory className="w-5 h-5 text-white" />
+          <h3 className="text-xl font-extrabold text-white ">Categories</h3>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          {categories.map(({ name, icon: Icon, color }) => (
+            <button
+              key={name}
+              type="button"
+              onClick={() => setSelectedCategory(name)}
+              className={`flex items-center gap-3 px-4 py-2 rounded-lg  hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white cursor-pointe ${
+                selectedCategory === name
+                  ? 'bg-gray-300 dark:bg-slate-600 shadow-lg'
+                  : 'bg-gray-100 dark:bg-slate-700'
+              } `}
+            >
+              <span
+                className={`p-2 rounded-full text-white ${color} flex items-center justify-center`}
+              >
+                <Icon size={18} />
+              </span>
+              <span className="text-md font-medium font-serif">{name}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="flex flex-col gap-2">
-        {categories.map(({ name, icon: Icon, color }) => (
-          <button
-            key={name}
-            type="button"
-            onClick={() => console.log(`Filter by ${name}`)}
-            className="flex items-center gap-3 px-4 py-2 rounded-lg bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white cursor-pointer"
-          >
-            <span
-              className={`p-2 rounded-full text-white ${color} flex items-center justify-center`}
-            >
-              <Icon size={18} />
-            </span>
-            <span className="text-md font-medium font-serif">{name}</span>
-          </button>
-        ))}
+      {/* price filter */}
+      <div className="mt-4 rounded-xl shadow-md">
+        <div className="flex items-center space-x-1 p-2 mb-2  pb-2 bg-gradient-to-br from-orange-500 to-yellow-600 rounded-lg shadow-lg">
+          <AiFillDollarCircle className="w-5 h-5 text-white" />
+          <h3 className="text-xl font-extrabold text-white ">Price</h3>
+        </div>
+
+        <div className="flex flex-col gap-2"></div>
       </div>
     </div>
   );

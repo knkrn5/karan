@@ -42,7 +42,7 @@ function AffiliateLayout() {
       {/* Sidebar */}
       <div
         ref={sidebarRef}
-        className={` text-black bg-neutral-100 dark:bg-slate-800 dark:text-white transition-transform ${
+        className={` text-black bg-neutral-100 dark:bg-slate-800 dark:text-white transition-transform  ${
           isSmallScreen &&
           ` absolute top-18 h-full max-md:w-[280px] transition-transform duration-500 ease-in-out  z-10 ${
             openMenu ? 'translate-x-0' : '-translate-x-full'
@@ -64,9 +64,7 @@ function AffiliateLayout() {
         )}
         <div className="flex items-center space-x-1 px-4 border-b border-neutral-500 dark:border-gray-500">
           <FaFilter />
-          <h3 className="font-extrabold text-2xl py-2 ">
-            Filters
-          </h3>
+          <h3 className="font-extrabold text-2xl py-2 ">Filters</h3>
         </div>
         <AffiliateSidebar />
       </div>
