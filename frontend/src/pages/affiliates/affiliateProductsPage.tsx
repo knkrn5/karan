@@ -3,8 +3,17 @@ import { useEffect, useState } from 'react';
 
 const PY_BACKEND_URL = import.meta.env.VITE_PY_BACKEND_URL;
 
+interface ProductPropsType {
+  id: number;
+  name: string;
+  description: string;
+  image: string;
+  price: number;
+  affiliateLink: string;
+}
+
 const AffiliateProductsPage = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Array<ProductPropsType>>([]);
 
   const fetchProducts = async () => {
     try {
