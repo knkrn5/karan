@@ -47,8 +47,7 @@ export default function AffiliateSidebar() {
             </span>
             {price !== 500 && (
               <span className="px-2 py-1 bg-orange-100 dark:bg-orange-800 text-orange-700 dark:text-orange-200 text-xs rounded-full">
-                {/* Under {formatPrice(price)} */}
-                Under {price}
+                Under ₹{price}
               </span>
             )}
           </div>
@@ -97,7 +96,6 @@ export default function AffiliateSidebar() {
           <div className="flex justify-between items-center mb-4">
             <span className="text-sm text-gray-600 dark:text-gray-400">₹0</span>
             <div className="px-3 py-1 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-full text-sm font-medium">
-              {/* {formatPrice(price)} */}
               {price === 1000 ? '₹1000+' : `Under ₹${price}`}
             </div>
             <span className="text-sm text-gray-600 dark:text-gray-400">₹1000+</span>
