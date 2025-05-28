@@ -92,7 +92,7 @@ export default function MegaMenu1() {
                         }`
                       }
                     >
-                      Affiliates
+                      🛍️Affiliates
                     </NavLink>
                   </li>
                   <li>
@@ -106,7 +106,7 @@ export default function MegaMenu1() {
                         }`
                       }
                     >
-                      Resources
+                      🛠️Resources
                     </NavLink>
                   </li>
                   <li>
@@ -120,7 +120,7 @@ export default function MegaMenu1() {
                         }`
                       }
                     >
-                      Blog
+                      📝Blog
                     </NavLink>
                   </li>
                 </ul>

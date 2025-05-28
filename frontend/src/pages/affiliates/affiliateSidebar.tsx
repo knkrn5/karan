@@ -67,7 +67,7 @@ export default function AffiliateSidebar() {
               key={name}
               type="button"
               onClick={() => setSelectedCategory(name)}
-              className={`flex items-center gap-3 px-4 py-2 rounded-lg  hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white cursor-pointe ${
+              className={`flex items-center gap-3 px-4 py-2 rounded-lg  hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white cursor-pointer ${
                 selectedCategory === name
                   ? 'bg-gray-300 dark:bg-slate-600 shadow-lg'
                   : 'bg-gray-100 dark:bg-slate-700'

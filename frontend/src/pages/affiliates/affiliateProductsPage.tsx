@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { FaShoppingCart, FaShoppingBag } from 'react-icons/fa';
+import AffiliateSearchAndCart from './affiliateSearchAndCart';
 
 const PY_BACKEND_URL = import.meta.env.VITE_PY_BACKEND_URL;
 
@@ -32,7 +33,13 @@ const AffiliateProductsPage = () => {
 
   return (
     <div className="min-h-screen bg-neutral-100 dark:bg-slate-800 p-4">
-      <h1 className="text-4xl font-bold text-center mb-10 text-gray-800">🛍️ Affiliate Products</h1>
+      {/* <h1 className="text-4xl font-bold text-center mb-10 text-gray-800 dark:text-white">
+        🛍️ Affiliate Products
+      </h1> */}
+
+      <div className='p-2 mb-6 bg-white dark:bg-slate-700 rounded-lg shadow-md'>
+        <AffiliateSearchAndCart />
+      </div>
 
       {products.length === 0 ? (
         <p className="text-center text-gray-500">No products available.</p>
@@ -41,17 +48,23 @@ const AffiliateProductsPage = () => {
           {products.map(product => (
             <div
               key={product.id}
-              className="flex flex-col @container/card bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
+              className="flex flex-col @container/card bg-white dark:bg-dark rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
             >
               <img src={product.image} alt={product.name} className="h-48 w-full object-cover" />
 
-              <div className="p-4 flex flex-col flex-grow">
-                <h2 className="text-xl font-semibold text-gray-800">{product.name}</h2>
-                <span className="text-sm text-indigo-500 mb-2">{product.category}</span>
-                <p className="text-sm text-gray-600 flex-grow">{product.description}</p>
-                <p className="text-lg font-bold text-gray-900 mt-3">${product.price}</p>
+              <div className="p-4 flex flex-col flex-grow space-y-1">
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
+                  {product.name}
+                </h2>
+                <span className="text-sm text-indigo-500">{product.category}</span>
+                <p className="text-sm text-gray-600 dark:text-gray-300 flex-grow">
+                  {product.description}
+                </p>
+                <p className="text-lg font-bold text-gray-900 dark:text-gray-200">
+                  ${product.price}
+                </p>
 
-                <div className="flex gap-2 mt-4  flex-col @card/sm:flex-row">
+                <div className="flex gap-2 mt-2  flex-col @card/sm:flex-row">
                   <a
                     href={product.affiliateLink}
                     target="_blank"
@@ -61,15 +74,13 @@ const AffiliateProductsPage = () => {
                     <FaShoppingBag size={16} />
                     Buy Now
                   </a>
-                  <a
-                    href={product.affiliateLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 inline-flex items-center justify-center gap-2 text-indigo-600 border border-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-50 transition"
+                  <button
+                    type="button"
+                    className="flex-1 inline-flex items-center justify-center gap-2 text-indigo-600 border border-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-50 transition cursor-pointer"
                   >
                     <FaShoppingCart size={16} />
                     Add to Cart
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
