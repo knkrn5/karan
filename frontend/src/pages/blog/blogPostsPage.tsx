@@ -8,6 +8,7 @@ import type { Document } from '@contentful/rich-text-types';
 import ServerErrorPage from '../errors/serverErrorPage';
 import { BlogPostsPageSeoMetaTags } from './blogPostsPageSeoMetaTags';
 
+
 export interface BlogPostPropsType {
   title: string;
   slug: string;

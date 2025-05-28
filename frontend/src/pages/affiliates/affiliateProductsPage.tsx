@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { FaShoppingCart, FaShoppingBag } from 'react-icons/fa';
 import AffiliateSearchAndCart from './affiliateSearchAndCart';
+import { AffiliateProductCardSkeletonLoading } from './affiliateSkeletonLoading';
 
 const PY_BACKEND_URL = import.meta.env.VITE_PY_BACKEND_URL;
 
@@ -17,13 +18,17 @@ interface ProductPropsType {
 
 const AffiliateProductsPage = () => {
   const [products, setProducts] = useState<Array<ProductPropsType>>([]);
+  const [isFetchingProducts, setIsFetchingProducts] = useState<boolean>(false);
 
   const fetchProducts = async () => {
     try {
+      setIsFetchingProducts(true);
       const response = await axios.get(`${PY_BACKEND_URL}/get-products`);
       setProducts(response.data);
     } catch (error) {
       console.error('Error fetching products:', error);
+    } finally {
+      setIsFetchingProducts(false);
     }
   };
 
@@ -37,10 +42,15 @@ const AffiliateProductsPage = () => {
         <AffiliateSearchAndCart />
       </div>
 
-      {products.length === 0 ? (
+      {products.length === 0 && !isFetchingProducts ? (
         <p className="text-center text-gray-500">No products available.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          {isFetchingProducts &&
+            Array.from({ length: 6 }).map((_, index) => (
+              <AffiliateProductCardSkeletonLoading key={index} />
+            ))}
+
           {products.map(product => (
             <div
               key={product.id}
