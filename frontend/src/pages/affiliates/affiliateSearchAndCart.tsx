@@ -29,10 +29,10 @@ export default function AffiliateSearchAndCart() {
         </div>
       </div>
       <div className="relative">
-        <div className="bg-neutral-200 rounded-full p-2 text-white flex items-center justify-center cursor-pointer transition-colors duration-300">
+        <div className="group bg-neutral-200 dark:bg-slate-800 rounded-full p-2 text-white flex items-center justify-center cursor-pointer transition-colors duration-300">
           <HiOutlineShoppingCart
             size={25}
-            className="text-black dark:text-white hover:scale-105 duration-300 transition-transform"
+            className="text-black dark:text-white group-hover:scale-x-[-1] duration-300 transition-transform"
           />
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { RiMenuUnfold3Fill, RiMenuFold3Fill } from 'react-icons/ri';
+import { RiMenuUnfold3Fill } from 'react-icons/ri';
 import { FaFilter } from 'react-icons/fa';
 import { Outlet } from 'react-router';
 import AffiliateSidebar from './affiliateSidebar';
@@ -59,7 +59,10 @@ function AffiliateLayout() {
             className="absolute w-fit top-0 -right-13 m-1 p-2 rounded-r-lg bg-neutral-200 dark:bg-dark text-black dark:text-white  cursor-pointer"
             onClick={() => setOpenMenu(!openMenu)}
           >
-            {!openMenu ? <RiMenuUnfold3Fill size={32} /> : <RiMenuFold3Fill size={32} />}
+            <RiMenuUnfold3Fill
+              size={32}
+              className={`${openMenu && 'scale-x-[-1] duration-300 transition-transform'} `}
+            />
           </button>
         )}
         <div className="flex items-center space-x-1 px-4 border-b border-neutral-500 dark:border-gray-500">
