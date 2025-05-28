@@ -33,11 +33,7 @@ const AffiliateProductsPage = () => {
 
   return (
     <div className="min-h-screen bg-neutral-100 dark:bg-slate-800 p-4">
-      {/* <h1 className="text-4xl font-bold text-center mb-10 text-gray-800 dark:text-white">
-        🛍️ Affiliate Products
-      </h1> */}
-
-      <div className='p-2 mb-6 bg-white dark:bg-slate-700 rounded-lg shadow-md'>
+      <div className="p-2 mb-6 bg-white dark:bg-slate-700 rounded-lg shadow-md">
         <AffiliateSearchAndCart />
       </div>
 

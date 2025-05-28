@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import Request
+
 
 app = FastAPI(
     # docs_url=None,
-    # redoc_url=None,  
-    # openapi_url=None,  
+    # redoc_url=None,
+    # openapi_url=None,
 )
 
 origins = [
@@ -46,3 +48,9 @@ async def get_products():
 
     products = get_products()
     return products
+
+
+@app.get("/access-token")
+def access_token(request: Request):
+    access_token = request.cookies.get("accessToken")
+    return {"access_token": access_token}
