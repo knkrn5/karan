@@ -37,7 +37,7 @@ const AffiliateProductsPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-neutral-100 dark:bg-slate-800 p-4">
+    <div className="min-h-screen bg-neutral-100 dark:bg-slate-800 p-4 @container">
       <div className="p-2 mb-6 bg-white dark:bg-slate-700 rounded-lg shadow-md">
         <AffiliateSearchAndCart />
       </div>
@@ -45,7 +45,7 @@ const AffiliateProductsPage = () => {
       {products.length === 0 && !isFetchingProducts ? (
         <p className="text-center text-gray-500">No products available.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        <div className="grid max-xs:grid-cols-1 max-lg:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {isFetchingProducts &&
             Array.from({ length: 6 }).map((_, index) => (
               <AffiliateProductCardSkeletonLoading key={index} />
