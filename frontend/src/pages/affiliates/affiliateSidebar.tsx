@@ -108,6 +108,7 @@ export default function AffiliateSidebar() {
               type="range"
               min="0"
               max="1000"
+              step="50"
               value={price}
               onChange={e => setPrice(parseInt(e.target.value))}
               className="w-full h-2 bg-gray-200 dark:bg-slate-600 rounded-lg appearance-none cursor-pointer slider"
