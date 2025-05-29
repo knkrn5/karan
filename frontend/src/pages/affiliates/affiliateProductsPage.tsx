@@ -20,6 +20,7 @@ interface ProductPropsType {
 const AffiliateProductsPage = () => {
   const [products, setProducts] = useState<Array<ProductPropsType>>([]);
   const [isFetchingProducts, setIsFetchingProducts] = useState<boolean>(true);
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
   const fetchProducts = async () => {
     try {
@@ -62,16 +63,29 @@ const AffiliateProductsPage = () => {
                 <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
                   {product.name}
                 </h2>
-                <div className='flex items-center gap-2'>
+                <div className="flex items-center gap-2">
                   <span className="text-sm text-indigo-500">{product.category}</span>
-                  <span className="text-sm text-gray-600 dark:text-gray-300 bg-slate-100 dark:bg-slate-800 rounded-full px-2">{product.brand}</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-300 bg-slate-100 dark:bg-slate-800 rounded-full px-2">
+                    {product.brand}
+                  </span>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-300 flex-grow">
-                  {product.description}
+                <p
+                  className="text-sm text-gray-600 dark:text-gray-300 flex-grow cursor-pointer"
+                  onPointerDown={() => setShowFullDescription(!showFullDescription)}
+                >
+                  {showFullDescription
+                    ? product.description
+                    : `${product.description.slice(0, 50)}...`}
                 </p>
-                <p className="text-lg font-bold text-gray-900 dark:text-gray-200">
-                  ₹{product.price}
-                </p>
+
+                <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                  <span className="text-lg font-bold bg-neutral-200 dark:bg-slate-700 rounded-full px-2">
+                    INR
+                  </span>
+                  <p className="text-lg font-bold text-gray-900 dark:text-gray-200">
+                    {product.price}
+                  </p>
+                </div>
 
                 <div className="flex gap-2 mt-2  flex-col @card/sm:flex-row">
                   <a
