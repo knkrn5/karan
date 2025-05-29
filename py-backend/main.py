@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import Request
 from app import (
@@ -9,6 +9,7 @@ from app import (
     delete_product,
     update_product,
 )
+from typing import List
 
 
 app = FastAPI(
@@ -55,7 +56,7 @@ async def get_products_route():
     return products
 
 
-@app.put("/update-product/{product_id}")
+@app.patch("/update-product/{product_id}")
 async def update_product_route(product_id: int, product: Product):
     try:
         update_product(product_id, product)
@@ -64,11 +65,11 @@ async def update_product_route(product_id: int, product: Product):
         return {"error": str(e)}
 
 
-@app.delete("/delete-product/{product_id}")
-async def delete_product_route(product_id: int):
+@app.delete("/delete-product")
+async def delete_product_route(ids: List[int] = Query(...)):
     try:
-        delete_product(product_id)
-        return {"message": "Product deleted successfully"}
+        delete_product(ids)
+        return {"message": "Products deleted successfully"}
     except ValueError as e:
         return {"error": str(e)}
 

@@ -18,11 +18,10 @@ interface ProductPropsType {
 
 const AffiliateProductsPage = () => {
   const [products, setProducts] = useState<Array<ProductPropsType>>([]);
-  const [isFetchingProducts, setIsFetchingProducts] = useState<boolean>(false);
+  const [isFetchingProducts, setIsFetchingProducts] = useState<boolean>(true);
 
   const fetchProducts = async () => {
     try {
-      setIsFetchingProducts(true);
       const response = await axios.get(`${PY_BACKEND_URL}/get-products`);
       setProducts(response.data);
     } catch (error) {

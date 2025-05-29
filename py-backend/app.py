@@ -13,7 +13,8 @@ class Product(SQLModel, table=True):
     name: str
     image: str
     category: str
-    subCategory: str
+    brand: str
+    subCategory: List[str] = Field(sa_column=Column(ARRAY(String)))
     description: str
     tags: List[str] = Field(sa_column=Column(ARRAY(String)))
     price: float
@@ -61,12 +62,16 @@ def update_product(product_id: int, updated_product: Product):
         print("✅ Product updated in the database.")
 
 
-def delete_product(product_id: int):
+def delete_product(product_ids: list[int]):
     with Session(engine) as session:
-        product = session.get(Product, product_id)
-        if not product:
-            raise ValueError("Product not found.")
+        for id in product_ids:
+            if not isinstance(id, int):
+                raise ValueError("Product ID must be an integer.")
+            product = session.get(Product, id)
+            if not product:
+                print(f"⚠️ Product with ID {id} not found.")
+                continue
+            session.delete(product)
 
-        session.delete(product)
         session.commit()
-        print("✅ Product deleted from the database.")
+        print("✅ Products deleted from the database.")
