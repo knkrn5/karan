@@ -1,30 +1,33 @@
 from sqlmodel import SQLModel, Field, create_engine, Session
 from sqlalchemy.exc import OperationalError
-from sqlalchemy import Column, ARRAY, String
+from sqlalchemy import Column, ARRAY, String, Text
 from dotenv import load_dotenv
 from typing import List, Optional
 import os
+from pydantic import BaseModel
 
 load_dotenv()
 
 
 class Product(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    name: str
-    image: str
-    category: str
-    brand: str
-    subCategory: List[str] = Field(sa_column=Column(ARRAY(String)))
-    description: str
-    tags: List[str] = Field(sa_column=Column(ARRAY(String)))
-    price: float
-    affiliateLink: str
+    name: str = Field(max_length=255)
+    image: str = Field(max_length=1000)
+    category: str = Field(max_length=100)
+    brand: str = Field(max_length=100)
+    subCategory: List[str] = Field(
+        default_factory=list, sa_column=Column(ARRAY(String(100)))
+    )
+    description: str = Field(sa_column=Column(Text))
+    tags: List[str] = Field(default_factory=list, sa_column=Column(ARRAY(String(50))))
+    price: float = Field(gt=0)
+    affiliateLink: str = Field(max_length=1000)
 
 
 engine = create_engine(os.getenv("POSTGRES_URL"))
 
 
-def create_db_and_tables():
+def connect_db_and_create_table():
     try:
         SQLModel.metadata.create_all(engine)
         print("✅ Database connected and tables created.")
@@ -54,7 +57,10 @@ def update_product(product_id: int, updated_product: Product):
         if not product:
             raise ValueError("Product not found.")
 
-        for key, value in updated_product.dict(exclude_unset=True).items():
+        # Use model_dump instead of dict
+        update_data = updated_product.model_dump(exclude_unset=True, exclude_none=True)
+
+        for key, value in update_data.items():
             setattr(product, key, value)
 
         session.add(product)

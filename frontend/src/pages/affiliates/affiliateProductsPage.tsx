@@ -14,6 +14,7 @@ interface ProductPropsType {
   price: number;
   affiliateLink: string;
   category: string;
+  brand: string;
 }
 
 const AffiliateProductsPage = () => {
@@ -58,10 +59,13 @@ const AffiliateProductsPage = () => {
               <img src={product.image} alt={product.name} className="h-48 w-full object-cover" />
 
               <div className="p-4 flex flex-col flex-grow space-y-1">
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
+                <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
                   {product.name}
                 </h2>
-                <span className="text-sm text-indigo-500">{product.category}</span>
+                <div className='flex items-center gap-2'>
+                  <span className="text-sm text-indigo-500">{product.category}</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-300 bg-slate-100 dark:bg-slate-800 rounded-full px-2">{product.brand}</span>
+                </div>
                 <p className="text-sm text-gray-600 dark:text-gray-300 flex-grow">
                   {product.description}
                 </p>

@@ -5,7 +5,7 @@ from app import (
     Product,
     add_product,
     get_products,
-    create_db_and_tables,
+    connect_db_and_create_table,
     delete_product,
     update_product,
 )
@@ -32,8 +32,8 @@ app.add_middleware(
 
 
 @app.on_event("startup")
-def on_startup():
-    create_db_and_tables()
+async def on_startup():
+    connect_db_and_create_table()
 
 
 @app.get("/")
