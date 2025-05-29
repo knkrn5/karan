@@ -130,6 +130,11 @@ export default function AffiliateSidebar() {
           </div>
         </div>
       </div>
+      {/* information */}
+      <div className="mt-4 p-4 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg shadow-lg text-white text-center">
+        <h3 className="text-lg font-bold">Special Offers</h3>
+        <p className="text-sm mt-1">Check out our latest deals and discounts!</p>
+      </div>
     </div>
   );
 }

@@ -36,8 +36,8 @@ export default function AffiliateSearchAndCart() {
 
         <div
           className={`absolute right-0 top-full mt-2 w-64 h-100 bg-white dark:bg-slate-900 rounded-lg shadow-lg p-4 z-10  ${
-            isCartOpen ? 'scale-x-100' : 'scale-x-0'
-          }  duration-300 transition-transform origin-top-right`}
+            isCartOpen ? 'scale-y-100' : 'scale-y-0'
+          }  duration-300 transition-transform origin-top`}
         >
           cart products
         </div>
