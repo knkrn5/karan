@@ -5,7 +5,8 @@ import UserAccount from './userAccount.js';
 import { useAuthStore } from '../../stores/auth/authStore.js';
 import { useProfileStore } from '../../stores/profile/profileStore.js';
 import { useAuthCheck } from '../../hooks/authCheckHook.js';
-import { AuthButtonsSkeletonLoading } from '../../components/ui/skeletonLoadings.js';
+import { AuthButtonsSkeletonLoading } from './authSkeletonLaoding.js';
+
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 

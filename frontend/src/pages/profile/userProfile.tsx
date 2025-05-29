@@ -6,7 +6,8 @@ import axios from 'axios';
 import { useAuthStore } from '../../stores/auth/authStore';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import BrandLoadingPage from '../brandLoadingPage';
-import { TwoSmallLinesSkeletonLoading } from '../../components/ui/skeletonLoadings.js';
+import { TwoSmallLinesSkeletonLoading } from './profileSkeletonLoading.js';
+
 import { verifyPassword, sendEmailOtp, verifyEmailOtp, logout } from '../../utils/auth.utils';
 import { ICnotificationMsg } from '../../components/notifications/ICnotificationMsg.js';
 import DeleteConfirmationPopup from './deletePopup';

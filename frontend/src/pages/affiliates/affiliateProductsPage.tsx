@@ -70,7 +70,7 @@ const AffiliateProductsPage = () => {
                   {product.description}
                 </p>
                 <p className="text-lg font-bold text-gray-900 dark:text-gray-200">
-                  ${product.price}
+                  ₹{product.price}
                 </p>
 
                 <div className="flex gap-2 mt-2  flex-col @card/sm:flex-row">

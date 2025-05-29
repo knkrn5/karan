@@ -4,7 +4,6 @@ from sqlalchemy import Column, ARRAY, String, Text
 from dotenv import load_dotenv
 from typing import List, Optional
 import os
-from pydantic import BaseModel
 
 load_dotenv()
 
