@@ -28,10 +28,10 @@ function AffiliateLayout() {
     }
 
     window.addEventListener('resize', handleResize);
-    document.addEventListener('pointerdown', handleClickOutside);
+    document.addEventListener('click', handleClickOutside);
     return () => {
       window.removeEventListener('resize', handleResize);
-      document.removeEventListener('pointerdown', handleClickOutside);
+      document.removeEventListener('click', handleClickOutside);
     };
   }, [openMenu, isSmallScreen]);
 
