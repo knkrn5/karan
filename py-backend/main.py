@@ -7,9 +7,9 @@ from app import (
     get_products,
     connect_db_and_create_table,
     delete_product,
-    update_product,
+    update_product_field,
 )
-from typing import List
+from typing import List, Any
 
 
 app = FastAPI(
@@ -58,9 +58,9 @@ async def get_products_route():
 
 
 @app.patch("/update-product/{product_id}")
-async def update_product_route(product_id: int, product: Product):
+async def update_product_route(product_id: int, field_key: str, field_value: Any):
     try:
-        update_product(product_id, product)
+        update_product_field(product_id, field_key, field_value)
         return {"message": "Product updated successfully"}
     except ValueError as e:
         return {"error": str(e)}

@@ -2,7 +2,7 @@ from sqlmodel import SQLModel, Field, create_engine, Session
 from sqlalchemy.exc import OperationalError
 from sqlalchemy import Column, ARRAY, String, Text
 from dotenv import load_dotenv
-from typing import List, Optional
+from typing import List, Optional, Any
 import os
 
 load_dotenv()
@@ -50,17 +50,16 @@ def get_products() -> List[Product]:
         return session.query(Product).all()
 
 
-def update_product(product_id: int, updated_product: Product):
+def update_product_field(product_id: int, field_key: str, field_value: Any):
     with Session(engine) as session:
         product = session.get(Product, product_id)
         if not product:
             raise ValueError("Product not found.")
 
-        # Use model_dump instead of dict
-        update_data = updated_product.model_dump(exclude_unset=True, exclude_none=True)
-
-        for key, value in update_data.items():
-            setattr(product, key, value)
+        if hasattr(product, field_key):
+            setattr(product, field_key, field_value)
+        else:
+            raise ValueError(f"Product does not have the attribute '{field_key}'.")
 
         session.add(product)
         session.commit()
