@@ -45,7 +45,7 @@ def add_product(product: Product):
         print("✅ Product added to the database.")
 
 
-def get_products() -> List[Product]:
+def get_all_products() -> List[Product]:
     with Session(engine) as session:
         return session.query(Product).all()
 
