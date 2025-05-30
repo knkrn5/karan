@@ -67,11 +67,13 @@ async function scheduleTokenRefresh() {
 async function pingpybackend() {
   try {
     const response = await axios.get(`${PY_BACKEND_URL}/`);
-    console.log(response.data);
-    return response.status === 200;
+    console.log('api2 status✅:', response.status);
   } catch (error) {
-    console.error('Error pinging:', error);
-    return false;
+    if (axios.isAxiosError(error)) {
+      console.error('api2 status❌:', error.response?.status);
+    } else {
+      console.error('api2 status❌:', error);
+    }
   }
 }
 
