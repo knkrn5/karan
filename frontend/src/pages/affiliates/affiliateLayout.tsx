@@ -17,7 +17,7 @@ function AffiliateLayout() {
       setOpenMenu(false);
     }
 
-    function handleClickOutside(event: MouseEvent | TouchEvent) {
+    function handleClickOutside(event: MouseEvent) {
       if (
         openMenu &&
         !sidebarRef.current?.contains(event.target as Node) &&
