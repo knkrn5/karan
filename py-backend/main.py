@@ -5,6 +5,7 @@ from app import (
     Product,
     add_product,
     get_products,
+    get_product_by_name,
     connect_db_and_create_table,
     delete_product,
     update_product_fields,
@@ -13,9 +14,9 @@ from typing import List, Any, Dict
 
 
 app = FastAPI(
-    # docs_url=None,
-    # redoc_url=None,
-    # openapi_url=None,
+    docs_url=None,
+    redoc_url=None,
+    openapi_url=None,
 )
 
 origins = [
@@ -55,6 +56,15 @@ async def add_product_route(product: Product):
 async def get_products_route():
     products = get_products()
     return products
+
+
+@app.get("/get-product-by-name")
+async def get_product_by_name_route(product_name: str):
+    product = get_product_by_name(product_name)
+    if product:
+        return product
+    else:
+        return {"error": "Product not found"}
 
 
 @app.patch("/update-product/{product_id}")

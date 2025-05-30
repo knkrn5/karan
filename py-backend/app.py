@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel, Field, create_engine, Session
 from sqlalchemy.exc import OperationalError
-from sqlalchemy import Column, ARRAY, String, Text
+from sqlalchemy import Column, ARRAY, String, Text, func
 from dotenv import load_dotenv
 from typing import List, Optional, Any, Dict
 import os
@@ -48,6 +48,15 @@ def add_product(product: Product):
 def get_products() -> List[Product]:
     with Session(engine) as session:
         return session.query(Product).all()
+
+
+def get_product_by_name(product_name: str) -> Optional[Product]:
+    with Session(engine) as session:
+        return (
+            session.query(Product)
+            .filter(func.lower(Product.name) == product_name.lower())
+            .first()
+        )
 
 
 def update_product_fields(product_id: int, fields_to_updates: Dict[str, Any]):
