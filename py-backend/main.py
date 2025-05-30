@@ -40,7 +40,7 @@ async def on_startup():
 
 @app.get("/")
 async def main():
-    return {"message": "Hello World"}
+    return {"message": "Hey!!!!! 🎉"}
 
 
 @app.post("/add-products")

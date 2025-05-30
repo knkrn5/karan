@@ -3,6 +3,7 @@ import axiosApi from './axios';
 import clearBrowserStorage from './browserStorage';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const PY_BACKEND_URL = import.meta.env.VITE_PY_BACKEND_URL;
 
 async function autoRefreshAccessToken() {
   try {
@@ -62,8 +63,21 @@ async function scheduleTokenRefresh() {
   }
 }
 
+// Pinging Python backend
+async function pingpybackend() {
+  try {
+    const response = await axios.get(`${PY_BACKEND_URL}/`);
+    console.log(response.data);
+    return response.status === 200;
+  } catch (error) {
+    console.error('Error pinging:', error);
+    return false;
+  }
+}
+
 async function isAuthenticated(): Promise<boolean> {
   clearBrowserStorage();
+  pingpybackend();
 
   try {
     // await new Promise((resolve) => setTimeout(resolve, 3000));
