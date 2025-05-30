@@ -19,7 +19,7 @@ export default function AffiliateSidebar() {
 
   const clearFilters = () => {
     setSelectedCategory('');
-    setPrice(500);
+    setPrice(1000);
   };
 
   return (

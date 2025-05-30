@@ -37,7 +37,7 @@ const AffiliateProductsPage = () => {
     fetchProducts();
   }, []);
 
-  const filteredProducts = products.filter(product => product.price < 500);
+  // const filteredProducts = products.filter(product => product.price < 500);
 
   return (
     <div className="min-h-screen bg-neutral-100 dark:bg-slate-800 p-4 @container">
