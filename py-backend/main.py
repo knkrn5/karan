@@ -7,9 +7,9 @@ from app import (
     get_all_products,
     connect_db_and_create_table,
     delete_product,
-    update_product_field,
+    update_product_fields,
 )
-from typing import List, Any
+from typing import List, Any, Dict
 
 
 app = FastAPI(
@@ -58,9 +58,9 @@ async def get_products_route():
 
 
 @app.patch("/update-product/{product_id}")
-async def update_product_route(product_id: int, field_key: str, field_value: Any):
+async def update_product_route(product_id: int, fields_to_updates: Dict[str, Any]):
     try:
-        update_product_field(product_id, field_key, field_value)
+        update_product_fields(product_id, fields_to_updates)
         return {"message": "Product updated successfully"}
     except ValueError as e:
         return {"error": str(e)}
