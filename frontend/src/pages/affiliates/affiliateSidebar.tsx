@@ -6,7 +6,7 @@ import { BiCategory } from 'react-icons/bi';
 import { useState } from 'react';
 
 export default function AffiliateSidebar() {
-  const [price, setPrice] = useState(500);
+  const [price, setPrice] = useState(1000);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
 
   const categories = [
@@ -25,7 +25,7 @@ export default function AffiliateSidebar() {
   return (
     <div className="p-4 bg-white dark:bg-slate-800 ">
       {/* Active Filters Summary */}
-      {(selectedCategory.length > 0 || price !== 500) && (
+      {(selectedCategory.length > 0 || price !== 1000) && (
         <div className="mb-3 p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-800">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-orange-700 dark:text-orange-300">
@@ -45,7 +45,7 @@ export default function AffiliateSidebar() {
             <span className="px-2 py-1 bg-orange-100 dark:bg-orange-800 text-orange-700 dark:text-orange-200 text-xs rounded-full">
               {selectedCategory}
             </span>
-            {price !== 500 && (
+            {price !== 1000 && (
               <span className="px-2 py-1 bg-orange-100 dark:bg-orange-800 text-orange-700 dark:text-orange-200 text-xs rounded-full">
                 Under ₹{price}
               </span>

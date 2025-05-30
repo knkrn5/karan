@@ -54,7 +54,7 @@ function AffiliateLayout() {
             title={openMenu ? 'Close menu' : 'Open menu'}
             aria-label={openMenu ? 'Close menu' : 'Open menu'}
             ref={menuBarButtonRef}
-            className="absolute w-fit top-0 -right-13 m-1 p-2 rounded-r-lg bg-neutral-200 dark:bg-dark text-black dark:text-white  cursor-pointer"
+            className="absolute w-fit z-50 top-0 -right-13 m-1 p-2 rounded-r-lg bg-neutral-200 dark:bg-dark text-black dark:text-white  cursor-pointer"
             onClick={() => setOpenMenu(!openMenu)}
           >
             <RiMenuUnfold3Fill
@@ -63,11 +63,13 @@ function AffiliateLayout() {
             />
           </button>
         )}
-        <div className="flex items-center space-x-1 px-4 border-b border-neutral-500 dark:border-gray-500">
-          <FaFilter />
-          <h3 className="font-extrabold text-2xl py-2 ">Filters</h3>
+        <div className="overflow-y-auto h-screen">
+          <div className="flex items-center space-x-1 px-4 border-b border-neutral-500 dark:border-gray-500">
+            <FaFilter />
+            <h3 className="font-extrabold text-2xl py-2 ">Filters</h3>
+          </div>
+          <AffiliateSidebar />
         </div>
-        <AffiliateSidebar />
       </div>
 
       {/* Main Content  */}
