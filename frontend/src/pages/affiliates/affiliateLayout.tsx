@@ -14,10 +14,9 @@ function AffiliateLayout() {
   useEffect(() => {
     function handleResize() {
       setIsSmallScreen(window.innerWidth < 768);
-      setOpenMenu(false);
     }
 
-    function handleClickOutside(event: MouseEvent) {
+    function handleClickOutside(event: MouseEvent | TouchEvent) {
       if (
         openMenu &&
         !sidebarRef.current?.contains(event.target as Node) &&
@@ -28,10 +27,10 @@ function AffiliateLayout() {
     }
 
     window.addEventListener('resize', handleResize);
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener('pointerup', handleClickOutside);
     return () => {
       window.removeEventListener('resize', handleResize);
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('pointerup', handleClickOutside);
     };
   }, [openMenu, isSmallScreen]);
 
