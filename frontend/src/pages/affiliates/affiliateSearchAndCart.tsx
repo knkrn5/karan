@@ -24,7 +24,7 @@ export default function AffiliateSearchAndCart() {
           title="cart"
           type="button"
           onClick={() => setIsCartOpen(!isCartOpen)}
-          className="group bg-neutral-200 dark:bg-slate-800 rounded-full p-2 text-white flex items-center justify-center cursor-pointer transition-colors outline-1 duration-300"
+          className="group bg-neutral-200 dark:bg-slate-800 rounded-full p-2 text-white flex items-center justify-center cursor-pointer transition-transform outline-1 duration-300"
         >
           <HiOutlineShoppingCart
             size={25}

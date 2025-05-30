@@ -36,9 +36,7 @@ function AffiliateLayout() {
   }, [openMenu, isSmallScreen]);
 
   return (
-    <div
-      className={`h-screen md:grid md:grid-cols-[250px_1fr] gap-2 bg-neutral-50 dark:bg-slate-900`}
-    >
+    <div className={` md:grid md:grid-cols-[250px_1fr] gap-2 bg-neutral-50 dark:bg-slate-900`}>
       {/* Sidebar */}
       <div
         ref={sidebarRef}
@@ -73,7 +71,7 @@ function AffiliateLayout() {
       </div>
 
       {/* Main Content  */}
-      <div className=" bg-neutral-100 dark:bg-slate-800 text-white transition-transform h-screen overflow-y-auto ">
+      <div className=" bg-neutral-100 dark:bg-slate-800 text-white transition-transform h-screen overflow-y-auto">
         <Outlet />
       </div>
     </div>

@@ -20,7 +20,7 @@ interface ProductPropsType {
 const AffiliateProductsPage = () => {
   const [products, setProducts] = useState<Array<ProductPropsType>>([]);
   const [isFetchingProducts, setIsFetchingProducts] = useState<boolean>(true);
-  const [showFullDescription, setShowFullDescription] = useState(false);
+  const [expandedDescriptionId, setExpandedDescriptionId] = useState<number | null>(null);
 
   const fetchProducts = async () => {
     try {
@@ -71,21 +71,18 @@ const AffiliateProductsPage = () => {
                 </div>
                 <p
                   className="text-sm text-gray-600 dark:text-gray-300 flex-grow cursor-pointer"
-                  onPointerDown={() => setShowFullDescription(!showFullDescription)}
+                  onClick={() =>
+                    setExpandedDescriptionId(prev => (prev === product.id ? null : product.id))
+                  }
                 >
-                  {showFullDescription
+                  {expandedDescriptionId === product.id
                     ? product.description
                     : `${product.description.slice(0, 50)}...`}
                 </p>
 
-                <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
-                  <span className="text-lg font-bold bg-neutral-200 dark:bg-slate-700 rounded-full px-2">
-                    INR
-                  </span>
-                  <p className="text-lg font-bold text-gray-900 dark:text-gray-200">
-                    {product.price}
-                  </p>
-                </div>
+                <p className="text-lg font-bold text-gray-900 dark:text-gray-200">
+                  ₹{product.price}
+                </p>
 
                 <div className="flex gap-2 mt-2  flex-col @card/sm:flex-row">
                   <a
