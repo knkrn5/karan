@@ -4,7 +4,7 @@ from fastapi import Request
 from app import (
     Product,
     add_product,
-    get_all_products,
+    get_products,
     connect_db_and_create_table,
     delete_product,
     update_product_fields,
@@ -53,7 +53,7 @@ async def add_product_route(product: Product):
 
 @app.get("/get-products")
 async def get_products_route():
-    products = get_all_products()
+    products = get_products()
     return products
 
 
