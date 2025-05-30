@@ -73,7 +73,9 @@ const AffiliateProductsPage = () => {
                       setExpandedDescriptionId(prev => (prev === product.id ? null : product.id))
                     }
                   >
-                    {expandedDescriptionId === product.id
+                    {product.description.length < 50
+                      ? product.description
+                      : expandedDescriptionId === product.id
                       ? product.description
                       : `${product.description.slice(0, 50)}...`}
                   </p>
