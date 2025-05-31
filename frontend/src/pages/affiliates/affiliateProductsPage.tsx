@@ -16,6 +16,7 @@ interface ProductPropsType {
   price: number;
   affiliateLink: string;
   category: string;
+  tags: string;
   brand: string;
 }
 
@@ -28,6 +29,7 @@ const AffiliateProductsPage = () => {
 
   const category = searchParams.get('category') ?? '';
   const price = parseInt(searchParams.get('price') ?? '1000');
+  const searchedProduct = searchParams.get('search') ?? '';
 
   const fetchProducts = async () => {
     try {
@@ -42,13 +44,21 @@ const AffiliateProductsPage = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+    console.log(searchedProduct);
+  }, [searchedProduct]);
 
   const filteredProducts = products.filter(product => {
     const isCategoryMatch =
       category === '' || product.category.toLowerCase() === category.toLowerCase();
     const isPriceMatch = price === 1000 || product.price <= price;
-    return isCategoryMatch && isPriceMatch;
+    const isSearchMatch =
+      searchedProduct === '' ||
+      product.name.toLowerCase().includes(searchedProduct.toLowerCase()) ||
+      product.brand.toLowerCase().includes(searchedProduct.toLowerCase()) ||
+      product.category.toLowerCase().includes(searchedProduct.toLowerCase());
+    // product.tags.toLowerCase().includes(searchedProduct.toLowerCase())
+
+    return isCategoryMatch && isPriceMatch && isSearchMatch;
   });
 
   return (
