@@ -44,7 +44,10 @@ const AffiliateProductsPage = () => {
     console.log(category, price);
   }, [category, price]);
 
-  // const filteredProducts = products.filter(product => product.price < 500);
+  const filteredProducts = products.filter(
+    product =>
+      product.price < price && product.category.toLowerCase().includes(category.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-neutral-100 dark:bg-slate-800 p-4 @container">
@@ -59,7 +62,7 @@ const AffiliateProductsPage = () => {
           ))
         ) : (
           <>
-            {products.map(product => (
+            {filteredProducts.map(product => (
               <div
                 key={product.id}
                 className="flex flex-col @container/card bg-white dark:bg-dark rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
@@ -117,8 +120,8 @@ const AffiliateProductsPage = () => {
           </>
         )}
 
-        {products.length === 0 && !isFetchingProducts && (
-          <p className="text-center text-gray-500">No products available.</p>
+        {filteredProducts.length === 0 && !isFetchingProducts && (
+          <p className="text-center text-gray-500">No products available for {category}.</p>
         )}
       </div>
     </div>

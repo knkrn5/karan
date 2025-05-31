@@ -17,7 +17,7 @@ export default function AffiliateSidebar() {
     { name: 'Fashion', icon: FaTshirt, color: 'bg-pink-500' },
     { name: 'Home', icon: FaHome, color: 'bg-green-500' },
     { name: 'Sports', icon: FaDumbbell, color: 'bg-orange-500' },
-    { name: 'Toys', icon: FaGamepad, color: 'bg-purple-500' },
+    { name: 'Games', icon: FaGamepad, color: 'bg-purple-500' },
   ];
 
   const clearFilters = () => {
