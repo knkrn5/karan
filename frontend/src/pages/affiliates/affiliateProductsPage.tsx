@@ -122,7 +122,9 @@ const AffiliateProductsPage = () => {
           </>
         )}
       </div>
-      {filteredProducts.length === 0 && !isFetchingProducts && (
+      {filteredProducts.length === 0 &&
+      !isFetchingProducts &&
+      (category !== '' || price !== 1000) ? (
         <div className="flex flex-col items-center justify-center bg-neutral-50 dark:bg-dark shadow-lg rounded-lg py-16 px-4">
           <div className="relative mb-8">
             <div className="w-24 h-24 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center">
@@ -146,6 +148,10 @@ const AffiliateProductsPage = () => {
               Try adjusting your filters or explore other categories.
             </p>
           </div>
+        </div>
+      ) : (
+        <div className="text-center text-gray-500 dark:text-gray-400 mt-8">
+          <p>No products available</p>
         </div>
       )}
     </div>
