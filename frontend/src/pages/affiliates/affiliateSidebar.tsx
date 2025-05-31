@@ -3,11 +3,14 @@ import { FaTshirt, FaHome, FaGamepad } from 'react-icons/fa';
 import { AiFillDollarCircle } from 'react-icons/ai';
 import { FaDumbbell } from 'react-icons/fa6';
 import { BiCategory } from 'react-icons/bi';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router';
 
 export default function AffiliateSidebar() {
   const [price, setPrice] = useState(1000);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
+
+  const [, setSearchParams] = useSearchParams();
 
   const categories = [
     { name: 'Electronics', icon: IoPhonePortraitOutline, color: 'bg-blue-500' },
@@ -21,6 +24,23 @@ export default function AffiliateSidebar() {
     setSelectedCategory('');
     setPrice(1000);
   };
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+
+    // Add category in params object
+    if (selectedCategory !== '') {
+      params.set('category', selectedCategory.toLowerCase());
+    }
+
+    // Adding price in params object
+    if (price !== 1000) {
+      params.set('price', price.toString());
+    }
+
+    // Now adding the params to the URL
+    setSearchParams(params.toString());
+  }, [selectedCategory, price, setSearchParams]);
 
   return (
     <div className="p-4 bg-white dark:bg-slate-800 ">

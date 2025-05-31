@@ -39,7 +39,6 @@ export default function BlogPage() {
     end: 6,
   });
   const [error, setError] = useState<string | null>(null);
-
   const [searchOrCategoryValue, setSearchOrCategoryValue] = useState<string>('');
 
   const [searchParams] = useSearchParams();

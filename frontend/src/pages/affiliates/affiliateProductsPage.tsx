@@ -22,6 +22,7 @@ const AffiliateProductsPage = () => {
   const [isFetchingProducts, setIsFetchingProducts] = useState<boolean>(true);
   const [expandedDescriptionId, setExpandedDescriptionId] = useState<number | null>(null);
 
+
   const fetchProducts = async () => {
     try {
       const response = await axios.get(`${PY_BACKEND_URL}/get-products`);
