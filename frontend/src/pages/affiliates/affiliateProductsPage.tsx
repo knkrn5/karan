@@ -25,8 +25,8 @@ const AffiliateProductsPage = () => {
 
   const [searchParams] = useSearchParams();
 
-  const category = searchParams.get('category') || '';
-  const price = parseInt(searchParams.get('price') || '1000');
+  const category = searchParams.get('category') ?? '';
+  const price = parseInt(searchParams.get('price') ?? '1000');
 
   const fetchProducts = async () => {
     try {
