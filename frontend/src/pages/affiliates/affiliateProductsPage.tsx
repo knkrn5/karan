@@ -44,10 +44,12 @@ const AffiliateProductsPage = () => {
     fetchProducts();
   }, []);
 
-  const filteredProducts = products.filter(
-    product =>
-      product.price < price && product.category.toLowerCase().includes(category.toLowerCase())
-  );
+  const filteredProducts = products.filter(product => {
+    const isCategoryMatch =
+      category === '' || product.category.toLowerCase() === category.toLowerCase();
+    const isPriceMatch = price === 1000 || product.price <= price;
+    return isCategoryMatch && isPriceMatch;
+  });
 
   return (
     <div className="min-h-screen bg-neutral-100 dark:bg-slate-800 p-4 @container">
