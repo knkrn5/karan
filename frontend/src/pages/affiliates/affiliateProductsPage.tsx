@@ -122,37 +122,40 @@ const AffiliateProductsPage = () => {
           </>
         )}
       </div>
-      {filteredProducts.length === 0 &&
-      !isFetchingProducts &&
-      (category !== '' || price !== 1000) ? (
-        <div className="flex flex-col items-center justify-center bg-neutral-50 dark:bg-dark shadow-lg rounded-lg py-16 px-4">
-          <div className="relative mb-8">
-            <div className="w-24 h-24 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center">
-              <LuPackageOpen className="w-12 h-12 text-purple-400" />
-            </div>
-          </div>
 
-          <div className="text-center max-w-md">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-neutral-200 mb-3">
-              Oops! Nothing here
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-              We couldn't find any products in the{' '}
-              <span className="font-semibold text-gray-800 dark:text-light bg-gray-200 dark:bg-gray-800 px-2 py-1 rounded-md">
-                {category}
-              </span>{' '}
-              category under{' '}
-              <span className="font-semibold text-gray-800 dark:text-light bg-gray-200 dark:bg-gray-800 px-2 py-1 rounded-md">
-                ₹{price}.
-              </span>{' '}
-              Try adjusting your filters or explore other categories.
-            </p>
-          </div>
-        </div>
-      ) : (
+      {/* No products found UI */}
+      {!isFetchingProducts && products.length === 0 ? (
         <div className="text-center text-gray-500 dark:text-gray-400 mt-8">
           <p>No products available</p>
         </div>
+      ) : (
+        filteredProducts.length === 0 &&
+        (category !== '' || price !== 1000) && (
+          <div className="flex flex-col items-center justify-center bg-neutral-50 dark:bg-dark shadow-lg rounded-lg py-16 px-4">
+            <div className="relative mb-8">
+              <div className="w-24 h-24 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center">
+                <LuPackageOpen className="w-12 h-12 text-purple-400" />
+              </div>
+            </div>
+
+            <div className="text-center max-w-md">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-neutral-200 mb-3">
+                Oops! Nothing here
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                We couldn't find any products in the{' '}
+                <span className="font-semibold text-gray-800 dark:text-light bg-gray-200 dark:bg-gray-800 px-2 py-1 rounded-md">
+                  {category}
+                </span>{' '}
+                category under{' '}
+                <span className="font-semibold text-gray-800 dark:text-light bg-gray-200 dark:bg-gray-800 px-2 py-1 rounded-md">
+                  ₹{price}.
+                </span>{' '}
+                Try adjusting your filters or explore other categories.
+              </p>
+            </div>
+          </div>
+        )
       )}
     </div>
   );
