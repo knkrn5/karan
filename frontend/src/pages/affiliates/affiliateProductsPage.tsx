@@ -5,10 +5,11 @@ import { LuPackageOpen } from 'react-icons/lu';
 import AffiliateSearchAndCart from './affiliateSearchAndCart';
 import { AffiliateProductCardSkeletonLoading } from './affiliateSkeletonLoading';
 import { useSearchParams } from 'react-router';
+import AffiliateProductsPaginations from './affiliateProductsPaginations';
 
 const PY_BACKEND_URL = import.meta.env.VITE_PY_BACKEND_URL;
 
-interface ProductPropsType {
+export interface ProductPropsType {
   id: number;
   name: string;
   description: string;
@@ -30,6 +31,8 @@ const AffiliateProductsPage = () => {
   const category = searchParams.get('category') ?? '';
   const price = parseInt(searchParams.get('price') ?? '1000');
   const searchedProduct = searchParams.get('search') ?? '';
+  const startNumber = parseInt(searchParams.get('startNumber') ?? '0');
+  const endNumber = parseInt(searchParams.get('endNumber') ?? '6');
 
   const fetchProducts = async () => {
     try {
@@ -44,8 +47,7 @@ const AffiliateProductsPage = () => {
 
   useEffect(() => {
     fetchProducts();
-    console.log(searchedProduct);
-  }, [searchedProduct]);
+  }, []);
 
   const filteredProducts = products.filter(product => {
     const isCategoryMatch =
@@ -61,6 +63,8 @@ const AffiliateProductsPage = () => {
     return isCategoryMatch && isPriceMatch && isSearchMatch;
   });
 
+  const productsTodisplay = filteredProducts.slice(startNumber, endNumber);
+
   return (
     <div className="min-h-screen bg-neutral-100 dark:bg-slate-800 p-4 @container">
       <div className="p-2 mb-6 bg-white dark:bg-slate-700 rounded-lg shadow-md">
@@ -74,7 +78,7 @@ const AffiliateProductsPage = () => {
           ))
         ) : (
           <>
-            {filteredProducts.map(product => (
+            {productsTodisplay.map(product => (
               <div
                 key={product.id}
                 className="flex flex-col @container/card bg-white dark:bg-dark rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
@@ -166,6 +170,12 @@ const AffiliateProductsPage = () => {
             </div>
           </div>
         )
+      )}
+
+      {filteredProducts.length > 6 && (
+        <div className="flex justify-center items-center gap-3 mt-8 border-t-2 border-gray-300 dark:border-gray-600 pt-4">
+          <AffiliateProductsPaginations filteredProducts={filteredProducts} />
+        </div>
       )}
     </div>
   );

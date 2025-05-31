@@ -1,58 +1,43 @@
-import { useEffect, useState } from 'react';
-import type { BlogPostPropsType } from './blogPostsPage';
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router';
+import { ProductPropsType } from './affiliateProductsPage';
 
-const POSTS_PER_PAGE = 6;
-const PER_PAGINATION = 3;
-
-export default function BlogPaginaton({
-  blogPosts,
-  setNumberOfPosts,
-}: {
-  blogPosts: BlogPostPropsType[];
-  setNumberOfPosts: React.Dispatch<React.SetStateAction<{ start: number; end: number }>>;
-}): JSX.Element {
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [startPagination, setStartPagination] = useState<number>(0);
+export default function AffiliateProductsPaginations({
+  filteredProducts,
+}: Readonly<{
+  filteredProducts: ProductPropsType[];
+}>): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
+  const startNumber = parseInt(searchParams.get('startNumber') ?? '0');
 
-  const totalPages = Math.ceil(blogPosts.length / POSTS_PER_PAGE);
+  const startPagination = 0;
+  const currentPage = startNumber / 6 + 1;
+  const totalPages = filteredProducts.length ? Math.ceil(filteredProducts.length / 6) : 1;
+  const per_pagination = 5;
+  const productsPerPage = 6;
 
-  const handleBlogPagination = (e: React.MouseEvent<HTMLElement>) => {
+  function handleAffiliateProductsPagination(e: React.MouseEvent<HTMLElement>) {
     const id = (e.currentTarget as HTMLElement).id;
-    let newStart = 0;
-    let newEnd = POSTS_PER_PAGE;
-
-    if (id === 'previous') {
-      if (currentPage <= 1) return;
-      newStart = Math.max(0, Number(searchParams.get('startNumber')) - POSTS_PER_PAGE);
-      newEnd = newStart + POSTS_PER_PAGE;
-    } else if (id === 'next') {
-      if (currentPage >= totalPages) return;
-      newStart = Number(searchParams.get('startNumber')) + POSTS_PER_PAGE;
-      newEnd = newStart + POSTS_PER_PAGE;
-    } else {
-      const pageNumber = parseInt(id, 10);
-      newStart = (pageNumber - 1) * POSTS_PER_PAGE;
-      newEnd = newStart + POSTS_PER_PAGE;
-    }
-
-    setSearchParams({ startNumber: String(newStart), endNumber: String(newEnd) });
-    setNumberOfPosts({ start: newStart, end: newEnd });
-    scrollTo({ top: 0, behavior: 'smooth' });
-  };
+    const newStart = (Number(id) - 1) * productsPerPage;
+    const newEnd = newStart + productsPerPage;
+    setSearchParams(prev => {
+      const params = new URLSearchParams(prev.toString());
+      params.set('startNumber', String(newStart));
+      params.set('endNumber', String(newEnd));
+      return params;
+    });
+  }
 
   useEffect(() => {
-    const startNumberOnUrl = Number(searchParams.get('startNumber') || '0');
-    const rightNowOnThisPage = Math.floor(startNumberOnUrl / POSTS_PER_PAGE) + 1;
-    setCurrentPage(rightNowOnThisPage);
-  }, [searchParams]);
-
-  //pagination update on reload and on pagination click
-  useEffect(() => {
-    const newStartPagination = Math.floor((currentPage - 1) / PER_PAGINATION) * PER_PAGINATION;
-    setStartPagination(newStartPagination);
-  }, [currentPage]);
+    const startNumberOnUrl = Number(searchParams.get('startNumber') ?? '0');
+    const endNumberOnUrl = Number(searchParams.get('endNumber') ?? '6');
+    setSearchParams(prev => {
+      const params = new URLSearchParams(prev.toString());
+      params.set('startNumber', String(startNumberOnUrl));
+      params.set('endNumber', String(endNumberOnUrl));
+      return params;
+    });
+  }, [searchParams, setSearchParams]);
 
   return (
     <nav aria-label="blog pagination" className="px-2">
@@ -66,14 +51,14 @@ export default function BlogPaginaton({
               : 'text-gray-500 bg-white dark:bg-gray-800 dark:text-gray-400 cursor-pointer'
           }`}
           onClick={e => {
-            handleBlogPagination(e);
+            handleAffiliateProductsPagination(e);
           }}
         >
           Previous
         </button>
 
         {Array.from({ length: totalPages })
-          .slice(startPagination, startPagination + PER_PAGINATION)
+          .slice(startPagination, startPagination + per_pagination)
           .map((_, i: number) => {
             const pageNum = i + startPagination + 1;
             return (
@@ -86,7 +71,7 @@ export default function BlogPaginaton({
                     ? 'text-black dark:text-white bg-gray-200 dark:bg-gray-700'
                     : 'text-gray-500 bg-white dark:bg-gray-800 dark:text-gray-400'
                 }`}
-                onClick={handleBlogPagination}
+                onClick={handleAffiliateProductsPagination}
               >
                 {pageNum}
               </button>
@@ -101,7 +86,7 @@ export default function BlogPaginaton({
               ? 'cursor-not-allowed opacity-50 bg-white dark:bg-gray-800 dark:text-gray-400  '
               : 'text-gray-500 bg-white dark:bg-gray-800 dark:text-gray-400 cursor-pointer'
           }`}
-          onClick={handleBlogPagination}
+          onClick={handleAffiliateProductsPagination}
         >
           Next
         </button>

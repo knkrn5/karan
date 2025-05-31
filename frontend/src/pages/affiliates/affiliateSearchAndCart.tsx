@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
 export default function AffiliateSearchAndCart() {
-  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
-  const [searchedProduct, setSearchedProduct] = useState<string>('');
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [, setSearchParams] = useSearchParams();
+  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
+  const [searchedProduct, setSearchedProduct] = useState<string>(searchParams.get('search') ?? '');
 
   useEffect(() => {
     console.log(searchedProduct);
