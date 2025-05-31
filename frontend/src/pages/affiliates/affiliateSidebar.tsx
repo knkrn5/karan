@@ -7,10 +7,10 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
 export default function AffiliateSidebar() {
-  const [price, setPrice] = useState(1000);
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [, setSearchParams] = useSearchParams();
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
+  const [price, setPrice] = useState(parseInt(searchParams.get('price') || '1000'));
 
   const categories = [
     { name: 'Electronics', icon: IoPhonePortraitOutline, color: 'bg-blue-500' },

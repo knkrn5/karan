@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { FaShoppingCart, FaShoppingBag } from 'react-icons/fa';
 import AffiliateSearchAndCart from './affiliateSearchAndCart';
 import { AffiliateProductCardSkeletonLoading } from './affiliateSkeletonLoading';
+import { useSearchParams } from 'react-router';
 
 const PY_BACKEND_URL = import.meta.env.VITE_PY_BACKEND_URL;
 
@@ -22,6 +23,10 @@ const AffiliateProductsPage = () => {
   const [isFetchingProducts, setIsFetchingProducts] = useState<boolean>(true);
   const [expandedDescriptionId, setExpandedDescriptionId] = useState<number | null>(null);
 
+  const [searchParams] = useSearchParams();
+
+  const category = searchParams.get('category') || '';
+  const price = parseInt(searchParams.get('price') || '1000');
 
   const fetchProducts = async () => {
     try {
@@ -36,7 +41,8 @@ const AffiliateProductsPage = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+    console.log(category, price);
+  }, [category, price]);
 
   // const filteredProducts = products.filter(product => product.price < 500);
 
