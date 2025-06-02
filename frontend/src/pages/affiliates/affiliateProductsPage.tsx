@@ -49,8 +49,6 @@ const AffiliateProductsPage = () => {
     fetchProducts();
   }, []);
 
-  console.log(products.map(product => product.tags));
-
   const filteredProducts = products.filter(product => {
     const isCategoryMatch =
       category === '' || product.category.toLowerCase() === category.toLowerCase();

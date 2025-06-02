@@ -9,9 +9,9 @@ from src.routes.affiliateproducts_routes import router as affiliate_products_rou
 
 
 app = FastAPI(
-    docs_url=None,
-    redoc_url=None,
-    openapi_url=None,
+    # docs_url=None,
+    # redoc_url=None,
+    # openapi_url=None,
 )
 
 origins = [
@@ -37,8 +37,11 @@ async def on_startup():
 async def main():
     return {"message": "Hey!!!!! 🎉"}
 
+
 # routes
-app.include_router(affiliate_products_router, prefix="/affiliate-products", tags=["affiliate-products"])
+app.include_router(
+    affiliate_products_router, prefix="/affiliate-products", tags=["affiliate-products"]
+)
 
 
 @app.get("/access-token")

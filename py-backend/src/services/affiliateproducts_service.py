@@ -1,12 +1,12 @@
-from sqlmodel import SQLModel, Field, create_engine, Session
-from sqlalchemy.exc import OperationalError
-from sqlalchemy import Column, ARRAY, String, Text, func
+from sqlmodel import create_engine, Session
+from sqlalchemy import  func
 from typing import List, Optional, Any, Dict
 from src.models.affliateproducts_model import Product
 from src.db.postgresDb import DATABASE_URL
 
 
 engine = create_engine(DATABASE_URL)
+
 
 def add_product(product: Product):
     if not isinstance(product, Product):
