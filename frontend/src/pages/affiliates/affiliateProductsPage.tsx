@@ -17,6 +17,7 @@ export interface ProductPropsType {
   price: number;
   affiliateLink: string;
   category: string;
+  subcategory?: string[];
   tags: string[];
   brand: string;
 }
@@ -59,6 +60,9 @@ const AffiliateProductsPage = () => {
       product.name.toLowerCase().includes(searchedProduct.toLowerCase()) ||
       product.brand.toLowerCase().includes(searchedProduct.toLowerCase()) ||
       product.category.toLowerCase().includes(searchedProduct.toLowerCase()) ||
+      product.subcategory?.some(subcat =>
+        subcat.toLowerCase().includes(searchedProduct.toLowerCase())
+      ) ||
       product.tags.some(tag => tag.toLowerCase().includes(searchedProduct.toLowerCase()));
 
     return isCategoryMatch && isPriceMatch && isSearchMatch;
@@ -145,11 +149,11 @@ const AffiliateProductsPage = () => {
           <h2 className="text-2xl font-extrabold">No Products Found</h2>
         </div>
       )}
-      {filteredProducts.length > 6 && (
-        <div className="flex justify-center items-center gap-3 mt-8 border-t-2 border-gray-300 dark:border-gray-600 pt-4">
-          <AffiliateProductsPaginations filteredProducts={filteredProducts} />
-        </div>
-      )}
+
+      {/* show Less and More */}
+      <div className="flex justify-center items-center gap-3 mt-8 border-t-2 border-gray-300 dark:border-gray-600 pt-4">
+        <AffiliateProductsPaginations filteredProducts={filteredProducts} />
+      </div>
     </div>
   );
 };

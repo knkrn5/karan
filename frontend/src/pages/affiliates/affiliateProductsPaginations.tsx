@@ -36,7 +36,11 @@ export default function AffiliateProductsPaginations({
   }, [productsToShow, setSearchParams]);
 
   return (
-    <div className="flex justify-center items-center gap-3 mt-4">
+    <div
+      className={`flex justify-center items-center gap-3 mt-4 ${
+        filteredProducts.length <= numberOfProductsToShow ? 'hidden' : ''
+      }`}
+    >
       <button
         id="less"
         disabled={productsToShow <= numberOfProductsToShow}
