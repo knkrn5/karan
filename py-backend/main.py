@@ -9,9 +9,9 @@ from src.routes.affiliateproducts_routes import router as affiliate_products_rou
 
 
 app = FastAPI(
-    # docs_url=None,
-    # redoc_url=None,
-    # openapi_url=None,
+    docs_url=None,
+    redoc_url=None,
+    openapi_url=None,
 )
 
 origins = [
