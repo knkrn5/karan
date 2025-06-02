@@ -1,16 +1,17 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import Request
-from app import (
+from src.db.postgresDb import (
     connect_db_and_create_table,
 )
+
 from src.routes.affiliateproducts_routes import router as affiliate_products_router
 
 
 app = FastAPI(
-    docs_url=None,
-    redoc_url=None,
-    openapi_url=None,
+    # docs_url=None,
+    # redoc_url=None,
+    # openapi_url=None,
 )
 
 origins = [
