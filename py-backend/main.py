@@ -1,22 +1,16 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import Request
 from app import (
-    Product,
-    add_product,
-    get_products,
-    get_product_by_name,
     connect_db_and_create_table,
-    delete_product,
-    update_product_fields,
 )
-from typing import List, Any, Dict
+from src.routes.affiliateproducts_routes import router as affiliate_products_router
 
 
 app = FastAPI(
-    # docs_url=None,
-    # redoc_url=None,
-    # openapi_url=None,
+    docs_url=None,
+    redoc_url=None,
+    openapi_url=None,
 )
 
 origins = [
@@ -42,47 +36,8 @@ async def on_startup():
 async def main():
     return {"message": "Hey!!!!! 🎉"}
 
-
-@app.post("/add-products")
-async def add_product_route(product: Product):
-    try:
-        add_product(product)
-        return {"message": "Product added to the database"}
-    except ValueError as e:
-        return {"error": str(e)}
-
-
-@app.get("/get-products")
-async def get_products_route():
-    products = get_products()
-    return products
-
-
-@app.get("/get-product-by-name")
-async def get_product_by_name_route(product_name: str):
-    product = get_product_by_name(product_name)
-    if product:
-        return product
-    else:
-        return {"error": "Product not found"}
-
-
-@app.patch("/update-product/{product_id}")
-async def update_product_route(product_id: int, fields_to_updates: Dict[str, Any]):
-    try:
-        update_product_fields(product_id, fields_to_updates)
-        return {"message": "Product updated successfully"}
-    except ValueError as e:
-        return {"error": str(e)}
-
-
-@app.delete("/delete-product")
-async def delete_product_route(ids: List[int] = Query(...)):
-    try:
-        delete_product(ids)
-        return {"message": "Products deleted successfully"}
-    except ValueError as e:
-        return {"error": str(e)}
+# routes
+app.include_router(affiliate_products_router, prefix="/affiliate-products", tags=["affiliate-products"])
 
 
 @app.get("/access-token")
