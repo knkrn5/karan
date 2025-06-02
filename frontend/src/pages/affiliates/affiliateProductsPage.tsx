@@ -17,7 +17,7 @@ export interface ProductPropsType {
   price: number;
   affiliateLink: string;
   category: string;
-  tags: string;
+  tags: string[];
   brand: string;
 }
 
@@ -58,8 +58,8 @@ const AffiliateProductsPage = () => {
       searchedProduct === '' ||
       product.name.toLowerCase().includes(searchedProduct.toLowerCase()) ||
       product.brand.toLowerCase().includes(searchedProduct.toLowerCase()) ||
-      product.category.toLowerCase().includes(searchedProduct.toLowerCase());
-    // product.tags.toLowerCase().includes(searchedProduct.toLowerCase())
+      product.category.toLowerCase().includes(searchedProduct.toLowerCase()) ||
+      product.tags.some(tag => tag.toLowerCase().includes(searchedProduct.toLowerCase()));
 
     return isCategoryMatch && isPriceMatch && isSearchMatch;
   });

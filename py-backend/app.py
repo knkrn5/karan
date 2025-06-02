@@ -54,8 +54,8 @@ def get_product_by_name(product_name: str) -> Optional[Product]:
     with Session(engine) as session:
         return (
             session.query(Product)
-            .filter(func.lower(func.trim(Product.name)) == product_name.strip().lower())
-            .first()
+            .filter(func.lower(Product.name).ilike(f"%{product_name.strip().lower()}%"))
+            .all()
         )
 
 
