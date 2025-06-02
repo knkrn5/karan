@@ -31,8 +31,7 @@ const AffiliateProductsPage = () => {
   const category = searchParams.get('category') ?? '';
   const price = parseInt(searchParams.get('price') ?? '1000');
   const searchedProduct = searchParams.get('search') ?? '';
-  const startNumber = parseInt(searchParams.get('startNumber') ?? '0');
-  const endNumber = parseInt(searchParams.get('endNumber') ?? '6');
+  const numberOfProductsToShow = parseInt(searchParams.get('no_of_products_to_show') ?? '6', 10);
 
   const fetchProducts = async () => {
     try {
@@ -63,7 +62,7 @@ const AffiliateProductsPage = () => {
     return isCategoryMatch && isPriceMatch && isSearchMatch;
   });
 
-  const productsTodisplay = filteredProducts.slice(0, 6);
+  const productsTodisplay = filteredProducts.slice(0, numberOfProductsToShow);
 
   return (
     <div className="min-h-screen bg-neutral-100 dark:bg-slate-800 p-4 @container">

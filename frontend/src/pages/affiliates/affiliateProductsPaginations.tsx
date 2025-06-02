@@ -9,9 +9,11 @@ export default function AffiliateProductsPaginations({
   filteredProducts: ProductPropsType[];
 }>): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [productsToShow, setProductsToShow] = useState<number>(6);
-
   const numberOfProductsToShow = 6;
+
+  const [productsToShow, setProductsToShow] = useState<number>(
+    parseInt(searchParams.get('no_of_products_to_show') ?? numberOfProductsToShow.toString(), 10)
+  );
 
   function handleShowMoreLess(id: string): void {
     if (id === 'less') {
@@ -22,8 +24,16 @@ export default function AffiliateProductsPaginations({
   }
 
   useEffect(() => {
-    console.log(productsToShow);
-  });
+    setSearchParams(prev => {
+      const params = new URLSearchParams(prev.toString());
+      if (productsToShow > 0) {
+        params.set('no_of_products_to_show', productsToShow.toString());
+      } else {
+        params.delete('no_of_products_to_show');
+      }
+      return params;
+    });
+  }, [productsToShow, setSearchParams]);
 
   return (
     <div className="flex justify-center items-center gap-3 mt-4">
