@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { ProductPropsType } from './affiliateProductsPage';
+import { FaMinus, FaPlus } from 'react-icons/fa6';
 
 export default function AffiliateProductsPaginations({
   filteredProducts,
@@ -8,89 +9,45 @@ export default function AffiliateProductsPaginations({
   filteredProducts: ProductPropsType[];
 }>): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
-  const startNumber = parseInt(searchParams.get('startNumber') ?? '0');
+  const [productsToShow, setProductsToShow] = useState<number>(6);
 
-  const startPagination = 0;
-  const currentPage = startNumber / 6 + 1;
-  const totalPages = filteredProducts.length ? Math.ceil(filteredProducts.length / 6) : 1;
-  const per_pagination = 5;
-  const productsPerPage = 6;
+  const numberOfProductsToShow = 6;
 
-  function handleAffiliateProductsPagination(e: React.MouseEvent<HTMLElement>) {
-    const id = (e.currentTarget as HTMLElement).id;
-    const newStart = (Number(id) - 1) * productsPerPage;
-    const newEnd = newStart + productsPerPage;
-    setSearchParams(prev => {
-      const params = new URLSearchParams(prev.toString());
-      params.set('startNumber', String(newStart));
-      params.set('endNumber', String(newEnd));
-      return params;
-    });
+  function handleShowMoreLess(id: string): void {
+    if (id === 'less') {
+      setProductsToShow(prev => prev - numberOfProductsToShow);
+    } else if (id === 'more') {
+      setProductsToShow(prev => prev + numberOfProductsToShow);
+    }
   }
 
   useEffect(() => {
-    const startNumberOnUrl = Number(searchParams.get('startNumber') ?? '0');
-    const endNumberOnUrl = Number(searchParams.get('endNumber') ?? '6');
-    setSearchParams(prev => {
-      const params = new URLSearchParams(prev.toString());
-      params.set('startNumber', String(startNumberOnUrl));
-      params.set('endNumber', String(endNumberOnUrl));
-      return params;
-    });
-  }, [searchParams, setSearchParams]);
+    console.log(productsToShow);
+  });
 
   return (
-    <nav aria-label="blog pagination" className="px-2">
-      <ul className="inline-flex -space-x-px text-base h-10">
-        <button
-          type="button"
-          id="previous"
-          className={`flex items-center justify-center px-4 h-10 leading-tight border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-200 hover:text-gray-700 dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:text-white ${
-            currentPage === 1
-              ? 'cursor-not-allowed opacity-50 bg-white dark:bg-gray-800 dark:text-gray-400  '
-              : 'text-gray-500 bg-white dark:bg-gray-800 dark:text-gray-400 cursor-pointer'
-          }`}
-          onClick={e => {
-            handleAffiliateProductsPagination(e);
-          }}
-        >
-          Previous
-        </button>
-
-        {Array.from({ length: totalPages })
-          .slice(startPagination, startPagination + per_pagination)
-          .map((_, i: number) => {
-            const pageNum = i + startPagination + 1;
-            return (
-              <button
-                type="button"
-                key={pageNum}
-                id={String(pageNum)}
-                className={`flex items-center justify-center px-4 h-10 leading-tight border border-gray-300 hover:bg-gray-200 hover:text-gray-700 dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer ${
-                  currentPage === pageNum
-                    ? 'text-black dark:text-white bg-gray-200 dark:bg-gray-700'
-                    : 'text-gray-500 bg-white dark:bg-gray-800 dark:text-gray-400'
-                }`}
-                onClick={handleAffiliateProductsPagination}
-              >
-                {pageNum}
-              </button>
-            );
-          })}
-
-        <button
-          type="button"
-          id="next"
-          className={`flex items-center justify-center px-4 h-10 leading-tight border border-gray-300 rounded-e-lg hover:bg-gray-200 hover:text-gray-700 dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:text-white ${
-            currentPage === totalPages
-              ? 'cursor-not-allowed opacity-50 bg-white dark:bg-gray-800 dark:text-gray-400  '
-              : 'text-gray-500 bg-white dark:bg-gray-800 dark:text-gray-400 cursor-pointer'
-          }`}
-          onClick={handleAffiliateProductsPagination}
-        >
-          Next
-        </button>
-      </ul>
-    </nav>
+    <div className="flex justify-center items-center gap-3 mt-4">
+      <button
+        id="less"
+        disabled={productsToShow <= numberOfProductsToShow}
+        type="button"
+        onClick={e => handleShowMoreLess(e.currentTarget.id)}
+        className={`flex items-center gap-2 px-5 py-2.5 border-2 border-gray-300 text-gray-700  dark:text-gray-300 rounded-lg hover:border-gray-400 hover:bg-neutral-50 dark:hover:bg-gray-700 transition-all duration-200 font-medium cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 `}
+      >
+        <FaMinus className="w-4 h-4" />
+        Less
+      </button>
+      <div className="w-px h-6 bg-gray-500 dark:bg-gray-300"></div>
+      <button
+        type="button"
+        id="more"
+        onClick={e => handleShowMoreLess(e.currentTarget.id)}
+        disabled={filteredProducts.length <= productsToShow}
+        className="flex items-center gap-2 px-5 py-2.5 border-2 border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50 hover:border-blue-600 dark:hover:bg-gray-700 transition-all duration-200 font-medium cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        More
+        <FaPlus className="w-4 h-4" />
+      </button>
+    </div>
   );
 }

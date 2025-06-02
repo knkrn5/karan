@@ -10,7 +10,6 @@ export default function AffiliateSearchAndCart() {
   const [searchedProduct, setSearchedProduct] = useState<string>(searchParams.get('search') ?? '');
 
   useEffect(() => {
-    console.log(searchedProduct);
     setSearchParams(prev => {
       const params = new URLSearchParams(prev.toString());
       if (searchedProduct.trim() === '') {
