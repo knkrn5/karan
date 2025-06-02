@@ -151,9 +151,7 @@ const AffiliateProductsPage = () => {
       )}
 
       {/* show Less and More */}
-      <div className="flex justify-center items-center gap-3 mt-8 border-t-2 border-gray-300 dark:border-gray-600 pt-4">
-        <AffiliateProductsPaginations filteredProducts={filteredProducts} />
-      </div>
+      <AffiliateProductsPaginations filteredProducts={filteredProducts} />
     </div>
   );
 };
