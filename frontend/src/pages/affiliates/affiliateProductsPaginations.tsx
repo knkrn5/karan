@@ -9,7 +9,7 @@ export default function AffiliateProductsPaginations({
   filteredProducts: ProductPropsType[];
 }>): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
-  const numberOfProductsToShow = 6;
+  const numberOfProductsToShow = 9;
 
   const [productsToShow, setProductsToShow] = useState<number>(
     parseInt(searchParams.get('no_of_products_to_show') ?? numberOfProductsToShow.toString(), 10)
