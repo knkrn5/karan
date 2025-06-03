@@ -76,11 +76,13 @@ export class AuthController {
       res
         .status(response.statusCode)
         .cookie('accessToken', response.data.accessToken, {
+          domain: '.karan.email',
           httpOnly: true,
           secure: true,
           sameSite: 'none',
         })
         .cookie('refreshToken', response.data.refreshToken, {
+          domain: '.karan.email',
           httpOnly: true,
           secure: true,
           sameSite: 'none',
