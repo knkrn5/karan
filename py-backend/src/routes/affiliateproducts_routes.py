@@ -1,13 +1,14 @@
 # products_routes.py
-from fastapi import APIRouter, Query
+from fastapi import Request, APIRouter, Query
 from typing import List, Any, Dict
-from src.models.affliateproducts_model import Product
+from src.models.affliateproducts_model import Product, CartItem
 from src.services.affiliateproducts_service import (
     add_product,
     get_products,
     get_product_by_name,
     delete_product,
     update_product_fields,
+    add_product_in_cart,
 )
 
 router = APIRouter()
@@ -51,5 +52,18 @@ async def delete_product_route(ids: List[int] = Query(...)):
     try:
         delete_product(ids)
         return {"message": "Products deleted successfully"}
+    except ValueError as e:
+        return {"error": str(e)}
+
+
+@router.post("/add-to-cart")
+async def add_to_cart_route(data: CartItem, request: Request):
+    try:
+        access_token = request.cookies.get("accessToken")
+        if not access_token:
+            return {"error": "Access token is required"}
+        print(f"Access Token: {access_token}")
+        add_product_in_cart(data.user_id, data.product_id)
+        return {"message": "Product added to cart successfully"}
     except ValueError as e:
         return {"error": str(e)}

@@ -117,8 +117,6 @@ export default function LoginPage() {
       );
       const { data } = response;
 
-      console.log(data);
-
       setICnotificationMsg({ success: data.message });
       setTRpopupNotificationMsg({ success: data.message });
       setIsSuccessLoginedIn(true);

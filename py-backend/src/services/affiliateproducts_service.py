@@ -1,7 +1,7 @@
-from sqlmodel import create_engine, Session
-from sqlalchemy import  func
+from sqlmodel import create_engine, Session, select
+from sqlalchemy import func
 from typing import List, Optional, Any, Dict
-from src.models.affliateproducts_model import Product
+from src.models.affliateproducts_model import Product, CartItem
 from src.db.postgresDb import DATABASE_URL
 
 
@@ -62,3 +62,33 @@ def delete_product(product_ids: list[int]):
 
         session.commit()
         print("✅ Products deleted from the database.")
+
+
+def add_product_in_cart(user_id: int, product_id: int):
+    with Session(engine) as session:
+        product = session.get(Product, product_id)
+        if not product:
+            raise ValueError("Product not found.")
+
+        # Checking if product already in user's cart
+        cart_item = session.exec(
+            select(CartItem)
+            .where(CartItem.user_id == user_id)
+            .where(CartItem.product_id == product_id)
+        ).first()
+
+        if cart_item:
+            print("Product already in cart.")
+        else:
+            cart_item = CartItem(user_id=user_id, product_id=product_id)
+            session.add(cart_item)
+            session.commit()
+            print("✅ Product added to cart.")
+
+
+def get_cart_items(user_id: int) -> List[CartItem]:
+    with Session(engine) as session:
+        cart_items = session.exec(
+            select(CartItem).where(CartItem.user_id == user_id)
+        ).all()
+        return cart_items

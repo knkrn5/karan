@@ -6,6 +6,7 @@ import AffiliateSearchAndCart from './affiliateSearchAndCart';
 import { AffiliateProductCardSkeletonLoading } from './affiliateSkeletonLoading';
 import { useSearchParams } from 'react-router';
 import AffiliateProductsPaginations from './affiliateProductsPaginations';
+import { useAuthCheck } from '../../hooks/authCheckHook';
 
 const PY_BACKEND_URL = import.meta.env.VITE_PY_BACKEND_URL;
 
@@ -17,7 +18,7 @@ export interface ProductPropsType {
   price: number;
   affiliateLink: string;
   category: string;
-  subcategory?: string[];
+  subCategory?: string[];
   tags: string[];
   brand: string;
 }
@@ -34,6 +35,8 @@ const AffiliateProductsPage = () => {
   const searchedProduct = searchParams.get('search') ?? '';
   const numberOfProductsToShow = parseInt(searchParams.get('no_of_products_to_show') ?? '6', 10);
 
+  const isAuthChecked = useAuthCheck();
+
   const fetchProducts = async () => {
     try {
       const response = await axios.get(`${PY_BACKEND_URL}/affiliate-products/get-products`);
@@ -42,6 +45,27 @@ const AffiliateProductsPage = () => {
       console.error('Error fetching products:', error);
     } finally {
       setIsFetchingProducts(false);
+    }
+  };
+
+  const handleAddToCart = async (product_id: number) => {
+    if (!isAuthChecked) {
+      alert('User is not authenticated');
+      return;
+    }
+    console.log('adding to cart', product_id);
+    try {
+      const res = await axios.post(
+        `${PY_BACKEND_URL}/affiliate-products/add-to-cart`,
+        {
+          user_id: 1,
+          product_id,
+        },
+        { withCredentials: true }
+      );
+      console.log(res);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -58,7 +82,7 @@ const AffiliateProductsPage = () => {
       product.name.toLowerCase().includes(searchedProduct.toLowerCase()) ||
       product.brand.toLowerCase().includes(searchedProduct.toLowerCase()) ||
       product.category.toLowerCase().includes(searchedProduct.toLowerCase()) ||
-      product.subcategory?.some(subcat =>
+      product.subCategory?.some(subcat =>
         subcat.toLowerCase().includes(searchedProduct.toLowerCase())
       ) ||
       product.tags.some(tag => tag.toLowerCase().includes(searchedProduct.toLowerCase()));
@@ -128,6 +152,8 @@ const AffiliateProductsPage = () => {
                     <button
                       type="button"
                       className="flex-1 inline-flex items-center justify-center gap-2 text-indigo-600 border border-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-50 transition cursor-pointer"
+                      onClick={() => handleAddToCart(product.id)}
+                      disabled={isFetchingProducts}
                     >
                       <FaShoppingCart size={16} />
                       Add to Cart
