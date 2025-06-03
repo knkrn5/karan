@@ -59,6 +59,9 @@ async def delete_product_route(ids: List[int] = Query(...)):
 @router.post("/add-to-cart")
 async def add_to_cart_route(data: CartItem, request: Request):
     try:
+        print(f"Request origin: {request.headers.get('origin')}")
+        print(f"All cookies received: {dict(request.cookies)}")
+        print(f"Cookie header: {request.headers.get('cookie')}")
         access_token = request.cookies.get("accessToken")
         if not access_token:
             return {"error": "Access token is required"}
