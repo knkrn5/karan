@@ -1,5 +1,4 @@
 import { UserModel, IUser } from '../models/user.model.js';
-import { UserDTO } from '../dtos/user.dto.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 import jwt from 'jsonwebtoken';
 import { OTPEmailTemplate } from '../mail/templates/otpEmailTemplate.js';
@@ -75,31 +74,14 @@ export class AuthService {
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) throw new ApiResponse(409, false, 'User already exists, Please Login', null);
 
-    const user: IUser = await UserModel.create({
+    await UserModel.create({
       firstName,
       lastName,
       email,
       password,
     });
 
-    const accessToken = user.createAccessToken();
-    const refreshToken = user.createRefreshToken();
-
-    user.refreshToken = refreshToken;
-    await user.save();
-
-    const userDTO: UserDTO = {
-      _id: user._id.toString(),
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-    };
-
-    return new ApiResponse(201, true, 'User registered successfully', {
-      user: userDTO,
-      accessToken,
-      refreshToken,
-    });
+    return new ApiResponse(201, true, 'User registered successfully', null);
   }
 
   //loginning in user
@@ -116,15 +98,7 @@ export class AuthService {
     user.refreshToken = refreshToken;
     await user.save();
 
-    const userDTO: UserDTO = {
-      _id: user._id.toString(),
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-    };
-
     return new ApiResponse(200, true, 'User logged in successfully', {
-      user: userDTO,
       accessToken,
       refreshToken,
     });

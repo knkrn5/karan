@@ -93,8 +93,7 @@ export default function LoginPage() {
     const loginFieldValidation = validateloginForm();
     setLoginFieldErrors(loginFieldValidation);
 
-    if (Object.values(loginFieldValidation).some(error => error !== '')) {
-      console.log('All fields are required');
+    if (Object.values(loginFieldValidation).some(emptyFieldError => emptyFieldError !== '')) {
       return;
     }
 
@@ -117,6 +116,8 @@ export default function LoginPage() {
         { withCredentials: true }
       );
       const { data } = response;
+
+      console.log(data);
 
       setICnotificationMsg({ success: data.message });
       setTRpopupNotificationMsg({ success: data.message });

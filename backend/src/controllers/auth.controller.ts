@@ -57,20 +57,6 @@ export class AuthController {
 
       res
         .status(response.statusCode)
-        .cookie('accessToken', response.data.accessToken, {
-          httpOnly: true,
-          secure: true,
-          sameSite: 'none',
-          maxAge: 10 * 60 * 1000,
-          path: '/'
-        })
-        .cookie('refreshToken', response.data.refreshToken, {
-          httpOnly: true,
-          secure: true,
-          sameSite: 'none',
-          maxAge: 7 * 24 * 60 * 60 * 1000,
-          path: '/'
-        })
         .json(response);
     } catch (error: any) {
       if (error instanceof ApiResponse) {
