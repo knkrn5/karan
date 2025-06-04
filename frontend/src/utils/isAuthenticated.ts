@@ -77,6 +77,7 @@ async function pingpybackend() {
   }
 }
 
+
 async function isAuthenticated(): Promise<boolean> {
   clearBrowserStorage();
   pingpybackend();

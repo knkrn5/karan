@@ -12,8 +12,9 @@ const corsOptions = {
   origin: [
     'https://karan.email',
     'https://www.karan.email',
-    'https://api.karan.email/',
+    'https://api2.karan.email/',
     'http://localhost:5173',
+    'http://localhost:8000',
   ],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -50,9 +51,13 @@ app.use(
   })
 );
 
+app.get('/', (req, res) => {
+  res.send('Hey api🎉 :)');
+});
+
 // Health Check
 app.get('/health', (req, res) => {
-  res.send('health ok :)');
+  res.send('api health ✅ :)');
 });
 
 // Routes Imports

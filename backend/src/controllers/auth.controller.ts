@@ -76,11 +76,13 @@ export class AuthController {
       res
         .status(response.statusCode)
         .cookie('accessToken', response.data.accessToken, {
+          domain: process.env.NODE_ENV === 'PRODUCTION' ? '.karan.email' : undefined,
           httpOnly: true,
           secure: true,
           sameSite: 'none',
         })
         .cookie('refreshToken', response.data.refreshToken, {
+          domain: process.env.NODE_ENV === 'PRODUCTION' ? '.karan.email' : undefined,
           httpOnly: true,
           secure: true,
           sameSite: 'none',
@@ -104,7 +106,9 @@ export class AuthController {
 
       const { accessToken } = response.data;
 
+
       res.cookie('accessToken', accessToken, {
+        domain: process.env.NODE_ENV === 'PRODUCTION' ? '.karan.email' : undefined,
         httpOnly: true,
         secure: true,
         sameSite: 'none',
@@ -124,12 +128,14 @@ export class AuthController {
   static async logoutUser(req: Request, res: Response) {
     res
       .clearCookie('accessToken', {
+        domain: process.env.NODE_ENV === 'PRODUCTION' ? '.karan.email' : undefined,
         httpOnly: true,
         secure: true,
         sameSite: 'none',
         path: '/',
       })
       .clearCookie('refreshToken', {
+        domain: process.env.NODE_ENV === 'PRODUCTION' ? '.karan.email' : undefined,
         httpOnly: true,
         secure: true,
         sameSite: 'none',

@@ -23,7 +23,7 @@ class Product(SQLModel, table=True):
 
 class CartItem(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    user_id: int
+    user_id: str = Field(max_length=255)
     product_id: int = Field(foreign_key="product.id")
     added_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 

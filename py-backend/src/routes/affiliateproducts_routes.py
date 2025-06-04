@@ -1,5 +1,5 @@
 # products_routes.py
-from fastapi import Request, APIRouter, Query
+from fastapi import Request, APIRouter, Query, Depends
 from typing import List, Any, Dict
 from src.models.affliateproducts_model import Product, CartItem
 from src.services.affiliateproducts_service import (
@@ -10,6 +10,9 @@ from src.services.affiliateproducts_service import (
     update_product_fields,
     add_product_in_cart,
 )
+from src.utils.verify_jwttoken import get_current_user
+import jwt
+import os
 
 router = APIRouter()
 
@@ -57,16 +60,15 @@ async def delete_product_route(ids: List[int] = Query(...)):
 
 
 @router.post("/add-to-cart")
-async def add_to_cart_route(data: CartItem, request: Request):
+async def add_to_cart_route(
+    data: CartItem, 
+    current_user: dict = Depends(get_current_user)
+):
     try:
-        print(f"Request origin: {request.headers.get('origin')}")
-        print(f"All cookies received: {dict(request.cookies)}")
-        print(f"Cookie header: {request.headers.get('cookie')}")
-        access_token = request.cookies.get("accessToken")
-        if not access_token:
-            return {"error": "Access token is required"}
-        print(f"Access Token: {access_token}")
-        add_product_in_cart(data.user_id, data.product_id)
+        print("Current User:", current_user) 
+        user_id = current_user["user_id"] 
+        
+        add_product_in_cart(user_id, data.product_id)
         return {"message": "Product added to cart successfully"}
     except ValueError as e:
         return {"error": str(e)}
