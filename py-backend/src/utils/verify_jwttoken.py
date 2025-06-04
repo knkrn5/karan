@@ -1,6 +1,6 @@
 # utils/auth.py
 import jwt
-from fastapi import HTTPException, Request, Depends
+from fastapi import HTTPException, Request
 import os
 
 
@@ -17,13 +17,12 @@ def verify_token(token: str):
 
 
 def get_current_user(request: Request):
-    """Dependency to get current user from token"""
     access_token = request.cookies.get("accessToken")
     if not access_token:
         raise HTTPException(status_code=401, detail="Access token is required")
 
     payload = verify_token(access_token)
-    user_id = payload.get("userId")  # or whatever field you use
+    user_id = payload.get("userId") 
 
     if not user_id:
         raise HTTPException(status_code=401, detail="Invalid token payload")

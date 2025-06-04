@@ -2,14 +2,7 @@
 from fastapi import Request, APIRouter, Query, Depends
 from typing import List, Any, Dict
 from src.models.affliateproducts_model import Product, CartItem
-from src.services.affiliateproducts_service import (
-    add_product,
-    get_products,
-    get_product_by_name,
-    delete_product,
-    update_product_fields,
-    add_product_in_cart,
-)
+from src.services.affiliateproducts_service import AffiliateProductsService
 from src.utils.verify_jwttoken import get_current_user
 import jwt
 import os
@@ -20,7 +13,7 @@ router = APIRouter()
 @router.post("/add-products")
 async def add_product_route(product: Product):
     try:
-        add_product(product)
+        AffiliateProductsService.add_product(product)
         return {"message": "Product added to the database"}
     except ValueError as e:
         return {"error": str(e)}
@@ -28,13 +21,13 @@ async def add_product_route(product: Product):
 
 @router.get("/get-products")
 async def get_products_route():
-    products = get_products()
+    products = AffiliateProductsService.get_products()
     return products
 
 
 @router.get("/get-product-by-name")
 async def get_product_by_name_route(product_name: str):
-    product = get_product_by_name(product_name)
+    product = AffiliateProductsService.get_product_by_name(product_name)
     if product:
         return product
     else:
@@ -44,7 +37,7 @@ async def get_product_by_name_route(product_name: str):
 @router.patch("/update-product/{product_id}")
 async def update_product_route(product_id: int, fields_to_updates: Dict[str, Any]):
     try:
-        update_product_fields(product_id, fields_to_updates)
+        AffiliateProductsService.update_product_fields(product_id, fields_to_updates)
         return {"message": "Product updated successfully"}
     except ValueError as e:
         return {"error": str(e)}
@@ -53,7 +46,7 @@ async def update_product_route(product_id: int, fields_to_updates: Dict[str, Any
 @router.delete("/delete-product")
 async def delete_product_route(ids: List[int] = Query(...)):
     try:
-        delete_product(ids)
+        AffiliateProductsService.delete_product(ids)
         return {"message": "Products deleted successfully"}
     except ValueError as e:
         return {"error": str(e)}
@@ -61,14 +54,13 @@ async def delete_product_route(ids: List[int] = Query(...)):
 
 @router.post("/add-to-cart")
 async def add_to_cart_route(
-    data: CartItem, 
-    current_user: dict = Depends(get_current_user)
+    data: CartItem, current_user: dict = Depends(get_current_user)
 ):
     try:
-        print("Current User:", current_user) 
-        user_id = current_user["user_id"] 
-        
-        add_product_in_cart(user_id, data.product_id)
+        print("Current User:", current_user)
+        user_id = current_user["user_id"]
+
+        AffiliateProductsService.add_product_in_cart(user_id, data.product_id)
         return {"message": "Product added to cart successfully"}
     except ValueError as e:
         return {"error": str(e)}

@@ -58,7 +58,6 @@ const AffiliateProductsPage = () => {
       const res = await axios.post(
         `${PY_BACKEND_URL}/affiliate-products/add-to-cart`,
         {
-          user_id: 1,
           product_id,
         },
         { withCredentials: true }
