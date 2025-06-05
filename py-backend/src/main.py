@@ -1,10 +1,10 @@
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from src.db.postgresDb import (
+from .db.postgresDb import (
     connect_db_and_create_table,
 )
 
-from src.routes.affiliateproducts_routes import router as affiliate_products_router
+from .routes.affiliateproducts_routes import router as affiliate_products_router
 
 
 app = FastAPI(
@@ -13,7 +13,7 @@ app = FastAPI(
     # openapi_url=None,
 )
 
-origins = ["http://localhost:5173", "https://karan.email", "https://api.karan.email"]
+origins: list[str] = ["http://localhost:5173", "https://karan.email", "https://api.karan.email"]
 
 app.add_middleware(
     CORSMiddleware,

@@ -1,8 +1,8 @@
 from sqlmodel import create_engine, Session, select
 from sqlalchemy import func
 from typing import List, Optional, Any, Dict
-from src.models.affliateproducts_model import Product, CartItem
-from src.db.postgresDb import DATABASE_URL
+from ..models.affliateproducts_model import Product, CartItem
+from ..db.postgresDb import DATABASE_URL
 
 
 engine = create_engine(DATABASE_URL)
@@ -100,3 +100,19 @@ class AffiliateProductsService:
 
             products = [cart_item.product for cart_item in cart_items]
             return products
+
+    @staticmethod
+    def remove_product_from_cart(user_id: int, product_id: int):
+        with Session(engine) as session:
+            cart_item = session.exec(
+                select(CartItem)
+                .where(CartItem.user_id == user_id)
+                .where(CartItem.product_id == product_id)
+            ).first()
+
+            if cart_item:
+                session.delete(cart_item)
+                session.commit()
+                print("✅ Product removed from cart.")
+            else:
+                print("Product not found in cart.")

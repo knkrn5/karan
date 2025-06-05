@@ -39,7 +39,7 @@ const AffiliateProductsPage = () => {
 
   const isAuthChecked = useAuthCheck();
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (): Promise<void> => {
     try {
       const response = await axios.get(`${PY_BACKEND_URL}/affiliate-products/get-products`);
       setProducts(response.data);
@@ -51,14 +51,18 @@ const AffiliateProductsPage = () => {
   };
 
   const fetchCartItems = async () => {
-    const res = await axios.get(`${PY_BACKEND_URL}/affiliate-products/get-cart-items`, {
-      withCredentials: true,
-    });
-    const { data } = res;
-    setCartItems(data);
+    try {
+      const res = await axios.get(`${PY_BACKEND_URL}/affiliate-products/get-cart-items`, {
+        withCredentials: true,
+      });
+      const { data } = res;
+      setCartItems(data);
+    } catch (error) {
+      console.error('Error fetching cart items:', error);
+    }
   };
 
-  const handleAddToCart = async (product_id: number) => {
+  const handleAddToCart = async (product_id: number): Promise<void> => {
     if (!isAuthChecked) {
       alert('User is not authenticated');
       return;
@@ -84,10 +88,10 @@ const AffiliateProductsPage = () => {
   }, []);
 
   const filteredProducts = products.filter(product => {
-    const isCategoryMatch =
+    const isCategoryMatch: boolean =
       category === '' || product.category.toLowerCase() === category.toLowerCase();
-    const isPriceMatch = price === 1000 || product.price <= price;
-    const isSearchMatch =
+    const isPriceMatch: boolean = price === 1000 || product.price <= price;
+    const isSearchMatch: boolean =
       searchedProduct === '' ||
       product.name.toLowerCase().includes(searchedProduct.toLowerCase()) ||
       product.brand.toLowerCase().includes(searchedProduct.toLowerCase()) ||

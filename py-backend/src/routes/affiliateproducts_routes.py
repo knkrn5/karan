@@ -1,11 +1,9 @@
 # products_routes.py
-from fastapi import Request, APIRouter, Query, Depends
+from fastapi import APIRouter, Query, Depends
 from typing import List, Any, Dict
-from src.models.affliateproducts_model import Product, CartItem
-from src.services.affiliateproducts_service import AffiliateProductsService
-from src.utils.verify_jwttoken import get_current_user
-import jwt
-import os
+from ..models.affliateproducts_model import Product, CartItem
+from ..services.affiliateproducts_service import AffiliateProductsService
+from ..utils.verify_jwttoken import get_current_user
 
 router = APIRouter()
 
@@ -57,21 +55,32 @@ async def add_to_cart_route(
     data: CartItem, current_user: dict = Depends(get_current_user)
 ):
     try:
-        print("Current User:", current_user)
         user_id = current_user["user_id"]
 
         AffiliateProductsService.add_product_in_cart(user_id, data.product_id)
         return {"message": "Product added to cart successfully"}
     except ValueError as e:
         return {"error": str(e)}
-    
-    
+
+
 @router.get("/get-cart-items")
 async def get_cart_items_route(current_user: dict = Depends(get_current_user)):
     try:
-        print("Current User:", current_user)
         user_id = current_user["user_id"]
         cart_items = AffiliateProductsService.get_cart_items(user_id)
         return cart_items
+    except ValueError as e:
+        return {"error": str(e)}
+
+
+@router.delete("/remove-from-cart")
+async def remove_from_cart_route(
+    data: CartItem, current_user: dict = Depends(get_current_user)
+):
+    try:
+        user_id = current_user["user_id"]
+
+        AffiliateProductsService.remove_product_from_cart(user_id, data.product_id)
+        return {"message": "Product removed from cart successfully"}
     except ValueError as e:
         return {"error": str(e)}
