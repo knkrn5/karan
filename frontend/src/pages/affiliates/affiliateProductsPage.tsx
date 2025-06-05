@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { FaShoppingCart, FaShoppingBag } from 'react-icons/fa';
+import { MdRemoveShoppingCart } from 'react-icons/md';
 import { LuPackageOpen } from 'react-icons/lu';
 import AffiliateSearchAndCart from './affiliateSearchAndCart';
 import { AffiliateProductCardSkeletonLoading } from './affiliateSkeletonLoading';
@@ -25,6 +26,7 @@ export interface ProductPropsType {
 
 const AffiliateProductsPage = () => {
   const [products, setProducts] = useState<Array<ProductPropsType>>([]);
+  const [cartItems, setCartItems] = useState<Array<ProductPropsType>>([]);
   const [isFetchingProducts, setIsFetchingProducts] = useState<boolean>(true);
   const [expandedDescriptionId, setExpandedDescriptionId] = useState<number | null>(null);
 
@@ -46,6 +48,14 @@ const AffiliateProductsPage = () => {
     } finally {
       setIsFetchingProducts(false);
     }
+  };
+
+  const fetchCartItems = async () => {
+    const res = await axios.get(`${PY_BACKEND_URL}/affiliate-products/get-cart-items`, {
+      withCredentials: true,
+    });
+    const { data } = res;
+    setCartItems(data);
   };
 
   const handleAddToCart = async (product_id: number) => {
@@ -70,6 +80,7 @@ const AffiliateProductsPage = () => {
 
   useEffect(() => {
     fetchProducts();
+    fetchCartItems();
   }, []);
 
   const filteredProducts = products.filter(product => {
@@ -94,7 +105,7 @@ const AffiliateProductsPage = () => {
   return (
     <div className="min-h-screen bg-neutral-100 dark:bg-slate-800 p-4 @container">
       <div className="p-2 mb-6 bg-white dark:bg-slate-700 rounded-lg shadow-md">
-        <AffiliateSearchAndCart />
+        <AffiliateSearchAndCart cartItems={cartItems} />
       </div>
 
       <div className="grid max-xs:grid-cols-1 max-lg:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
@@ -150,12 +161,25 @@ const AffiliateProductsPage = () => {
                     </a>
                     <button
                       type="button"
-                      className="flex-1 inline-flex items-center justify-center gap-2 text-indigo-600 border border-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-50 transition cursor-pointer"
+                      className={`flex-1 inline-flex items-center justify-center gap-2  border ${
+                        cartItems.some(item => item.id === product.id)
+                          ? 'border-red-600 text-red-600 hover:bg-red-100'
+                          : 'border-indigo-600 text-indigo-600 hover:bg-indigo-50'
+                      } px-4 py-2 rounded-lg  transition cursor-pointer`}
                       onClick={() => handleAddToCart(product.id)}
                       disabled={isFetchingProducts}
                     >
-                      <FaShoppingCart size={16} />
-                      Add to Cart
+                      {cartItems.some(item => item.id === product.id) ? (
+                        <>
+                          <MdRemoveShoppingCart size={16} />
+                          Remove from Cart
+                        </>
+                      ) : (
+                        <>
+                          <FaShoppingCart size={16} />
+                          Add to Cart
+                        </>
+                      )}
                     </button>
                   </div>
                 </div>
