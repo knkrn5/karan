@@ -4,14 +4,13 @@ import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import type { ProductPropsType } from './affiliateProductsPage';
 
-
 export default function AffiliateSearchAndCart({
   cartItems,
-  removeFromCart,
+  handleCartFunctions,
   isProcessing,
 }: Readonly<{
   cartItems: ProductPropsType[];
-  removeFromCart: (product_id: number) => void;
+  handleCartFunctions: (product_id: number) => void;
   isProcessing: boolean;
 }>) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -138,7 +137,7 @@ export default function AffiliateSearchAndCart({
                       </a>
                       <button
                         type="button"
-                        onClick={() => removeFromCart(item.id)}
+                        onClick={() => handleCartFunctions(item.id)}
                         className="text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                         disabled={isProcessing}
                       >

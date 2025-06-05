@@ -68,72 +68,62 @@ const AffiliateProductsPage = () => {
     }
   };
 
-  const addToCart = async (product_id: number) => {
-    setIsProcessing(prevState => ({ ...prevState, isAddingRemovingCart: true }));
-
-    try {
-      const res = await axios.post(
-        `${PY_BACKEND_URL}/affiliate-products/add-to-cart`,
-        {
-          product_id,
-        },
-        { withCredentials: true }
-      );
-      console.log(res.data);
-
-      const productToAdd = products.find(product => product.id === product_id);
-      if (productToAdd) {
-        setCartItems(prevItems => [...prevItems, productToAdd]);
-      }
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        console.error('Error adding product to cart:', error.response?.data);
-      } else {
-        console.error('Error adding product to cart:', error);
-      }
-    } finally {
-      setIsProcessing(prevState => ({ ...prevState, isAddingRemovingCart: false }));
-    }
-  };
-
-  const removeFromCart = async (product_id: number) => {
-    setIsProcessing(prevState => ({ ...prevState, isAddingRemovingCart: true }));
-
-    try {
-      const res = await axios.delete(`${PY_BACKEND_URL}/affiliate-products/remove-from-cart`, {
-        data: { product_id },
-        withCredentials: true,
-      });
-
-      setCartItems(prevItems => prevItems.filter(item => item.id !== product_id));
-      console.log(res.data);
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        console.error('Error removing product from cart:', error.response?.data);
-      } else {
-        console.error('Error removing product from cart:', error);
-      }
-    } finally {
-      setIsProcessing(prevState => ({ ...prevState, isAddingRemovingCart: false }));
-    }
-  };
-
   const handleCartFunctions = async (product_id: number): Promise<void> => {
     if (!isAuthChecked) {
       alert('User is not authenticated');
       return;
     }
 
+    setIsProcessing(prevState => ({ ...prevState, isAddingRemovingCart: true }));
+
     if (cartItems.some(item => item.id === product_id)) {
-      await removeFromCart(product_id);
+      try {
+        const res = await axios.delete(`${PY_BACKEND_URL}/affiliate-products/remove-from-cart`, {
+          data: { product_id },
+          withCredentials: true,
+        });
+
+        setCartItems(prevItems => prevItems.filter(item => item.id !== product_id));
+        console.log(res.data);
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          console.error('Error removing product from cart:', error.response?.data);
+        } else {
+          console.error('Error removing product from cart:', error);
+        }
+      } finally {
+        setIsProcessing(prevState => ({ ...prevState, isAddingRemovingCart: false }));
+      }
     } else {
-      await addToCart(product_id);
+      try {
+        const res = await axios.post(
+          `${PY_BACKEND_URL}/affiliate-products/add-to-cart`,
+          {
+            product_id,
+          },
+          { withCredentials: true }
+        );
+        console.log(res.data);
+
+        const productToAdd = products.find(product => product.id === product_id);
+        if (productToAdd) {
+          setCartItems(prevItems => [...prevItems, productToAdd]);
+        }
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          console.error('Error adding product to cart:', error.response?.data);
+        } else {
+          console.error('Error adding product to cart:', error);
+        }
+      } finally {
+        setIsProcessing(prevState => ({ ...prevState, isAddingRemovingCart: false }));
+      }
     }
   };
 
   useEffect(() => {
-    fetchProducts();
     fetchCartItems();
+    fetchProducts();
   }, []);
 
   const filteredProducts = products.filter(product => {
@@ -160,7 +150,7 @@ const AffiliateProductsPage = () => {
       <div className="p-2 mb-6 bg-white dark:bg-slate-700 rounded-lg shadow-md">
         <AffiliateSearchAndCart
           cartItems={cartItems}
-          removeFromCart={removeFromCart}
+          handleCartFunctions={handleCartFunctions}
           isProcessing={isProcessing.isAddingRemovingCart}
         />
       </div>
