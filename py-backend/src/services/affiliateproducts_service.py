@@ -92,9 +92,11 @@ class AffiliateProductsService:
                 print("✅ Product added to cart.")
 
     @staticmethod
-    def get_cart_items(user_id: int) -> List[CartItem]:
+    def get_cart_items(user_id: int) -> List[Product]:
         with Session(engine) as session:
             cart_items = session.exec(
                 select(CartItem).where(CartItem.user_id == user_id)
             ).all()
-            return cart_items
+
+            products = [cart_item.product for cart_item in cart_items]
+            return products

@@ -64,3 +64,14 @@ async def add_to_cart_route(
         return {"message": "Product added to cart successfully"}
     except ValueError as e:
         return {"error": str(e)}
+    
+    
+@router.get("/get-cart-items")
+async def get_cart_items_route(current_user: dict = Depends(get_current_user)):
+    try:
+        print("Current User:", current_user)
+        user_id = current_user["user_id"]
+        cart_items = AffiliateProductsService.get_cart_items(user_id)
+        return cart_items
+    except ValueError as e:
+        return {"error": str(e)}

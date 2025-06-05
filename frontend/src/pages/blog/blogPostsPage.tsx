@@ -157,7 +157,7 @@ export default function BlogPage() {
                       <div className="w-full h-full px-1 rounded-b-md  ">
                         {post.excerpt ? (
                           post.title.length > 90 ? (
-                            post.excerpt.split(' ').slice(0, 7).join(' ') + '...'
+                            post.excerpt.split(' ').slice(0, 10).join(' ') + '...'
                           ) : (
                             post.excerpt.split(' ').slice(0, 15).join(' ') + '...'
                           )

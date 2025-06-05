@@ -2,14 +2,28 @@ import { HiOutlineShoppingCart } from 'react-icons/hi';
 import { CiSearch } from 'react-icons/ci';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
+import axios from 'axios';
+import type { ProductPropsType } from './affiliateProductsPage';
+
+const PY_BACKEND_URL = import.meta.env.VITE_PY_BACKEND_URL;
 
 export default function AffiliateSearchAndCart() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
   const [searchedProduct, setSearchedProduct] = useState<string>(searchParams.get('search') ?? '');
+  const [cartItems, setCartItems] = useState<Array<ProductPropsType>>([]);
+
+  const fetchCartItems = async () => {
+    const res = await axios.get(`${PY_BACKEND_URL}/affiliate-products/get-cart-items`, {
+      withCredentials: true,
+    });
+    const { data } = res;
+    setCartItems(data);
+  };
 
   useEffect(() => {
+    fetchCartItems();
     setSearchParams(prev => {
       const params = new URLSearchParams(prev.toString());
       if (searchedProduct.trim() === '') {
@@ -23,6 +37,7 @@ export default function AffiliateSearchAndCart() {
 
   return (
     <div className="relative flex justify-between  gap-3">
+      {/* search */}
       <div className="relative">
         <input
           type="text"
@@ -36,6 +51,8 @@ export default function AffiliateSearchAndCart() {
           <CiSearch />
         </div>
       </div>
+
+      {/* cart  Icon */}
       <div className="relative">
         <button
           title="cart"
@@ -51,12 +68,64 @@ export default function AffiliateSearchAndCart() {
           />
         </button>
 
+        {/* Cart Items */}
         <div
-          className={`absolute right-0 top-full mt-2 w-64 h-100 bg-white dark:bg-slate-900 rounded-lg shadow-lg p-4 z-10  ${
-            isCartOpen ? 'scale-y-100' : 'scale-y-0'
-          }  duration-300 transition-transform origin-top`}
+          className={`absolute right-0 top-full mt-2 w-80 max-h-[500px] overflow-y-auto bg-white dark:bg-slate-900 rounded-xl shadow-lg p-4 z-10 
+    transform transition-transform duration-300 origin-top ${
+      isCartOpen ? 'scale-y-100' : 'scale-y-0'
+    }`}
         >
-          cart products
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-extrabold text-slate-800 dark:text-slate-200">
+              🛒 Your Cart
+            </h2>
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              {cartItems.length} {cartItems.length === 1 ? 'item' : 'items'}
+            </span>
+          </div>
+
+          {cartItems.length === 0 ? (
+            <p className="text-sm text-gray-500 dark:text-gray-400">Cart is empty.</p>
+          ) : (
+            cartItems.map(item => (
+              <div
+                key={item.id}
+                className="flex items-start gap-3 mb-4 p-1 py-2 rounded-lg shadow-lg bg-neutral-200 dark:bg-slate-800"
+              >
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-16 h-16 object-cover rounded-md border"
+                />
+
+                <div className="flex-1">
+                  <h3 className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                    {item.name}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    ₹{item.price.toFixed(2)}
+                  </p>
+
+                  <div className="mt-2 flex gap-2">
+                    <a
+                      href={item.affiliateLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded"
+                    >
+                      Buy Now
+                    </a>
+                    <button
+                      // onClick={() => handleRemoveFromCart(item.id)}
+                      className="text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>
