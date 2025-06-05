@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import type { ProductPropsType } from './affiliateProductsPage';
 
-// const PY_BACKEND_URL = import.meta.env.VITE_PY_BACKEND_URL;
 
 export default function AffiliateSearchAndCart({
   cartItems,
