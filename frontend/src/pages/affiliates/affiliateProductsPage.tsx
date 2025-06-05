@@ -8,6 +8,7 @@ import { AffiliateProductCardSkeletonLoading } from './affiliateSkeletonLoading'
 import { useSearchParams } from 'react-router';
 import AffiliateProductsPaginations from './affiliateProductsPaginations';
 import { useAuthCheck } from '../../hooks/authCheckHook';
+import { useMainPopupStore } from '../../stores/popup/mainPopupStore';
 
 const PY_BACKEND_URL = import.meta.env.VITE_PY_BACKEND_URL;
 
@@ -43,6 +44,8 @@ const AffiliateProductsPage = () => {
     10
   );
 
+  //main popup store
+  const { setMainPopupMsg } = useMainPopupStore();
   const isAuthChecked = useAuthCheck();
 
   const fetchProducts = async (): Promise<void> => {
@@ -70,54 +73,40 @@ const AffiliateProductsPage = () => {
 
   const handleCartFunctions = async (product_id: number): Promise<void> => {
     if (!isAuthChecked) {
-      alert('User is not authenticated');
+      setMainPopupMsg('Please Login to add to cart.');
       return;
     }
 
-    setIsProcessing(prevState => ({ ...prevState, isAddingRemovingCart: true }));
+    setIsProcessing(prev => ({ ...prev, isAddingRemovingCart: true }));
 
-    if (cartItems.some(item => item.id === product_id)) {
-      try {
+    try {
+      if (cartItems.some(item => item.id === product_id)) {
         const res = await axios.delete(`${PY_BACKEND_URL}/affiliate-products/remove-from-cart`, {
           data: { product_id },
           withCredentials: true,
         });
-
-        setCartItems(prevItems => prevItems.filter(item => item.id !== product_id));
         console.log(res.data);
-      } catch (error: unknown) {
-        if (axios.isAxiosError(error)) {
-          console.error('Error removing product from cart:', error.response?.data);
-        } else {
-          console.error('Error removing product from cart:', error);
-        }
-      } finally {
-        setIsProcessing(prevState => ({ ...prevState, isAddingRemovingCart: false }));
-      }
-    } else {
-      try {
+        setCartItems(prev => prev.filter(item => item.id !== product_id));
+      } else {
         const res = await axios.post(
           `${PY_BACKEND_URL}/affiliate-products/add-to-cart`,
-          {
-            product_id,
-          },
+          { product_id },
           { withCredentials: true }
         );
         console.log(res.data);
-
         const productToAdd = products.find(product => product.id === product_id);
         if (productToAdd) {
-          setCartItems(prevItems => [...prevItems, productToAdd]);
+          setCartItems(prev => [...prev, productToAdd]);
         }
-      } catch (error: unknown) {
-        if (axios.isAxiosError(error)) {
-          console.error('Error adding product to cart:', error.response?.data);
-        } else {
-          console.error('Error adding product to cart:', error);
-        }
-      } finally {
-        setIsProcessing(prevState => ({ ...prevState, isAddingRemovingCart: false }));
       }
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error('Cart error:', error.response?.data);
+      } else {
+        console.error('Unexpected cart error:', error);
+      }
+    } finally {
+      setIsProcessing(prev => ({ ...prev, isAddingRemovingCart: false }));
     }
   };
 

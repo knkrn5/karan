@@ -1,6 +1,7 @@
 import { HiOutlineShoppingCart } from 'react-icons/hi';
 import { CiSearch } from 'react-icons/ci';
-import { IoIosTrash } from 'react-icons/io';
+import { FaTrashAlt } from 'react-icons/fa';
+import { RiShoppingBag4Fill } from 'react-icons/ri';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import type { ProductPropsType } from './affiliateProductsPage';
@@ -134,7 +135,10 @@ export default function AffiliateSearchAndCart({
                         rel="noopener noreferrer"
                         className="text-xs bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded"
                       >
-                        Buy Now
+                        <span className="flex gap-1 items-center">
+                          <RiShoppingBag4Fill />
+                          Buy Now
+                        </span>
                       </a>
                       <button
                         type="button"
@@ -142,8 +146,8 @@ export default function AffiliateSearchAndCart({
                         className="text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                         disabled={isProcessing}
                       >
-                        <span className='flex items-center'>
-                          <IoIosTrash />
+                        <span className="flex gap-1 items-center">
+                          <FaTrashAlt />
                           Remove
                         </span>
                       </button>
