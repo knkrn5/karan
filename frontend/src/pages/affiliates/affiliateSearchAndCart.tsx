@@ -75,9 +75,11 @@ export default function AffiliateSearchAndCart({
               isCartOpen ? 'scale-x-[-1]' : ''
             }`}
           />
-          <span className="absolute top-2 right-1/2 translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-red-500 rounded-full text-white text-xs font-mono flex items-center justify-center">
-            {cartItems.length}
-          </span>
+          {cartItems.length > 0 && (
+            <span className="absolute top-2 right-1/2 translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-red-500 rounded-full text-white text-xs font-mono flex items-center justify-center">
+              {cartItems.length}
+            </span>
+          )}
         </button>
 
         {/* Cart Items */}

@@ -32,10 +32,13 @@ const AffiliateProductsPage = () => {
 
   const [searchParams] = useSearchParams();
 
-  const category = searchParams.get('category') ?? '';
-  const price = parseInt(searchParams.get('price') ?? '1000');
-  const searchedProduct = searchParams.get('search') ?? '';
-  const numberOfProductsToShow = parseInt(searchParams.get('no_of_products_to_show') ?? '6', 10);
+  const category: string = searchParams.get('category') ?? '';
+  const price: number = parseInt(searchParams.get('price') ?? '1000');
+  const searchedProduct: string = searchParams.get('search') ?? '';
+  const numberOfProductsToShow: number = parseInt(
+    searchParams.get('no_of_products_to_show') ?? '6',
+    10
+  );
 
   const isAuthChecked = useAuthCheck();
 
