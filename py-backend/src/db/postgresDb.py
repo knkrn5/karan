@@ -1,11 +1,7 @@
 from sqlmodel import SQLModel, create_engine
 from sqlalchemy.exc import OperationalError
-from dotenv import load_dotenv
 from src.models.affliateproducts_model import Product
-
 import os
-
-load_dotenv()
 
 DATABASE_URL = os.getenv("POSTGRES_URL")
 engine = create_engine(DATABASE_URL)

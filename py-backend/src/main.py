@@ -1,19 +1,30 @@
+from .configs.env import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .db.postgresDb import (
     connect_db_and_create_table,
 )
+import os
 
 from .routes.affiliateproducts_routes import router as affiliate_products_router
 
 
+is_production = os.getenv("ENV") == "PRODUCTION"
+
 app = FastAPI(
-    # docs_url=None,
-    # redoc_url=None,
-    # openapi_url=None,
+    docs_url=None if is_production else "/docs",
+    redoc_url=None if is_production else "/redoc",
+    openapi_url=None if is_production else "/openapi.json",
 )
 
-origins: list[str] = ["http://localhost:5173", "https://karan.email", "https://api.karan.email"]
+origins: list[str] = (
+    [
+        "https://karan.email",
+        "https://api.karan.email",
+    ]
+    if is_production
+    else ["http://localhost:5173"]
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -43,4 +54,3 @@ async def health():
 app.include_router(
     affiliate_products_router, prefix="/affiliate-products", tags=["affiliate-products"]
 )
-
