@@ -27,7 +27,10 @@ export interface ProductPropsType {
 const AffiliateProductsPage = () => {
   const [products, setProducts] = useState<Array<ProductPropsType>>([]);
   const [cartItems, setCartItems] = useState<Array<ProductPropsType>>([]);
-  const [isFetchingProducts, setIsFetchingProducts] = useState<boolean>(true);
+  const [isProcessing, setIsProcessing] = useState<{
+    isFetching: boolean;
+    isAddingRemovingCart: boolean;
+  }>({ isFetching: true, isAddingRemovingCart: false });
   const [expandedDescriptionId, setExpandedDescriptionId] = useState<number | null>(null);
 
   const [searchParams] = useSearchParams();
@@ -49,7 +52,7 @@ const AffiliateProductsPage = () => {
     } catch (error) {
       console.error('Error fetching products:', error);
     } finally {
-      setIsFetchingProducts(false);
+      setIsProcessing(prevState => ({ ...prevState, isFetching: false }));
     }
   };
 
@@ -65,43 +68,66 @@ const AffiliateProductsPage = () => {
     }
   };
 
-  const handleAddToCart = async (product_id: number): Promise<void> => {
+  const addToCart = async (product_id: number) => {
+    setIsProcessing(prevState => ({ ...prevState, isAddingRemovingCart: true }));
+
+    try {
+      const res = await axios.post(
+        `${PY_BACKEND_URL}/affiliate-products/add-to-cart`,
+        {
+          product_id,
+        },
+        { withCredentials: true }
+      );
+      console.log(res.data);
+
+      const productToAdd = products.find(product => product.id === product_id);
+      if (productToAdd) {
+        setCartItems(prevItems => [...prevItems, productToAdd]);
+      }
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error adding product to cart:', error.response?.data);
+      } else {
+        console.error('Error adding product to cart:', error);
+      }
+    } finally {
+      setIsProcessing(prevState => ({ ...prevState, isAddingRemovingCart: false }));
+    }
+  };
+
+  const removeFromCart = async (product_id: number) => {
+    setIsProcessing(prevState => ({ ...prevState, isAddingRemovingCart: true }));
+
+    try {
+      const res = await axios.delete(`${PY_BACKEND_URL}/affiliate-products/remove-from-cart`, {
+        data: { product_id },
+        withCredentials: true,
+      });
+
+      setCartItems(prevItems => prevItems.filter(item => item.id !== product_id));
+      console.log(res.data);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error removing product from cart:', error.response?.data);
+      } else {
+        console.error('Error removing product from cart:', error);
+      }
+    } finally {
+      setIsProcessing(prevState => ({ ...prevState, isAddingRemovingCart: false }));
+    }
+  };
+
+  const handleCartFunctions = async (product_id: number): Promise<void> => {
     if (!isAuthChecked) {
       alert('User is not authenticated');
       return;
     }
 
     if (cartItems.some(item => item.id === product_id)) {
-      try {
-        const res = await axios.delete(`${PY_BACKEND_URL}/affiliate-products/remove-from-cart`, {
-          data: { product_id },
-          withCredentials: true,
-        });
-        console.log(res.data);
-      } catch (error: unknown) {
-        if (axios.isAxiosError(error)) {
-          console.error('Error removing product from cart:', error.response?.data);
-        } else {
-          console.error('Error removing product from cart:', error);
-        }
-      }
+      await removeFromCart(product_id);
     } else {
-      try {
-        const res = await axios.post(
-          `${PY_BACKEND_URL}/affiliate-products/add-to-cart`,
-          {
-            product_id,
-          },
-          { withCredentials: true }
-        );
-        console.log(res.data);
-      } catch (error: unknown) {
-        if (axios.isAxiosError(error)) {
-          console.error('Error adding product to cart:', error.response?.data);
-        } else {
-          console.error('Error adding product to cart:', error);
-        }
-      }
+      await addToCart(product_id);
     }
   };
 
@@ -132,11 +158,15 @@ const AffiliateProductsPage = () => {
   return (
     <div className="min-h-screen bg-neutral-100 dark:bg-slate-800 p-4 @container">
       <div className="p-2 mb-6 bg-white dark:bg-slate-700 rounded-lg shadow-md">
-        <AffiliateSearchAndCart cartItems={cartItems} />
+        <AffiliateSearchAndCart
+          cartItems={cartItems}
+          removeFromCart={removeFromCart}
+          isProcessing={isProcessing.isAddingRemovingCart}
+        />
       </div>
 
       <div className="grid max-xs:grid-cols-1 max-lg:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        {products.length === 0 && isFetchingProducts ? (
+        {products.length === 0 && isProcessing.isFetching ? (
           Array.from({ length: 6 }).map((_, index) => (
             <AffiliateProductCardSkeletonLoading key={index} />
           ))
@@ -192,9 +222,9 @@ const AffiliateProductsPage = () => {
                         cartItems.some(item => item.id === product.id)
                           ? 'border-red-600 text-red-600 hover:bg-red-100'
                           : 'border-indigo-600 text-indigo-600 hover:bg-indigo-50'
-                      } px-4 py-2 rounded-lg  transition cursor-pointer`}
-                      onClick={() => handleAddToCart(product.id)}
-                      disabled={isFetchingProducts}
+                      } px-4 py-2 rounded-lg  transition cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 disabled:animate-shimmer`}
+                      onClick={() => handleCartFunctions(product.id)}
+                      disabled={isProcessing.isAddingRemovingCart}
                     >
                       {cartItems.some(item => item.id === product.id) ? (
                         <>
@@ -217,7 +247,7 @@ const AffiliateProductsPage = () => {
       </div>
 
       {/* No products found UI */}
-      {!isFetchingProducts && filteredProducts.length === 0 && (
+      {!isProcessing.isFetching && filteredProducts.length === 0 && (
         <div className="text-center text-gray-500 dark:text-gray-400 mt-8">
           <LuPackageOpen size={50} className="mx-auto mb-4 text-gray-400 dark:text-gray-500" />
           <h2 className="text-2xl font-extrabold">No Products Found</h2>

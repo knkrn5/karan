@@ -8,7 +8,13 @@ import type { ProductPropsType } from './affiliateProductsPage';
 
 export default function AffiliateSearchAndCart({
   cartItems,
-}: Readonly<{ cartItems: ProductPropsType[] }>) {
+  removeFromCart,
+  isProcessing,
+}: Readonly<{
+  cartItems: ProductPropsType[];
+  removeFromCart: (product_id: number) => void;
+  isProcessing: boolean;
+}>) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
@@ -132,8 +138,10 @@ export default function AffiliateSearchAndCart({
                         Buy Now
                       </a>
                       <button
-                        // onClick={() => handleRemoveFromCart(item.id)}
-                        className="text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"
+                        type="button"
+                        onClick={() => removeFromCart(item.id)}
+                        className="text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+                        disabled={isProcessing}
                       >
                         Remove
                       </button>
