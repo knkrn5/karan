@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router';
 
 import Home from './pages/home/home';
 import ErrorPage404 from './pages/errors/404-error-page';
@@ -26,13 +26,20 @@ import { TRpopupNotificationModel } from './components/popups/TRpopupNotificatio
 import ResetPassward from './pages/auth/resetPassward';
 import AuthPopup from './pages/auth/authPopup';
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+
+  // ❌ List of paths where to hide the Footer
+  const hideFooterOnPaths = ['/affiliates'];
+
+  const shouldShowFooter = !hideFooterOnPaths.includes(location.pathname);
+
   return (
-    <Router>
+    <>
       {/* notification popup */}
       <TRpopupNotificationModel />
 
-      {/*Authentication popup */}
+      {/* Authentication popup */}
       <AuthPopup />
 
       <Header />
@@ -41,11 +48,8 @@ function App() {
           <Route index element={<Home />} />
           <Route path="*" element={<ErrorPage404 />} />
 
-          {/* Affiliates parent route with nested routes */}
           <Route path="/affiliates/*" element={<AffiliateLayout />}>
             <Route index element={<AffiliateProductsPage />} />
-            {/* <Route path="team" element={<TeamPage />} />
-          <Route path="settings" element={<SettingsPage />} /> */}
           </Route>
 
           <Route path="/resources" element={<ResourcesInfo />} />
@@ -67,7 +71,16 @@ function App() {
           <Route path="/contact" element={<Contact />} />
         </Routes>
       </main>
-      <Footer />
+
+      {shouldShowFooter && <Footer />}
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }
