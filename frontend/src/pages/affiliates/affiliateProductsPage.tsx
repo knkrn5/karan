@@ -67,18 +67,38 @@ const AffiliateProductsPage = () => {
       alert('User is not authenticated');
       return;
     }
-    console.log('adding to cart', product_id);
-    try {
-      const res = await axios.post(
-        `${PY_BACKEND_URL}/affiliate-products/add-to-cart`,
-        {
-          product_id,
-        },
-        { withCredentials: true }
-      );
-      console.log(res);
-    } catch (error) {
-      console.log(error);
+
+    if (cartItems.some(item => item.id === product_id)) {
+      try {
+        const res = await axios.delete(`${PY_BACKEND_URL}/affiliate-products/remove-from-cart`, {
+          data: { product_id },
+          withCredentials: true,
+        });
+        console.log(res.data);
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          console.error('Error removing product from cart:', error.response?.data);
+        } else {
+          console.error('Error removing product from cart:', error);
+        }
+      }
+    } else {
+      try {
+        const res = await axios.post(
+          `${PY_BACKEND_URL}/affiliate-products/add-to-cart`,
+          {
+            product_id,
+          },
+          { withCredentials: true }
+        );
+        console.log(res.data);
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          console.error('Error adding product to cart:', error.response?.data);
+        } else {
+          console.error('Error adding product to cart:', error);
+        }
+      }
     }
   };
 

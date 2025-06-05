@@ -9,12 +9,8 @@ dotenv.config({ path: '.env' });
 
 // CORS Configuration
 const corsOptions = {
-  origin: [
-    'https://karan.email',
-    'https://www.karan.email',
-    'https://api2.karan.email/',
+  origin: process.env.NODE_ENV === 'PRODUCTION' ? ['https://karan.email', 'https://www.karan.email'] : [
     'http://localhost:5173',
-    'http://localhost:8000',
   ],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],

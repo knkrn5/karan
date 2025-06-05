@@ -1,6 +1,6 @@
 import { HiOutlineShoppingCart } from 'react-icons/hi';
 import { CiSearch } from 'react-icons/ci';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import type { ProductPropsType } from './affiliateProductsPage';
 
@@ -14,6 +14,18 @@ export default function AffiliateSearchAndCart({
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
   const [searchedProduct, setSearchedProduct] = useState<string>(searchParams.get('search') ?? '');
 
+  const cartIconRef = useRef<HTMLButtonElement>(null);
+  const cartContainerRef = useRef<HTMLDivElement>(null);
+
+  function handleOutsideClick(e: MouseEvent): void {
+    if (
+      cartContainerRef.current?.contains(e.target as Node) ||
+      cartIconRef.current?.contains(e.target as Node)
+    )
+      return;
+    setIsCartOpen(false);
+  }
+
   useEffect(() => {
     setSearchParams(prev => {
       const params = new URLSearchParams(prev.toString());
@@ -24,6 +36,11 @@ export default function AffiliateSearchAndCart({
       }
       return params;
     });
+
+    window.addEventListener('click', handleOutsideClick);
+    return () => {
+      window.removeEventListener('click', handleOutsideClick);
+    };
   }, [searchedProduct, setSearchParams]);
 
   return (
@@ -46,6 +63,7 @@ export default function AffiliateSearchAndCart({
       {/* cart  Icon */}
       <div className="relative">
         <button
+          ref={cartIconRef}
           title="cart"
           type="button"
           onClick={() => setIsCartOpen(!isCartOpen)}
@@ -57,10 +75,14 @@ export default function AffiliateSearchAndCart({
               isCartOpen ? 'scale-x-[-1]' : ''
             }`}
           />
+          <span className="absolute top-2 right-1/2 translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-red-500 rounded-full text-white text-xs font-mono flex items-center justify-center">
+            {cartItems.length}
+          </span>
         </button>
 
         {/* Cart Items */}
         <div
+          ref={cartContainerRef}
           className={`absolute right-0 top-full mt-2 w-80 bg-white dark:bg-slate-900 rounded-xl shadow-md dark:shadow-gray-600 p-4 z-10 
     transform transition-transform duration-300 origin-top ${
       isCartOpen ? 'scale-y-100' : 'scale-y-0'

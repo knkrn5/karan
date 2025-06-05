@@ -19,13 +19,13 @@ async def add_product_route(product: Product):
 
 @router.get("/get-products")
 async def get_products_route():
-    products = AffiliateProductsService.get_products()
+    products: list[Product] = AffiliateProductsService.get_products()
     return products
 
 
 @router.get("/get-product-by-name")
 async def get_product_by_name_route(product_name: str):
-    product = AffiliateProductsService.get_product_by_name(product_name)
+    product: Product | None = AffiliateProductsService.get_product_by_name(product_name)
     if product:
         return product
     else:
@@ -67,7 +67,7 @@ async def add_to_cart_route(
 async def get_cart_items_route(current_user: dict = Depends(get_current_user)):
     try:
         user_id = current_user["user_id"]
-        cart_items = AffiliateProductsService.get_cart_items(user_id)
+        cart_items: list[Product] = AffiliateProductsService.get_cart_items(user_id)
         return cart_items
     except ValueError as e:
         return {"error": str(e)}
