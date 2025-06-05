@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FaShoppingCart, FaShoppingBag } from 'react-icons/fa';
 import { MdRemoveShoppingCart } from 'react-icons/md';
 import { LuPackageOpen } from 'react-icons/lu';
@@ -126,22 +126,24 @@ const AffiliateProductsPage = () => {
     fetchProducts();
   }, []);
 
-  const filteredProducts = products.filter(product => {
-    const isCategoryMatch: boolean =
-      category === '' || product.category.toLowerCase() === category.toLowerCase();
-    const isPriceMatch: boolean = price === 1000 || product.price <= price;
-    const isSearchMatch: boolean =
-      searchedProduct === '' ||
-      product.name.toLowerCase().includes(searchedProduct.toLowerCase()) ||
-      product.brand.toLowerCase().includes(searchedProduct.toLowerCase()) ||
-      product.category.toLowerCase().includes(searchedProduct.toLowerCase()) ||
-      product.subCategory?.some(subcat =>
-        subcat.toLowerCase().includes(searchedProduct.toLowerCase())
-      ) ||
-      product.tags.some(tag => tag.toLowerCase().includes(searchedProduct.toLowerCase()));
+  const filteredProducts = useMemo(() => {
+    return products.filter(product => {
+      const isCategoryMatch =
+        category === '' || product.category.toLowerCase() === category.toLowerCase();
+      const isPriceMatch = price === 1000 || product.price <= price;
+      const isSearchMatch =
+        searchedProduct === '' ||
+        product.name.toLowerCase().includes(searchedProduct.toLowerCase()) ||
+        product.brand.toLowerCase().includes(searchedProduct.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchedProduct.toLowerCase()) ||
+        product.subCategory?.some(subcat =>
+          subcat.toLowerCase().includes(searchedProduct.toLowerCase())
+        ) ||
+        product.tags.some(tag => tag.toLowerCase().includes(searchedProduct.toLowerCase()));
 
-    return isCategoryMatch && isPriceMatch && isSearchMatch;
-  });
+      return isCategoryMatch && isPriceMatch && isSearchMatch;
+    });
+  }, [products, category, price, searchedProduct]);
 
   const productsTodisplay = filteredProducts.slice(0, numberOfProductsToShow);
 

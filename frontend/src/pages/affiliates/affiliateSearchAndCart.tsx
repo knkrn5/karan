@@ -1,5 +1,6 @@
 import { HiOutlineShoppingCart } from 'react-icons/hi';
 import { CiSearch } from 'react-icons/ci';
+import { IoIosTrash } from 'react-icons/io';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import type { ProductPropsType } from './affiliateProductsPage';
@@ -141,7 +142,10 @@ export default function AffiliateSearchAndCart({
                         className="text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                         disabled={isProcessing}
                       >
-                        Remove
+                        <span className='flex items-center'>
+                          <IoIosTrash />
+                          Remove
+                        </span>
                       </button>
                     </div>
                   </div>
