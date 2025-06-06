@@ -60,10 +60,18 @@ class AffiliateProductsService:
             for id in product_ids:
                 if not isinstance(id, int):
                     raise ValueError("Product ID must be an integer.")
+
+                # Delete cart items referencing this product
+                session.query(CartItem).filter(CartItem.product_id == id).delete(
+                    synchronize_session=False
+                )
+
+                # Get the product
                 product = session.get(Product, id)
                 if not product:
                     print(f"⚠️ Product with ID {id} not found.")
                     continue
+
                 session.delete(product)
 
             session.commit()
