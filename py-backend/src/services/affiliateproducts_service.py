@@ -55,11 +55,11 @@ class AffiliateProductsService:
             print("✅ Product updated in the database.")
 
     @staticmethod
-    def delete_product(product_ids: list[int]):
+    def delete_product(product_ids: list[str]):
         with Session(engine) as session:
             for id in product_ids:
-                if not isinstance(id, int):
-                    raise ValueError("Product ID must be an integer.")
+                if not isinstance(id, str):
+                    raise ValueError("Product ID must be an string.")
 
                 # Delete cart items referencing this product
                 session.query(CartItem).filter(CartItem.product_id == id).delete(
@@ -78,7 +78,7 @@ class AffiliateProductsService:
             print("✅ Products deleted from the database.")
 
     @staticmethod
-    def add_product_in_cart(user_id: int, product_id: int):
+    def add_product_in_cart(user_id: str, product_id: str):
         with Session(engine) as session:
             product = session.get(Product, product_id)
             if not product:
@@ -110,7 +110,7 @@ class AffiliateProductsService:
             return products
 
     @staticmethod
-    def remove_product_from_cart(user_id: int, product_id: int):
+    def remove_product_from_cart(user_id: int, product_id: str):
         with Session(engine) as session:
             cart_item = session.exec(
                 select(CartItem)

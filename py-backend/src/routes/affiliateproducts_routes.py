@@ -4,17 +4,15 @@ from typing import List, Any, Dict
 from ..models.affliateproducts_model import Product, CartItem
 from ..services.affiliateproducts_service import AffiliateProductsService
 from ..utils.verify_jwttoken import get_current_user
+from ..security.verify_admin import verify_api_key
 
 router = APIRouter()
 
 
 @router.post("/add-products")
-async def add_product_route(product: Product):
-    try:
-        AffiliateProductsService.add_product(product)
-        return {"message": "Product added to the database"}
-    except ValueError as e:
-        return {"error": str(e)}
+async def add_product_route(product: Product, _: str = Depends(verify_api_key)):
+    AffiliateProductsService.add_product(product)
+    return {"message": "Product added to the database"}
 
 
 @router.get("/get-products")
@@ -33,7 +31,9 @@ async def get_product_by_name_route(product_name: str):
 
 
 @router.patch("/update-product/{product_id}")
-async def update_product_route(product_id: int, fields_to_updates: Dict[str, Any]):
+async def update_product_route(
+    product_id: int, fields_to_updates: Dict[str, Any], _: str = Depends(verify_api_key)
+):
     try:
         AffiliateProductsService.update_product_fields(product_id, fields_to_updates)
         return {"message": "Product updated successfully"}
@@ -42,7 +42,9 @@ async def update_product_route(product_id: int, fields_to_updates: Dict[str, Any
 
 
 @router.delete("/delete-product")
-async def delete_product_route(ids: List[int] = Query(...)):
+async def delete_product_route(
+    ids: List[str] = Query(...), _: str = Depends(verify_api_key)
+):
     try:
         AffiliateProductsService.delete_product(ids)
         return {"message": "Products deleted successfully"}
