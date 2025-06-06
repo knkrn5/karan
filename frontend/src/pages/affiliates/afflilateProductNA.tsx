@@ -1,5 +1,6 @@
 import { BiPackage } from 'react-icons/bi';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
+import { Link } from 'react-router';
 
 export default function AffiliateProductNA() {
   return (
@@ -39,12 +40,12 @@ export default function AffiliateProductNA() {
         <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Need help? Contact our{' '}
-            <a
-              href="/contact"
+            <Link
+              to="/contact"
               className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
             >
               support team
-            </a>
+            </Link>
           </p>
         </div>
       </div>
