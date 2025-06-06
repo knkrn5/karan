@@ -1,12 +1,16 @@
 from sqlmodel import SQLModel, Field, Relationship
-from sqlalchemy import Column, ARRAY, String, Text
+from sqlalchemy import Column, ARRAY, String, Text, UUID, ForeignKey
 from typing import List, Optional
 from datetime import datetime, timezone
+import uuid
 
 
 class Product(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    name: str = Field(max_length=255, unique=True)
+    id: str = Field(
+        default_factory=lambda: str(uuid.uuid4()),
+        sa_column=Column(UUID(as_uuid=False), primary_key=True, unique=True),
+    )
+    name: str = Field(sa_column=Column(String(255), unique=True))
     image: str = Field(max_length=1000)
     category: str = Field(max_length=100)
     brand: str = Field(max_length=100)
@@ -22,9 +26,14 @@ class Product(SQLModel, table=True):
 
 
 class CartItem(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: str = Field(
+        default_factory=lambda: str(uuid.uuid4()),
+        sa_column=Column(UUID(as_uuid=False), primary_key=True, unique=True),
+    )
     user_id: str = Field(max_length=255)
-    product_id: int = Field(foreign_key="product.id")
+    product_id: str = Field(
+        sa_column=Column(UUID(as_uuid=False), ForeignKey("product.id"))
+    )
     added_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     product: Optional[Product] = Relationship(back_populates="cart_items")

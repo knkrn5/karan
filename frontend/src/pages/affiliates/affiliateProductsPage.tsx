@@ -166,7 +166,7 @@ const AffiliateProductsPage = () => {
                   </h2>
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-indigo-500">{product.category}</span>
-                    <span className="text-sm text-gray-600 dark:text-gray-300 bg-gradient-to-br from-neutral-200 via-neutral-100 to-slate-100 bg-neutral-300 dark:from-slate-700 dark dark:via-slate-800 dark:to-slate-700 rounded-full px-2">
+                    <span className="text-sm text-gray-600 dark:text-gray-300 bg-gradient-to-br from-neutral-200 via-neutral-100 to-slate-100 dark:from-slate-700 dark:via-slate-800 dark:to-slate-700 rounded-full px-2">
                       {product.brand}
                     </span>
                   </div>

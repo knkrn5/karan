@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router';
+import { BrowserRouter as Router, Routes, Route } from 'react-router';
 
 import Home from './pages/home/home';
 import ErrorPage404 from './pages/errors/404-error-page';
@@ -27,16 +27,9 @@ import { TRpopupNotificationModel } from './components/popups/TRpopupNotificatio
 import ResetPassward from './pages/auth/resetPassward';
 import AuthPopup from './pages/auth/authPopup';
 
-function AppContent() {
-  const location = useLocation();
-
-  // ❌ List of paths where to hide the Footer
-  const hideFooterOnPaths = ['/affiliates'];
-
-  const shouldShowFooter = !hideFooterOnPaths.includes(location.pathname);
-
+function App() {
   return (
-    <>
+    <Router>
       {/* notification popup */}
       <TRpopupNotificationModel />
 
@@ -74,15 +67,7 @@ function AppContent() {
         </Routes>
       </main>
 
-      {shouldShowFooter && <Footer />}
-    </>
-  );
-}
-
-function App() {
-  return (
-    <Router>
-      <AppContent />
+      <Footer />
     </Router>
   );
 }
