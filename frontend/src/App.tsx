@@ -8,6 +8,7 @@ import Footer from './components/common/footer';
 
 import AffiliateLayout from './pages/affiliates/affiliateLayout';
 import AffiliateProductsPage from './pages/affiliates/affiliateProductsPage';
+import AfflilateProductNA from './pages/affiliates/afflilateProductNA';
 
 import ResourcesInfo from './pages/resources/resoursesPage';
 import BlogPage from './pages/blog/blogPostsPage';
@@ -50,6 +51,7 @@ function AppContent() {
 
           <Route path="/affiliates/*" element={<AffiliateLayout />}>
             <Route index element={<AffiliateProductsPage />} />
+            <Route path="product-not-available" element={<AfflilateProductNA />} />
           </Route>
 
           <Route path="/resources" element={<ResourcesInfo />} />
