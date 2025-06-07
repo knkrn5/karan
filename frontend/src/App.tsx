@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router';
+import { useEffect } from 'react';
 
 import Home from './pages/home/home';
 import ErrorPage404 from './pages/errors/404-error-page';
@@ -27,16 +28,30 @@ import { TRpopupNotificationModel } from './components/popups/TRpopupNotificatio
 import ResetPassward from './pages/auth/resetPassward';
 import AuthPopup from './pages/auth/authPopup';
 
-function App() {
+import AdminLayout from './admin/adminLayout';
+import AdminDashboard from './admin/adminDashboard';
+
+function AppContent() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === '/admin' || location.pathname === '/admin/') {
+      navigate('/admin/dashboard');
+    }
+  }, [location.pathname, navigate]);
+
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
   return (
-    <Router>
+    <>
       {/* notification popup */}
       <TRpopupNotificationModel />
 
       {/* Authentication popup */}
       <AuthPopup />
 
-      <Header />
+      {!isAdminRoute && <Header />}
       <main>
         <Routes>
           <Route index element={<Home />} />
@@ -60,14 +75,24 @@ function App() {
           </Route>
 
           <Route path="/profile" element={<UserProfile />} />
-
           <Route path="/about" element={<About />} />
           <Route path="/resume" element={<Resume />} />
           <Route path="/contact" element={<Contact />} />
+
+          <Route element={<AdminLayout />}>
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          </Route>
         </Routes>
       </main>
+      {!isAdminRoute && <Footer />}
+    </>
+  );
+}
 
-      <Footer />
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }

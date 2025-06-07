@@ -36,7 +36,7 @@ class AffiliateProductsService:
             )
 
     @staticmethod
-    def update_product_fields(product_id: int, fields_to_updates: Dict[str, Any]):
+    def update_product_fields(product_id: str, fields_to_updates: Dict[str, Any]):
         with Session(engine) as session:
             product = session.get(Product, product_id)
             if not product:

@@ -31,9 +31,7 @@ async def get_product_by_name_route(product_name: str):
 
 
 @router.patch("/update-product/{product_id}")
-async def update_product_route(
-    product_id: int, fields_to_updates: Dict[str, Any], _: str = Depends(verify_api_key)
-):
+async def update_product_route(product_id: str, fields_to_updates: Dict[str, Any]):
     try:
         AffiliateProductsService.update_product_fields(product_id, fields_to_updates)
         return {"message": "Product updated successfully"}
