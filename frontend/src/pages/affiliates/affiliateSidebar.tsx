@@ -1,7 +1,7 @@
 import { IoPhonePortraitOutline } from 'react-icons/io5';
 import { FaTshirt, FaHome, FaGamepad } from 'react-icons/fa';
 import { AiFillDollarCircle } from 'react-icons/ai';
-import { FaDumbbell } from 'react-icons/fa6';
+import { FaBookOpen } from 'react-icons/fa6';
 import { BiCategory } from 'react-icons/bi';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
@@ -16,7 +16,7 @@ export default function AffiliateSidebar() {
     { name: 'Electronics', icon: IoPhonePortraitOutline, color: 'bg-blue-500' },
     { name: 'Fashion', icon: FaTshirt, color: 'bg-pink-500' },
     { name: 'Home', icon: FaHome, color: 'bg-green-500' },
-    { name: 'Sports', icon: FaDumbbell, color: 'bg-orange-500' },
+    { name: 'Books', icon: FaBookOpen, color: 'bg-orange-500' },
     { name: 'Games', icon: FaGamepad, color: 'bg-purple-500' },
   ];
 
