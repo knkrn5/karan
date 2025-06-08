@@ -3,8 +3,10 @@ import { CiSearch } from 'react-icons/ci';
 import { FaTrashAlt } from 'react-icons/fa';
 import { RiShoppingBag4Fill } from 'react-icons/ri';
 import { useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router';
+import { useSearchParams, Link } from 'react-router';
 import type { ProductPropsType } from './affiliateProductsPage';
+import { FiLogIn } from 'react-icons/fi';
+import { useAuthCheck } from '../../hooks/authCheckHook';
 
 export default function AffiliateSearchAndCart({
   cartItems,
@@ -22,6 +24,8 @@ export default function AffiliateSearchAndCart({
 
   const cartIconRef = useRef<HTMLButtonElement>(null);
   const cartContainerRef = useRef<HTMLDivElement>(null);
+
+  const isAuthenticated = useAuthCheck();
 
   function handleOutsideClick(e: MouseEvent): void {
     if (
@@ -106,7 +110,43 @@ export default function AffiliateSearchAndCart({
           </div>
 
           <div className="max-h-[500px] overflow-y-auto">
-            {cartItems.length === 0 ? (
+            {/* login Msg */}
+            {!isAuthenticated && (
+              <div className={`  bottom-[40%] right-2 mt-2`}>
+                <div className="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-lg  max-w-sm">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-white flex items-center">
+                      <FiLogIn className="mr-2 h-5 w-5 text-blue-500" />
+                      Login Required
+                    </h3>
+                  </div>
+
+                  <div className="mb-4">
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                      Please login to view Cart Items
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Link
+                      to={'/login'}
+                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md flex items-center justify-center transition-colors"
+                    >
+                      <FiLogIn className="mr-2 h-4 w-4" />
+                      Log In
+                    </Link>
+                    <Link
+                      to={'/signup'}
+                      className="px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 text-sm font-medium rounded-md flex items-center justify-center transition-colors"
+                    >
+                      Create Account
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {cartItems.length === 0 && isAuthenticated ? (
               <p className="text-sm text-gray-500 dark:text-gray-400">Cart is empty.</p>
             ) : (
               cartItems.map(item => (
