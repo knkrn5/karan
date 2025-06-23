@@ -58,7 +58,7 @@ export default function UserAccount() {
       <div className="flex-1 mr-6">
         <h2 className="text-lg font-extrabold dark:text-white">
           {firstName?.charAt(0).toUpperCase() + firstName?.slice(1)}{' '}
-          {lastName?.charAt(0).toUpperCase() + lastName?.slice(1)}
+          {lastName && lastName.charAt(0).toUpperCase() + lastName.slice(1)}
         </h2>
         <p className="text-gray-500 font-serif dark:text-gray-400">{email}</p>
       </div>

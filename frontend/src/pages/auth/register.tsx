@@ -20,8 +20,10 @@ import { useRemainingTimeCalculatorStore } from '../../stores/others/remainingTi
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
+const JAVA_BACKEND_URL = import.meta.env.VITE_JAVA_BACKEND_URL;
+
 interface UserDataProps {
-  firstName: string;
+  firstName: string ;
   lastName?: string;
   email: string;
   otp: string;
@@ -105,8 +107,8 @@ export default function Register() {
   const validateForm = useCallback(
     (data: UserDataProps): UserDataProps => {
       const errors: UserDataProps = {
-        firstName: '',
-        lastName: '',
+        firstName: "",
+        lastName: "",
         email: '',
         otp: '',
         password: '',
@@ -240,13 +242,16 @@ export default function Register() {
     //registering user
     if (registrationVerification.isOptVerified) {
       try {
-        const response = await axios.post(`${BACKEND_URL}/api/v1/auth/register`, {
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-          email: userData.email,
-          enteredOTP: userData.otp,
-          password: userData.password,
-        });
+        const response = await axios.post(
+          `${JAVA_BACKEND_URL}/auth/register`,
+          {
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            email: userData.email,
+            password: userData.password,
+          },
+          { params: { enteredOtp: userData.otp } }
+        );
         const { data } = response;
         setICnotificationMsg({ success: data.message });
         setTRpopupNotificationMsg({ success: data.message });

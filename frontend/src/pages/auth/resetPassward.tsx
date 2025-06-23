@@ -26,7 +26,7 @@ interface ResetPasswardFieldDataProps {
   confirmNewPassword?: string;
 }
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const JAVA_BACKEND_URL = import.meta.env.VITE_JAVA_BACKEND_URL;
 
 export default function ResetPassward() {
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -220,10 +220,10 @@ export default function ResetPassward() {
 
     if (otpConfirmations.isOptSent && otpConfirmations.isOptVerified) {
       try {
-        const response = await axios.patch(`${BACKEND_URL}/api/v1/auth/reset-password`, {
+        const response = await axios.patch(`${JAVA_BACKEND_URL}/auth/reset-password`, {
           email: resetPasswardFieldData.email,
           newPassword: resetPasswardFieldData.newPassword,
-          enteredOTP: resetPasswardFieldData.otp,
+          enteredOtp: resetPasswardFieldData.otp,
         });
         setICnotificationMsg({ success: response.data.message });
         setTRpopupNotificationMsg({ success: response.data.message });

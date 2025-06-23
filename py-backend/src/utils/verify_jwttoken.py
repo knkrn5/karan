@@ -9,6 +9,7 @@ def verify_token(token: str):
         payload = jwt.decode(
             token, os.environ.get("ACCESS_TOKEN_SECRET"), algorithms=["HS256"]
         )
+        print(payload)
         return payload
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Token expired")
@@ -22,9 +23,9 @@ def get_current_user(request: Request):
         raise HTTPException(status_code=401, detail="Access token is required")
 
     payload = verify_token(access_token)
-    user_id = payload.get("userId") 
+    user_id = payload.get("id")
 
     if not user_id:
         raise HTTPException(status_code=401, detail="Invalid token payload")
 
-    return {"user_id": user_id, "email": payload.get("email"), "payload": payload}
+    return {"user_id": user_id, "email": payload.get("email"), "role": payload.get("role"), "payload": payload}

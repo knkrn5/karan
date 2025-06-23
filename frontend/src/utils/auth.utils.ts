@@ -4,6 +4,9 @@ import { useAuthStore } from '../stores/auth/authStore';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
+const JAVA_BACKEND_URL = import.meta.env.VITE_JAVA_BACKEND_URL;
+
+
 interface ApiResponseTypes<T> {
   statusCode: number;
   success: boolean;
@@ -14,9 +17,10 @@ interface ApiResponseTypes<T> {
 // === VERIFY EXISTING USER ===
 export async function verifyExistingUser(userEmail: string): Promise<ApiResponseTypes<null>> {
   try {
-    const response = await axios.post<ApiResponseTypes<null>>(
-      `${BACKEND_URL}/api/v1/auth/verify-user`,
-      { email: userEmail.toLowerCase() }
+    const response = await axios.get(
+      `${JAVA_BACKEND_URL}/auth/is-existing-user`, {
+      params: { email: userEmail.toLowerCase() }
+    }
     );
     return response.data;
   } catch (error) {
@@ -43,7 +47,7 @@ export async function sendEmailOtp(
 ): Promise<ApiResponseTypes<string | number | null>> {
   try {
     const response = await axios.post(
-      `${BACKEND_URL}/api/v1/auth/send-email-otp`,
+      `${JAVA_BACKEND_URL}/auth/send-otp-mail`,
       { email: email.toLowerCase(), subject, excerpt },
       { withCredentials: true }
     );
@@ -66,12 +70,12 @@ export async function sendEmailOtp(
 // === VERIFY OTP ===
 export async function verifyEmailOtp(
   userEmail: string,
-  enteredOTP: string
+  enteredOtp: string
 ): Promise<ApiResponseTypes<null>> {
   try {
-    const response = await axios.post<ApiResponseTypes<null>>(
-      `${BACKEND_URL}/api/v1/auth/verify-email-otp`,
-      { email: userEmail.toLowerCase(), otp: enteredOTP },
+    const response = await axios.post(
+      `${JAVA_BACKEND_URL}/auth/verify-otp-mail`,
+      { email: userEmail.toLowerCase(), enteredOtp },
       { withCredentials: true }
     );
     return response.data;
@@ -95,8 +99,8 @@ export async function verifyEmailOtp(
 // === VERIFY PASSWORD ===
 export async function verifyPassword(password: string): Promise<ApiResponseTypes<null>> {
   try {
-    const response = await axios.post<ApiResponseTypes<null>>(
-      `${BACKEND_URL}/api/v1/auth/verify-password`,
+    const response = await axios.post(
+      `${JAVA_BACKEND_URL}/auth/verify-password`,
       { password },
       { withCredentials: true }
     );
@@ -121,8 +125,8 @@ export async function verifyPassword(password: string): Promise<ApiResponseTypes
 // === LOGOUT USER ===
 export async function logout(): Promise<ApiResponseTypes<null>> {
   try {
-    const response = await axios.post<ApiResponseTypes<null>>(
-      `${BACKEND_URL}/api/v1/auth/logout`,
+    const response = await axios.post(
+      `${JAVA_BACKEND_URL}/auth/logout`,
       {},
       { withCredentials: true }
     );

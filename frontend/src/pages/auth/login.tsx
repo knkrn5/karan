@@ -18,6 +18,8 @@ interface LoginFeildDataProps {
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
+const JAVA_BACKEND_URL = import.meta.env.VITE_JAVA_BACKEND_URL;
+
 export default function LoginPage() {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
@@ -108,7 +110,7 @@ export default function LoginPage() {
 
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/api/v1/auth/login`,
+        `${JAVA_BACKEND_URL}/auth/login`,
         {
           email: loginFormFieldData.email.toLowerCase(),
           password: loginFormFieldData.password,
@@ -116,6 +118,8 @@ export default function LoginPage() {
         { withCredentials: true }
       );
       const { data } = response;
+
+      console.log(data);
 
       setICnotificationMsg({ success: data.message });
       setTRpopupNotificationMsg({ success: data.message });

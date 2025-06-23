@@ -8,101 +8,101 @@ import bcrypt from 'bcrypt';
 
 export class AuthService {
   //verify existing user
-  static async verifyUser(email: string) {
-    if (!email) throw new ApiResponse(400, false, 'email is required', null);
-    const existingUser = await UserModel.exists({ email });
+  // static async verifyUser(email: string) {
+  //   if (!email) throw new ApiResponse(400, false, 'email is required', null);
+  //   const existingUser = await UserModel.exists({ email });
 
-    if (!existingUser) throw new ApiResponse(404, false, 'User not found, Please Signup', null);
-    return new ApiResponse(200, true, 'User already exists, Please Login', null);
-  }
+  //   if (!existingUser) throw new ApiResponse(404, false, 'User not found, Please Signup', null);
+  //   return new ApiResponse(200, true, 'User already exists, Please Login', null);
+  // }
 
-  // Sending OTP
-  static async sendEmailVerificationOTP(email: string, subject: string, excerpt: string) {
-    if (!email) throw new ApiResponse(400, false, 'Email is required', null);
-    if (!subject) throw new ApiResponse(400, false, 'Subject is required', null);
-    if (!excerpt) throw new ApiResponse(400, false, 'Excerpt is required', null);
+  // // Sending OTP
+  // static async sendEmailVerificationOTP(email: string, subject: string, excerpt: string) {
+  //   if (!email) throw new ApiResponse(400, false, 'Email is required', null);
+  //   if (!subject) throw new ApiResponse(400, false, 'Subject is required', null);
+  //   if (!excerpt) throw new ApiResponse(400, false, 'Excerpt is required', null);
 
-    const otp = Math.floor(100000 + Math.random() * 900000);
-    const hashedOtp = await bcrypt.hash(String(otp), 10);
+  //   const otp = Math.floor(100000 + Math.random() * 900000);
+  //   const hashedOtp = await bcrypt.hash(String(otp), 10);
 
-    await redisClient.set(email, hashedOtp, {
-      EX: 300, // 5 minutes
-    });
+  //   await redisClient.set(email, hashedOtp, {
+  //     EX: 300, // 5 minutes
+  //   });
 
-    try {
-      const otpSubject = `${otp} is your ${subject} code`;
-      await emailTransporter({
-        email,
-        subject: otpSubject,
-        fallbackEmail: `Your ${subject} code is: ${otp}`,
-        template: () => OTPEmailTemplate(excerpt, otp),
-      });
+  //   try {
+  //     const otpSubject = `${otp} is your ${subject} code`;
+  //     await emailTransporter({
+  //       email,
+  //       subject: otpSubject,
+  //       fallbackEmail: `Your ${subject} code is: ${otp}`,
+  //       template: () => OTPEmailTemplate(excerpt, otp),
+  //     });
 
-      const otpTtl = await redisClient.ttl(email);
-      return new ApiResponse(200, true, 'OTP Email sent successfully', otpTtl);
-    } catch (error: any) {
-      return new ApiResponse(500, false, error.message, null);
-    }
-  }
+  //     const otpTtl = await redisClient.ttl(email);
+  //     return new ApiResponse(200, true, 'OTP Email sent successfully', otpTtl);
+  //   } catch (error: any) {
+  //     return new ApiResponse(500, false, error.message, null);
+  //   }
+  // }
 
-  //  Verifying OTP
-  static async verifyOTP(email: string, enteredOTP: number) {
-    if (!email) throw new ApiResponse(400, false, 'Email is required', null);
-    if (!enteredOTP) throw new ApiResponse(400, false, 'OTP is required', null);
+  // //  Verifying OTP
+  // static async verifyOTP(email: string, enteredOTP: number) {
+  //   if (!email) throw new ApiResponse(400, false, 'Email is required', null);
+  //   if (!enteredOTP) throw new ApiResponse(400, false, 'OTP is required', null);
 
-    const storedOTP = await redisClient.get(email);
-    const ttl = await redisClient.ttl(email);
+  //   const storedOTP = await redisClient.get(email);
+  //   const ttl = await redisClient.ttl(email);
 
-    if (ttl <= 0) throw new ApiResponse(404, false, 'OTP expired. Please resend.', null);
-    if (!storedOTP) throw new ApiResponse(404, false, 'OTP not found. Please resend.', null);
+  //   if (ttl <= 0) throw new ApiResponse(404, false, 'OTP expired. Please resend.', null);
+  //   if (!storedOTP) throw new ApiResponse(404, false, 'OTP not found. Please resend.', null);
 
-    const isOtpMatch = await bcrypt.compare(String(enteredOTP), storedOTP);
-    if (!isOtpMatch) {
-      throw new ApiResponse(401, false, 'Incorrect OTP. Please Enter Valid OTP.', null);
-    }
+  //   const isOtpMatch = await bcrypt.compare(String(enteredOTP), storedOTP);
+  //   if (!isOtpMatch) {
+  //     throw new ApiResponse(401, false, 'Incorrect OTP. Please Enter Valid OTP.', null);
+  //   }
 
-    return new ApiResponse(200, true, 'OTP verified successfully', null);
-  }
+  //   return new ApiResponse(200, true, 'OTP verified successfully', null);
+  // }
 
-  //registering user
-  static async registerUser(
-    firstName: string,
-    lastName: string | undefined,
-    email: string,
-    password: string
-  ) {
-    const existingUser = await UserModel.findOne({ email });
-    if (existingUser) throw new ApiResponse(409, false, 'User already exists, Please Login', null);
+  // //registering user
+  // static async registerUser(
+  //   firstName: string,
+  //   lastName: string | undefined,
+  //   email: string,
+  //   password: string
+  // ) {
+  //   const existingUser = await UserModel.findOne({ email });
+  //   if (existingUser) throw new ApiResponse(409, false, 'User already exists, Please Login', null);
 
-    await UserModel.create({
-      firstName,
-      lastName,
-      email,
-      password,
-    });
+  //   await UserModel.create({
+  //     firstName,
+  //     lastName,
+  //     email,
+  //     password,
+  //   });
 
-    return new ApiResponse(201, true, 'User registered successfully', null);
-  }
+  //   return new ApiResponse(201, true, 'User registered successfully', null);
+  // }
 
-  //loginning in user
-  static async loginUser(email: string, password: string) {
-    const user: IUser | null = await UserModel.findOne({ email });
-    if (!user) throw new ApiResponse(404, false, 'User not found, Please Signup', null);
+  // //loginning in user
+  // static async loginUser(email: string, password: string) {
+  //   const user: IUser | null = await UserModel.findOne({ email });
+  //   if (!user) throw new ApiResponse(404, false, 'User not found, Please Signup', null);
 
-    const isPasswordMatch = await user.comparePassword(password);
-    if (!isPasswordMatch) throw new ApiResponse(401, false, 'Incorrect password', null);
+  //   const isPasswordMatch = await user.comparePassword(password);
+  //   if (!isPasswordMatch) throw new ApiResponse(401, false, 'Incorrect password', null);
 
-    const accessToken = user.createAccessToken();
-    const refreshToken = user.createRefreshToken();
+  //   const accessToken = user.createAccessToken();
+  //   const refreshToken = user.createRefreshToken();
 
-    user.refreshToken = refreshToken;
-    await user.save();
+  //   user.refreshToken = refreshToken;
+  //   await user.save();
 
-    return new ApiResponse(200, true, 'User logged in successfully', {
-      accessToken,
-      refreshToken,
-    });
-  }
+  //   return new ApiResponse(200, true, 'User logged in successfully', {
+  //     accessToken,
+  //     refreshToken,
+  //   });
+  // }
 
   //refreshing access token
   static async refreshAccessToken(refreshToken: string) {
@@ -152,33 +152,33 @@ export class AuthService {
   }
 
   //verifing password
-  static async verifyPassword(userId: string, enteredPassword: string) {
-    if (!userId) throw new ApiResponse(400, false, 'User Id is required', null);
-    if (!enteredPassword) throw new ApiResponse(400, false, 'Password is required', null);
+  // static async verifyPassword(userId: string, enteredPassword: string) {
+  //   if (!userId) throw new ApiResponse(400, false, 'User Id is required', null);
+  //   if (!enteredPassword) throw new ApiResponse(400, false, 'Password is required', null);
 
-    const user = await UserModel.findById(userId);
-    if (!user) throw new ApiResponse(404, false, 'User not found', null);
+  //   const user = await UserModel.findById(userId);
+  //   if (!user) throw new ApiResponse(404, false, 'User not found', null);
 
-    const isPasswordMatch = await user.comparePassword(enteredPassword);
-    if (!isPasswordMatch) throw new ApiResponse(401, false, 'Incorrect password', null);
+  //   const isPasswordMatch = await user.comparePassword(enteredPassword);
+  //   if (!isPasswordMatch) throw new ApiResponse(401, false, 'Incorrect password', null);
 
-    return new ApiResponse(200, true, 'Password verified successfully', null);
-  }
+  //   return new ApiResponse(200, true, 'Password verified successfully', null);
+  // }
 
   //change password
-  static async resetPassword(email: string, newPassword: string) {
-    const user = await UserModel.findOne({ email });
-    if (!user) throw new ApiResponse(404, false, 'User not found', null);
-    if (!newPassword) throw new ApiResponse(400, false, 'New password is required', null);
+  // static async resetPassword(email: string, newPassword: string) {
+  //   const user = await UserModel.findOne({ email });
+  //   if (!user) throw new ApiResponse(404, false, 'User not found', null);
+  //   if (!newPassword) throw new ApiResponse(400, false, 'New password is required', null);
 
-    //matching password if same as old password
-    const isPasswordSameMatch = await user.comparePassword(newPassword);
-    if (isPasswordSameMatch)
-      throw new ApiResponse(400, false, 'New password cannot be same as old password', null);
+  //   //matching password if same as old password
+  //   const isPasswordSameMatch = await user.comparePassword(newPassword);
+  //   if (isPasswordSameMatch)
+  //     throw new ApiResponse(400, false, 'New password cannot be same as old password', null);
 
-    user.password = newPassword;
-    await user.save();
+  //   user.password = newPassword;
+  //   await user.save();
 
-    return new ApiResponse(200, true, 'Password changed successfully', null);
-  }
+  //   return new ApiResponse(200, true, 'Password changed successfully', null);
+  // }
 }

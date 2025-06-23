@@ -1,6 +1,7 @@
 # products_routes.py
-from fastapi import APIRouter, Query, Depends
+from fastapi import APIRouter, Query, Depends, Body
 from typing import List, Any, Dict
+from uuid import UUID
 from ..models.affliateproducts_model import Product, CartItem
 from ..services.affiliateproducts_service import AffiliateProductsService
 from ..utils.verify_jwttoken import get_current_user
@@ -30,9 +31,11 @@ async def get_product_by_name_route(product_name: str):
         return {"error": "Product not found"}
 
 
-@router.patch("/update-product/{product_id}")
+@router.patch("/update-product")
 async def update_product_route(
-    product_id: str, fields_to_updates: Dict[str, Any], _: str = Depends(verify_api_key)
+    product_id: UUID = Query(...),
+    fields_to_updates: Dict[str, Any] = Body(...),
+    _: str = Depends(verify_api_key),
 ):
     try:
         AffiliateProductsService.update_product_fields(product_id, fields_to_updates)

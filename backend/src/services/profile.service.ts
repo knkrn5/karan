@@ -3,12 +3,12 @@ import { ApiResponse } from '../utils/apiResponse.js';
 
 
 export class ProfileService {
-  static async getProfile(userId: string) {
-    const user = await UserModel.findById(userId).select('-_id -password -refreshToken -createdAt -updatedAt');
-    if (!user) throw new ApiResponse(400, false, 'User not found', null);
+  // static async getProfile(userId: string) {
+  //   const user = await UserModel.findById(userId).select('-_id -password -refreshToken -createdAt -updatedAt');
+  //   if (!user) throw new ApiResponse(400, false, 'User not found', null);
 
-    return new ApiResponse(200, true, 'User profile data retrieved', user);
-  }
+  //   return new ApiResponse(200, true, 'User profile data retrieved', user);
+  // }
 
   /* static async updateProfile(userId: string, data: Partial<UserDTO>): Promise<UserDTO> {
         const user = await User.findByIdAndUpdate(userId, data, { new: true }).select('-password');

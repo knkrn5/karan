@@ -7,8 +7,7 @@ import { useProfileStore } from '../../stores/profile/profileStore.js';
 import { useAuthCheck } from '../../hooks/authCheckHook.js';
 import { AuthButtonsSkeletonLoading } from './authSkeletonLaoding.js';
 
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const JAVA_BACKEND_URL = import.meta.env.VITE_JAVA_BACKEND_URL;
 
 export default function AuthButtons() {
   const [showProfile, setShowProfile] = useState<boolean>(false);
@@ -56,7 +55,7 @@ export default function AuthButtons() {
     (async () => {
       setIsFetchingProfileData(true);
       try {
-        const { data } = await axios.get(`${BACKEND_URL}/api/v1/profile/details`, {
+        const { data } = await axios.get(`${JAVA_BACKEND_URL}/account/get-user-data`, {
           withCredentials: true,
         });
 

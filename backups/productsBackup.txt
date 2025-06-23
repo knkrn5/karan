@@ -1,0 +1,103 @@
+[
+  {
+    "image": "string",
+    "name": "seven product two",
+    "id": 7,
+    "brand": "string",
+    "description": "string",
+    "tags": [
+      "string"
+    ],
+    "price": 199,
+    "category": "string",
+    "subCategory": [
+      "string"
+    ],
+    "affiliateLink": "string"
+  },
+  {
+    "image": "https://res.cloudinary.com/dywuvwqth/image/upload/v1748508927/Assassin_s_Creed_Odyssey_j5dicm.png",
+    "name": "Assassin's Creed Odyssey",
+    "id": 10,
+    "brand": "UbiSoft",
+    "description": "ASASSINS CREED ODYSSEY | PC GAME | 𝐈𝐍𝐒𝐓𝐀𝐍𝐓 𝐄-𝐌𝐀𝐈𝐋 𝐃𝐄𝐋𝐈𝐕𝐄𝐑𝐘 (PC/LAPTOP GAME)",
+    "tags": [
+      "aco",
+      "assassin creed odyssey"
+    ],
+    "price": 599,
+    "category": "games",
+    "subCategory": [
+      "aco"
+    ],
+    "affiliateLink": "https://amzn.to/44SAoxc"
+  },
+  {
+    "image": "https://res.cloudinary.com/dywuvwqth/image/upload/v1748491208/lou_part_1_bgwq1f.png",
+    "name": "Last of Us, Part 1",
+    "id": 2,
+    "brand": "Naughty Dog",
+    "description": "THE LAST ‎ OF US PART 1 | FULL PC GAME | 𝐈𝐍𝐒𝐓𝐀𝐍𝐓 𝐄-𝐌𝐀𝐈𝐋 𝐃𝐄𝐋𝐈𝐕𝐄𝐑𝐘 (PC) - Offline (Non-Multiplayer Mode Only)",
+    "tags": [
+      "lou",
+      "last of us"
+    ],
+    "price": 799,
+    "category": "games",
+    "subCategory": [
+      "video game"
+    ],
+    "affiliateLink": "https://amzn.to/4kyFVOy"
+  },
+  {
+    "image": "https://res.cloudinary.com/dywuvwqth/image/upload/v1748505650/rdr_1_kqja3p.png",
+    "name": "Red Dead Redemption",
+    "id": 9,
+    "brand": "Rockstar games",
+    "description": "RED DEAD REDEMPTION 1 | PC GAME |",
+    "tags": [
+      "rdr",
+      "red dead redemption"
+    ],
+    "price": 985,
+    "category": "games",
+    "subCategory": [
+      "video game"
+    ],
+    "affiliateLink": "affiliates/product-not-available"
+  },
+  {
+    "image": "https://res.cloudinary.com/dywuvwqth/image/upload/v1748577562/re_4_pzqifk.png",
+    "name": "Resident Evil 4",
+    "id": 8,
+    "brand": "Capcon",
+    "description": "RESEDENT EVIL 4 | PC GAME | 𝐈𝐍𝐒𝐓𝐀𝐍𝐓 𝐄-𝐌𝐀𝐈𝐋 𝐃𝐄𝐋𝐈𝐕𝐄𝐑𝐘 (PC)",
+    "tags": [
+      "resident evil",
+      "re4"
+    ],
+    "price": 799,
+    "category": "games",
+    "subCategory": [
+      "video game"
+    ],
+    "affiliateLink": "https://amzn.to/3Z7BkKr"
+  },
+  {
+    "image": "https://res.cloudinary.com/dywuvwqth/image/upload/v1748491527/gow_4_lxvzrp.png",
+    "name": "God of War 4",
+    "id": 1,
+    "brand": "Santa Monica Studios",
+    "description": "GOD‎ ‎ OF WAR 4 | PC GAME | 𝐈𝐍𝐒𝐓𝐀𝐍𝐓 𝐄-𝐌𝐀𝐈𝐋 𝐃𝐄𝐋𝐈𝐕𝐄𝐑𝐘 (PC)",
+    "tags": [
+      "gow",
+      "god of war"
+    ],
+    "price": 799,
+    "category": "games",
+    "subCategory": [
+      "video game"
+    ],
+    "affiliateLink": "https://amzn.to/3SqKbDm"
+  }
+]

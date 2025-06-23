@@ -4,15 +4,17 @@ import clearBrowserStorage from './browserStorage';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const PY_BACKEND_URL = import.meta.env.VITE_PY_BACKEND_URL;
+const JAVA_BACKEND_URL = import.meta.env.VITE_JAVA_BACKEND_URL;
 
 async function autoRefreshAccessToken() {
   try {
     const response = await axiosApi.post(
-      `${BACKEND_URL}/api/v1/auth/refresh-token`,
+      `${JAVA_BACKEND_URL}/auth/renew-accesstoken`,
       {},
       { withCredentials: true }
     );
-    await isAuthenticated();
+    console.log("✅😥🙏🔗 renewed")
+    // await isAuthenticated();
     return response;
   } catch (error) {
     console.log(error);
@@ -27,18 +29,18 @@ function calculateRemainingTime(expirationTimestampSession: number | null): numb
   const currentTime = new Date();
 
   const threeMinBeforeTokenExpiration = tokenExpirationTime.getTime() - 3 * 60 * 1000;
-  /*   console.log('token expiration:-', tokenExpirationTime);
+  console.log('token expiration:-', tokenExpirationTime);
   console.log('three min before', threeMinBeforeTokenExpiration);
   const date = new Date(threeMinBeforeTokenExpiration);
-  console.log(date.toLocaleString()); */
+  console.log(date.toLocaleString());
 
   const remainingTime = threeMinBeforeTokenExpiration - currentTime.getTime();
-  // console.log(`Token refresh scheduled in ${remainingTime / 1000} seconds.`);
+  console.log(`Token refresh scheduled in ${remainingTime / 1000} seconds.`);
   return remainingTime > 0 ? remainingTime : 0;
 }
 
 async function scheduleTokenRefresh() {
-  const expirationTimestampSession = JSON.parse(localStorage.getItem('session') || 'null');
+  const expirationTimestampSession = JSON.parse(localStorage.getItem('session') ?? 'null');
 
   if (!expirationTimestampSession) {
     console.log('No valid session found');
@@ -47,9 +49,10 @@ async function scheduleTokenRefresh() {
 
   const remainingTime = calculateRemainingTime(expirationTimestampSession);
 
+  console.log(remainingTime)
+
   //pro-active call before the token expires
   if (remainingTime > 0) {
-    // console.log('scheduled auto refresh');
     setTimeout(async () => {
       await autoRefreshAccessToken();
       scheduleTokenRefresh();
