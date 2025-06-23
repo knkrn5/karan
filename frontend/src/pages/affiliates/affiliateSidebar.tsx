@@ -153,7 +153,7 @@ export default function AffiliateSidebar() {
       {/* information */}
       <div className="mt-4 p-4 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg shadow-lg text-white text-center">
         <h3 className="text-lg font-bold">Products Promotion</h3>
-        <p className="text-sm mt-1">Products I've personally experienced.</p>
+        <p className="text-sm mt-1">All Products here contains the Third party Link.</p>
       </div>
     </div>
   );

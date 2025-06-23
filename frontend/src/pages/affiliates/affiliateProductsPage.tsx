@@ -51,7 +51,6 @@ const AffiliateProductsPage = () => {
   const fetchProducts = async (): Promise<void> => {
     try {
       const response = await axios.get(`${PY_BACKEND_URL}/affiliate-products/get-products`);
-      console.log(response.data);
       setProducts(response.data);
     } catch (error) {
       console.error('Error fetching products:', error);
