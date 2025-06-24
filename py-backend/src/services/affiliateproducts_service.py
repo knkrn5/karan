@@ -56,11 +56,11 @@ class AffiliateProductsService:
             print("✅ Product updated in the database.")
 
     @staticmethod
-    def delete_product(product_ids: list[str]):
+    def delete_product(product_ids: list[UUID]):
         with Session(engine) as session:
             for id in product_ids:
-                if not isinstance(id, str):
-                    raise ValueError("Product ID must be an string.")
+                if not isinstance(id, UUID):
+                    raise ValueError("Product ID must be an UUID.")
 
                 # Delete cart items referencing this product
                 session.query(CartItem).filter(CartItem.product_id == id).delete(

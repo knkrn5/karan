@@ -46,10 +46,10 @@ async def update_product_route(
 
 @router.delete("/delete-product")
 async def delete_product_route(
-    ids: List[str] = Query(...), _: str = Depends(verify_api_key)
+    product_ids: List[UUID] = Query(...), _: str = Depends(verify_api_key)
 ):
     try:
-        AffiliateProductsService.delete_product(ids)
+        AffiliateProductsService.delete_product(product_ids)
         return {"message": "Products deleted successfully"}
     except ValueError as e:
         return {"error": str(e)}

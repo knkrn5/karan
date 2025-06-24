@@ -14,7 +14,7 @@ async function autoRefreshAccessToken() {
       { withCredentials: true }
     );
     console.log("✅😥🙏🔗 renewed")
-    // await isAuthenticated();
+    await isAuthenticated();
     return response;
   } catch (error) {
     console.log(error);
@@ -39,7 +39,7 @@ function calculateRemainingTime(expirationTimestampSession: number | null): numb
   return remainingTime > 0 ? remainingTime : 0;
 }
 
-async function scheduleTokenRefresh() {
+async function scheduleTokenRefresh(): Promise<void> {
   const expirationTimestampSession = JSON.parse(localStorage.getItem('session') ?? 'null');
 
   if (!expirationTimestampSession) {
@@ -67,7 +67,7 @@ async function scheduleTokenRefresh() {
 }
 
 // Pinging Python backend
-async function pingpybackend() {
+async function pingpybackend(): Promise<void> {
   try {
     const response = await axios.get(`${PY_BACKEND_URL}/`);
     console.log('api2 status✅:', response.status);

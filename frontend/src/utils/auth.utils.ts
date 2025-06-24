@@ -2,7 +2,6 @@ import axios, { AxiosError } from 'axios';
 import { useProfileStore } from '../stores/profile/profileStore';
 import { useAuthStore } from '../stores/auth/authStore';
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const JAVA_BACKEND_URL = import.meta.env.VITE_JAVA_BACKEND_URL;
 

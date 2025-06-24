@@ -88,12 +88,11 @@ const AffiliateProductsPage = () => {
         console.log(res.data);
         setCartItems(prev => prev.filter(item => item.id !== product_id));
       } else {
-        const res = await axios.post(
+        await axios.post(
           `${PY_BACKEND_URL}/affiliate-products/add-to-cart`,
           { product_id },
           { withCredentials: true }
         );
-        console.log(res.data);
         const productToAdd = products.find(product => product.id === product_id);
         if (productToAdd) {
           setCartItems(prev => [...prev, productToAdd]);

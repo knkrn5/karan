@@ -98,32 +98,32 @@ export class AuthController {
   // }
 
   //refreshing access token
-  static async refreshAccessToken(req: Request, res: Response) {
-    try {
-      const { refreshToken } = req.cookies;
+  // static async refreshAccessToken(req: Request, res: Response) {
+  //   try {
+  //     const { refreshToken } = req.cookies;
 
-      const response = await AuthService.refreshAccessToken(refreshToken);
+  //     const response = await AuthService.refreshAccessToken(refreshToken);
 
-      const { accessToken } = response.data;
+  //     const { accessToken } = response.data;
 
 
-      res.cookie('accessToken', accessToken, {
-        domain: process.env.ENV === 'PRODUCTION' ? '.karan.email' : undefined,
-        httpOnly: true,
-        secure: true,
-        sameSite: 'none',
-        maxAge: 15 * 60 * 1000,
-      });
+  //     res.cookie('accessToken', accessToken, {
+  //       domain: process.env.ENV === 'PRODUCTION' ? '.karan.email' : undefined,
+  //       httpOnly: true,
+  //       secure: true,
+  //       sameSite: 'none',
+  //       maxAge: 15 * 60 * 1000,
+  //     });
 
-      res.status(response.statusCode).json(response);
-    } catch (error: any) {
-      if (error instanceof ApiResponse) {
-        res.status(error.statusCode).json(error);
-        return;
-      }
-      res.status(500).json({ success: false, message: error.message, data: null });
-    }
-  }
+  //     res.status(response.statusCode).json(response);
+  //   } catch (error: any) {
+  //     if (error instanceof ApiResponse) {
+  //       res.status(error.statusCode).json(error);
+  //       return;
+  //     }
+  //     res.status(500).json({ success: false, message: error.message, data: null });
+  //   }
+  // }
 
   // static async logoutUser(req: Request, res: Response) {
   //   res

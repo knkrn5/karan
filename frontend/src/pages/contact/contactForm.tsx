@@ -53,7 +53,7 @@ export default function ContactForm() {
   //profile store data
   const firstName = useProfileStore(state => state.firstName);
   const lastName = useProfileStore(state => state.lastName);
-  const fullName = `${firstName} ${lastName}`;
+  const fullName = lastName ? `${firstName} ${lastName}` : firstName;
   const profileEmail = useProfileStore(state => state.email);
 
   //TRpopupNotificationStore

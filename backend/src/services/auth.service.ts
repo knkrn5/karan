@@ -105,45 +105,45 @@ export class AuthService {
   // }
 
   //refreshing access token
-  static async refreshAccessToken(refreshToken: string) {
-    try {
-      if (!refreshToken) {
-        throw new ApiResponse(400, false, 'Refresh token is required', null);
-      }
+  // static async refreshAccessToken(refreshToken: string) {
+  //   try {
+  //     if (!refreshToken) {
+  //       throw new ApiResponse(400, false, 'Refresh token is required', null);
+  //     }
 
-      const decoded = jwt.decode(refreshToken) as { userId: string } | null;
-      if (!decoded) {
-        throw new ApiResponse(401, false, 'Invalid refresh token decoding', null);
-      }
+  //     const decoded = jwt.decode(refreshToken) as { userId: string } | null;
+  //     if (!decoded) {
+  //       throw new ApiResponse(401, false, 'Invalid refresh token decoding', null);
+  //     }
 
-      // Verifing the token
-      const verifiedToken = jwt.verify(
-        refreshToken,
-        process.env.REFRESH_TOKEN_SECRET as string
-      ) as {
-        userId: string;
-      };
+  //     // Verifing the token
+  //     const verifiedToken = jwt.verify(
+  //       refreshToken,
+  //       process.env.REFRESH_TOKEN_SECRET as string
+  //     ) as {
+  //       userId: string;
+  //     };
 
-      const user = await UserModel.findById(verifiedToken.userId);
-      if (!user || user.refreshToken !== refreshToken) {
-        throw new ApiResponse(401, false, 'Invalid refresh token comparing', null);
-      }
+  //     const user = await UserModel.findById(verifiedToken.userId);
+  //     if (!user || user.refreshToken !== refreshToken) {
+  //       throw new ApiResponse(401, false, 'Invalid refresh token comparing', null);
+  //     }
 
-      // Generating new access token
-      const accessToken = user.createAccessToken();
-      return new ApiResponse(200, true, 'Token refreshed successfully', { accessToken });
-    } catch (error: any) {
-      if (error.name === 'TokenExpiredError') {
-        throw new ApiResponse(401, false, 'Refresh token expired', null);
-      }
+  //     // Generating new access token
+  //     const accessToken = user.createAccessToken();
+  //     return new ApiResponse(200, true, 'Token refreshed successfully', { accessToken });
+  //   } catch (error: any) {
+  //     if (error.name === 'TokenExpiredError') {
+  //       throw new ApiResponse(401, false, 'Refresh token expired', null);
+  //     }
 
-      if (error.name === 'JsonWebTokenError') {
-        throw new ApiResponse(400, false, 'Malformed refresh token', null);
-      }
+  //     if (error.name === 'JsonWebTokenError') {
+  //       throw new ApiResponse(400, false, 'Malformed refresh token', null);
+  //     }
 
-      throw new ApiResponse(401, false, 'Invalid refresh token', null);
-    }
-  }
+  //     throw new ApiResponse(401, false, 'Invalid refresh token', null);
+  //   }
+  // }
 
   //validating user authentication
   static async authenticateUser(userData: string) {
