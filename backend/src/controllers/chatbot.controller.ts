@@ -8,9 +8,9 @@ export class ChatbotController {
   static async getChatbotResponse(req: Request, res: Response) {
     try {
       let userId = '';
-      const decoded = accessTokenRetriever(req);
-      if (typeof decoded !== 'string' && decoded?.userId) {
-        userId = decoded.userId;
+      const decodedPayload = accessTokenRetriever(req);
+      if (typeof decodedPayload !== 'string' && decodedPayload?.id) {
+        userId = decodedPayload.id;
       } else {
         userId = '681ac87324dc59112b9e2a61';
       }
@@ -31,7 +31,7 @@ export class ChatbotController {
 
   static async getChatbotMsgsFromDb(req: Request, res: Response) {
     try {
-      const userId = req.payload.userId;
+      const userId = req.payload.id;
       const response = await ChatbotService.getChatbotMsgsFromDb(userId);
       res.status(response.statusCode).json(response);
     } catch (error) {

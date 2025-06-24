@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtHeader, JwtPayload } from 'jsonwebtoken';
 import { UserModel, IUser } from '../models/user.model.js';
 import { Request, Response, NextFunction } from 'express';
 import rateLimit from 'express-rate-limit';
@@ -6,10 +6,30 @@ import { ApiResponse } from '../utils/apiResponse.js';
 import bcrypt from 'bcrypt';
 import { redisClient } from '../db/clients/uptashRedisDB.js';
 
+export interface JWTPayload {
+  sub: string;
+  role: 'USER' | 'ADMIN';
+  nbf: number;
+  iss: string;
+  id: string;
+  exp: number;
+  iat: number;
+  email: string;
+  jti: string;
+}
 
-declare module 'express' {
-  interface Request {
-    payload?: any;
+
+// declare module 'express' {
+//   interface Request {
+//     payload: JWTPayload;
+//   }
+// }
+
+declare global {
+  namespace Express {
+    interface Request {
+      payload: JWTPayload;
+    }
   }
 }
 
@@ -30,7 +50,7 @@ export const isAccessTokenValid = async (
       return;
     }
 
-    const decodedPayload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as string);
+    const decodedPayload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as string) as JWTPayload;
 
     req.payload = decodedPayload;
 

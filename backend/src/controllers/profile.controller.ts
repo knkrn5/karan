@@ -6,7 +6,7 @@ export class ProfileController {
 
   static async deleteAccount(req: Request, res: Response) {
     try {
-      const userId = req.payload.userId;
+      const userId = req.payload.id;
       const response = await ProfileService.deleteAccount(userId);
       res.status(response.statusCode).json(response);
     } catch (error: any) {

@@ -6,7 +6,7 @@ export class ContactController {
   // Adding contact message to the db
   static async addContactMessage(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.payload.userId;
+      const userId = req.payload.id;
       const { message } = req.body;
       const response = await ContactService.addContactMessages(userId, message);
 
@@ -26,7 +26,7 @@ export class ContactController {
 
   static async updateContactMessages(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.payload.userId;
+      const userId = req.payload.id;
       const { msgId, message } = req.body;
       const response = await ContactService.updateContactMessages(userId, msgId, message);
       res.status(response.statusCode).json(response);
@@ -45,7 +45,7 @@ export class ContactController {
 
   static async deleteContactMessages(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.payload.userId;
+      const userId = req.payload.id;
       const { msgId } = req.body;
       const response = await ContactService.deleteContactMessages(userId, msgId);
 
@@ -65,7 +65,7 @@ export class ContactController {
 
   static async getContactMessages(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.payload.userId;
+      const userId = req.payload.id;
       const response = await ContactService.getContactMessages(userId);
       res.status(response.statusCode).json(response);
     } catch (error: any) {
