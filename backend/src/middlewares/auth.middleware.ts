@@ -9,7 +9,7 @@ import { redisClient } from '../db/clients/uptashRedisDB.js';
 
 declare module 'express' {
   interface Request {
-    user?: any;
+    payload?: any;
   }
 }
 
@@ -30,9 +30,9 @@ export const isAccessTokenValid = async (
       return;
     }
 
-    const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as string);
+    const decodedPayload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as string);
 
-    req.user = decoded;
+    req.payload = decodedPayload;
 
     next();
   } catch (error: any) {

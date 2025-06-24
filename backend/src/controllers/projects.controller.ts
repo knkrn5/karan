@@ -6,7 +6,7 @@ import { ApiResponse } from "../utils/apiResponse.js";
 export class ProjectsController {
     static async addProjectsLikeDislikeInteraction(req: Request, res: Response): Promise<void> {
         try {
-            const userId = req.user.userId;
+            const userId = req.payload.userId;
             const { projectId, likeDislike } = req.body;
             const response = await ProjectsService.addProjectsLikeDislikeInteraction(userId, projectId, likeDislike);
             if (response instanceof ApiResponse) {
@@ -29,7 +29,7 @@ export class ProjectsController {
 
     static async getUserProjectsLikeDislikeInteraction(req: Request, res: Response): Promise<void> {
         try {
-            const userId = req.user.userId;
+            const userId = req.payload.userId;
             const response = await ProjectsService.getUserProjectsLikeDislikeInteraction(userId);
             res.status(response.statusCode).json(response);
         } catch (error: any) {

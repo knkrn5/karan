@@ -7,7 +7,7 @@ export const accessTokenRetriever = (req: Request) => {
         if (!accessToken) return null;
 
         const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as string);
-        req.user = decoded;
+        req.payload = decoded;
 
         return decoded;
 

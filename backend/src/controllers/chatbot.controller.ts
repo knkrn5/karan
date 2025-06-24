@@ -31,7 +31,7 @@ export class ChatbotController {
 
   static async getChatbotMsgsFromDb(req: Request, res: Response) {
     try {
-      const userId = req.user.userId;
+      const userId = req.payload.userId;
       const response = await ChatbotService.getChatbotMsgsFromDb(userId);
       res.status(response.statusCode).json(response);
     } catch (error) {
