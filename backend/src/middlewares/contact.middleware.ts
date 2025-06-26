@@ -1,7 +1,7 @@
 import rateLimit from 'express-rate-limit';
 import { ApiResponse } from '../utils/apiResponse.js';
 
-export class ConactMiddleware {
+export class ContactMiddleware {
   static readonly ContactPostLimiter = rateLimit({
     windowMs: 60 * 60 * 1000,
     max: 3,

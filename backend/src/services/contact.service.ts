@@ -2,22 +2,18 @@ import { ApiResponse } from '../utils/apiResponse.js';
 import { ContactModel } from '../models/contact.model.js';
 import { emailTransporter } from '../utils/emailTransporter.js';
 import { contactMsgEmailTemplate } from '../mail/templates/contactMsgEmailTemplate.js';
-import { UserModel } from '../models/user.model.js';
-import mongoose from 'mongoose';
 
 export class ContactService {
   static async addContactMessages(userId: string, message: string) {
-    const isFieldEmpty: boolean = [userId, message].some(field => !field.trim());
+    if (!userId) throw new ApiResponse(404, false, 'User ID is required', null);
+    if (!message) throw new ApiResponse(404, false, 'Message is required', null);
 
-    if (isFieldEmpty) {
-      throw new ApiResponse(404, false, 'All fields are required', null);
-    }
 
     //checking existing user
-    const existingUser = await UserModel.exists({ _id: userId });
-    if (!existingUser) {
-      throw new ApiResponse(404, false, 'User not found', null);
-    }
+    // const existingUser = await UserModel.exists({ _id: userId });
+    // if (!existingUser) {
+    //   throw new ApiResponse(404, false, 'User not found', null);
+    // }
 
     //creating/adding/pushing contact message in the db
     const contactMsg = await ContactModel.findOneAndUpdate(
@@ -91,7 +87,7 @@ export class ContactService {
 
   static async getContactMessages(userId: string) {
     const result = await ContactModel.aggregate([
-      { $match: { user: new mongoose.Types.ObjectId(userId) } },
+      { $match: { user: userId } },
       { $unwind: "$messages" },
       { $sort: { "messages.createdAt": -1 } },
       {

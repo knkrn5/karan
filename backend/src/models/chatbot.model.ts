@@ -1,21 +1,21 @@
-import mongoose, { Schema, Document, Types } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
 
 export interface IChatbotMessage {
+    user: string;
     role: string;
     content: string;
 }
 
 export interface IChatbot extends Document {
-    user: Types.ObjectId;
+    user: string;
     message: IChatbotMessage[];
 }
 
 const chatbotMsgSchema = new Schema<IChatbot>(
     {
         user: {
-            type: Schema.Types.ObjectId,
-            ref: "User",
+            type: String,
             required: true,
         },
         message: [

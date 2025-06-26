@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { AuthService } from '../services/auth.service.js';
-import { ApiResponse } from '../utils/apiResponse.js';
 
 export class AuthController {
 
@@ -8,7 +7,6 @@ export class AuthController {
   static async authenticateUser(req: Request, res: Response) {
     try {
       const userDataPayload = req.payload;
-      console.log(userDataPayload)
       const response = await AuthService.authenticateUser(userDataPayload);
       res.status(response.statusCode).json(response);
     } catch (error: any) {

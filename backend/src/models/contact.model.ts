@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Types } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
 export interface IMessage {
     message: string;
@@ -6,7 +6,7 @@ export interface IMessage {
 }
 
 export interface IContact extends Document {
-    user: Types.ObjectId;
+    user: string;
     messages: IMessage[];
 }
 
@@ -30,8 +30,7 @@ const messageSchema = new Schema<IMessage>(
 const contactMsgSchema = new Schema<IContact>(
     {
         user: {
-            type: Schema.Types.ObjectId,
-            ref: "User",
+            type: String,
             required: true,
         },
         messages: [messageSchema],

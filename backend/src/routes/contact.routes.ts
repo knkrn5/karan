@@ -1,5 +1,5 @@
 import express from 'express';
-import { ConactMiddleware } from '../middlewares/contact.middleware.js';
+import { ContactMiddleware } from '../middlewares/contact.middleware.js';
 import { ContactController } from '../controllers/contact.controller.js';
 import { isAccessTokenValid } from '../middlewares/auth.middleware.js';
 
@@ -7,8 +7,8 @@ import { isAccessTokenValid } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
-router.post('/message', isAccessTokenValid, ConactMiddleware.ContactPostLimiter, ContactController.addContactMessage);
-router.patch('/message', isAccessTokenValid, ConactMiddleware.ContactPutLimiter, ContactController.updateContactMessages);
+router.post('/message', isAccessTokenValid, ContactMiddleware.ContactPostLimiter, ContactController.addContactMessage);
+router.patch('/message', isAccessTokenValid, ContactMiddleware.ContactPutLimiter, ContactController.updateContactMessages);
 router.delete('/message', isAccessTokenValid, ContactController.deleteContactMessages);
 router.get('/message', isAccessTokenValid, ContactController.getContactMessages);
 

@@ -7,6 +7,7 @@ export class ContactController {
   static async addContactMessage(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.payload.id;
+      console.log(typeof userId, userId);
       const { message } = req.body;
       const response = await ContactService.addContactMessages(userId, message);
 
