@@ -4,9 +4,7 @@ import { JWTPayload } from '../middlewares/auth.middleware.js';
 
 import jwt from 'jsonwebtoken';
 import { OTPEmailTemplate } from '../mail/templates/otpEmailTemplate.js';
-import { redisClient } from '../db/clients/uptashRedisDB.js';
 import { emailTransporter } from '../utils/emailTransporter.js';
-import bcrypt from 'bcrypt';
 
 export class AuthService {
 

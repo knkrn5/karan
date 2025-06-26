@@ -16,7 +16,6 @@
   "description": "",
   "dependencies": {
     "@types/nodemailer": "^6.4.17",
-    "bcrypt": "^5.1.1",
     "contentful": "^11.5.13",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -29,11 +28,9 @@
     "nodemailer": "^6.10.0",
     "nodemon": "^3.1.9",
     "openai": "^4.96.0",
-    "pm2": "^5.4.3",
-    "redis": "^4.7.0"
+    "pm2": "^6.0.8"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",

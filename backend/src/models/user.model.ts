@@ -1,5 +1,5 @@
 import mongoose, { Types } from 'mongoose';
-import bcrypt from 'bcrypt';
+// import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import { ContactModel } from './contact.model.js';
@@ -30,30 +30,30 @@ const userSchema = new mongoose.Schema(
 );
 
 //middleware for hashing password
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
-});
+// userSchema.pre('save', async function (next) {
+//   if (!this.isModified('password')) return next();
+//   const salt = await bcrypt.genSalt(10);
+//   this.password = await bcrypt.hash(this.password, salt);
+//   next();
+// });
 
-userSchema.methods.comparePassword = async function (enteredPassword: string): Promise<boolean> {
-  return await bcrypt.compare(enteredPassword, this.password);
-};
+// userSchema.methods.comparePassword = async function (enteredPassword: string): Promise<boolean> {
+//   return await bcrypt.compare(enteredPassword, this.password);
+// };
 
-userSchema.methods.createAccessToken = function (): string {
-  return jwt.sign(
-    { userId: this._id, email: this.email },
-    process.env.ACCESS_TOKEN_SECRET as string,
-    { expiresIn: '10m' }
-  );
-};
+// userSchema.methods.createAccessToken = function (): string {
+//   return jwt.sign(
+//     { userId: this._id, email: this.email },
+//     process.env.ACCESS_TOKEN_SECRET as string,
+//     { expiresIn: '10m' }
+//   );
+// };
 
-userSchema.methods.createRefreshToken = function (): string {
-  return jwt.sign({ userId: this._id }, process.env.REFRESH_TOKEN_SECRET as string, {
-    expiresIn: '7d',
-  });
-};
+// userSchema.methods.createRefreshToken = function (): string {
+//   return jwt.sign({ userId: this._id }, process.env.REFRESH_TOKEN_SECRET as string, {
+//     expiresIn: '7d',
+//   });
+// };
 
 //middleware for deleting complete user data
 userSchema.pre('findOneAndDelete', async function (next) {
