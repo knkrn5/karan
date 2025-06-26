@@ -1,7 +1,7 @@
 import { model, Schema, Document, Types } from "mongoose";
 
 interface LikeDislikeTypeProps extends Document {
-    user: Types.ObjectId;
+    user: string;
     likeDislike: "like" | "dislike" | null;
 }
 
@@ -13,8 +13,7 @@ export interface ProjectTypeProps extends Document {
 
 const likeDislikeSchema = new Schema<LikeDislikeTypeProps>({
     user: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
+        type: String,
         required: true,
     },
     likeDislike: {

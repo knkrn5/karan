@@ -12,7 +12,7 @@ export class ProjectsService {
         const updatedProjectLikeDislike = await ProjectModel.findOneAndUpdate(
             {
                 projectId,
-                "likeDislikeInteractions.user": new mongoose.Types.ObjectId(userId),
+                "likeDislikeInteractions.user": userId,
             },
             {
                 $set: {
@@ -31,7 +31,7 @@ export class ProjectsService {
                 {
                     $push: {
                         likeDislikeInteractions: {
-                            user: new mongoose.Types.ObjectId(userId),
+                            user: userId,
                             likeDislike: likeDislike,
                         },
                     },
@@ -52,7 +52,7 @@ export class ProjectsService {
         const userProjectsLikeDislike = await ProjectModel.aggregate([
             {
                 $match: {
-                    "likeDislikeInteractions.user": new mongoose.Types.ObjectId(userId)
+                    "likeDislikeInteractions.user": userId
                 }
             },
             {
@@ -60,7 +60,7 @@ export class ProjectsService {
             },
             {
                 $match: {
-                    "likeDislikeInteractions.user": new mongoose.Types.ObjectId(userId)
+                    "likeDislikeInteractions.user": userId
                 }
             },
             {
