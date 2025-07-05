@@ -1,17 +1,17 @@
 
-import { Router } from 'express';
+// import { Router } from 'express';
 
-import { isAccessTokenValid, verifyPassword } from '../middlewares/auth.middleware.js';
-import { ProfileController } from '../controllers/profile.controller.js';
-
-
-const router = Router();
+// import { isAccessTokenValid, verifyPassword } from '../middlewares/auth.middleware.js';
+// import { ProfileController } from '../controllers/profile.controller.js';
 
 
-// router.get('/details', isAccessTokenValid, ProfileController.getProfile);
-//  router.put('/', isAccessTokenValid, ProfileController.updateProfile);
-router.delete('/delete-account', verifyPassword, isAccessTokenValid, ProfileController.deleteAccount);
+// const router = Router();
 
 
-export default router;
+// // router.get('/details', isAccessTokenValid, ProfileController.getProfile);
+// //  router.put('/', isAccessTokenValid, ProfileController.updateProfile);
+// router.delete('/delete-account', verifyPassword, isAccessTokenValid, ProfileController.deleteAccount);
+
+
+// export default router;
 

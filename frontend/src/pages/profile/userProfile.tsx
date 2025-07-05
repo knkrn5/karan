@@ -17,13 +17,15 @@ import { useMainPopupStore } from '../../stores/popup/mainPopupStore.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
+const JAVA_BACKEND_URL = import.meta.env.VITE_JAVA_BACKEND_URL;
+
 export default function UserProfile() {
   const [isVisible, setIsVisible] = useState(false);
   // const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const firstName = useProfileStore(state => state.firstName);
   const lastName = useProfileStore(state => state.lastName);
-  const email = useProfileStore(state => state.email);
+  const email: string = useProfileStore(state => state.email);
 
   const [inputValue, setInputValue] = useState<{ confirmPassword: string; otp: string }>({
     confirmPassword: '',
@@ -105,7 +107,7 @@ export default function UserProfile() {
     }
 
     if (confirmationsBool.deleteAccount && !confirmationsBool.isOtpSent) {
-      const response = await verifyPassword(inputValue.confirmPassword);
+      const response = await verifyPassword(email, inputValue.confirmPassword);
       if (response.success) {
         setInputErrror('');
       } else {
@@ -153,19 +155,20 @@ export default function UserProfile() {
 
   async function handleConfirmationDeletion() {
     try {
-      const response = await axios.delete(`${BACKEND_URL}/api/v1/profile/delete-account`, {
-        data: {
+      const response = await axios.post(
+        `${JAVA_BACKEND_URL}/account/delete-account`,
+        {
           email: email,
-          password: inputValue.confirmPassword,
-          enteredOTP: inputValue.otp,
+          enteredPassword: inputValue.confirmPassword,
+          enteredOtp: inputValue.otp,
         },
-        withCredentials: true,
-      });
+        { withCredentials: true }
+      );
 
       if (response.data.success) {
         setICnotificationMsg({ success: response.data.message });
 
-        await logout();
+        // await logout();
 
         useAuthStore.getState().setIsSuccessLoginedIn(false);
         useProfileStore.getState().resetProfileStore();

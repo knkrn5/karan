@@ -16,7 +16,7 @@ interface LoginFeildDataProps {
   password: string;
 }
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+// const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const JAVA_BACKEND_URL = import.meta.env.VITE_JAVA_BACKEND_URL;
 
@@ -113,7 +113,7 @@ export default function LoginPage() {
         `${JAVA_BACKEND_URL}/auth/login`,
         {
           email: loginFormFieldData.email.toLowerCase(),
-          password: loginFormFieldData.password,
+          enteredPassword: loginFormFieldData.password,
         },
         { withCredentials: true }
       );

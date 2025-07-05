@@ -1,6 +1,6 @@
 from .configs.env import load_dotenv
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.cors import CORSMiddleware
 from .db.postgresDb import (
     connect_db_and_create_table,
 )
@@ -27,7 +27,7 @@ origins: list[str] = (
 )
 
 app.add_middleware(
-    CORSMiddleware,
+    CORSMiddleware,  # pyrefly: ignore
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
@@ -41,12 +41,12 @@ async def on_startup():
 
 
 @app.get("/")
-async def main():
+async def main() -> str:
     return "Hey api2🎉 :]"
 
 
 @app.get("/health")
-async def health():
+async def health() -> str:
     return "api2 health ✅ :]"
 
 

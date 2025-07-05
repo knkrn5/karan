@@ -68,13 +68,13 @@ export async function sendEmailOtp(
 
 // === VERIFY OTP ===
 export async function verifyEmailOtp(
-  userEmail: string,
+  email: string,
   enteredOtp: string
 ): Promise<ApiResponseTypes<null>> {
   try {
     const response = await axios.post(
       `${JAVA_BACKEND_URL}/auth/verify-otp-mail`,
-      { email: userEmail.toLowerCase(), enteredOtp },
+      { email: email.toLowerCase(), enteredOtp },
       { withCredentials: true }
     );
     return response.data;
@@ -96,11 +96,11 @@ export async function verifyEmailOtp(
 }
 
 // === VERIFY PASSWORD ===
-export async function verifyPassword(password: string): Promise<ApiResponseTypes<null>> {
+export async function verifyPassword(email: string, enteredPassword: string): Promise<ApiResponseTypes<null>> {
   try {
     const response = await axios.post(
       `${JAVA_BACKEND_URL}/auth/verify-password`,
-      { password },
+      { email, enteredPassword },
       { withCredentials: true }
     );
     return response.data;

@@ -1,5 +1,11 @@
-import { UserModel } from '../models/user.model.js';
+// import { UserModel } from '../models/user.model.js';
 import { ApiResponse } from '../utils/apiResponse.js';
+
+import { ContactModel } from '../models/contact.model.js';
+import { ChatbotModel } from '../models/chatbot.model.js';
+import { ProjectModel } from '../models/projects.models.js';
+
+
 
 
 export class ProfileService {
@@ -28,8 +34,14 @@ export class ProfileService {
 
     //deleting account
     try {
-      const deletedUser = await UserModel.findByIdAndDelete(userId);
-      if (!deletedUser) throw new ApiResponse(404, false, 'User not found', null);
+
+      await ContactModel.deleteOne({ userId });
+      await ChatbotModel.deleteOne({ userId });
+      await ProjectModel.updateMany(
+        {},
+        {
+          $pull: { likeDislikeInteractions: { userId } }
+        });
 
       return new ApiResponse(200, true, 'Account deleted successfully', null);
     } catch (error) {

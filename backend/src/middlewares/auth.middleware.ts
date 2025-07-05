@@ -1,5 +1,5 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { UserModel, IUser } from '../models/user.model.js';
+// import { UserModel, IUser } from '../models/user.model.js';
 import { Request, Response, NextFunction } from 'express';
 import rateLimit from 'express-rate-limit';
 import { ApiResponse } from '../utils/apiResponse.js';
@@ -76,37 +76,37 @@ export const isAccessTokenValid = async (
 };
 
 
-//password verification middleware
-export const verifyPassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const { email, password } = req.body;
-    // Input validation
-    if (!email) {
-      res.status(400).json(new ApiResponse(400, false, 'Email is required.', null));
-      return;
-    }
-    if (!password) {
-      res.status(400).json(new ApiResponse(400, false, 'Password is required', null));
-      return;
-    }
+// //password verification middleware
+// export const verifyPassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+//   try {
+//     const { email, password } = req.body;
+//     // Input validation
+//     if (!email) {
+//       res.status(400).json(new ApiResponse(400, false, 'Email is required.', null));
+//       return;
+//     }
+//     if (!password) {
+//       res.status(400).json(new ApiResponse(400, false, 'Password is required', null));
+//       return;
+//     }
 
-    //matching password
-    const user: IUser | null = await UserModel.findOne({ email });
-    if (!user) {
-      res.status(404).json(new ApiResponse(404, false, 'User not found', null));
-      return
-    }
-    const isPasswordMatch = await user.comparePassword(password);
-    if (!isPasswordMatch) {
-      res.status(401).json(new ApiResponse(401, false, 'Incorrect password', null));
-      return
-    }
+//     //matching password
+//     const user: IUser | null = await UserModel.findOne({ email });
+//     if (!user) {
+//       res.status(404).json(new ApiResponse(404, false, 'User not found', null));
+//       return
+//     }
+//     const isPasswordMatch = await user.comparePassword(password);
+//     if (!isPasswordMatch) {
+//       res.status(401).json(new ApiResponse(401, false, 'Incorrect password', null));
+//       return
+//     }
 
-    next();
-  } catch (error) {
-    res.status(500).json(new ApiResponse(500, false, 'Internal server error', error));
-  }
-};
+//     next();
+//   } catch (error) {
+//     res.status(500).json(new ApiResponse(500, false, 'Internal server error', error));
+//   }
+// };
 
 
 //***************auth limiters***********************/
