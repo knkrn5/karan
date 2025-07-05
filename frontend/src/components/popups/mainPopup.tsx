@@ -7,9 +7,10 @@ type ModalProps = {
   children: React.ReactNode;
   header: string;
   footer: string;
+  onClose: () => void;
 };
 
-const PopupModel = ({ children, header, footer }: ModalProps) => {
+const PopupModel = ({ children, header, footer, onClose }: ModalProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   //main popup store
@@ -29,7 +30,7 @@ const PopupModel = ({ children, header, footer }: ModalProps) => {
       className={`fixed inset-0 z-50 flex items-center justify-center bg-black/10 backdrop-blur-[3px] ${
         popupMsg ? 'block' : 'hidden'
       }`}
-      onClick={() => setMainPopupMsg('')}
+      onClick={() => onClose()}
     >
       <div
         className={`max-w-[400px] bg-white dark:bg-slate-900 shadow-2xl hover:shadow-xl dark:shadow-black px-6 py-2 m-1 rounded-2xl relative 
@@ -39,7 +40,7 @@ const PopupModel = ({ children, header, footer }: ModalProps) => {
         <button
           title="close popup"
           type="button"
-          onClick={() => setMainPopupMsg('')}
+          onClick={() => onClose()}
           className="absolute top-3 right-3 p-1 text-black bg-gray-300 hover:bg-gray-400  dark:text-gray-300 dark:bg-gray-600 dark:hover:text-white dark:hover:bg-gray-700  rounded-xl duration-300 cursor-pointer"
         >
           <IoMdClose />

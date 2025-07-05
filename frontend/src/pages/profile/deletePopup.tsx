@@ -13,7 +13,14 @@ export default function DeleteConfirmationPopup({ onDelete, onCancel }: DeletePo
   const { setMainPopupMsg } = useMainPopupStore();
 
   return (
-    <PopupModel header="Confirm Deletion" footer="karan.email">
+    <PopupModel
+      header="Confirm Deletion"
+      footer="karan.email"
+      onClose={() => {
+        onCancel();
+        setMainPopupMsg('');
+      }}
+    >
       <div className="relative  w-full max-w-md max-h-full">
         <div className="relative bg-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
           <div className="p-4 text-center">
