@@ -3,13 +3,17 @@ package java_backend;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import org.springframework.context.annotation.Bean;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import java_backend.configs.EnvConfig;
 
 @SpringBootApplication
+@RestController
 public class JavaBackendApplication {
 
 	public static void main(String[] args) {
@@ -21,20 +25,9 @@ public class JavaBackendApplication {
 				.systemProperties()
 				.load();
 
-		// System.out.println("Loaded environment variables:");
-
-		// for (DotenvEntry e : dotenv.entries()) {
-		// System.out.println(e);
-		// }
-
-		// dotenv.entries(Dotenv.Filter.DECLARED_IN_ENV_FILE).forEach(e -> {
-		// // System.out.println(e.getKey() + ": " + e.getValue());
-		// System.out.println(e.getKey());
-		// });
-
 		System.out.println("====== Custom App ENV Properties ======");
-		System.getProperties().forEach((key, value) -> {
-			if (key.toString().matches("^[A-Z0-9_]+$")) {
+		System.getenv().forEach((key, value) -> {
+			if (key.matches("^[A-Z0-9_]+$")) {
 				System.out.println(key + " = " + value);
 			}
 		});
@@ -49,7 +42,7 @@ public class JavaBackendApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
 						.allowedOrigins(
-								"PRODUCTION".equals(System.getProperty("ENV")) ? "https://karan.email"
+								"PRODUCTION".equals(EnvConfig.getenvvar("ENV")) ? "https://karan.email"
 										: "http://localhost:5173")
 						.allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS")
 						.allowedHeaders("*")
@@ -57,5 +50,10 @@ public class JavaBackendApplication {
 						.exposedHeaders("Authorization", "Content-Type");
 			}
 		};
+	}
+
+	@GetMapping("/")
+	public String home() {
+		return "🚀 Java Backend is running successfully!";
 	}
 }

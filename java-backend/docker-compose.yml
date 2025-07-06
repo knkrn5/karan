@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    ports:
+      - '9090:9090'
+    # environment:
+    #   # jwt
+    #   JWT_ISSUER: ${JWT_ISSUER}
+    #   ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
+    #   REFRESH_TOKEN_SECRET: ${REFRESH_TOKEN_SECRET}
+
+    #   # PostgreSQL
+    #   PSQL_DB_HOST_URL: ${PSQL_DB_HOST_URL}
+    #   PSQL_DB_USERNAME: ${PSQL_DB_USERNAME}
+    #   PSQL_DB_PASSWORD: ${PSQL_DB_PASSWORD}
+
+    #   # Mail
+    #   MAIL_HOST: ${MAIL_HOST}
+    #   MAIL_FROM: ${MAIL_FROM}
+    #   MAIL_PASS: ${MAIL_PASS}
+
+    #   # redis
+    #   REDIS_URL: ${REDIS_URL}
+
+    env_file:
+      - .env
+
+    restart: always

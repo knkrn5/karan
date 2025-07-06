@@ -10,6 +10,7 @@ import jakarta.persistence.Enumerated;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import java_backend.configs.EnvConfig;
 import jakarta.validation.constraints.Email;
 
 import lombok.*;
@@ -94,10 +95,10 @@ public class UserModel {
 
     public String createAccessToken() {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(System.getProperty("ACCESS_TOKEN_SECRET"));
+            Algorithm algorithm = Algorithm.HMAC256(EnvConfig.getenvvar("ACCESS_TOKEN_SECRET"));
 
             return JWT.create()
-                    .withIssuer(System.getProperty("JWT_ISSUER"))
+                    .withIssuer(EnvConfig.getenvvar("JWT_ISSUER"))
                     .withSubject(this.email)
                     .withClaim("id", this.id.toString())
                     .withClaim("email", this.email)
@@ -115,10 +116,10 @@ public class UserModel {
 
     public String createRefreshToken() {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(System.getProperty("REFRESH_TOKEN_SECRET"));
+            Algorithm algorithm = Algorithm.HMAC256(EnvConfig.getenvvar("REFRESH_TOKEN_SECRET"));
 
             return JWT.create()
-                    .withIssuer(System.getProperty("JWT_ISSUER"))
+                    .withIssuer(EnvConfig.getenvvar("JWT_ISSUER"))
                     .withSubject(this.email)
                     .withClaim("id", this.id.toString())
                     .withClaim("email", this.email)

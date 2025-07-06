@@ -15,7 +15,6 @@ const PopupModel = ({ children, header, footer, onClose }: ModalProps) => {
 
   //main popup store
   const popupMsg = useMainPopupStore(state => state.mainPopupMsg);
-  const { setMainPopupMsg } = useMainPopupStore();
 
   useEffect(() => {
     setIsVisible(false);

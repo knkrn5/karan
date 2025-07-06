@@ -3,6 +3,7 @@ package java_backend.utils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java_backend.configs.EnvConfig;
 
 // import static java_backend.configs.EnvConfig.dotenv;
 
@@ -18,7 +19,7 @@ public class CookieUtil {
         Cookie cookie = new Cookie(cookieName, cookieValue);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
-        if ("PRODUCTION".equalsIgnoreCase(System.getProperty("ENV"))) {
+        if ("PRODUCTION".equalsIgnoreCase(EnvConfig.getenvvar("ENV"))) {
             cookie.setDomain(".karan.email");
             cookie.setSecure(true);
         }
@@ -58,7 +59,7 @@ public class CookieUtil {
         Cookie expireCookie = new Cookie(cookieName, null);
         expireCookie.setHttpOnly(true);
         expireCookie.setPath("/");
-        if ("PRODUCTION".equalsIgnoreCase(System.getProperty("ENV"))) {
+        if ("PRODUCTION".equalsIgnoreCase(EnvConfig.getenvvar("ENV"))) {
             expireCookie.setDomain(".karan.email");
             expireCookie.setSecure(true);
         }

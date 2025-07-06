@@ -20,7 +20,7 @@ public class RedisConfig {
     // Static block to initialize the JedisPool as soon as the class is loaded in
     // any file
     static {
-        String redisUrl = System.getProperty("REDIS_URL");
+        String redisUrl = EnvConfig.getenvvar("REDIS_URL");
 
         JedisPoolConfig poolConfig = new JedisPoolConfig();
         poolConfig.setMaxTotal(20); // Maximum connections

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java_backend.configs.EnvConfig;
 import java_backend.utils.ApiResponse;
 
 import java_backend.utils.JwtUtil;
@@ -40,7 +41,7 @@ public class RequireAuthAspect {
                         .body(new ApiResponse(false, 400, "Access token missing", null));
             }
 
-            DecodedJWT decodedJWT = JwtUtil.verifyJwtToken(accessToken, System.getProperty("ACCESS_TOKEN_SECRET"));
+            DecodedJWT decodedJWT = JwtUtil.verifyJwtToken(accessToken, EnvConfig.getenvvar("ACCESS_TOKEN_SECRET"));
             if (decodedJWT == null) {
                 return ResponseEntity.status(401)
                         .body(new ApiResponse(false, 401, "Invalid token", null));

@@ -22,7 +22,9 @@ import java_backend.utils.JwtUtil;
 import java_backend.utils.EmailSender;
 
 import java_backend.mails.templates.OtpEmailTemplate;
+
 import java_backend.configs.RedisConfig;
+import java_backend.configs.EnvConfig;
 
 import java_backend.utils.BcryptUtil;
 
@@ -143,7 +145,7 @@ public class AuthService {
 
             String refreshTokenInDb = user.getRefreshToken();
             DecodedJWT decodedRefreshToken = JwtUtil.verifyJwtToken(refreshTokenInDb,
-                    System.getProperty("REFRESH_TOKEN_SECRET"));
+                    EnvConfig.getenvvar("REFRESH_TOKEN_SECRET"));
             if (decodedRefreshToken == null) {
                 refreshToken = user.createRefreshToken();
             } else {
@@ -170,7 +172,7 @@ public class AuthService {
             return new ApiResponse(false, 401, "Refresh token is required", null);
         }
 
-        DecodedJWT decodedJWT = JwtUtil.verifyJwtToken(refreshToken, System.getProperty("REFRESH_TOKEN_SECRET"));
+        DecodedJWT decodedJWT = JwtUtil.verifyJwtToken(refreshToken, EnvConfig.getenvvar("REFRESH_TOKEN_SECRET"));
         if (decodedJWT == null) {
             return new ApiResponse(false, 401, "Invalid or expired refresh token", null);
         }

@@ -1,14 +1,14 @@
-// package java_backend.configs;
+package java_backend.configs;
 
-// import io.github.cdimascio.dotenv.Dotenv;
+public final class EnvConfig {
 
-// public final class EnvConfig {
+    // Private constructor to prevent instantiation
+    private EnvConfig() {
+        throw new AssertionError("This class should not be instantiated");
+    }
 
-//     // Private constructor to prevent instantiation
-//     private EnvConfig() {
-//         throw new AssertionError("This class should not be instantiated");
-//     }
+    public static String getenvvar(String key) {
+        return System.getProperty(key, System.getenv(key));
+    }
 
-//     public static final Dotenv dotenv = Dotenv.load();
-
-// }
+}

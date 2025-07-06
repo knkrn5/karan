@@ -11,6 +11,8 @@ import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
+import java_backend.configs.EnvConfig;
+
 public final class JwtUtil {
 
     // Prevent instantiation
@@ -25,7 +27,7 @@ public final class JwtUtil {
 
             Algorithm algorithm = Algorithm.HMAC256(jwtTokenSecret);
             JWTVerifier verifier = JWT.require(algorithm)
-                    .withIssuer(System.getProperty("JWT_ISSUER"))
+                    .withIssuer(EnvConfig.getenvvar("JWT_ISSUER"))
                     .build();
             return verifier.verify(jwtToken);
         } catch (TokenExpiredException e) {
