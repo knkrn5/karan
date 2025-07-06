@@ -15,7 +15,6 @@ import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificat
 import { useICnotificationMsgStore } from '../../stores/notificationMsg/ICnotificationMsgStore.js';
 import { useMainPopupStore } from '../../stores/popup/mainPopupStore.js';
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const JAVA_BACKEND_URL = import.meta.env.VITE_JAVA_BACKEND_URL;
 
@@ -168,7 +167,7 @@ export default function UserProfile() {
       if (response.data.success) {
         setICnotificationMsg({ success: response.data.message });
 
-        // await logout();
+        await logout();
 
         useAuthStore.getState().setIsSuccessLoginedIn(false);
         useProfileStore.getState().resetProfileStore();
