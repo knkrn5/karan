@@ -20,7 +20,7 @@ public class CookieUtil {
         cookie.setHttpOnly(true);
         cookie.setPath("/");
         if ("PRODUCTION".equalsIgnoreCase(EnvConfig.getenvvar("ENV"))) {
-            cookie.setDomain(".karan.email");
+            cookie.setDomain(EnvConfig.getenvvar("DOMAIN"));
             cookie.setSecure(true);
         }
         cookie.setMaxAge(cookieTimePeriod);
@@ -60,7 +60,7 @@ public class CookieUtil {
         expireCookie.setHttpOnly(true);
         expireCookie.setPath("/");
         if ("PRODUCTION".equalsIgnoreCase(EnvConfig.getenvvar("ENV"))) {
-            expireCookie.setDomain(".karan.email");
+            expireCookie.setDomain(EnvConfig.getenvvar("DOMAIN"));
             expireCookie.setSecure(true);
         }
         expireCookie.setMaxAge(0);
