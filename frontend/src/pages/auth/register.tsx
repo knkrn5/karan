@@ -18,7 +18,6 @@ import PasswardRequirementToolTip from '../../components/ui/passwardRequirementT
 import { remainingTimeCounter } from '../../utils/remainingTimeCalculator.js';
 import { useRemainingTimeCalculatorStore } from '../../stores/others/remainingTimeCalculatorStore.js';
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const JAVA_BACKEND_URL = import.meta.env.VITE_JAVA_BACKEND_URL;
 
