@@ -77,19 +77,21 @@ export default function AffiliateSearchAndCart({
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 my-auto size-8 text-gray-700 dark:text-gray-300">
           <CiSearch />
         </div>
-        {showSearchSuggestions && searchedProduct.trim().length > 0 && (
-          <div className="absolute z-10 p-2  w-full bg-white dark:bg-slate-800 rounded-lg shadow shadow-neutral-300 dark:shadow-gray-900 max-h-60 overflow-y-auto">
-            {matchingProductNames.map((name, index) => (
-              <div
-                key={index}
-                className="px-4 py-2 text-sm text-gray-700 font-bold rounded-lg dark:text-gray-300 hover:border-b hover:bg-gray-100 dark:hover:bg-slate-700 cursor-pointer"
-                onMouseDown={() => setSearchedProduct(name)}
-              >
-                {name}
-              </div>
-            ))}
-          </div>
-        )}
+        {showSearchSuggestions &&
+          searchedProduct.trim().length > 0 &&
+          matchingProductNames.length > 0 && (
+            <div className="absolute z-10 p-2  w-full bg-white dark:bg-slate-800 rounded-lg shadow shadow-neutral-300 dark:shadow-gray-900 max-h-60 overflow-y-auto">
+              {matchingProductNames.map((name, index) => (
+                <div
+                  key={index}
+                  className="px-4 py-2 text-sm text-gray-700 font-bold rounded-lg dark:text-gray-300 hover:border-b hover:bg-gray-100 dark:hover:bg-slate-700 cursor-pointer"
+                  onMouseDown={() => setSearchedProduct(name)}
+                >
+                  {name}
+                </div>
+              ))}
+            </div>
+          )}
       </div>
 
       {/* cart  Icon */}
