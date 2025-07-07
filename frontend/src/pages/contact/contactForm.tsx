@@ -3,7 +3,7 @@ import { IoIosSend } from 'react-icons/io';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaEye } from 'react-icons/fa';
 import axios from 'axios';
-import { useContactInfoStore } from '../../stores/contact/contactMsgStore';
+import { useContactMsgStore } from '../../stores/contact/contactMsgStore';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -33,13 +33,13 @@ export default function ContactForm() {
   //main popup store
   const { setMainPopupMsg } = useMainPopupStore();
 
-  const name = useContactInfoStore(state => state.name);
-  const email = useContactInfoStore(state => state.email);
-  const message = useContactInfoStore(state => state.message);
-  const isSubmitted = useContactInfoStore(state => state.isSubmitted);
+  const name = useContactMsgStore(state => state.name);
+  const email = useContactMsgStore(state => state.email);
+  const message = useContactMsgStore(state => state.message);
+  const isSubmitted = useContactMsgStore(state => state.isSubmitted);
 
   //contact message store data
-  const seeContactMsgFromDb = useContactInfoStore(state => state.seeContactMsgFromDb);
+  const seeContactMsgFromDb = useContactMsgStore(state => state.seeContactMsgFromDb);
   const {
     setIsSuccess,
     setContactMsgData,
@@ -48,7 +48,7 @@ export default function ContactForm() {
     setIsSubmitted,
     setContactMsgId,
     setSeeContactMsgFromDb,
-  } = useContactInfoStore();
+  } = useContactMsgStore();
 
   //profile store data
   const firstName = useProfileStore(state => state.firstName);

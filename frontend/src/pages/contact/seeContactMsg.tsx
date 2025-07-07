@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ICnotificationMsg } from '../../components/notifications/ICnotificationMsg';
 import axios from 'axios';
-import { useContactInfoStore } from '../../stores/contact/contactMsgStore';
+import { useContactMsgStore } from '../../stores/contact/contactMsgStore';
 
 import ContactForm from './contactForm';
 
@@ -30,12 +30,12 @@ const SeeContactMsg = () => {
   });
 
   // contact message store data
-  const name = useContactInfoStore(state => state.name);
-  const email = useContactInfoStore(state => state.email);
-  const message = useContactInfoStore(state => state.message);
-  const isSuccess = useContactInfoStore(state => state.isSuccess);
-  const id = useContactInfoStore(state => state.contactMsgId);
-  const { setIsSuccess, setContactMsgData, setIsSubmitted } = useContactInfoStore();
+  const name = useContactMsgStore(state => state.name);
+  const email = useContactMsgStore(state => state.email);
+  const message = useContactMsgStore(state => state.message);
+  const isSuccess = useContactMsgStore(state => state.isSuccess);
+  const id = useContactMsgStore(state => state.contactMsgId);
+  const { setIsSuccess, setContactMsgData, setIsSubmitted } = useContactMsgStore();
 
   // ICnotificationMsgStore
   const { setICnotificationMsg } = useICnotificationMsgStore();
@@ -210,7 +210,6 @@ const SeeContactMsg = () => {
               <button
                 type="button"
                 className="inline-flex items-center px-4 py-2 text-sm font-medium text-red-700 bg-white rounded-lg border cursor-pointer border-red-600 duration-300 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-700 dark:bg-gray-800 dark:text-red-400 disabled:opacity-50 disabled:cursor-not-allowed"
-                // onClick={handleDelete}
                 onClick={() => {
                   if (isEditing) {
                     setIsEditing(false);

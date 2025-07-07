@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useProfileStore } from '../../stores/profile/profileStore';
-import { useContactInfoStore } from '../../stores/contact/contactMsgStore';
+import { useContactMsgStore } from '../../stores/contact/contactMsgStore';
 import { FaEyeSlash } from 'react-icons/fa';
 import { SeeContactMsgFromDbSkeletonLoading } from './contactSkeletonLoading';
 
@@ -20,7 +20,7 @@ export default function GetContactMsgFromDb() {
   //email from profile store
   const profileEmail = useProfileStore(state => state.email);
 
-  const { setSeeContactMsgFromDb } = useContactInfoStore();
+  const { setSeeContactMsgFromDb } = useContactMsgStore();
 
   const getContactMsgFromDb = async () => {
     try {

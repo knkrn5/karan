@@ -22,7 +22,7 @@ interface Action {
   setSeeContactMsgFromDb: (seeContactMsgFromDb: boolean) => void;
 }
 
-const useContactInfoStore = create<State & Action>(set => ({
+const useContactMsgStore = create<State & Action>(set => ({
   name: '',
   email: '',
   message: '',
@@ -44,4 +44,4 @@ const useContactInfoStore = create<State & Action>(set => ({
   contactMsgReset: () => set({ name: '', email: '', message: '', isSuccess: false }),
 }));
 
-export { useContactInfoStore };
+export { useContactMsgStore };
