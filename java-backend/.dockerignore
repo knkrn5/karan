@@ -1,0 +1,52 @@
+
+# Git files
+.git/
+.gitignore
+
+# Documentation
+HELP.md
+README.md
+*.md
+
+# Maven and Gradle build directories
+target/
+build/
+.mvn/
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE files - Spring Tool Suite
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans/
+.sts4-cache/
+
+# IDE files - IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# IDE files - NetBeans
+nbproject/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# IDE files - VS Code
+.vscode/
+
+# Environment files
+.env
+
+# Log files
+*.log
+logs/
+
+# Test reports
+test-output/
+surefire-reports/
+jacoco.exec
