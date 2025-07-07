@@ -46,24 +46,20 @@ export default function AffiliateSearchAndCart({
   //   .filter(product =>  product.name.toLowerCase().includes(searchedProduct.trim().toLowerCase()))
   //   .map(product => product.name);
 
-  const matchingProductNames = products
-    .filter(product => {
-      const isNameMatch = product.name.toLowerCase().includes(searchedProduct.trim().toLowerCase());
-      const isBrandMatch = product.brand
-        .toLowerCase()
-        .includes(searchedProduct.trim().toLowerCase());
-      const isCategoryMatch = product.category
-        .toLowerCase()
-        .includes(searchedProduct.trim().toLowerCase());
-      const isSubCategoryMatch = product.subCategory?.some(subCat =>
-        subCat.toLowerCase().includes(searchedProduct.trim().toLowerCase())
-      );
-      const isTagMatch = product.tags?.some(tag =>
-        tag.toLowerCase().includes(searchedProduct.trim().toLowerCase())
-      );
-      return isNameMatch || isBrandMatch || isCategoryMatch || isSubCategoryMatch || isTagMatch;
-    })
-    .map(product => product.name && product.category);
+  const matchingProductNames = products.filter(product => {
+    const isNameMatch = product.name.toLowerCase().includes(searchedProduct.trim().toLowerCase());
+    const isBrandMatch = product.brand.toLowerCase().includes(searchedProduct.trim().toLowerCase());
+    const isCategoryMatch = product.category
+      .toLowerCase()
+      .includes(searchedProduct.trim().toLowerCase());
+    const isSubCategoryMatch = product.subCategory?.some(subCat =>
+      subCat.toLowerCase().includes(searchedProduct.trim().toLowerCase())
+    );
+    const isTagMatch = product.tags?.some(tag =>
+      tag.toLowerCase().includes(searchedProduct.trim().toLowerCase())
+    );
+    return isNameMatch || isBrandMatch || isCategoryMatch || isSubCategoryMatch || isTagMatch;
+  });
 
   useEffect(() => {
     setSearchParams(prev => {
@@ -99,17 +95,26 @@ export default function AffiliateSearchAndCart({
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 my-auto size-8 text-gray-700 dark:text-gray-300">
           <CiSearch />
         </div>
+
+        {/* Search Suggestions */}
         {showSearchSuggestions &&
           searchedProduct.trim().length > 0 &&
           matchingProductNames.length > 0 && (
             <div className="absolute z-10 p-2  w-full bg-white dark:bg-slate-800 rounded-lg shadow shadow-neutral-300 dark:shadow-gray-900 max-h-60 overflow-y-auto">
-              {matchingProductNames.map((name, index) => (
+              {matchingProductNames.map((product, index) => (
                 <div
+                  className="flex items-center justify-between rounded-lg hover:border-b hover:bg-gray-100 dark:hover:bg-slate-700 cursor-pointer"
                   key={index}
-                  className="px-4 py-2 text-sm text-gray-700 font-bold rounded-lg dark:text-gray-300 hover:border-b hover:bg-gray-100 dark:hover:bg-slate-700 cursor-pointer"
-                  onMouseDown={() => setSearchedProduct(name)}
                 >
-                  {name}
+                  <div
+                    className="px-2 py-2 text-sm text-gray-700 font-bold  dark:text-gray-300 "
+                    onMouseDown={() => setSearchedProduct(product.name)}
+                  >
+                    {product.name}
+                  </div>
+                  <div className="text-xs font-mono text-neutral-400 dark:text-gray-400">
+                    {product.category}
+                  </div>
                 </div>
               ))}
             </div>
