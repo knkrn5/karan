@@ -42,9 +42,28 @@ export default function AffiliateSearchAndCart({
     setIsCartOpen(false);
   }
 
+  // const matchingProductNames = products
+  //   .filter(product =>  product.name.toLowerCase().includes(searchedProduct.trim().toLowerCase()))
+  //   .map(product => product.name);
+
   const matchingProductNames = products
-    .filter(product => product.name.toLowerCase().includes(searchedProduct.trim().toLowerCase()))
-    .map(product => product.name);
+    .filter(product => {
+      const isNameMatch = product.name.toLowerCase().includes(searchedProduct.trim().toLowerCase());
+      const isBrandMatch = product.brand
+        .toLowerCase()
+        .includes(searchedProduct.trim().toLowerCase());
+      const isCategoryMatch = product.category
+        .toLowerCase()
+        .includes(searchedProduct.trim().toLowerCase());
+      const isSubCategoryMatch = product.subCategory?.some(subCat =>
+        subCat.toLowerCase().includes(searchedProduct.trim().toLowerCase())
+      );
+      const isTagMatch = product.tags?.some(tag =>
+        tag.toLowerCase().includes(searchedProduct.trim().toLowerCase())
+      );
+      return isNameMatch || isBrandMatch || isCategoryMatch || isSubCategoryMatch || isTagMatch;
+    })
+    .map(product => product.name && product.category);
 
   useEffect(() => {
     setSearchParams(prev => {
