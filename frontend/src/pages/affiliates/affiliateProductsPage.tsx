@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { useEffect, useMemo, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMemo, useState } from 'react';
 import { FaShoppingCart, FaShoppingBag } from 'react-icons/fa';
 import { MdRemoveShoppingCart } from 'react-icons/md';
 import { LuPackageOpen } from 'react-icons/lu';
@@ -26,12 +27,10 @@ export interface ProductPropsType {
 }
 
 const AffiliateProductsPage = () => {
-  const [products, setProducts] = useState<Array<ProductPropsType>>([]);
-  const [cartItems, setCartItems] = useState<Array<ProductPropsType>>([]);
   const [isProcessing, setIsProcessing] = useState<{
-    isFetching: boolean;
+    // isFetching: boolean;
     isAddingRemovingCart: boolean;
-  }>({ isFetching: true, isAddingRemovingCart: false });
+  }>({ isAddingRemovingCart: false });
   const [expandedDescriptionId, setExpandedDescriptionId] = useState<number | null>(null);
 
   const [searchParams] = useSearchParams();
@@ -44,32 +43,44 @@ const AffiliateProductsPage = () => {
     10
   );
 
+  // react-query client
+  const queryClient = useQueryClient();
+
   //main popup store
   const { setMainPopupMsg } = useMainPopupStore();
   const isAuthChecked = useAuthCheck();
 
-  const fetchProducts = async (): Promise<void> => {
-    try {
-      const response = await axios.get(`${PY_BACKEND_URL}/affiliate-products/get-products`);
-      setProducts(response.data);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    } finally {
-      setIsProcessing(prevState => ({ ...prevState, isFetching: false }));
-    }
+  // using react-query to fetch products with caching and background updates
+  const useFetchProducts = () => {
+    return useQuery<ProductPropsType[]>({
+      queryKey: ['products'],
+      queryFn: async () => {
+        const response = await axios.get(`${PY_BACKEND_URL}/affiliate-products/get-products`);
+        return response.data;
+      },
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      refetchOnWindowFocus: false,
+    });
   };
 
-  const fetchCartItems = async () => {
-    try {
-      const res = await axios.get(`${PY_BACKEND_URL}/affiliate-products/get-cart-items`, {
-        withCredentials: true,
-      });
-      const { data } = res;
-      setCartItems(data);
-    } catch (error) {
-      console.error('Error fetching cart items:', error);
-    }
+  const { data: products = [], isFetching: isFetchingProducts } = useFetchProducts();
+
+  // using react-query to fetch cart items with caching and background updates
+  const useFetchCartItems = () => {
+    return useQuery<ProductPropsType[]>({
+      queryKey: ['cartItems'],
+      queryFn: async () => {
+        const response = await axios.get(`${PY_BACKEND_URL}/affiliate-products/get-cart-items`, {
+          withCredentials: true,
+        });
+        return response.data;
+      },
+      staleTime: 5 * 60 * 1000,
+      refetchOnWindowFocus: false,
+    });
   };
+
+  const { data: cartItems = [], isFetching: isFetchingCartItems } = useFetchCartItems();
 
   const handleCartFunctions = async (product_id: number): Promise<void> => {
     if (!isAuthChecked) {
@@ -86,7 +97,9 @@ const AffiliateProductsPage = () => {
           withCredentials: true,
         });
         console.log(res.data);
-        setCartItems(prev => prev.filter(item => item.id !== product_id));
+        queryClient.setQueryData<ProductPropsType[]>(['cartItems'], prevCartItems =>
+          prevCartItems ? prevCartItems.filter(item => item.id !== product_id) : []
+        );
       } else {
         await axios.post(
           `${PY_BACKEND_URL}/affiliate-products/add-to-cart`,
@@ -95,7 +108,9 @@ const AffiliateProductsPage = () => {
         );
         const productToAdd = products.find(product => product.id === product_id);
         if (productToAdd) {
-          setCartItems(prev => [...prev, productToAdd]);
+          queryClient.setQueryData<ProductPropsType[]>(['cartItems'], prevCartItems =>
+            prevCartItems ? [...prevCartItems, productToAdd] : [productToAdd]
+          );
         }
       }
     } catch (error: unknown) {
@@ -108,11 +123,6 @@ const AffiliateProductsPage = () => {
       setIsProcessing(prev => ({ ...prev, isAddingRemovingCart: false }));
     }
   };
-
-  useEffect(() => {
-    fetchCartItems();
-    fetchProducts();
-  }, []);
 
   const filteredProducts = useMemo(() => {
     return products.filter(product => {
@@ -147,7 +157,7 @@ const AffiliateProductsPage = () => {
       </div>
 
       <div className="grid max-xs:grid-cols-1 max-lg:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        {products.length === 0 && isProcessing.isFetching ? (
+        {products.length === 0 && isFetchingProducts ? (
           Array.from({ length: 6 }).map((_, index) => (
             <AffiliateProductCardSkeletonLoading key={index} />
           ))
@@ -228,7 +238,7 @@ const AffiliateProductsPage = () => {
       </div>
 
       {/* No products found UI */}
-      {!isProcessing.isFetching && filteredProducts.length === 0 && (
+      {!isFetchingProducts && filteredProducts.length === 0 && (
         <div className="text-center text-gray-500 dark:text-gray-400 mt-8">
           <LuPackageOpen size={50} className="mx-auto mb-4 text-gray-400 dark:text-gray-500" />
           <h2 className="text-2xl font-extrabold">No Products Found</h2>

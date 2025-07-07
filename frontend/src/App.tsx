@@ -31,6 +31,9 @@ import AuthPopup from './pages/auth/authPopup';
 import AdminLayout from './admin/adminLayout';
 import AdminDashboard from './admin/adminDashboard';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+const queryClient = new QueryClient();
+
 function AppContent() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -92,7 +95,9 @@ function AppContent() {
 function App() {
   return (
     <Router>
-      <AppContent />
+      <QueryClientProvider client={queryClient}>
+        <AppContent />
+      </QueryClientProvider>
     </Router>
   );
 }
