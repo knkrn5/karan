@@ -7,17 +7,20 @@ import { useSearchParams, Link } from 'react-router';
 import type { ProductPropsType } from './affiliateProductsPage';
 import { FiLogIn } from 'react-icons/fi';
 import { useAuthCheck } from '../../hooks/authCheckHook';
+import { AffiliateCartItemSkeletonLoading } from './affiliateSkeletonLoading';
 
 export default function AffiliateSearchAndCart({
   products,
   cartItems,
   handleCartFunctions,
   isProcessing,
+  isFetchingCartItems,
 }: Readonly<{
   products: ProductPropsType[];
   cartItems: ProductPropsType[];
   handleCartFunctions: (product_id: number) => void;
   isProcessing: boolean;
+  isFetchingCartItems: boolean;
 }>) {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -170,7 +173,8 @@ export default function AffiliateSearchAndCart({
               </div>
             )}
 
-            {cartItems.length === 0 && isAuthenticated ? (
+            {/* Cart Items */}
+            {cartItems.length === 0 && !isFetchingCartItems && isAuthenticated ? (
               <p className="text-sm text-gray-500 dark:text-gray-400">Cart is empty.</p>
             ) : (
               cartItems.map(item => (
@@ -220,6 +224,10 @@ export default function AffiliateSearchAndCart({
                 </div>
               ))
             )}
+            {isFetchingCartItems &&
+              Array(3)
+                .fill(null)
+                .map((_, i) => <AffiliateCartItemSkeletonLoading key={i} />)}
           </div>
         </div>
       </div>

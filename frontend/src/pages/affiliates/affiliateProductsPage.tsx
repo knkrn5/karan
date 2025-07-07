@@ -153,6 +153,7 @@ const AffiliateProductsPage = () => {
           cartItems={cartItems}
           handleCartFunctions={handleCartFunctions}
           isProcessing={isProcessing.isAddingRemovingCart}
+          isFetchingCartItems={isFetchingCartItems}
         />
       </div>
 
