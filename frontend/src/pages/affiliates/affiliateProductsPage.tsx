@@ -139,6 +139,7 @@ const AffiliateProductsPage = () => {
     <div className="min-h-screen bg-neutral-100 dark:bg-slate-800 p-4 @container">
       <div className="p-2 mb-6 bg-white dark:bg-slate-700 rounded-lg shadow-md">
         <AffiliateSearchAndCart
+          products={products}
           cartItems={cartItems}
           handleCartFunctions={handleCartFunctions}
           isProcessing={isProcessing.isAddingRemovingCart}
