@@ -9,6 +9,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaRegSave, FaRegTrashAlt } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { IoIosSend } from 'react-icons/io';
+import { MdCancel } from 'react-icons/md';
 import { useICnotificationMsgStore } from '../../stores/notificationMsg/ICnotificationMsgStore.js';
 import { sendContactMsgCopyEmail } from '../../utils/contact.utils';
 
@@ -179,6 +180,7 @@ const SeeContactMsg = () => {
           {isSuccess ? (
             <>
               <button
+                type="button"
                 className="inline-flex items-center px-4 py-2 text-sm font-medium text-white cursor-pointer bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={handleEdit}
                 disabled={isLoading.edit || isLoading.delete}
@@ -206,11 +208,25 @@ const SeeContactMsg = () => {
               </button>
 
               <button
+                type="button"
                 className="inline-flex items-center px-4 py-2 text-sm font-medium text-red-700 bg-white rounded-lg border cursor-pointer border-red-600 duration-300 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-700 dark:bg-gray-800 dark:text-red-400 disabled:opacity-50 disabled:cursor-not-allowed"
-                onClick={handleDelete}
+                // onClick={handleDelete}
+                onClick={() => {
+                  if (isEditing) {
+                    setIsEditing(false);
+                    setICnotificationMsg({ warning: 'Editing canceled.' });
+                  } else {
+                    handleDelete();
+                  }
+                }}
                 disabled={isLoading.edit || isLoading.delete}
               >
-                {isLoading.delete ? (
+                {isEditing ? (
+                  <>
+                    <MdCancel className="h-4 w-4 mr-1" />
+                    Cancel
+                  </>
+                ) : isLoading.delete ? (
                   <>
                     <AiOutlineLoading3Quarters className="animate-spin h-4 w-4 mr-2" />
                     Deleting...
