@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { BlogSkeletonLoading } from './blogSkeletonLoading';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import BlogPaginaton from './blogPaginaton';
 import { useNavigate, useSearchParams } from 'react-router';
 import BlogSearchAndCategory from './blogSearchAndCategory';
@@ -59,14 +59,19 @@ export default function BlogPage() {
   const {
     data: blogPosts = [],
     isFetching: isFetchingBlogPosts,
-    isError: blogFetchError,
+    isError: isBlogFetchError,
+    error: blogFetchError,
   } = useFetchBlogPosts();
 
   useEffect(() => {
-    if (blogFetchError) {
-      setError('Failed to load blog posts. Please try again later.');
+    if (isBlogFetchError) {
+      setError(
+        blogFetchError instanceof AxiosError
+          ? blogFetchError.message
+          : 'Failed to load blog posts. Please try again later.'
+      );
     }
-  }, [blogFetchError]);
+  }, [blogFetchError, isBlogFetchError]);
 
   useEffect(() => {
     const startNumber = searchParams.get('startNumber') ?? '0';
