@@ -11,8 +11,12 @@ README.md
 # Maven and Gradle build directories
 target/
 build/
-.mvn/
-.mvn/wrapper/maven-wrapper.jar
+
+# Ignore everything in `.mvn` except the `wrapper` folder
+!.mvn/
+!.mvn/wrapper/
+!.mvn/wrapper/maven-wrapper.properties
+!.mvn/wrapper/maven-wrapper.jar
 
 # IDE files - Spring Tool Suite
 .apt_generated
