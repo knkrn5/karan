@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { BlogSkeletonLoading } from './blogSkeletonLoading';
 import axios from 'axios';
 import BlogPaginaton from './blogPaginaton';
@@ -7,7 +8,6 @@ import BlogSearchAndCategory from './blogSearchAndCategory';
 import type { Document } from '@contentful/rich-text-types';
 import ServerErrorPage from '../errors/serverErrorPage';
 import { BlogPostsPageSeoMetaTags } from './blogPostsPageSeoMetaTags';
-
 
 export interface BlogPostPropsType {
   title: string;
@@ -32,8 +32,6 @@ export interface BlogPostPropsType {
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function BlogPage() {
-  const [isFetchingBlogPosts, setIsFetchingBlogPosts] = useState<boolean>(true);
-  const [blogPosts, setBlogPosts] = useState<BlogPostPropsType[]>([]);
   const [NumberOfPosts, setNumberOfPosts] = useState<{ start: number; end: number }>({
     start: 0,
     end: 6,
@@ -45,28 +43,30 @@ export default function BlogPage() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchBlogPosts = async () => {
-      try {
-        setIsFetchingBlogPosts(true);
-        setError(null);
+  // Using React Query to fetch blog posts and cache them
+  function useFetchBlogPosts() {
+    return useQuery<BlogPostPropsType[]>({
+      queryKey: ['blogPosts'],
+      queryFn: async () => {
         const res = await axios.get(`${BACKEND_URL}/api/blog/blog-posts`);
-        const fetchedBlogPosts = res.data.data.map(
-          (posts: { fields: BlogPostPropsType }) => posts.fields
-        );
+        return res.data.data.map((posts: { fields: BlogPostPropsType }) => posts.fields);
+      },
+      staleTime: 5 * 60 * 1000,
+      refetchOnWindowFocus: false,
+    });
+  }
 
-        setBlogPosts(fetchedBlogPosts);
-      } catch (error) {
-        console.log(error);
-        setError('Failed to load blog posts. Please try again later.');
-      } finally {
-        setIsFetchingBlogPosts(false);
-      }
-    };
+  const {
+    data: blogPosts = [],
+    isFetching: isFetchingBlogPosts,
+    isError: blogFetchError,
+  } = useFetchBlogPosts();
 
-    fetchBlogPosts();
-  }, [NumberOfPosts.start, NumberOfPosts.end]);
-
+  useEffect(() => {
+    if (blogFetchError) {
+      setError('Failed to load blog posts. Please try again later.');
+    }
+  }, [blogFetchError]);
 
   useEffect(() => {
     const startNumber = searchParams.get('startNumber') ?? '0';

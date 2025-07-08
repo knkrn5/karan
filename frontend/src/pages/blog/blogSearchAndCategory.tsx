@@ -3,10 +3,10 @@ import { CiSearch } from 'react-icons/ci';
 export default function BlogSearchAndCategory({
   setNumberOfPosts,
   setSearchOrCategoryValue,
-}: {
+}: Readonly<{
   setNumberOfPosts: React.Dispatch<React.SetStateAction<{ start: number; end: number }>>;
   setSearchOrCategoryValue: React.Dispatch<React.SetStateAction<string>>;
-}) {
+}>) {
   function handleblogSearch(
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>
   ) {
