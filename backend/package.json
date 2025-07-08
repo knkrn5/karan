@@ -7,13 +7,13 @@
     "start": "node dist/server.js",
     "dev": "nodemon --exec node --no-warnings --loader ts-node/esm src/server.ts",
     "pm2": "pm2-runtime start src/ecosystem.config.cjs",
-    "pm2-dev": "pm2 start --name karan-dev --interpreter node --node-args=\"--no-warnings --loader ts-node/esm\" src/server.ts",
+    "pm2-dev": "pm2 start --name karan.email-dev --interpreter node --node-args=\"--no-warnings --loader ts-node/esm\" src/server.ts",
     "build": "tsc"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["karan.email", "backend", "nodejs"],
+  "author": "karan",
   "license": "ISC",
-  "description": "",
+  "description": "backend for karan.email",
   "dependencies": {
     "@types/nodemailer": "^6.4.17",
     "contentful": "^11.5.13",
