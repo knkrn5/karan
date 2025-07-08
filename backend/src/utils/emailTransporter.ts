@@ -1,20 +1,20 @@
 import nodemailer from 'nodemailer';
 
 type EmailPropsTypes = {
-  email: string;
+  toEmail: string;
   subject: string;
   fallbackEmail: string;
   template: () => string;
 };
 
 export const emailTransporter = async ({
-  email,
+  toEmail,
   subject,
   fallbackEmail,
   template,
 }: EmailPropsTypes) => {
   const transporter = nodemailer.createTransport({
-    host: 'smtp.zoho.in',
+    host: process.env.EMAIL_HOST,
     port: 465,
     secure: true, // true for 465, false for 587
     auth: {
@@ -25,7 +25,7 @@ export const emailTransporter = async ({
 
   const mailOptions = {
     from: `"karan.email" <${process.env.EMAIL_FROM}>`,
-    to: email,
+    to: toEmail,
     subject: `${subject} `,
     text: `${fallbackEmail}`,
     html: template(),

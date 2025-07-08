@@ -13,8 +13,12 @@ import jakarta.mail.internet.MimeMessage;
 @Component
 public class EmailSender {
 
-    @Autowired
     private JavaMailSender mailSender;
+
+    @Autowired
+    public EmailSender(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
 
     @Value("${spring.mail.username}")
     private String fromEmail;
