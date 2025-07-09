@@ -7,10 +7,10 @@ import { isAccessTokenValid } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
-router.post('/message', isAccessTokenValid, ContactMiddleware.ContactPostLimiter, ContactController.addContactMessage);
-router.patch('/message', isAccessTokenValid, ContactMiddleware.ContactPutLimiter, ContactController.updateContactMessages);
-router.delete('/message', isAccessTokenValid, ContactController.deleteContactMessages);
-router.get('/message', isAccessTokenValid, ContactController.getContactMessages);
+router.post('/send-message', isAccessTokenValid, ContactMiddleware.ContactPostLimiter, ContactController.addContactMessage);
+router.patch('/edit-message', isAccessTokenValid, ContactMiddleware.ContactPutLimiter, ContactController.updateContactMessages);
+router.delete('/delete-message', isAccessTokenValid, ContactController.deleteContactMessages);
+router.get('/get-message', isAccessTokenValid, ContactController.getContactMessages);
 
 router.post('/send-contact-msg-copy-email', ContactController.sendContactMsgCopyEmail);
 

@@ -115,8 +115,8 @@ export default function ContactForm() {
 
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/api/contact/message`,
-        { message },
+        `${BACKEND_URL}/api/contact/send-message`,
+        { message: message.trim() },
         { withCredentials: true }
       );
       const { data } = response;

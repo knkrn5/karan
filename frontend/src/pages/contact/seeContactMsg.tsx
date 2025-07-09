@@ -40,6 +40,28 @@ const SeeContactMsg = () => {
   // ICnotificationMsgStore
   const { setICnotificationMsg } = useICnotificationMsgStore();
 
+  const getLastestContactMsgFromDb = async (): Promise<string | void> => {
+    try {
+      console.log('Fetching contact message from the database...');
+      const res = await axios.get(`${BACKEND_URL}/api/contact/get-message`, { withCredentials: true });
+      const data = res.data;
+
+      const messages = data?.data?.messages;
+
+      const lastestContactMsg = messages[0].message;
+
+      return lastestContactMsg;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setICnotificationMsg({
+          error: error.response?.data.message || 'An error occurred while fetching the message',
+        });
+      } else {
+        setICnotificationMsg({ error: 'An unknown error occurred while fetching the message' });
+      }
+    }
+  };
+
   // Editing message
   const handleEdit = async () => {
     if (message.length < 10) {
@@ -52,8 +74,16 @@ const SeeContactMsg = () => {
         setIsLoading(prev => ({ ...prev, edit: true }));
         setICnotificationMsg({ info: 'Saving changes...' });
 
+        const res = await getLastestContactMsgFromDb();
+        console.log(res);
+        if (res === message.trim()) {
+          setICnotificationMsg({ info: 'No changes made to the message.' });
+          setIsEditing(false);
+          return;
+        }
+
         const response = await axios.patch(
-          `${BACKEND_URL}/api/contact/message`,
+          `${BACKEND_URL}/api/contact/edit-message`,
           {
             msgId: id,
             message: message,
@@ -100,7 +130,7 @@ const SeeContactMsg = () => {
     if (toDelete) {
       try {
         setIsLoading(prev => ({ ...prev, delete: true }));
-        const response = await axios.delete(`${BACKEND_URL}/api/contact/message`, {
+        const response = await axios.delete(`${BACKEND_URL}/api/contact/delete-message`, {
           data: { msgId: id },
           withCredentials: true,
         });
