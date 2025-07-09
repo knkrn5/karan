@@ -1,4 +1,14 @@
 @echo off
+
+echo.
+echo ==================================
+echo    ==     =   =     =  = 
+echo    ==    ===   =   =  === 
+echo    ==   =   =   = =  =   = 
+echo =====  =     =   =  =      = 
+echo ==================================
+echo.
+
 cd java-backend || goto :error
 
 echo Setting up Java backend server...

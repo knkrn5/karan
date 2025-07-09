@@ -1,9 +1,9 @@
 @echo off
 
-cd py-backend || goto error
+cd py-backend || goto :error
 
 echo Activating Python virtual environment...
-call .venv\Scripts\activate.bat || goto error
+call .venv\Scripts\activate.bat || goto :error
 
 echo Starting Python backend...
 python -m uvicorn src.main:app --reload
