@@ -252,6 +252,7 @@ export default function AffiliateSearchAndCart({
               ))
             )}
             {isFetchingCartItems &&
+              isAuthenticated &&
               Array(3)
                 .fill(null)
                 .map((_, i) => <AffiliateCartItemSkeletonLoading key={i} />)}
