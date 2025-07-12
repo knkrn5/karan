@@ -26,7 +26,8 @@ export default function AffiliateSearchAndCart({
 
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
   const [searchedProduct, setSearchedProduct] = useState<string>(searchParams.get('search') ?? '');
-  const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
+  const [showProductsSearchSuggestions, setShowProductsSearchSuggestions] =
+    useState<boolean>(false);
 
   const cartIconRef = useRef<HTMLButtonElement>(null);
   const cartContainerRef = useRef<HTMLDivElement>(null);
@@ -90,8 +91,8 @@ export default function AffiliateSearchAndCart({
           title="search product"
           placeholder="Search Products..."
           onChange={e => setSearchedProduct(e.target.value)}
-          onFocus={() => setShowSearchSuggestions(true)}
-          onBlur={() => setTimeout(() => setShowSearchSuggestions(false), 150)}
+          onFocus={() => setShowProductsSearchSuggestions(true)}
+          onBlur={() => setTimeout(() => setShowProductsSearchSuggestions(false), 150)}
           value={searchedProduct}
           className="w-full p-2 sm:pr-30 rounded-lg duration-300 transition-shadow shadow-2xl border border-gray-400 hover:shadow-xl focus:shadow-xl bg-gray-100 dark:bg-gray-700  text-gray-900 dark:text-gray-200 outline-none"
         />
@@ -99,8 +100,8 @@ export default function AffiliateSearchAndCart({
           <CiSearch />
         </div>
 
-        {/* Search Suggestions */}
-        {showSearchSuggestions &&
+        {/* products Search Suggestions */}
+        {showProductsSearchSuggestions &&
           searchedProduct.trim().length > 0 &&
           matchingProductNames.length > 0 && (
             <div className="absolute z-10 p-2  w-full bg-white dark:bg-slate-800 rounded-lg shadow shadow-neutral-300 dark:shadow-gray-900 max-h-60 overflow-y-auto">
@@ -109,12 +110,13 @@ export default function AffiliateSearchAndCart({
                   className="flex items-center justify-between rounded-lg hover:border-b hover:bg-gray-100 dark:hover:bg-slate-700 cursor-pointer"
                   key={index}
                 >
-                  <div
+                  <button
+                    type="button"
                     className="px-2 py-2 text-sm text-gray-700 font-bold  dark:text-gray-300 "
                     onMouseDown={() => setSearchedProduct(product.name)}
                   >
                     {product.name}
-                  </div>
+                  </button>
                   <div className="text-xs font-mono text-neutral-400 dark:text-gray-400">
                     {product.category}
                   </div>

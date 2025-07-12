@@ -13,7 +13,7 @@ export interface BlogPostPropsType {
   title: string;
   slug: string;
   publishedDate?: string;
-  category?: string;
+  category: string;
   tags: string;
   excerpt: string;
   featuredImage: {
@@ -102,6 +102,8 @@ export default function BlogPage() {
       <div className="relative flex flex-col gap-3 py-4 px-1 items-center bg-gray-200 dark:bg-gray-800 ">
         {/* Search & Category Filter */}
         <BlogSearchAndCategory
+          searchOrCategoryValue={searchOrCategoryValue}
+          blogPosts={blogPosts}
           setNumberOfPosts={setNumberOfPosts}
           setSearchOrCategoryValue={setSearchOrCategoryValue}
         />
