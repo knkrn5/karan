@@ -13,7 +13,7 @@ export interface BlogPostPropsType {
   title: string;
   slug: string;
   publishedDate?: string;
-  category: string;
+  category?: string;
   tags: string;
   excerpt: string;
   featuredImage: {

@@ -31,6 +31,7 @@ export default function AffiliateSearchAndCart({
 
   const cartIconRef = useRef<HTMLButtonElement>(null);
   const cartContainerRef = useRef<HTMLDivElement>(null);
+  const searchProductRef = useRef<HTMLInputElement>(null);
 
   const isAuthenticated = useAuthCheck();
 
@@ -66,6 +67,24 @@ export default function AffiliateSearchAndCart({
     }));
 
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.key === 'b') {
+        event.preventDefault();
+        setIsCartOpen(prev => !prev);
+      }
+
+      if (event.ctrlKey && event.key === 'k') {
+        event.preventDefault();
+        searchProductRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
     setSearchParams(prev => {
       const params = new URLSearchParams(prev.toString());
       if (searchedProduct.trim() === '') {
@@ -88,7 +107,8 @@ export default function AffiliateSearchAndCart({
       <div className="relative">
         <input
           type="text"
-          title="search product"
+          title="search product (Ctrl + K)"
+          ref={searchProductRef}
           placeholder="Search Products..."
           onChange={e => setSearchedProduct(e.target.value)}
           onFocus={() => setShowProductsSearchSuggestions(true)}
@@ -101,36 +121,34 @@ export default function AffiliateSearchAndCart({
         </div>
 
         {/* products Search Suggestions */}
-        {showProductsSearchSuggestions &&
-          searchedProduct.trim().length > 0 &&
-          matchingProductNames.length > 0 && (
-            <div className="absolute z-10 p-2  w-full bg-white dark:bg-slate-800 rounded-lg shadow shadow-neutral-300 dark:shadow-gray-900 max-h-60 overflow-y-auto">
-              {matchingProductNames.map((product, index) => (
-                <div
-                  className="flex items-center justify-between rounded-lg hover:border-b hover:bg-gray-100 dark:hover:bg-slate-700 cursor-pointer"
-                  key={index}
+        {showProductsSearchSuggestions && matchingProductNames.length > 0 && (
+          <div className="absolute z-10 p-2  w-full bg-white dark:bg-slate-800 rounded-lg shadow shadow-neutral-300 dark:shadow-gray-900 max-h-60 overflow-y-auto">
+            {matchingProductNames.map((product, index) => (
+              <div
+                className="flex items-center justify-between rounded-lg hover:border-b hover:bg-gray-100 dark:hover:bg-slate-700 cursor-pointer"
+                key={index}
+              >
+                <button
+                  type="button"
+                  className="px-2 py-2 text-sm text-left text-gray-700 font-bold  dark:text-gray-300 "
+                  onMouseDown={() => setSearchedProduct(product.name)}
                 >
-                  <button
-                    type="button"
-                    className="px-2 py-2 text-sm text-gray-700 font-bold  dark:text-gray-300 "
-                    onMouseDown={() => setSearchedProduct(product.name)}
-                  >
-                    {product.name}
-                  </button>
-                  <div className="text-xs font-mono text-neutral-400 dark:text-gray-400">
-                    {product.category}
-                  </div>
+                  {product.name}
+                </button>
+                <div className="text-xs font-mono text-neutral-400 dark:text-gray-400">
+                  {product.category}
                 </div>
-              ))}
-            </div>
-          )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* cart  Icon */}
       <div className="relative">
         <button
           ref={cartIconRef}
-          title="cart"
+          title={isCartOpen ? 'Close Cart (Ctrl+B)' : 'Open Cart (Ctrl+B)'}
           type="button"
           onClick={() => setIsCartOpen(!isCartOpen)}
           className="group bg-neutral-200 dark:bg-slate-800 rounded-full p-2 text-white flex items-center justify-center cursor-pointer transition-transform outline-1 duration-300"

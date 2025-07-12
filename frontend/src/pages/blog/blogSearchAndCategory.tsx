@@ -1,6 +1,6 @@
 import { CiSearch } from 'react-icons/ci';
 import { BlogPostPropsType } from './blogPostsPage';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function BlogSearchAndCategory({
   searchOrCategoryValue,
@@ -15,6 +15,8 @@ export default function BlogSearchAndCategory({
 }>) {
   const [showBlogsSearchSuggestions, setShowBlogsSearchSuggestions] = useState<boolean>(false);
 
+  const searchBlogRef = useRef<HTMLInputElement>(null);
+
   function handleblogSearch(
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>
   ) {
@@ -24,10 +26,25 @@ export default function BlogSearchAndCategory({
 
   const matchingblogPosts = blogPosts.filter(post => {
     const titleMatch = post.title.toLowerCase().includes(searchOrCategoryValue.toLowerCase());
-    const catMatch = post.category.toLowerCase().includes(searchOrCategoryValue.toLowerCase());
+    const catMatch = post.category?.toLowerCase().includes(searchOrCategoryValue.toLowerCase());
     const tagMatch = post.tags.toLowerCase().includes(searchOrCategoryValue.toLowerCase());
     return titleMatch || catMatch || tagMatch;
   });
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.key === 'k') {
+        event.preventDefault();
+        searchBlogRef.current?.focus();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   return (
     <div className="relative flex  gap-3">
@@ -35,6 +52,7 @@ export default function BlogSearchAndCategory({
         <input
           type="text"
           title="search"
+          ref={searchBlogRef}
           placeholder="Search Blog"
           value={searchOrCategoryValue}
           onChange={handleblogSearch}
@@ -56,7 +74,7 @@ export default function BlogSearchAndCategory({
               >
                 <button
                   type="button"
-                  className="px-2 py-2 text-sm text-gray-700 font-bold  dark:text-gray-300 cursor-pointer"
+                  className="px-2 py-2 text-sm text-left text-gray-700 font-bold  dark:text-gray-300 cursor-pointer"
                   onMouseDown={() => setSearchOrCategoryValue(post.title)}
                 >
                   {post.title.length < 35 ? post.title : post.title.slice(0, 35) + '...'}
