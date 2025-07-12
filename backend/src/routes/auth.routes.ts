@@ -23,7 +23,7 @@ router.get('/authenticateUser', isAccessTokenValid, AuthController.authenticateU
 // router.patch('/reset-password', verifyOTP, AuthController.resetPassword);
 
 // Tracking the ip address of the user
-router.post('/get-user-ip-address', (req, res) => {
+router.get('/get-user-ip-address', (req, res) => {
   res.status(200).json({ ip: req.ip });
 });
 

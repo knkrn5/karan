@@ -24,7 +24,7 @@ const OPENCAGE_KEY = import.meta.env.VITE_OPENCAGE_KEY;
 
 async function getUserIpAddress() {
   try {
-    const response = await axios.post(`${BACKEND_URL}/api/v1/auth/get-user-ip-address`);
+    const response = await axios.get(`${BACKEND_URL}/api/v1/auth/get-user-ip-address`);
     return response.data?.ip;
   } catch (error) {
     console.error('Error fetching IP address:', error);
