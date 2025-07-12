@@ -14,8 +14,10 @@ export default function BlogSearchAndCategory({
   setSearchOrCategoryValue: React.Dispatch<React.SetStateAction<string>>;
 }>) {
   const [showBlogsSearchSuggestions, setShowBlogsSearchSuggestions] = useState<boolean>(false);
+  const [showBlogCategories, setShowBlogCategories] = useState<boolean>(false);
 
   const searchBlogRef = useRef<HTMLInputElement>(null);
+  const blogCategoriesRef = useRef<HTMLDivElement>(null);
 
   function handleblogSearch(
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>
@@ -32,6 +34,12 @@ export default function BlogSearchAndCategory({
   });
 
   useEffect(() => {
+    function handleOutsideClick(e: MouseEvent): void {
+      const target = e.target as HTMLElement;
+      if (!blogCategoriesRef.current?.contains(target) && showBlogCategories) {
+        setShowBlogCategories(false);
+      }
+    }
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.ctrlKey && event.key === 'k') {
         event.preventDefault();
@@ -40,11 +48,13 @@ export default function BlogSearchAndCategory({
     };
 
     window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('click', handleOutsideClick);
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('click', handleOutsideClick);
     };
-  }, []);
+  }, [showBlogCategories]);
 
   return (
     <div className="relative flex  gap-3">
@@ -86,20 +96,35 @@ export default function BlogSearchAndCategory({
       </div>
 
       <div className="relative">
-        <select
-          name="category"
-          title="category"
-          id="blog-category"
-          onChange={handleblogSearch}
-          defaultValue="All-Category"
-          className="w-full p-2 pr-10 rounded-lg shadow-2xl border border-gray-400 hover:shadow-xl focus:shadow-xl bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 outline-none appearance-none"
-        >
-          <option value="All-Category" className="text-gray-400 dark:text-gray-400">
-            All Category
-          </option>
-          <option value="ai">AI</option>
-          <option value="finance">Finance</option>
-        </select>
+        <div className="relative" ref={blogCategoriesRef}>
+          <button
+            type="button"
+            className="w-full p-2 pr-10 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg shadow-2xl border border-gray-400 hover:shadow-xl cursor-pointer"
+            onClick={() => setShowBlogCategories(!showBlogCategories)}
+          >
+            Category
+          </button>
+          <div
+            className={`absolute z-10 flex flex-col items-center px-2 text-gray-700 dark:text-gray-300 rounded-lg bg-neutral-50 dark:bg-gray-700 ${
+              showBlogCategories ? 'scale-y-100' : 'scale-y-0'
+            } origin-top duration-300 transition-transform`}
+          >
+            {['AI', 'Finance'].map((category, index) => (
+              <button
+                type="button"
+                key={index}
+                className="w-full p-2 pr-10 shadow-2xl border-b hover:shadow-xl hover:bg-neutral-300 dark:hover:bg-gray-800 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 cursor-pointer"
+                onClick={() => {
+                  setSearchOrCategoryValue(category);
+                  setShowBlogCategories(false);
+                }}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
           <svg
             className="fill-current h-4 w-4"
