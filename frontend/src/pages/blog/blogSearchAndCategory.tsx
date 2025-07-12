@@ -61,7 +61,7 @@ export default function BlogSearchAndCategory({
       <div className="relative">
         <input
           type="text"
-          title="search"
+          title="Search Blog (Ctrl + K)"
           ref={searchBlogRef}
           placeholder="Search Blog"
           value={searchOrCategoryValue}
