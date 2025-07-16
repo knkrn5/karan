@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
-import { FaShoppingCart, FaShoppingBag } from 'react-icons/fa';
+import { FaShoppingCart, FaShoppingBag, FaAngleDown } from 'react-icons/fa';
+import { FaAmazon } from 'react-icons/fa';
+import { SiFlipkart } from 'react-icons/si';
 import { MdRemoveShoppingCart } from 'react-icons/md';
 import { LuPackageOpen } from 'react-icons/lu';
 import AffiliateSearchAndCart from './affiliateSearchAndCart';
@@ -19,7 +21,8 @@ export interface ProductPropsType {
   description: string;
   image: string;
   price: number;
-  affiliateLink: string;
+  affiliateLinks: Array<{ [key: string]: string }>;
+  // affiliateLinks: Array<AffiliateLinksType>;
   category: string;
   subCategory?: string[];
   tags: string[];
@@ -167,7 +170,7 @@ const AffiliateProductsPage = () => {
             {productsTodisplay.map(product => (
               <div
                 key={product.id}
-                className="flex flex-col @container/card bg-white dark:bg-dark rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
+                className="flex flex-col @container/card bg-white dark:bg-dark rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300"
               >
                 <img src={product.image} alt={product.name} className="h-48 w-full object-cover" />
 
@@ -194,20 +197,51 @@ const AffiliateProductsPage = () => {
                       : `${product.description.slice(0, 50)}...`}
                   </p>
 
-                  <p className="text-lg font-bold text-gray-900 dark:text-gray-200">
-                    ₹{product.price}
-                  </p>
-
                   <div className="flex gap-2 mt-2  flex-col @card/sm:flex-row">
-                    <a
-                      href={product.affiliateLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 inline-flex items-center justify-center gap-2 text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
+                    <button
+                      type="button"
+                      className="relative flex-1 inline-flex items-center justify-center gap-2 text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
+                      onClick={() =>
+                        setExpandedDescriptionId(prev => (prev === product.id ? null : product.id))
+                      }
                     >
                       <FaShoppingBag size={16} />
                       Buy Now
-                    </a>
+                      <FaAngleDown
+                        size={20}
+                        className={`absolute right-2 ${
+                          expandedDescriptionId === product.id && 'rotate-180 '
+                        } transition-transform duration-300 `}
+                      />
+                      <div
+                        className={`absolute top-full flex flex-col gap-1 ${
+                          expandedDescriptionId === product.id ? 'scale-y-100' : 'scale-y-0'
+                        }  origin-top duration-300 bg-neutral-300 dark:bg-gray-700 shadow-md rounded p-2 z-10`}
+                      >
+                        {product.affiliateLinks.map((affiliateLink, index) => (
+                          <a
+                            href={affiliateLink.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`flex w-full justify-between gap-5 bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition `}
+                            key={index}
+                          >
+                            <span className="flex-1 inline-flex items-center  font-extrabold gap-2 text-white ">
+                              {affiliateLink.platform === 'amazon' ? (
+                                <FaAmazon size={16} />
+                              ) : (
+                                affiliateLink.platform === 'flipkart' && <SiFlipkart size={16} />
+                              )}
+                              {affiliateLink.platform.toUpperCase()}
+                            </span>
+                            <span className="text-sm font-bold text-white">
+                              ₹{affiliateLink.price}
+                            </span>
+                          </a>
+                        ))}
+                      </div>
+                    </button>
+
                     <button
                       type="button"
                       className={`flex-1 inline-flex items-center justify-center gap-2  border ${
@@ -238,7 +272,7 @@ const AffiliateProductsPage = () => {
         )}
       </div>
 
-      {/* No products found UI */}
+      {/* No products found */}
       {!isFetchingProducts && filteredProducts.length === 0 && (
         <div className="text-center text-gray-500 dark:text-gray-400 mt-8">
           <LuPackageOpen size={50} className="mx-auto mb-4 text-gray-400 dark:text-gray-500" />

@@ -1,8 +1,18 @@
+from typing import Any
+from typing import Dict
+from pydantic import BaseModel
 from sqlmodel import SQLModel, Field, Relationship
 from sqlalchemy import Column, ARRAY, String, Text, UUID, ForeignKey
+from sqlalchemy.dialects.postgresql import JSONB
 from typing import List, Optional
 from datetime import datetime, timezone
 import uuid
+
+
+# class AffiliateLinksTypes(BaseModel):
+#     platform: str
+#     link: str
+#     price: float
 
 
 class Product(SQLModel, table=True):
@@ -19,9 +29,9 @@ class Product(SQLModel, table=True):
     )
     description: str = Field(sa_column=Column(Text))
     tags: List[str] = Field(default_factory=list, sa_column=Column(ARRAY(String(50))))
-    price: float = Field(gt=0)
-    affiliateLink: str = Field(max_length=1000)
-
+    affiliateLinks: List[Dict[str, Any]] = Field(
+        default_factory=list, sa_column=Column(JSONB, nullable=False)
+    )
     cart_items: List["CartItem"] = Relationship(back_populates="product")
 
 

@@ -1,4 +1,3 @@
-// import { UserModel, IUser } from '../models/user.model.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 import { JWTPayload } from '../middlewares/auth.middleware.js';
 

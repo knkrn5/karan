@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import { ProjectModel } from "../models/projects.models.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 

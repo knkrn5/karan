@@ -8,6 +8,8 @@ import type { ProductPropsType } from './affiliateProductsPage';
 import { FiLogIn } from 'react-icons/fi';
 import { useAuthCheck } from '../../hooks/authCheckHook';
 import { AffiliateCartItemSkeletonLoading } from './affiliateSkeletonLoading';
+import { FaAmazon } from 'react-icons/fa6';
+import { SiFlipkart } from 'react-icons/si';
 
 export default function AffiliateSearchAndCart({
   products,
@@ -29,6 +31,8 @@ export default function AffiliateSearchAndCart({
   const [showProductsSearchSuggestions, setShowProductsSearchSuggestions] =
     useState<boolean>(false);
 
+  const [showPricesInCart, setshowPricesInCart] = useState<number | null>();
+
   const cartIconRef = useRef<HTMLButtonElement>(null);
   const cartContainerRef = useRef<HTMLDivElement>(null);
   const searchProductRef = useRef<HTMLInputElement>(null);
@@ -42,6 +46,7 @@ export default function AffiliateSearchAndCart({
     )
       return;
     setIsCartOpen(false);
+    setshowPricesInCart(null);
   }
 
   const matchingProductNames = products
@@ -239,22 +244,50 @@ export default function AffiliateSearchAndCart({
                     <h3 className="text-sm font-medium text-slate-900 dark:text-slate-100">
                       {item.name}
                     </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
-                      ₹{item.price.toFixed(2)}
+                    <p className="text-sm w-fit rounded-lg px-1 text-blue-700 bg-neutral-100 dark:text-cyan-500 dark:bg-slate-900 shadow-lg">
+                      {item.category}
                     </p>
 
                     <div className="mt-2 flex gap-2">
-                      <a
-                        href={item.affiliateLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded"
+                      <button
+                        type="button"
+                        className="relative text-xs bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded  flex gap-1 items-center transition cursor-pointer"
+                        onClick={() =>
+                          setshowPricesInCart(prev => (prev === item.id ? null : item.id))
+                        }
                       >
-                        <span className="flex gap-1 items-center">
-                          <RiShoppingBag4Fill />
-                          Buy Now
-                        </span>
-                      </a>
+                        <RiShoppingBag4Fill />
+                        Buy Now
+                        {/* <FaAngleDown
+                          className={`absolute right-2  transition-transform duration-300 `}
+                        /> */}
+                        <div
+                          className={`absolute top-full left-0 flex flex-col gap-1 ${
+                            showPricesInCart === item.id ? 'scale-y-100' : 'scale-y-0'
+                          }   origin-top duration-300 p-1 bg-neutral-50 dark:bg-gray-700 shadow-md rounded z-10`}
+                        >
+                          {item.affiliateLinks.map((affiliateLink, index) => (
+                            <a
+                              href={affiliateLink.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`flex justify-between gap-5 bg-indigo-600 p-1 rounded hover:bg-indigo-700 transition `}
+                              key={index}
+                            >
+                              <span className="flex-1 inline-flex text-xs items-center font-semibold gap-2 text-white ">
+                                {affiliateLink.platform === 'amazon' ? (
+                                  <FaAmazon />
+                                ) : (
+                                  affiliateLink.platform === 'flipkart' && <SiFlipkart />
+                                )}
+                              </span>
+                              <span className="text-xs font-bold text-white">
+                                ₹{affiliateLink.price}
+                              </span>
+                            </a>
+                          ))}
+                        </div>
+                      </button>
                       <button
                         type="button"
                         onClick={() => handleCartFunctions(item.id)}

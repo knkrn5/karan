@@ -6,7 +6,8 @@ from ..models.affliateproducts_model import Product, CartItem
 from ..db.postgresDb import DATABASE_URL
 
 
-engine = create_engine(DATABASE_URL)
+# Ensure DATABASE_URL is a string
+engine = create_engine(str(DATABASE_URL))
 
 
 class AffiliateProductsService:
