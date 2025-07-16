@@ -95,20 +95,23 @@ const AffiliateProductsPage = () => {
 
     try {
       if (cartItems.some(item => item.id === product_id)) {
-        const res = await axios.delete(`${PY_BACKEND_URL}/affiliate-products/remove-from-cart`, {
-          data: { product_id },
-          withCredentials: true,
-        });
+        const res = await axios.post(
+          `${PY_BACKEND_URL}/affiliate-products/add-remove-from-cart`,
+          { product_id },
+          { withCredentials: true }
+        );
         console.log(res.data);
         queryClient.setQueryData<ProductPropsType[]>(['cartItems'], prevCartItems =>
           prevCartItems ? prevCartItems.filter(item => item.id !== product_id) : []
         );
       } else {
-        await axios.post(
-          `${PY_BACKEND_URL}/affiliate-products/add-to-cart`,
+        const res = await axios.post(
+          `${PY_BACKEND_URL}/affiliate-products/add-remove-from-cart`,
           { product_id },
           { withCredentials: true }
         );
+        
+        console.log(res.data);
         const productToAdd = products.find(product => product.id === product_id);
         if (productToAdd) {
           queryClient.setQueryData<ProductPropsType[]>(['cartItems'], prevCartItems =>

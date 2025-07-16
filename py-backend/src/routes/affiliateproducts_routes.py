@@ -2,7 +2,7 @@
 from fastapi import APIRouter, Query, Depends, Body
 from typing import List, Any, Dict
 from uuid import UUID
-from ..models.affliateproducts_model import Product, CartItem
+from ..models.affliateproducts_model import Product, Cart
 from ..services.affiliateproducts_service import AffiliateProductsService
 from ..utils.verify_jwttoken import get_current_user
 from ..security.verify_admin import verify_api_key
@@ -55,15 +55,15 @@ async def delete_product_route(
         return {"error": str(e)}
 
 
-@router.post("/add-to-cart")
-async def add_to_cart_route(
-    data: CartItem, current_user: dict = Depends(get_current_user)
+@router.post("/add-remove-from-cart")
+async def add_remove_product_from_cart_route(
+    product_id: str = Body(embed=True), current_user: dict = Depends(get_current_user)
 ):
     try:
         user_id = current_user["user_id"]
 
-        AffiliateProductsService.add_product_in_cart(user_id, data.product_id)
-        return {"message": "Product added to cart successfully"}
+        AffiliateProductsService.add_remove_product_from_cart(user_id, product_id)
+        return {"message": "Product added or removed to cart successfully"}
     except ValueError as e:
         return {"error": str(e)}
 
@@ -78,14 +78,14 @@ async def get_cart_items_route(current_user: dict = Depends(get_current_user)):
         return {"error": str(e)}
 
 
-@router.delete("/remove-from-cart")
-async def remove_from_cart_route(
-    data: CartItem, current_user: dict = Depends(get_current_user)
-):
-    try:
-        user_id = current_user["user_id"]
+# @router.delete("/remove-from-cart")
+# async def remove_from_cart_route(
+#     data: Cart, current_user: dict = Depends(get_current_user)
+# ):
+#     try:
+#         user_id = current_user["user_id"]
 
-        AffiliateProductsService.remove_product_from_cart(user_id, data.product_id)
-        return {"message": "Product removed from cart successfully"}
-    except ValueError as e:
-        return {"error": str(e)}
+#         AffiliateProductsService.remove_product_from_cart(user_id, data.product_id)
+#         return {"message": "Product removed from cart successfully"}
+#     except ValueError as e:
+#         return {"error": str(e)}

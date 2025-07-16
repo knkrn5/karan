@@ -2,7 +2,8 @@ from sqlmodel import create_engine, Session, select
 from sqlalchemy import func
 from uuid import UUID
 from typing import List, Optional, Any, Dict
-from ..models.affliateproducts_model import Product, CartItem
+from ..models.affliateproducts_model import Product, Cart
+from datetime import datetime, timezone
 from ..db.postgresDb import DATABASE_URL
 
 
@@ -64,7 +65,7 @@ class AffiliateProductsService:
                     raise ValueError("Product ID must be an UUID.")
 
                 # Delete cart items referencing this product
-                session.query(CartItem).filter(CartItem.product_id == id).delete(
+                session.query(Cart).filter(Cart.product_id == id).delete(
                     synchronize_session=False
                 )
 
@@ -80,49 +81,77 @@ class AffiliateProductsService:
             print("✅ Products deleted from the database.")
 
     @staticmethod
-    def add_product_in_cart(user_id: str, product_id: str):
+    def get_cart_items(user_id: int) -> List[Product]:
         with Session(engine) as session:
+            user_cart = session.get(Cart, user_id)
+
+            if not user_cart:
+                return []
+
+            product_ids = user_cart.product_ids
+
+            if not product_ids:
+                return []
+
+            # Fetch the products using the product IDs
+            products_in_cart = session.exec(
+                select(Product).where(Product.id.in_(product_ids))
+            ).all()
+
+            print(f"✅ Fetched {len(products_in_cart)} products from the cart.")
+
+            return products_in_cart
+
+    @staticmethod
+    def add_remove_product_from_cart(user_id: str, product_id: str):
+        with Session(engine) as session:
+            # Validate product exists
             product = session.get(Product, product_id)
             if not product:
                 raise ValueError("Product not found.")
 
-            # Checking if product already in user's cart
-            cart_item = session.exec(
-                select(CartItem)
-                .where(CartItem.user_id == user_id)
-                .where(CartItem.product_id == product_id)
-            ).first()
+            # Fetch user's cart (single row per user)
+            user_cart = session.get(Cart, user_id)
 
-            if cart_item:
-                print("Product already in cart.")
-            else:
-                cart_item = CartItem(user_id=user_id, product_id=product_id)
-                session.add(cart_item)
+            if user_cart:
+                if product_id in user_cart.product_ids:
+                    user_cart.product_ids = [
+                        pid for pid in user_cart.product_ids if pid != product_id
+                    ]
+                    cart_action_status = "✅ Product removed from cart."
+                else:
+                    user_cart.product_ids = user_cart.product_ids + [product_id]
+                    cart_action_status = "✅ Product added to cart."
+
+                user_cart.updated_at = datetime.now(timezone.utc)
+                session.add(user_cart)
                 session.commit()
-                print("✅ Product added to cart.")
-
-    @staticmethod
-    def get_cart_items(user_id: int) -> List[Product]:
-        with Session(engine) as session:
-            cart_items = session.exec(
-                select(CartItem).where(CartItem.user_id == user_id)
-            ).all()
-
-            products = [cart_item.product for cart_item in cart_items]
-            return products
-
-    @staticmethod
-    def remove_product_from_cart(user_id: int, product_id: str):
-        with Session(engine) as session:
-            cart_item = session.exec(
-                select(CartItem)
-                .where(CartItem.user_id == user_id)
-                .where(CartItem.product_id == product_id)
-            ).first()
-
-            if cart_item:
-                session.delete(cart_item)
-                session.commit()
-                print("✅ Product removed from cart.")
             else:
-                print("Product not found in cart.")
+                cart = Cart(
+                    user_id=user_id,
+                    product_ids=[product_id],
+                    updated_at=datetime.now(timezone.utc),
+                )
+                session.add(cart)
+                session.commit()
+                cart_action_status = "✅ New cart created and product added."
+
+            print(cart_action_status)
+
+    # @staticmethod
+    # def remove_product_from_cart(user_id: int, product_id: str):
+    #     with Session(engine) as session:
+    #         user_cart = session.get(Cart, user_id)
+
+    #         if not user_cart:
+    #             raise ValueError("User cart not found.")
+
+    #         if product_id not in user_cart.product_ids:
+    #             raise ValueError("Product not found in cart.")
+
+    #         user_cart.product_ids.remove(product_id)
+    #         user_cart.updated_at = datetime.now(timezone.utc)
+    #         session.add(user_cart)
+    #         session.commit()
+
+    #         print("✅ Product removed from cart.")
