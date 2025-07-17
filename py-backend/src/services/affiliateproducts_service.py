@@ -17,6 +17,12 @@ class AffiliateProductsService:
         if not isinstance(product, Product):
             raise ValueError("The product must be an instance of the Product class.")
 
+        # if not isinstance(product.affiliateLinks, list):
+        #     raise ValueError("The product affiliateLinks must be a list.")
+
+        # if not all(isinstance(item, dict) for item in product.affiliateLinks):
+        #     raise ValueError("Each item in affiliateLinks must be a dictionary.")
+
         with Session(engine) as session:
             session.add(product)
             session.commit()
@@ -136,7 +142,7 @@ class AffiliateProductsService:
                 session.commit()
                 cart_action_status = "✅ New cart created and product added."
 
-            print(cart_action_status)
+            return cart_action_status
 
     # @staticmethod
     # def remove_product_from_cart(user_id: int, product_id: str):

@@ -1,6 +1,6 @@
 from typing import Any
 from typing import Dict
-from pydantic import BaseModel
+from pydantic import field_validator, BaseModel
 from sqlmodel import SQLModel, Field, Relationship
 from sqlalchemy import Column, ARRAY, String, Text, UUID, ForeignKey
 from sqlalchemy.dialects.postgresql import JSONB
@@ -30,16 +30,37 @@ class Product(SQLModel, table=True):
     description: str = Field(sa_column=Column(Text))
     tags: List[str] = Field(default_factory=list, sa_column=Column(ARRAY(String(50))))
     affiliateLinks: List[Dict[str, Any]] = Field(
-        default_factory=list, sa_column=Column(JSONB, nullable=False)
+        sa_column=Column(JSONB, nullable=False)
     )
     # cart_items: List["CartItem"] = Relationship(back_populates="product")
 
+    # @field_validator("affiliateLinks", mode="before")
+    # @classmethod
+    # def validate_affiliate_links(cls, v):
+    #     print(f"validate_affiliate_links: {v}")
+    #     if not isinstance(v, list):
+    #         raise ValueError("affiliateLinks must be a list")
+    #     for item in v:
+    #         if not isinstance(item, dict):
+    #             raise ValueError("Each item in affiliateLinks must be a dictionary")
+    #         if "platform" not in item:
+    #             raise ValueError(
+    #                 "Each affiliate link dictionary must contain a 'platform' key"
+    #             )
+    #         if not isinstance(item["platform"], str):
+    #             raise ValueError(
+    #                 "The 'platform' value in affiliate link must be a string"
+    #             )
+    #         if "link" not in item:
+    #             raise ValueError(
+    #                 "Each affiliate link dictionary must contain a 'link' key"
+    #             )
+    #         if not isinstance(item["link"], str):
+    #             raise ValueError("The 'link' value in affiliate link must be a string")
+    #     return v
+
 
 class Cart(SQLModel, table=True):
-    # id: str = Field(
-    #     default_factory=lambda: str(uuid.uuid4()),
-    #     sa_column=Column(UUID(as_uuid=False), primary_key=True, unique=True),
-    # )
     user_id: str = Field(max_length=255, primary_key=True, unique=True)
     product_ids: list[str] = Field(
         default_factory=list,

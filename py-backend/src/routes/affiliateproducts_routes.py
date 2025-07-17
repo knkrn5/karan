@@ -62,8 +62,8 @@ async def add_remove_product_from_cart_route(
     try:
         user_id = current_user["user_id"]
 
-        AffiliateProductsService.add_remove_product_from_cart(user_id, product_id)
-        return {"message": "Product added or removed to cart successfully"}
+        res = AffiliateProductsService.add_remove_product_from_cart(user_id, product_id)
+        return res
     except ValueError as e:
         return {"error": str(e)}
 
