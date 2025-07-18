@@ -9,12 +9,6 @@ from datetime import datetime, timezone
 import uuid
 
 
-# class AffiliateLinksTypes(BaseModel):
-#     platform: str
-#     link: str
-#     price: float
-
-
 class Product(SQLModel, table=True):
     id: str = Field(
         default_factory=lambda: str(uuid.uuid4()),
@@ -68,3 +62,15 @@ class Cart(SQLModel, table=True):
     )
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     # product: Optional[Product] = Relationship(back_populates="cart_items")
+
+    # @field_validator("affiliateLinks", mode="before")
+    # @classmethod
+    # def validate_affiliate_links(cls, v):
+    #     if not isinstance(v, list):
+    #         raise ValueError("affiliateLinks must be a list")
+    #     for item in v:
+    #         if not isinstance(item, dict):
+    #             raise ValueError("Each item in affiliateLinks must be a dictionary")
+    #         if "platform" not in item or "link" not in item:
+    #             raise ValueError("Each affiliate link must have 'platform' and 'link'")
+    #     return v

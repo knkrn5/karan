@@ -1,7 +1,8 @@
 from sqlmodel import create_engine, Session, select
 from sqlalchemy import func
 from uuid import UUID
-from typing import List, Optional, Any, Dict
+from typing import Any
+from collections.abc import Sequence
 from ..models.affliateproducts_model import Product, Cart
 from datetime import datetime, timezone
 from ..db.postgresDb import DATABASE_URL
@@ -14,38 +15,27 @@ engine = create_engine(str(DATABASE_URL))
 class AffiliateProductsService:
     @staticmethod
     def add_product(product: Product):
-        if not isinstance(product, Product):
-            raise ValueError("The product must be an instance of the Product class.")
-
-        # if not isinstance(product.affiliateLinks, list):
-        #     raise ValueError("The product affiliateLinks must be a list.")
-
-        # if not all(isinstance(item, dict) for item in product.affiliateLinks):
-        #     raise ValueError("Each item in affiliateLinks must be a dictionary.")
-
         with Session(engine) as session:
             session.add(product)
             session.commit()
             print("✅ Product added to the database.")
 
     @staticmethod
-    def get_products() -> List[Product]:
+    def get_products() -> Sequence[Product]:
         with Session(engine) as session:
-            return session.query(Product).all()
+            return session.exec(select(Product)).all()
 
     @staticmethod
-    def get_product_by_name(product_name: str) -> Optional[Product]:
+    def get_product_by_name(product_name: str) -> Sequence[Product]:
         with Session(engine) as session:
-            return (
-                session.query(Product)
-                .filter(
+            return session.exec(
+                select(Product).where(
                     func.lower(Product.name).ilike(f"%{product_name.strip().lower()}%")
                 )
-                .all()
-            )
+            ).all()
 
     @staticmethod
-    def update_product_fields(product_id: UUID, fields_to_updates: Dict[str, Any]):
+    def update_product_fields(product_id: UUID, fields_to_updates: dict[str, Any]):
         with Session(engine) as session:
             product = session.get(Product, product_id)
             if not product:
@@ -71,7 +61,10 @@ class AffiliateProductsService:
                     raise ValueError("Product ID must be an UUID.")
 
                 # Delete cart items referencing this product
-                session.query(Cart).filter(Cart.product_id == id).delete(
+                # session.query(Cart).filter(Cart.product_id == id).delete(
+                #     synchronize_session=False
+                # )
+                session.query(Cart).filter(Cart.product_ids.contains(id)).delete(
                     synchronize_session=False
                 )
 
@@ -87,7 +80,7 @@ class AffiliateProductsService:
             print("✅ Products deleted from the database.")
 
     @staticmethod
-    def get_cart_items(user_id: int) -> List[Product]:
+    def get_cart_items(user_id: int) -> list[Product]:
         with Session(engine) as session:
             user_cart = session.get(Cart, user_id)
 

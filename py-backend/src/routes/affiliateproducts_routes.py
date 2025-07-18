@@ -1,8 +1,10 @@
 # products_routes.py
+from starlette.exceptions import HTTPException
 from fastapi import APIRouter, Query, Depends, Body
-from typing import List, Any, Dict
+from typing import Any
 from uuid import UUID
 from ..models.affliateproducts_model import Product, Cart
+from ..dtos.ProductDto import ProductDto
 from ..services.affiliateproducts_service import AffiliateProductsService
 from ..utils.verify_jwttoken import get_current_user
 from ..security.verify_admin import verify_api_key
@@ -11,8 +13,9 @@ router = APIRouter()
 
 
 @router.post("/add-products")
-async def add_product_route(product: Product, _: str = Depends(verify_api_key)):
-    AffiliateProductsService.add_product(product)
+async def add_product_route(product: ProductDto, _: str = Depends(verify_api_key)):
+    db_product = Product(**product.model_dump())
+    AffiliateProductsService.add_product(db_product)
     return {"message": "Product added to the database"}
 
 
@@ -23,18 +26,17 @@ async def get_products_route():
 
 
 @router.get("/get-product-by-name")
-async def get_product_by_name_route(product_name: str):
-    product: Product | None = AffiliateProductsService.get_product_by_name(product_name)
-    if product:
-        return product
-    else:
-        return {"error": "Product not found"}
+async def get_product_by_name_route(product_name: str) -> list[Product]:
+    res = AffiliateProductsService.get_product_by_name(product_name)
+    if not res:
+        raise HTTPException(status_code=404, detail="No products found")
+    return res
 
 
 @router.patch("/update-product")
 async def update_product_route(
     product_id: UUID = Query(...),
-    fields_to_updates: Dict[str, Any] = Body(...),
+    fields_to_updates: dict[str, Any] = Body(...),
     _: str = Depends(verify_api_key),
 ):
     try:
@@ -46,7 +48,7 @@ async def update_product_route(
 
 @router.delete("/delete-product")
 async def delete_product_route(
-    product_ids: List[UUID] = Query(...), _: str = Depends(verify_api_key)
+    product_ids: list[UUID] = Query(...), _: str = Depends(verify_api_key)
 ):
     try:
         AffiliateProductsService.delete_product(product_ids)
@@ -69,7 +71,7 @@ async def add_remove_product_from_cart_route(
 
 
 @router.get("/get-cart-items")
-async def get_cart_items_route(current_user: dict = Depends(get_current_user)):
+async def get_cart_items_route(current_user: dict[str, Any] = Depends(get_current_user)):
     try:
         user_id = current_user["user_id"]
         cart_items: list[Product] = AffiliateProductsService.get_cart_items(user_id)

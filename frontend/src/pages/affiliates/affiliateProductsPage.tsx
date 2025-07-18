@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
-import { FaShoppingCart, FaShoppingBag, FaAngleDown } from 'react-icons/fa';
-import { FaAmazon } from 'react-icons/fa';
+import { FaShoppingCart, FaShoppingBag, FaAngleDown, FaAmazon } from 'react-icons/fa';
 import { SiFlipkart } from 'react-icons/si';
 import { MdRemoveShoppingCart } from 'react-icons/md';
 import { LuPackageOpen } from 'react-icons/lu';
@@ -110,7 +109,7 @@ const AffiliateProductsPage = () => {
           { product_id },
           { withCredentials: true }
         );
-        
+
         console.log(res.data);
         const productToAdd = products.find(product => product.id === product_id);
         if (productToAdd) {
