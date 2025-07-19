@@ -1,9 +1,5 @@
-# utils/auth.py
 from typing import Any
-
-
 import jwt
-from jwt import PyJWT
 from fastapi import HTTPException, Request
 import os
 

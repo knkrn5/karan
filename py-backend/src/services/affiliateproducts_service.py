@@ -35,7 +35,9 @@ class AffiliateProductsService:
             ).all()
 
     @staticmethod
-    def update_product_fields(product_id: UUID, fields_to_updates: dict[str, Any]) -> None:
+    def update_product_fields(
+        product_id: UUID, fields_to_updates: dict[str, Any]
+    ) -> None:
         with Session(engine) as session:
             product = session.get(Product, product_id)
             if not product:
@@ -54,21 +56,26 @@ class AffiliateProductsService:
             print("✅ Product updated in the database.")
 
     @staticmethod
-    def delete_product(product_ids: list[UUID]) -> None:
+    def delete_products(product_ids: list[UUID]) -> None:
         with Session(engine) as session:
             for id in product_ids:
-                if not isinstance(id, UUID):
-                    raise ValueError("Product ID must be an UUID.")
+                # Convert UUID to string for comparison with cart product_ids
+                product_id_str = str(id)
 
-                # Delete cart items referencing this product
-                # session.query(Cart).filter(Cart.product_id == id).delete(
-                #     synchronize_session=False
-                # )
-                session.query(Cart).filter(Cart.product_ids.contains(id)).delete(
-                    synchronize_session=False
-                )
+                # Find all carts that contain this product and remove it
+                carts_with_product = session.exec(
+                    select(Cart).where(Cart.product_ids.contains([product_id_str]))
+                ).all()
 
-                # Get the product
+                for cart in carts_with_product:
+                    # Remove the product ID from the cart
+                    cart.product_ids = [
+                        pid for pid in cart.product_ids if pid != product_id_str
+                    ]
+                    cart.updated_at = datetime.now(timezone.utc)
+                    session.add(cart)
+
+                # Get and delete the product
                 product = session.get(Product, id)
                 if not product:
                     print(f"⚠️ Product with ID {id} not found.")
@@ -77,7 +84,7 @@ class AffiliateProductsService:
                 session.delete(product)
 
             session.commit()
-            print("✅ Products deleted from the database.")
+            print("✅ Products deleted from the database and removed from all carts.")
 
     @staticmethod
     def get_cart_items(user_id: int) -> Sequence[Product]:
