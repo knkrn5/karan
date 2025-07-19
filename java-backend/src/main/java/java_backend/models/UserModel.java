@@ -8,17 +8,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import java_backend.configs.EnvConfig;
-import jakarta.validation.constraints.Email;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-// import static java_backend.configs.EnvConfig.dotenv;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -99,7 +95,7 @@ public class UserModel {
 
             return JWT.create()
                     .withIssuer(EnvConfig.getenvvar("JWT_ISSUER"))
-                    .withSubject(this.email)
+                    .withSubject(this.id.toString())
                     .withClaim("id", this.id.toString())
                     .withClaim("email", this.email)
                     .withClaim("role", this.role.name())
@@ -120,7 +116,7 @@ public class UserModel {
 
             return JWT.create()
                     .withIssuer(EnvConfig.getenvvar("JWT_ISSUER"))
-                    .withSubject(this.email)
+                    .withSubject(this.id.toString())
                     .withClaim("id", this.id.toString())
                     .withClaim("email", this.email)
                     .withClaim("role", this.role.name())

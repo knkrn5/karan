@@ -2,11 +2,12 @@
 from starlette.exceptions import HTTPException
 from fastapi import APIRouter, Query, Depends, Body
 from typing import Any
+from collections.abc import Sequence
 from uuid import UUID
-from ..models.affliateproducts_model import Product, Cart
+from ..models.affliateproducts_model import Product
 from ..dtos.ProductDto import ProductDto
 from ..services.affiliateproducts_service import AffiliateProductsService
-from ..utils.verify_jwttoken import get_current_user
+from ..utils.verify_jwt import get_current_user_details
 from ..security.verify_admin import verify_api_key
 
 router = APIRouter()
@@ -14,20 +15,20 @@ router = APIRouter()
 
 @router.post("/add-products")
 async def add_product_route(product: ProductDto, _: str = Depends(verify_api_key)):
-    db_product = Product(**product.model_dump())
+    db_product: Product = Product(**product.model_dump())
     AffiliateProductsService.add_product(db_product)
     return {"message": "Product added to the database"}
 
 
 @router.get("/get-products")
-async def get_products_route():
-    products: list[Product] = AffiliateProductsService.get_products()
+async def get_products_route() -> Sequence[Product]:
+    products: Sequence[Product] = AffiliateProductsService.get_products()
     return products
 
 
 @router.get("/get-product-by-name")
-async def get_product_by_name_route(product_name: str) -> list[Product]:
-    res = AffiliateProductsService.get_product_by_name(product_name)
+async def get_product_by_name_route(product_name: str) -> Sequence[Product]:
+    res: Sequence[Product] = AffiliateProductsService.get_product_by_name(product_name)
     if not res:
         raise HTTPException(status_code=404, detail="No products found")
     return res
@@ -59,7 +60,7 @@ async def delete_product_route(
 
 @router.post("/add-remove-from-cart")
 async def add_remove_product_from_cart_route(
-    product_id: str = Body(embed=True), current_user: dict = Depends(get_current_user)
+    product_id: str = Body(embed=True), current_user: dict[str, Any] = Depends(get_current_user_details)
 ):
     try:
         user_id = current_user["user_id"]
@@ -71,10 +72,12 @@ async def add_remove_product_from_cart_route(
 
 
 @router.get("/get-cart-items")
-async def get_cart_items_route(current_user: dict[str, Any] = Depends(get_current_user)):
+async def get_cart_items_route(
+    current_user: dict[str, Any] = Depends(get_current_user_details),
+):
     try:
         user_id = current_user["user_id"]
-        cart_items: list[Product] = AffiliateProductsService.get_cart_items(user_id)
+        cart_items: Sequence[Product] = AffiliateProductsService.get_cart_items(user_id)
         return cart_items
     except ValueError as e:
         return {"error": str(e)}
@@ -82,7 +85,7 @@ async def get_cart_items_route(current_user: dict[str, Any] = Depends(get_curren
 
 # @router.delete("/remove-from-cart")
 # async def remove_from_cart_route(
-#     data: Cart, current_user: dict = Depends(get_current_user)
+#     data: Cart, current_user: dict = Depends(get_current_user_details)
 # ):
 #     try:
 #         user_id = current_user["user_id"]

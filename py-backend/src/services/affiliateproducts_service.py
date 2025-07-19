@@ -14,7 +14,7 @@ engine = create_engine(str(DATABASE_URL))
 
 class AffiliateProductsService:
     @staticmethod
-    def add_product(product: Product):
+    def add_product(product: Product) -> None:
         with Session(engine) as session:
             session.add(product)
             session.commit()
@@ -35,7 +35,7 @@ class AffiliateProductsService:
             ).all()
 
     @staticmethod
-    def update_product_fields(product_id: UUID, fields_to_updates: dict[str, Any]):
+    def update_product_fields(product_id: UUID, fields_to_updates: dict[str, Any]) -> None:
         with Session(engine) as session:
             product = session.get(Product, product_id)
             if not product:
@@ -54,7 +54,7 @@ class AffiliateProductsService:
             print("✅ Product updated in the database.")
 
     @staticmethod
-    def delete_product(product_ids: list[UUID]):
+    def delete_product(product_ids: list[UUID]) -> None:
         with Session(engine) as session:
             for id in product_ids:
                 if not isinstance(id, UUID):
@@ -80,20 +80,20 @@ class AffiliateProductsService:
             print("✅ Products deleted from the database.")
 
     @staticmethod
-    def get_cart_items(user_id: int) -> list[Product]:
+    def get_cart_items(user_id: int) -> Sequence[Product]:
         with Session(engine) as session:
-            user_cart = session.get(Cart, user_id)
+            user_cart: Cart | None = session.get(Cart, user_id)
 
             if not user_cart:
                 return []
 
-            product_ids = user_cart.product_ids
+            product_ids: list[str] = user_cart.product_ids
 
             if not product_ids:
                 return []
 
             # Fetch the products using the product IDs
-            products_in_cart = session.exec(
+            products_in_cart: Sequence[Product] = session.exec(
                 select(Product).where(Product.id.in_(product_ids))
             ).all()
 
