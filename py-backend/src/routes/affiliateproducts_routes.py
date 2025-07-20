@@ -1,4 +1,4 @@
-# products_routes.py
+from sys import exception
 from starlette.exceptions import HTTPException
 from fastapi import APIRouter, Query, Depends, Body
 from typing import Any
@@ -13,38 +13,47 @@ from ..security.verify_admin import verify_api_key
 router = APIRouter()
 
 
-@router.post("/add-products")
-async def add_product_route(product: ProductDto, _: str = Depends(verify_api_key)):
+@router.post("/add-products", dependencies=[Depends(verify_api_key)])
+async def add_product_route(product: ProductDto) -> str:
     db_product: Product = Product(**product.model_dump())
-    AffiliateProductsService.add_product(db_product)
-    return {"message": "Product added to the database"}
+    try:
+        res = AffiliateProductsService.add_product(db_product)
+        return res
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get("/get-products")
 async def get_products_route() -> Sequence[Product]:
-    products: Sequence[Product] = AffiliateProductsService.get_products()
-    return products
+    try:
+        products: Sequence[Product] = AffiliateProductsService.get_products()
+        return products
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get("/get-product-by-name")
 async def get_product_by_name_route(product_name: str) -> Sequence[Product]:
-    res: Sequence[Product] = AffiliateProductsService.get_product_by_name(product_name)
-    if not res:
-        raise HTTPException(status_code=404, detail="No products found")
-    return res
+    try:
+        res: Sequence[Product] = AffiliateProductsService.get_product_by_name(
+            product_name
+        )
+        return res
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.patch("/update-product")
+@router.patch("/update-product", dependencies=[Depends(verify_api_key)])
 async def update_product_route(
-    product_id: UUID = Query(...),
-    fields_to_updates: dict[str, Any] = Body(...),
-    _: str = Depends(verify_api_key),
+    product_id: UUID = Query(...), fields_to_updates: dict[str, Any] = Body(...)
 ):
     try:
-        AffiliateProductsService.update_product_fields(product_id, fields_to_updates)
-        return {"message": "Product updated successfully"}
-    except ValueError as e:
-        return {"error": str(e)}
+        res = AffiliateProductsService.update_product_fields(
+            product_id, fields_to_updates
+        )
+        return res
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.delete("/delete-product")
@@ -60,7 +69,8 @@ async def delete_product_route(
 
 @router.post("/add-remove-from-cart")
 async def add_remove_product_from_cart_route(
-    product_id: str = Body(embed=True), current_user: dict[str, Any] = Depends(get_current_user_details)
+    product_id: str = Body(embed=True),
+    current_user: dict[str, Any] = Depends(get_current_user_details),
 ):
     try:
         user_id = current_user["user_id"]

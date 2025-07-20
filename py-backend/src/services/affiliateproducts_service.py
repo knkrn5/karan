@@ -1,3 +1,5 @@
+from itertools import product
+from sqlalchemy.exc import IntegrityError, OperationalError, DatabaseError
 from sqlmodel import create_engine, Session, select
 from sqlalchemy import func
 from uuid import UUID
@@ -14,46 +16,89 @@ engine = create_engine(str(DATABASE_URL))
 
 class AffiliateProductsService:
     @staticmethod
-    def add_product(product: Product) -> None:
-        with Session(engine) as session:
-            session.add(product)
-            session.commit()
-            print("✅ Product added to the database.")
+    def add_product(product: Product) -> str:
+        try:
+            with Session(engine) as session:
+                session.add(product)
+                session.commit()
+                return f"Product {product.name} added to the database."
+        except IntegrityError as e:
+            raise ValueError(f"Integrity error: {e}")
+        except OperationalError as e:
+            raise RuntimeError(f"Operational error: {e}")
+        except DatabaseError as e:
+            raise RuntimeError(f"Database error: {e}")
+        except Exception as e:
+            raise RuntimeError(f"Unexpected error: {e}")
 
     @staticmethod
     def get_products() -> Sequence[Product]:
-        with Session(engine) as session:
-            return session.exec(select(Product)).all()
+        try:
+            with Session(engine) as session:
+                return session.exec(select(Product)).all()
+        except Exception as e:
+            raise RuntimeError(f"Error fetching products: {e}")
 
     @staticmethod
     def get_product_by_name(product_name: str) -> Sequence[Product]:
-        with Session(engine) as session:
-            return session.exec(
-                select(Product).where(
-                    func.lower(Product.name).ilike(f"%{product_name.strip().lower()}%")
-                )
-            ).all()
+        try:
+            if not product_name:
+                raise ValueError("Product name cannot be empty.")
+            with Session(engine) as session:
+                products = session.exec(
+                    select(Product).where(
+                        func.lower(Product.name).ilike(
+                            f"%{product_name.strip().lower()}%"
+                        )
+                    )
+                ).all()
+
+                if not products:
+                    raise ValueError(f"No products found with name: {product_name}")
+                return products
+
+        except ValueError as e:
+            raise e
+        except OperationalError as e:
+            raise RuntimeError(f"Operational error: {e}")
+        except DatabaseError as e:
+            raise RuntimeError(f"Database error: {e}")
+        except Exception as e:
+            raise RuntimeError(f"Error fetching product by name {product_name}: {e}")
 
     @staticmethod
-    def update_product_fields(
-        product_id: UUID, fields_to_updates: dict[str, Any]
-    ) -> None:
-        with Session(engine) as session:
-            product = session.get(Product, product_id)
-            if not product:
-                raise ValueError("Product not found.")
+    def update_product_fields(product_id: UUID, fields_to_updates: dict[str, object]):
+        try:
+            with Session(engine) as session:
+                product: Product | None = session.get(Product, product_id)
+                if not product:
+                    raise ValueError(f"Product not found with ID: {product_id}.")
 
-            for field_key, field_value in fields_to_updates.items():
-                if hasattr(product, field_key):
-                    setattr(product, field_key, field_value)
-                else:
-                    raise ValueError(
-                        f"Product does not have the attribute '{field_key}'."
-                    )
+                for field_key, field_value in fields_to_updates.items():
+                    if hasattr(product, field_key):
+                        if not field_value:
+                            raise ValueError(
+                                f"Field '{field_key}' value cannot be empty."
+                            )
+                        setattr(product, field_key, field_value)
+                    else:
+                        raise ValueError(
+                            f"Product does not have the attribute '{field_key}'."
+                        )
 
-            session.add(product)
-            session.commit()
-            print("✅ Product updated in the database.")
+                session.add(product)
+                session.commit()
+                return f"Product with name {product.name} updated in the database."
+        except ValueError as e:
+            raise e
+        except IntegrityError as e:
+            raise ValueError(f"Integrity error: {e}")
+        except OperationalError as e:
+            raise RuntimeError(f"Operational error: {e}")
+        except DatabaseError as e:
+            raise RuntimeError(f"Database error: {e}")
+        except Exception as e:
+            raise RuntimeError(f"Unexpected error: {e}")
 
     @staticmethod
     def delete_products(product_ids: list[UUID]) -> None:
@@ -109,7 +154,7 @@ class AffiliateProductsService:
             # Validate product exists
             product = session.get(Product, product_id)
             if not product:
-                raise ValueError("Product not found.")
+                raise ValueError(f"Product not found with ID: {product_id}")
 
             # Fetch user's cart (single row per user)
             user_cart = session.get(Cart, user_id)
