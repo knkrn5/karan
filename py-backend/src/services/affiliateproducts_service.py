@@ -57,34 +57,29 @@ class AffiliateProductsService:
 
     @staticmethod
     def delete_products(product_ids: list[UUID]) -> None:
+        product_ids_str = [str(id) for id in product_ids]
+
         with Session(engine) as session:
+            # Step 1: Remove product IDs from all affected carts
+            carts_with_products = session.exec(
+                select(Cart).where(Cart.product_ids.op("&&")(product_ids_str))  # pyright: ignore[reportAttributeAccessIssue]
+            ).all()
+
+            for cart in carts_with_products:
+                cart.product_ids = [
+                    pid for pid in cart.product_ids if pid not in product_ids_str
+                ]
+                cart.updated_at = datetime.now(timezone.utc)
+                session.add(cart)
+
+            # Step 2: Delete products themselves
             for id in product_ids:
-                # Convert UUID to string for comparison with cart product_ids
-                product_id_str = str(id)
-
-                # Find all carts that contain this product and remove it
-                carts_with_product = session.exec(
-                    select(Cart).where(Cart.product_ids.contains([product_id_str]))
-                ).all()
-
-                for cart in carts_with_product:
-                    # Remove the product ID from the cart
-                    cart.product_ids = [
-                        pid for pid in cart.product_ids if pid != product_id_str
-                    ]
-                    cart.updated_at = datetime.now(timezone.utc)
-                    session.add(cart)
-
-                # Get and delete the product
                 product = session.get(Product, id)
-                if not product:
-                    print(f"⚠️ Product with ID {id} not found.")
-                    continue
-
-                session.delete(product)
+                if product:
+                    session.delete(product)
 
             session.commit()
-            print("✅ Products deleted from the database and removed from all carts.")
+            print("✅ Products deleted and removed from all carts.")
 
     @staticmethod
     def get_cart_items(user_id: int) -> Sequence[Product]:
@@ -101,7 +96,7 @@ class AffiliateProductsService:
 
             # Fetch the products using the product IDs
             products_in_cart: Sequence[Product] = session.exec(
-                select(Product).where(Product.id.in_(product_ids))
+                select(Product).where(Product.id.in_(product_ids))  # pyright: ignore[reportAttributeAccessIssue]
             ).all()
 
             print(f"✅ Fetched {len(products_in_cart)} products from the cart.")
