@@ -29,7 +29,6 @@ class AffiliateProductsService:
                     data=product.model_dump(),
                 )
         except IntegrityError as e:
-            # raise ValueError(f"Integrity error: {e}")
             return ApiResponse(
                 status_code=400,
                 is_success=False,
@@ -37,7 +36,6 @@ class AffiliateProductsService:
                 data=None,
             )
         except OperationalError as e:
-            # raise RuntimeError(f"Operational error: {e}")
             return ApiResponse(
                 status_code=500,
                 is_success=False,
@@ -52,7 +50,6 @@ class AffiliateProductsService:
                 data=None,
             )
         except Exception as e:
-            # raise RuntimeError(f"Unexpected error: {e}")
             return ApiResponse(
                 status_code=500,
                 is_success=False,

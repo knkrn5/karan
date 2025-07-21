@@ -18,10 +18,10 @@ router = APIRouter()
 async def add_product_route(product: ProductDto) -> Response:
     db_product: Product = Product(**product.model_dump())
 
-    res: ApiResponse = AffiliateProductsService.add_product(db_product)
+    result: ApiResponse = AffiliateProductsService.add_product(db_product)
     return Response(
-        content=res.model_dump_json(),
-        status_code=res.status_code,
+        content=result.model_dump_json(),
+        status_code=result.status_code,
         media_type="application/json",
     )
 
