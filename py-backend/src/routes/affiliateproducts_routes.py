@@ -1,6 +1,5 @@
-from sys import exception
 from starlette.exceptions import HTTPException
-from fastapi import APIRouter, Query, Depends, Body
+from fastapi import APIRouter, Query, Depends, Body, Response
 from typing import Any
 from collections.abc import Sequence
 from uuid import UUID
@@ -9,18 +8,22 @@ from ..dtos.ProductDto import ProductDto
 from ..services.affiliateproducts_service import AffiliateProductsService
 from ..utils.verify_jwt import get_current_user_details
 from ..security.verify_admin import verify_api_key
+from ..utils.api_response import ApiResponse
+
 
 router = APIRouter()
 
 
 @router.post("/add-products", dependencies=[Depends(verify_api_key)])
-async def add_product_route(product: ProductDto) -> str:
+async def add_product_route(product: ProductDto) -> Response:
     db_product: Product = Product(**product.model_dump())
-    try:
-        res = AffiliateProductsService.add_product(db_product)
-        return res
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+
+    res: ApiResponse = AffiliateProductsService.add_product(db_product)
+    return Response(
+        content=res.model_dump_json(),
+        status_code=res.status_code,
+        media_type="application/json",
+    )
 
 
 @router.get("/get-products")

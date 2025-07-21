@@ -8,13 +8,6 @@ export class ContactService {
     if (!userId) throw new ApiResponse(404, false, 'User ID is required', null);
     if (!message) throw new ApiResponse(404, false, 'Message is required', null);
 
-
-    //checking existing user
-    // const existingUser = await UserModel.exists({ _id: userId });
-    // if (!existingUser) {
-    //   throw new ApiResponse(404, false, 'User not found', null);
-    // }
-
     //creating/adding/pushing contact message in the db
     const contactMsg = await ContactModel.findOneAndUpdate(
       { user: userId },

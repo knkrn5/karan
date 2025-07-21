@@ -14,8 +14,13 @@ class ApiResponse<T> {
 
 export { ApiResponse };
 
-/* class apiResponse<T> {
-  constructor(public success: boolean, public message: string, public data: T) {}
+/* class ApiResponse<T> {
+  constructor(
+    public statusCode: number,
+    public success: boolean,
+    public message: string,
+    public data: T
+  ) {}
 } */
 
 

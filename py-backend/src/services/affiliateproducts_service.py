@@ -8,6 +8,7 @@ from collections.abc import Sequence
 from ..models.affliateproducts_model import Product, Cart
 from datetime import datetime, timezone
 from ..db.postgresDb import DATABASE_URL
+from ..utils.api_response import ApiResponse
 
 
 # Ensure DATABASE_URL is a string
@@ -16,20 +17,48 @@ engine = create_engine(str(DATABASE_URL))
 
 class AffiliateProductsService:
     @staticmethod
-    def add_product(product: Product) -> str:
+    def add_product(product: Product) -> ApiResponse:
         try:
             with Session(engine) as session:
                 session.add(product)
                 session.commit()
-                return f"Product {product.name} added to the database."
+                return ApiResponse(
+                    status_code=201,
+                    is_success=True,
+                    message=f"Product {product.name} added to the database.",
+                    data=product.model_dump(),
+                )
         except IntegrityError as e:
-            raise ValueError(f"Integrity error: {e}")
+            # raise ValueError(f"Integrity error: {e}")
+            return ApiResponse(
+                status_code=400,
+                is_success=False,
+                message=f"Integrity error: {e}",
+                data=None,
+            )
         except OperationalError as e:
-            raise RuntimeError(f"Operational error: {e}")
+            # raise RuntimeError(f"Operational error: {e}")
+            return ApiResponse(
+                status_code=500,
+                is_success=False,
+                message=f"Operational error: {e}",
+                data=None,
+            )
         except DatabaseError as e:
-            raise RuntimeError(f"Database error: {e}")
+            return ApiResponse(
+                status_code=500,
+                is_success=False,
+                message=f"Database error: {e}",
+                data=None,
+            )
         except Exception as e:
-            raise RuntimeError(f"Unexpected error: {e}")
+            # raise RuntimeError(f"Unexpected error: {e}")
+            return ApiResponse(
+                status_code=500,
+                is_success=False,
+                message=f"Unexpected error: {e}",
+                data=None,
+            )
 
     @staticmethod
     def get_products() -> Sequence[Product]:
