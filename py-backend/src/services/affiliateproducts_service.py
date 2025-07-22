@@ -1,4 +1,3 @@
-from itertools import product
 from sqlalchemy.exc import IntegrityError, OperationalError, DatabaseError
 from sqlmodel import create_engine, Session, select
 from sqlalchemy import func
