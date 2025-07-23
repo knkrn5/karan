@@ -25,12 +25,12 @@ public class JavaBackendApplication {
 				.systemProperties()
 				.load();
 
-		System.out.println("====== Custom App ENV Properties ======");
-		System.getenv().forEach((key, value) -> {
-			if (key.matches("^[A-Z0-9_]+$")) {
-				System.out.println(key + " = " + value);
-			}
-		});
+		// System.out.println("====== Custom App ENV Properties ======");
+		// System.getenv().forEach((key, value) -> {
+		// if (key.matches("^[A-Z0-9_]+$")) {
+		// System.out.println(key + " = " + value);
+		// }
+		// });
 
 		SpringApplication.run(JavaBackendApplication.class, args);
 	}
@@ -55,5 +55,10 @@ public class JavaBackendApplication {
 	@GetMapping("/")
 	public String home() {
 		return "🚀 Java Backend is running successfully!";
+	}
+
+	@GetMapping("/health")
+	public String healthCheck() {
+		return "✅ API3 is healthy!";
 	}
 }

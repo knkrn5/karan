@@ -34,6 +34,7 @@ venv.bak/
 *.njsproj
 *.sln
 *.sw?
+*.egg-info/
 
 # dotenv environment variables file
 env/

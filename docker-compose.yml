@@ -1,0 +1,24 @@
+services:
+  py-backend:
+    build: ./py-backend
+    ports:
+      - '8000:8000'
+    env_file:
+      - ./py-backend/.env
+    restart: always
+
+  node-backend:
+    build: ./backend
+    ports:
+      - '5000:5000'
+    env_file:
+      - ./backend/.env
+    restart: always
+
+  java-backend:
+    build: ./java-backend
+    ports:
+      - '8080:8080'
+    env_file:
+      - ./java-backend/.env
+    restart: always
