@@ -2,7 +2,6 @@ from sqlalchemy.exc import IntegrityError, OperationalError, DatabaseError
 from sqlmodel import create_engine, Session, select
 from sqlalchemy import func
 from uuid import UUID
-from typing import Any
 from collections.abc import Sequence
 from ..models.affliateproducts_model import Product, Cart
 from datetime import datetime, timezone
