@@ -1,0 +1,95 @@
+{
+  "personal_info": {
+    "name": "Karan",
+    "age": 24,
+    "address": {
+      "country": "India",
+      "city": "Delhi",
+      "region": "Delhi NCR"
+    },
+    "contact": {
+      "email": "mail@karan.email",
+      "phone": "N/A",
+      "linkedin": "https://linkedin.com/in/ka-r-an5",
+      "github": "https://github.com/knkrn5",
+      "twitter": "https://x.com/ka_r_an5",
+      "website": "https://karan.email"
+    },
+    "education": {
+      "tenth": {
+        "school_name": "St Micheal's Senior Secondary School",
+        "board": "CBSE",
+        "year_of_completion": 2019,
+        "percentage": "78%",
+        "location": {
+          "country": "India",
+          "city": "Delhi",
+          "region": "karol Bagh"
+        }
+      },
+      "twelfth": {
+        "school_name": "St Micheal's Senior Secondary School",
+        "board": "CBSE",
+        "stream": "Commerce",
+        "year_of_completion": 2021,
+        "percentage": "78%",
+        "location": {
+          "country": "India",
+          "city": "Delhi",
+          "region": "karol Bagh"
+        }
+      },
+      "bachelor": {
+        "degree": "Bachelor's",
+        "major": "Computer Science",
+        "university": "Galgotias University",
+        "graduation_year": 2024,
+        "cgpa": "8.8/10.0",
+        "location": {
+          "country": "India",
+          "city": "Greater Noida",
+          "region": "Uttar Pradesh"
+        }
+      }
+    },
+    "personal_projects": [
+      {
+        "solo": "Full Stack Developer",
+        "projects": [
+          {
+            "title": "Portfolio Website",
+            "description": "Built a personal portfolio website using React, TailwindCSS, and Vercel hosting.",
+            "link": "https://karan.email"
+          },
+          {
+            "title": "wealthPsychology",
+            "description": "Teaches the principles of financial psychology, and explains different financial concepts.",
+            "link": "https://wealthpsychology.karan.email/"
+          },
+          {
+            "title": "Explanator AI",
+            "description": "Include the Chatbots, and custom Datasets of Different models and APIs.",
+            "link": "https://explanatorai.site"
+          }
+        ],
+        "skills": {
+          "web_technologies": ["HTML", "CSS", "TailwindCSS"],
+          "programming_languages": ["JavaScript", "Python", "Node.js", "Java", "TypeScript"],
+          "frontend_frameworks": ["React, Redux"],
+          "backend_frameworks": [" Express.js", "FastAPI"],
+          "cloud_platforms": ["AWS", "Render"],
+          "containerization_and_devops": ["Docker"],
+          "databases": ["SQLite", "MySQL", "PostgreSQL", "MongoDB"],
+          "orm_odm_tools": ["Mongoose"]
+        }
+      }
+    ],
+    "languages": {
+      "English": "Fluent",
+      "Hindi": "Native"
+    },
+
+    "interests": ["Reading", "Traveling", "Gaming", "Learning", "Open Source Contribution"],
+    "availability": "Open to remote opportunities and relocation."
+  }
+}

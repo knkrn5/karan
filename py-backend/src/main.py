@@ -1,6 +1,5 @@
 from .configs.env import load_dotenv
 from contextlib import asynccontextmanager
-from dotenv import load_dotenv
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from .db.postgresDb import (
@@ -39,11 +38,9 @@ app.add_middleware(
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # --- startup ---
-    # load_dotenv()
     connect_db_and_create_table()
     yield
     # --- shutdown ---
-    # e.g. await disconnect_db()
 
 
 @app.get("/")
