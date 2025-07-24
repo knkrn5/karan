@@ -174,7 +174,7 @@ const AffiliateProductsPage = () => {
                 key={product.id}
                 className="flex flex-col @container/card bg-white dark:bg-dark rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300"
               >
-                <img src={product.image} alt={product.name} className="h-48 w-full object-cover" />
+                <img src={product.image} alt={product.name} className="h-48 w-full rounded-t-2xl object-cover" />
 
                 <div className="p-4 flex flex-col flex-grow space-y-1">
                   <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">

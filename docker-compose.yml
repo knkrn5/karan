@@ -8,11 +8,11 @@ services:
     restart: always
 
   node-backend:
-    build: ./backend
+    build: ./node-backend
     ports:
       - '5000:5000'
     env_file:
-      - ./backend/.env
+      - ./node-backend/.env
     restart: always
 
   java-backend:
