@@ -58,7 +58,7 @@ const AffiliateProductsPage = () => {
       queryKey: ['products'],
       queryFn: async () => {
         const response = await axios.get(`${PY_BACKEND_URL}/affiliate-products/get-products`);
-        return response.data;
+        return response.data.data;
       },
       staleTime: 5 * 60 * 1000, // 5 minutes
       refetchOnWindowFocus: false,

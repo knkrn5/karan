@@ -56,15 +56,27 @@ class AffiliateProductsService:
             )
 
     @staticmethod
-    def get_products() -> Sequence[Product]:
+    def get_products() -> ApiResponse:
         try:
             with Session(engine) as session:
-                return session.exec(select(Product)).all()
+                product = session.exec(select(Product)).all()
+                return ApiResponse(
+                    status_code=200,
+                    is_success=True,
+                    message="Products fetched successfully.",
+                    # data=[p.model_dump() for p in product],
+                    data=product,
+                )
         except Exception as e:
-            raise RuntimeError(f"Error fetching products: {e}")
+            return ApiResponse(
+                status_code=500,
+                is_success=False,
+                message=f"Error fetching products: {e}",
+                data=None,
+            )
 
     @staticmethod
-    def get_product_by_name(product_name: str) -> Sequence[Product]:
+    def get_product_by_name(product_name: str) -> ApiResponse:
         try:
             if not product_name:
                 raise ValueError("Product name cannot be empty.")
@@ -79,16 +91,42 @@ class AffiliateProductsService:
 
                 if not products:
                     raise ValueError(f"No products found with name: {product_name}")
-                return products
+
+                return ApiResponse(
+                    status_code=200,
+                    is_success=True,
+                    message=f"{'Products' if len(products) > 1 else 'Product'} with name '{product_name}' fetched successfully.",
+                    data=products,
+                )
 
         except ValueError as e:
-            raise e
+            return ApiResponse(
+                status_code=400,
+                is_success=False,
+                message=str(e),
+                data=None,
+            )
         except OperationalError as e:
-            raise RuntimeError(f"Operational error: {e}")
+            return ApiResponse(
+                status_code=500,
+                is_success=False,
+                message=f"Operational error: {e}",
+                data=None,
+            )
         except DatabaseError as e:
-            raise RuntimeError(f"Database error: {e}")
+            return ApiResponse(
+                status_code=500,
+                is_success=False,
+                message=f"Database error: {e}",
+                data=None,
+            )
         except Exception as e:
-            raise RuntimeError(f"Error fetching product by name {product_name}: {e}")
+            return ApiResponse(
+                status_code=500,
+                is_success=False,
+                message=f"Error fetching product by name {product_name}: {e}",
+                data=None,
+            )
 
     @staticmethod
     def update_product_fields(product_id: UUID, fields_to_updates: dict[str, object]):
@@ -112,24 +150,54 @@ class AffiliateProductsService:
 
                 session.add(product)
                 session.commit()
-                return f"Product with name {product.name} updated in the database."
+                return ApiResponse(
+                    status_code=200,
+                    is_success=True,
+                    message=f"Product {product.name} updated successfully.",
+                    data=product,
+                )
         except ValueError as e:
-            raise e
+            return ApiResponse(
+                status_code=400,
+                is_success=False,
+                message=str(e),
+                data=None,
+            )
         except IntegrityError as e:
-            raise ValueError(f"Integrity error: {e}")
+            return ApiResponse(
+                status_code=400,
+                is_success=False,
+                message=f"Integrity error: {e}",
+                data=None,
+            )
         except OperationalError as e:
-            raise RuntimeError(f"Operational error: {e}")
+            return ApiResponse(
+                status_code=500,
+                is_success=False,
+                message=f"Operational error: {e}",
+                data=None,
+            )
         except DatabaseError as e:
-            raise RuntimeError(f"Database error: {e}")
+            return ApiResponse(
+                status_code=500,
+                is_success=False,
+                message=f"Database error: {e}",
+                data=None,
+            )
         except Exception as e:
-            raise RuntimeError(f"Unexpected error: {e}")
+            return ApiResponse(
+                status_code=500,
+                is_success=False,
+                message=f"Unexpected error: {e}",
+                data=None,
+            )
 
     @staticmethod
     def delete_products(product_ids: list[UUID]) -> None:
-        product_ids_str = [str(id) for id in product_ids]
+        product_ids_str: list[str] = [str(id) for id in product_ids]
 
         with Session(engine) as session:
-            # Step 1: Remove product IDs from all affected carts
+            # first removing products from all carts
             carts_with_products = session.exec(
                 select(Cart).where(Cart.product_ids.op("&&")(product_ids_str))  # pyright: ignore[reportAttributeAccessIssue]
             ).all()
