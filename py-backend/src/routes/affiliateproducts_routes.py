@@ -63,11 +63,25 @@ async def update_product_route(
 async def delete_product_route(
     product_ids: list[UUID] = Query(...), _: str = Depends(verify_api_key)
 ):
-    try:
-        AffiliateProductsService.delete_products(product_ids)
-        return {"message": "Products deleted successfully"}
-    except ValueError as e:
-        return {"error": str(e)}
+    res = AffiliateProductsService.delete_products(product_ids)
+    return Response(
+        content=res.model_dump_json(),
+        status_code=res.status_code,
+        media_type="application/json",
+    )
+
+
+@router.get("/get-cart-items")
+async def get_cart_items_route(
+    current_user: dict[str, Any] = Depends(get_current_user_details),
+):
+    user_id = current_user["user_id"]
+    res = AffiliateProductsService.get_cart_items(user_id)
+    return Response(
+        content=res.model_dump_json(),
+        status_code=res.status_code,
+        media_type="application/json",
+    )
 
 
 @router.post("/add-remove-from-cart")
@@ -75,35 +89,11 @@ async def add_remove_product_from_cart_route(
     product_id: str = Body(embed=True),
     current_user: dict[str, Any] = Depends(get_current_user_details),
 ):
-    try:
-        user_id = current_user["user_id"]
+    user_id = current_user["user_id"]
 
-        res = AffiliateProductsService.add_remove_product_from_cart(user_id, product_id)
-        return res
-    except ValueError as e:
-        return {"error": str(e)}
-
-
-@router.get("/get-cart-items")
-async def get_cart_items_route(
-    current_user: dict[str, Any] = Depends(get_current_user_details),
-):
-    try:
-        user_id = current_user["user_id"]
-        cart_items: Sequence[Product] = AffiliateProductsService.get_cart_items(user_id)
-        return cart_items
-    except ValueError as e:
-        return {"error": str(e)}
-
-
-# @router.delete("/remove-from-cart")
-# async def remove_from_cart_route(
-#     data: Cart, current_user: dict = Depends(get_current_user_details)
-# ):
-#     try:
-#         user_id = current_user["user_id"]
-
-#         AffiliateProductsService.remove_product_from_cart(user_id, data.product_id)
-#         return {"message": "Product removed from cart successfully"}
-#     except ValueError as e:
-#         return {"error": str(e)}
+    res = AffiliateProductsService.add_remove_product_from_cart(user_id, product_id)
+    return Response(
+        content=res.model_dump_json(),
+        status_code=res.status_code,
+        media_type="application/json",
+    )

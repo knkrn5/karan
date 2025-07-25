@@ -75,7 +75,7 @@ const AffiliateProductsPage = () => {
         const response = await axios.get(`${PY_BACKEND_URL}/affiliate-products/get-cart-items`, {
           withCredentials: true,
         });
-        return response.data;
+        return response.data.data;
       },
       staleTime: 5 * 60 * 1000,
       refetchOnWindowFocus: false,
@@ -99,10 +99,12 @@ const AffiliateProductsPage = () => {
           { product_id },
           { withCredentials: true }
         );
-        console.log(res.data);
-        queryClient.setQueryData<ProductPropsType[]>(['cartItems'], prevCartItems =>
-          prevCartItems ? prevCartItems.filter(item => item.id !== product_id) : []
-        );
+        console.log(res.data.message);
+        if (res.data.message.trim().toLowerCase() === 'product removed from cart') {
+          queryClient.setQueryData<ProductPropsType[]>(['cartItems'], prevCartItems =>
+            prevCartItems ? prevCartItems.filter(item => item.id !== product_id) : []
+          );
+        }
       } else {
         const res = await axios.post(
           `${PY_BACKEND_URL}/affiliate-products/add-remove-from-cart`,
@@ -110,9 +112,9 @@ const AffiliateProductsPage = () => {
           { withCredentials: true }
         );
 
-        console.log(res.data);
+        console.log(res.data.message);
         const productToAdd = products.find(product => product.id === product_id);
-        if (productToAdd) {
+        if (productToAdd && res.data.message.trim().toLowerCase() === 'product added to cart') {
           queryClient.setQueryData<ProductPropsType[]>(['cartItems'], prevCartItems =>
             prevCartItems ? [...prevCartItems, productToAdd] : [productToAdd]
           );
@@ -174,7 +176,11 @@ const AffiliateProductsPage = () => {
                 key={product.id}
                 className="flex flex-col @container/card bg-white dark:bg-dark rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300"
               >
-                <img src={product.image} alt={product.name} className="h-48 w-full rounded-t-2xl object-cover" />
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="h-48 w-full rounded-t-2xl object-cover"
+                />
 
                 <div className="p-4 flex flex-col flex-grow space-y-1">
                   <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
