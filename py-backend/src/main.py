@@ -7,6 +7,9 @@ from .db.postgresDb import (
 )
 import os
 from .routes.affiliateproducts_routes import router as affiliate_products_router
+from .routes.admin_routes.adminAffiliateproducts_routes import (
+    router as admin_affiliate_products_router,
+)
 
 
 is_production = os.getenv("ENV") == "PRODUCTION"
@@ -38,7 +41,8 @@ app.add_middleware(
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # --- startup ---
-    connect_db_and_create_table()
+    res = connect_db_and_create_table()
+    print(res)
     yield
     # --- shutdown ---
 
@@ -56,4 +60,9 @@ async def health() -> str:
 # routes
 app.include_router(
     affiliate_products_router, prefix="/affiliate-products", tags=["affiliate-products"]
+)
+app.include_router(
+    admin_affiliate_products_router,
+    prefix="/admin/affiliate-products",
+    tags=["admin-affiliate-products"],
 )

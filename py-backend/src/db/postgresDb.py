@@ -1,6 +1,5 @@
 from sqlmodel import SQLModel, create_engine
 from sqlalchemy.exc import OperationalError, DatabaseError
-from src.models.affliateproducts_model import Product
 import os
 
 
@@ -13,13 +12,10 @@ engine = create_engine(DATABASE_URL)
 def connect_db_and_create_table():
     try:
         SQLModel.metadata.create_all(engine)
-        print("✅ Database connected and tables created.")
+        return "✅ Database connected and tables created."
     except OperationalError as e:
-        print("❌ Failed to connect to the database.", e)
-        raise e
+        return f"❌ Failed to connect to the database: {e}"
     except DatabaseError as e:
-        print("❌ Database error occurred.", e)
-        raise e
+        return f"❌ Database error occurred: {e}"
     except Exception as e:
-        print("❌ An unexpected error occurred.", e)
-        raise e
+        return f"❌ An unexpected error occurred: {e}"
