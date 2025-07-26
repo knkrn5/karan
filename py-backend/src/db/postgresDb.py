@@ -9,7 +9,7 @@ if DATABASE_URL is None:
 engine = create_engine(DATABASE_URL)
 
 
-def connect_db_and_create_table():
+def connect_db_and_create_table() -> str:
     try:
         SQLModel.metadata.create_all(engine)
         return "✅ Database connected and tables created."

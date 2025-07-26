@@ -1,13 +1,11 @@
 from fastapi import APIRouter, Query, Depends, Body, Response
 from typing import Any
-from collections.abc import Sequence
 from uuid import UUID
 from ...models.affliateproducts_model import Product
 from ...dtos.ProductDto import ProductDto
 from ...services.admin_services.adminAffiliateproducts_service import (
     AdminAffiliateProductsService,
 )
-from ...utils.verify_jwt import get_current_user_details
 from ...security.verify_admin import verify_api_key
 from ...utils.api_response import ApiResponse
 

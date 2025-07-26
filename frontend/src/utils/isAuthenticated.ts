@@ -29,13 +29,13 @@ function calculateRemainingTime(expirationTimestampSession: number | null): numb
   const currentTime = new Date();
 
   const threeMinBeforeTokenExpiration = tokenExpirationTime.getTime() - 3 * 60 * 1000;
-  console.log('token expiration:-', tokenExpirationTime);
-  console.log('three min before', threeMinBeforeTokenExpiration);
-  const date = new Date(threeMinBeforeTokenExpiration);
-  console.log(date.toLocaleString());
+  // console.log('token expiration:-', tokenExpirationTime);
+  // console.log('three min before', threeMinBeforeTokenExpiration);
+  // const date = new Date(threeMinBeforeTokenExpiration);
+  // console.log(date.toLocaleString());
 
   const remainingTime = threeMinBeforeTokenExpiration - currentTime.getTime();
-  console.log(`Token refresh scheduled in ${remainingTime / 1000} seconds.`);
+  // console.log(`Token refresh scheduled in ${remainingTime / 1000} seconds.`);
   return remainingTime > 0 ? remainingTime : 0;
 }
 
@@ -49,7 +49,7 @@ async function scheduleTokenRefresh(): Promise<void> {
 
   const remainingTime = calculateRemainingTime(expirationTimestampSession);
 
-  console.log(remainingTime)
+  // console.log(remainingTime)
 
   //pro-active call before the token expires
   if (remainingTime > 0) {
