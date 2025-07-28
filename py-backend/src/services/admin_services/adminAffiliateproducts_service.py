@@ -18,13 +18,15 @@ class AdminAffiliateProductsService:
     @staticmethod
     def add_all_products() -> ApiResponse:
         from ...routes.productsarr import allProductsArr
+
         try:
             class AffiliateLink(BaseModel):
                 platform: str
                 link: str
                 price: float
 
-            transformed_products: list[Any] = []
+            # transformed_products: list[Any] = []
+            transformed_products: list[dict[str, Any]] = []
 
             with Session(engine) as session:
                 for product_data in allProductsArr:
@@ -48,14 +50,15 @@ class AdminAffiliateProductsService:
                             else 0.0,
                         )
 
-                        # del product_data["price"]
-                        # del product_data["affiliateLink"]
+                        # product_dict = product_data.model_dump()
+                        # del product_dict["price"]
+                        # del product_dict["affiliateLink"]
 
                         # print(LinksDetails.model_dump())
                         # print(LinksDetails.model_dump_json())
                         affiliateLinks = LinksDetails.model_dump()
                         # print(affiliateLinks)
-                        new_product = product_data.model_dump(
+                        new_product_dict = product_data.model_dump(
                             exclude={"price", "affiliateLink"}
                         )
 
@@ -65,22 +68,17 @@ class AdminAffiliateProductsService:
                         #     for k, v in product_data_dict.items()
                         #     if k not in keys_to_remove
                         # }
-                        new_product["affiliateLinks"] = [affiliateLinks]
+                        new_product_dict["affiliateLinks"] = [affiliateLinks]
                         # print(new_product)
-                        # break
 
-                        transformed_products.append(new_product)
-                        # transformed_products =  [product(**new_product) for new_product in transformed_products]
+                        transformed_products.append(new_product_dict)
                         # print(transformed_products)
-                        # break
-
-                # print(transformed_products)
 
                 for new_product_dict in transformed_products:
-                    product = Product(**new_product_dict)
+                    product = Product.model_validate(new_product_dict)
                     session.add(product)
-                    print(new_product_dict)
-                    print("==============================================")
+                    # print(product)
+                    # print("==============================================")
 
                 session.commit()
                 return ApiResponse(

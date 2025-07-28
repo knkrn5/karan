@@ -11,29 +11,30 @@ import java_backend.models.UserModel;
 import java_backend.repositories.AuthRepository;
 import java_backend.utils.ApiResponse;
 
+import java_backend.dtos.AccountDtos.RequiredUserDataDto;
+
 @Service
 public class AccountService {
 
     private final AuthRepository authRepository;
 
-    // Constructor-based injection
-    @Autowired
+    // Constructor-based dependency injection
     public AccountService(AuthRepository authRepository) {
         this.authRepository = authRepository;
     }
 
     // required user data DTO
-    public static class requiredUserDataDto {
-        public String firstName;
-        public String lastName;
-        public String email;
+    // public static class RequiredUserDataDto {
+    //     public String firstName;
+    //     public String lastName;
+    //     public String email;
 
-        public requiredUserDataDto(UserModel userData) {
-            this.firstName = userData.getFirstName();
-            this.lastName = userData.getLastName();
-            this.email = userData.getEmail();
-        }
-    }
+    //     public RequiredUserDataDto(UserModel userData) {
+    //         this.firstName = userData.getFirstName();
+    //         this.lastName = userData.getLastName();
+    //         this.email = userData.getEmail();
+    //     }
+    // }
 
     // get user data
     public ApiResponse getUserData(UUID userid) {
@@ -47,10 +48,9 @@ public class AccountService {
             return new ApiResponse(false, 404, "User not found", null);
         }
 
-        requiredUserDataDto requiredUserData = new requiredUserDataDto(userData.get());
+        RequiredUserDataDto requiredUserData = new RequiredUserDataDto(userData.get());
 
         return new ApiResponse(true, 200, "User data fetched successfully", requiredUserData);
-
     }
 
     // Delete user

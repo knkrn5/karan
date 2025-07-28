@@ -1,7 +1,5 @@
 package java_backend.services;
 
-// import static java_backend.configs.EnvConfig.dotenv;
-
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Optional;
@@ -34,10 +32,9 @@ import java_backend.dtos.AuthDtos.RegisterUserDto;
 public class AuthService {
 
     private final EmailSender emailSender;
-
     private final AuthRepository authRepository;
 
-    @Autowired
+    // Constructor-based dependency injection
     public AuthService(AuthRepository authRepository, EmailSender emailSender) {
         this.authRepository = authRepository;
         this.emailSender = emailSender;

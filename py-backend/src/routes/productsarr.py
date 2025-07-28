@@ -198,5 +198,5 @@ _productsarr_data: list[dict[str, Any]] = [
 
 # Validate and convert each dict to allProductsTypes instance
 allProductsArr: list[allProductsTypes] = [
-    allProductsTypes(**item) for item in _productsarr_data
+    allProductsTypes.model_validate(item) for item in _productsarr_data
 ]
