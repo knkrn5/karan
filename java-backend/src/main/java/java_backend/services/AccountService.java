@@ -41,9 +41,13 @@ public class AccountService {
         if (userid == null)
             return new ApiResponse(false, 404, "User ID not found", null);
 
-        UserModel userData = authRepository.findById(userid);
+        Optional<UserModel> userData = authRepository.findById(userid);
 
-        requiredUserDataDto requiredUserData = new requiredUserDataDto(userData);
+        if (userData.isEmpty()) {
+            return new ApiResponse(false, 404, "User not found", null);
+        }
+
+        requiredUserDataDto requiredUserData = new requiredUserDataDto(userData.get());
 
         return new ApiResponse(true, 200, "User data fetched successfully", requiredUserData);
 

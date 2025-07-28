@@ -57,7 +57,7 @@ public class UserModel {
     @Column(length = 20)
     private String phone;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 72)
     private String password;
 
     @Column(nullable = true)

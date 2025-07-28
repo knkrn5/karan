@@ -178,18 +178,18 @@ public class AuthService {
         }
 
         UUID userId = decodedJWT.getClaim("id").as(UUID.class);
-        UserModel user = authRepository.findById(userId);
+        Optional<UserModel> user = authRepository.findById(userId);
 
-        if (user == null) {
+        if (user.isEmpty()) {
             return new ApiResponse(false, 404, "User not found", null);
         }
 
-        if (!user.getRefreshToken().equals(refreshToken)) {
+        if (!user.get().getRefreshToken().equals(refreshToken)) {
             return new ApiResponse(false, 401, "Invalid refresh token, please login again", null);
         }
 
         // Generating new access token
-        String accessToken = user.createAccessToken();
+        String accessToken = user.get().createAccessToken();
         return new ApiResponse(true, 200, "Access token renewed successfully", accessToken);
     }
 
