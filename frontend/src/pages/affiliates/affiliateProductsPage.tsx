@@ -214,7 +214,9 @@ const AffiliateProductsPage = () => {
                         setExpandedDescriptionId(prev => (prev === product.id ? null : product.id))
                       }
                     >
-                      {product.affiliateLinks.some(link => link.platform === 'not-available') ? (
+                      {product.affiliateLinks.some(
+                        link => link.platform.trim().toLowerCase() === 'not-available'
+                      ) ? (
                         <>
                           <MdOutlineCreditCardOff size={16} />
                           Not Available

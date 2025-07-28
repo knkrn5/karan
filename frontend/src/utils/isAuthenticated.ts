@@ -66,6 +66,20 @@ async function scheduleTokenRefresh(): Promise<void> {
   }
 }
 
+// Pinging Java backend
+async function pingjavabackend(): Promise<void> {
+  try {
+    const response = await axios.get(`${JAVA_BACKEND_URL}`);
+    console.log('api3 status✅:', response.status);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('api3 status❌:', error.response?.status);
+    } else {
+      console.error('api3 status❌:', error);
+    }
+  }
+}
+
 // Pinging Python backend
 async function pingpybackend(): Promise<void> {
   try {
@@ -83,6 +97,7 @@ async function pingpybackend(): Promise<void> {
 
 async function isAuthenticated(): Promise<boolean> {
   clearBrowserStorage();
+  pingjavabackend();
   pingpybackend();
 
   try {
