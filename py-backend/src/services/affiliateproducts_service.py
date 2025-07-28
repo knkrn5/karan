@@ -6,7 +6,6 @@ from ..db.postgresDb import DATABASE_URL
 from ..utils.api_response import ApiResponse
 
 
-
 # Ensure DATABASE_URL is a string
 engine = create_engine(str(DATABASE_URL))
 
@@ -124,5 +123,3 @@ class AffiliateProductsService:
                 message=f"Error adding/removing product from cart: {e}",
                 data=None,
             )
-
-    

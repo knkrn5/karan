@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { FaShoppingCart, FaShoppingBag, FaAngleDown, FaAmazon } from 'react-icons/fa';
 import { SiFlipkart } from 'react-icons/si';
-import { MdRemoveShoppingCart } from 'react-icons/md';
+import { MdRemoveShoppingCart, MdOutlineCreditCardOff } from 'react-icons/md';
 import { LuPackageOpen } from 'react-icons/lu';
 import AffiliateSearchAndCart from './affiliateSearchAndCart';
 import { AffiliateProductCardSkeletonLoading } from './affiliateSkeletonLoading';
@@ -238,8 +238,10 @@ const AffiliateProductsPage = () => {
                             <span className="flex-1 inline-flex items-center  font-extrabold gap-2 text-white ">
                               {affiliateLink.platform === 'amazon' ? (
                                 <FaAmazon size={16} />
+                              ) : affiliateLink.platform === 'flipkart' ? (
+                                <SiFlipkart size={16} />
                               ) : (
-                                affiliateLink.platform === 'flipkart' && <SiFlipkart size={16} />
+                                <MdOutlineCreditCardOff size={16} />
                               )}
                               {affiliateLink.platform.toUpperCase()}
                             </span>
@@ -281,7 +283,7 @@ const AffiliateProductsPage = () => {
         )}
       </div>
 
-      {/* No products found */}
+      {/* No products found UI*/}
       {!isFetchingProducts && filteredProducts.length === 0 && (
         <div className="text-center text-gray-500 dark:text-gray-400 mt-8">
           <LuPackageOpen size={50} className="mx-auto mb-4 text-gray-400 dark:text-gray-500" />

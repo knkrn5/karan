@@ -10,6 +10,7 @@ import { useAuthCheck } from '../../hooks/authCheckHook';
 import { AffiliateCartItemSkeletonLoading } from './affiliateSkeletonLoading';
 import { FaAmazon } from 'react-icons/fa6';
 import { SiFlipkart } from 'react-icons/si';
+import { MdOutlineCreditCardOff } from 'react-icons/md';
 
 export default function AffiliateSearchAndCart({
   products,
@@ -277,8 +278,10 @@ export default function AffiliateSearchAndCart({
                               <span className="flex-1 inline-flex text-xs items-center font-semibold gap-2 text-white ">
                                 {affiliateLink.platform === 'amazon' ? (
                                   <FaAmazon />
+                                ) : affiliateLink.platform === 'flipkart' ? (
+                                  <SiFlipkart />
                                 ) : (
-                                  affiliateLink.platform === 'flipkart' && <SiFlipkart />
+                                  <>N/A</>
                                 )}
                               </span>
                               <span className="text-xs font-bold text-white">
