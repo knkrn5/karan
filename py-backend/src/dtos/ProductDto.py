@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, HttpUrl
 
 
 class AffiliateLink(BaseModel):
@@ -9,7 +9,7 @@ class AffiliateLink(BaseModel):
 
 class ProductDto(BaseModel):
     name: str
-    image: str
+    image: HttpUrl
     category: str
     brand: str
     subCategory: list[str]

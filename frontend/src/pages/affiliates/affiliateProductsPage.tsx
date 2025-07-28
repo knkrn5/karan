@@ -21,7 +21,7 @@ export interface ProductPropsType {
   image: string;
   price: number;
   affiliateLinks: Array<{ [key: string]: string }>;
-  // affiliateLinks: Array<AffiliateLinksType>;
+  // affiliateLinks: Array<AffiliateLinkType>;
   category: string;
   subCategory?: string[];
   tags: string[];
@@ -209,19 +209,34 @@ const AffiliateProductsPage = () => {
                   <div className="flex gap-2 mt-2  flex-col @card/sm:flex-row">
                     <button
                       type="button"
-                      className="relative flex-1 inline-flex items-center justify-center gap-2 text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
+                      className="relative flex-1 inline-flex items-center justify-center gap-2 text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition cursor-pointer"
                       onClick={() =>
                         setExpandedDescriptionId(prev => (prev === product.id ? null : product.id))
                       }
                     >
-                      <FaShoppingBag size={16} />
-                      Buy Now
-                      <FaAngleDown
-                        size={20}
-                        className={`absolute right-2 ${
-                          expandedDescriptionId === product.id && 'rotate-180 '
-                        } transition-transform duration-300 `}
-                      />
+                      {product.affiliateLinks.some(link => link.platform === 'not-available') ? (
+                        <>
+                          <MdOutlineCreditCardOff size={16} />
+                          Not Available
+                          <FaAngleDown
+                            size={20}
+                            className={`absolute right-2 ${
+                              expandedDescriptionId === product.id && 'rotate-180 '
+                            } transition-transform duration-300 `}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <FaShoppingBag size={16} />
+                          Buy Now
+                          <FaAngleDown
+                            size={20}
+                            className={`absolute right-2 ${
+                              expandedDescriptionId === product.id && 'rotate-180 '
+                            } transition-transform duration-300 `}
+                          />
+                        </>
+                      )}
                       <div
                         className={`absolute top-full flex flex-col gap-1 ${
                           expandedDescriptionId === product.id ? 'scale-y-100' : 'scale-y-0'
