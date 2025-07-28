@@ -13,6 +13,16 @@ from ...utils.api_response import ApiResponse
 router = APIRouter()
 
 
+@router.post("/add-all-products", dependencies=[Depends(verify_api_key)])
+def add_all_products_route():
+    res = AdminAffiliateProductsService.add_all_products()
+    return Response(
+        content=res.model_dump_json(),
+        status_code=res.status_code,
+        media_type="application/json",
+    )
+
+
 @router.post("/add-products", dependencies=[Depends(verify_api_key)])
 async def add_product_route(product: ProductDto) -> Response:
     db_product: Product = Product(**product.model_dump())
@@ -49,10 +59,8 @@ async def update_product_route(
     )
 
 
-@router.delete("/delete-product")
-async def delete_product_route(
-    product_ids: list[UUID] = Query(...), _: str = Depends(verify_api_key)
-):
+@router.delete("/delete-product", dependencies=[Depends(verify_api_key)])
+async def delete_product_route(product_ids: list[UUID] = Query(...)):
     res = AdminAffiliateProductsService.delete_products(product_ids)
     return Response(
         content=res.model_dump_json(),

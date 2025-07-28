@@ -44,13 +44,3 @@ async def add_remove_product_from_cart_route(
         status_code=res.status_code,
         media_type="application/json",
     )
-
-
-@router.post("/add-all-products")
-def add_all_products_route():
-    res = AffiliateProductsService.add_all_products()
-    return Response(
-        content=res.model_dump_json(),
-        status_code=res.status_code,
-        media_type="application/json",
-    )
