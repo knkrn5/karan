@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.Jedis;
 import org.springframework.stereotype.Service;
 

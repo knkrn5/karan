@@ -1,4 +1,3 @@
-from typing import Any
 from pydantic import BaseModel
 from sqlalchemy.exc import IntegrityError, OperationalError, DatabaseError
 from sqlmodel import create_engine, Session, select
@@ -20,13 +19,14 @@ class AdminAffiliateProductsService:
         from ...routes.productsarr import allProductsArr
 
         try:
+
             class AffiliateLink(BaseModel):
                 platform: str
                 link: str
                 price: float
 
             # transformed_products: list[Any] = []
-            transformed_products: list[dict[str, Any]] = []
+            transformed_products: list[dict[str, object]] = []
 
             with Session(engine) as session:
                 for product_data in allProductsArr:

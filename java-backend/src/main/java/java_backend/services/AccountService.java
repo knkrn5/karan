@@ -3,8 +3,6 @@ package java_backend.services;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 
 import java_backend.models.UserModel;
@@ -23,18 +21,6 @@ public class AccountService {
         this.authRepository = authRepository;
     }
 
-    // required user data DTO
-    // public static class RequiredUserDataDto {
-    //     public String firstName;
-    //     public String lastName;
-    //     public String email;
-
-    //     public RequiredUserDataDto(UserModel userData) {
-    //         this.firstName = userData.getFirstName();
-    //         this.lastName = userData.getLastName();
-    //         this.email = userData.getEmail();
-    //     }
-    // }
 
     // get user data
     public ApiResponse getUserData(UUID userid) {

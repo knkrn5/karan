@@ -1,9 +1,6 @@
 package java_backend.dtos;
 
 import java_backend.models.UserModel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 public class AccountDtos {
 

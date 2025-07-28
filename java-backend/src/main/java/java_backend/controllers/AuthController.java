@@ -1,10 +1,8 @@
 package java_backend.controllers;
 
 import java_backend.annotations.RequiresOtp;
-import java_backend.models.UserModel;
 import java_backend.services.AuthService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.Map;
@@ -38,7 +35,6 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @Autowired
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
@@ -54,14 +50,6 @@ public class AuthController {
         }
     }
 
-    // send otp request DTO
-    // public static class OtpRequestDto {
-    // @NotBlank(message = "Email is required")
-    // public String email;
-    // public String subject;
-    // public String excerpt;
-    // }
-
     @PostMapping("/send-otp-mail")
     public ResponseEntity<ApiResponse> sendOtpMail(@RequestBody @Valid OtpRequestDto otpRequest) {
         try {
@@ -72,11 +60,6 @@ public class AuthController {
             return ResponseEntity.status(500).body(new ApiResponse(false, 500, e.getMessage(), null));
         }
     }
-
-    // public static class OtpVerificationDto {
-    // public String email;
-    // public String enteredOtp;
-    // }
 
     @PostMapping("/verify-otp-mail")
     public ResponseEntity<ApiResponse> verifyOtpEmail(@RequestBody @Valid OtpVerificationDto otpVerification) {
@@ -100,12 +83,6 @@ public class AuthController {
         }
     }
 
-    // verify password DTO
-    // public static class VerifyPasswordDto {
-    // public String email;
-    // public String enteredPassword;
-    // }
-
     @PostMapping("/verify-password")
     public ResponseEntity<ApiResponse> verifyPassword(@RequestBody @Valid VerifyPasswordDto verifyPassword) {
         try {
@@ -116,12 +93,6 @@ public class AuthController {
             return ResponseEntity.status(500).body(new ApiResponse(false, 500, e.getMessage(), null));
         }
     }
-
-    // login request DTO
-    // public static class LoginDataDto {
-    // public String email;
-    // public String enteredPassword;
-    // }
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@RequestBody @Valid LoginDto loginData,
@@ -182,12 +153,6 @@ public class AuthController {
                     .body(new ApiResponse(false, 500, "Logout Unsuccessful", null));
         }
     }
-
-    // public static class resetPasswordDto {
-    // public String email;
-    // public String newPassword;
-    // public String enteredOtp;
-    // }
 
     @RequiresOtp
     @PatchMapping("/reset-password")
