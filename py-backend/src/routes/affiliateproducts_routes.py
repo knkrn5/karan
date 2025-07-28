@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Query, Depends, Body, Response
 from typing import Any
-from collections.abc import Sequence
 from ..services.affiliateproducts_service import AffiliateProductsService
 from ..utils.verify_jwt import get_current_user_details
 from ..utils.api_response import ApiResponse
@@ -40,6 +39,16 @@ async def add_remove_product_from_cart_route(
     user_id = current_user["user_id"]
 
     res = AffiliateProductsService.add_remove_product_from_cart(user_id, product_id)
+    return Response(
+        content=res.model_dump_json(),
+        status_code=res.status_code,
+        media_type="application/json",
+    )
+
+
+@router.post("/add-all-products")
+def add_all_products_route():
+    res = AffiliateProductsService.add_all_products()
     return Response(
         content=res.model_dump_json(),
         status_code=res.status_code,

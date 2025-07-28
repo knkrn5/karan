@@ -1,9 +1,13 @@
+from typing import Any
+from pydantic import BaseModel
 from sqlmodel import create_engine, Session, select
 from collections.abc import Sequence
 from ..models.affliateproducts_model import Product, Cart
 from datetime import datetime, timezone
 from ..db.postgresDb import DATABASE_URL
 from ..utils.api_response import ApiResponse
+
+from ..routes.productsarr import allProductsArr
 
 
 # Ensure DATABASE_URL is a string
@@ -121,5 +125,88 @@ class AffiliateProductsService:
                 status_code=400,
                 is_success=False,
                 message=f"Error adding/removing product from cart: {e}",
+                data=None,
+            )
+
+    @staticmethod
+    def add_all_products() -> ApiResponse:
+        try:
+
+            class AffiliateLink(BaseModel):
+                platform: str
+                link: str
+                price: float
+
+            transformed_products: list[Any] = []
+
+            with Session(engine) as session:
+                for product_data in allProductsArr:
+                    # if not isinstance(product_data, AllProductsTypes):
+                    #   raise TypeError("Product data must be of type AllProductsTypes.")
+                    if product_data.affiliateLinks:
+                        if isinstance(product_data.affiliateLinks, list):
+                            print(
+                                "Affiliate links for product is list not parsing this one "
+                            )
+                            continue
+
+                    if product_data.affiliateLink and product_data.price:
+                        LinksDetails = AffiliateLink(
+                            platform="amazon"
+                            if "amzn" in product_data.affiliateLink
+                            else "not-available",
+                            link=product_data.affiliateLink,
+                            price=product_data.price
+                            if "amzn" in product_data.affiliateLink
+                            else 0.0,
+                        )
+
+                        # new_product = {k: v for k, v in product_data.items() if k not in keys_to_remove}
+                        # del product_data["price"]
+                        # del product_data["affiliateLink"]
+
+                        # print(LinksDetails.model_dump())
+                        # print(LinksDetails.model_dump_json())
+                        affiliateLinks = LinksDetails.model_dump()
+                        # print(affiliateLinks)
+                        new_product = product_data.model_dump(
+                            exclude={"price", "affiliateLink"}
+                        )
+
+                        # keys_to_remove = ["price", "affiliateLink"]
+                        # new_product = {
+                        #     k: v
+                        #     for k, v in product_data_dict.items()
+                        #     if k not in keys_to_remove
+                        # }
+                        new_product["affiliateLinks"] = [affiliateLinks]
+                        # print(new_product)
+                        # break
+
+                        transformed_products.append(new_product)
+                        # transformed_products =  [product(**new_product) for new_product in transformed_products]
+                        # print(transformed_products)
+                        # break
+
+                # print(transformed_products)
+
+                for new_product_dict in transformed_products:
+                    product = Product(**new_product_dict)
+                    session.add(product)
+                    print(new_product_dict)
+                    print("==============================================")
+
+                session.commit()
+                return ApiResponse(
+                    status_code=200,
+                    is_success=True,
+                    message="All products added successfully.",
+                    data=transformed_products,
+                )
+        except Exception as e:
+            return ApiResponse(
+                status_code=500,
+                is_success=False,
+                message=f"Error adding all products: {e}",
                 data=None,
             )
