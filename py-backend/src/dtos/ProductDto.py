@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from typing import List, Dict, Any
 
 
 class AffiliateLink(BaseModel):
@@ -13,7 +12,7 @@ class ProductDto(BaseModel):
     image: str
     category: str
     brand: str
-    subCategory: List[str]
+    subCategory: list[str]
     description: str
-    tags: List[str]
-    affiliateLinks: List[AffiliateLink]
+    tags: list[str]
+    affiliateLinks: list[AffiliateLink]

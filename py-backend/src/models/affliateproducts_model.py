@@ -1,4 +1,3 @@
-from typing import Any
 from sqlmodel import SQLModel, Field, Relationship
 from sqlalchemy import Column, ARRAY, String, Text, UUID, ForeignKey
 from sqlalchemy.dialects.postgresql import JSONB
@@ -19,7 +18,7 @@ class Product(SQLModel, table=True):
         default_factory=list, sa_column=Column(ARRAY(String(100)))
     )
     description: str = Field(sa_column=Column(Text))
-    tags: list[str] = Field(default_factory=list, sa_column=Column(ARRAY(String(50))))
+    tags: list[str] = Field(default_factory=list, sa_column=Column(ARRAY(String(100))))
     affiliateLinks: list[dict[str, object]] = Field(
         sa_column=Column(JSONB, nullable=False)
     )
