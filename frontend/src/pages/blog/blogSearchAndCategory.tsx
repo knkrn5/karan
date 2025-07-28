@@ -78,18 +78,14 @@ export default function BlogSearchAndCategory({
         {showBlogsSearchSuggestions && (
           <div className="absolute z-10 p-2  w-full bg-white dark:bg-slate-800 rounded-lg shadow shadow-neutral-300 dark:shadow-gray-900 max-h-60 overflow-y-auto">
             {matchingblogPosts.map((post, index) => (
-              <div
-                className="flex items-center justify-between rounded-lg hover:border-b hover:bg-gray-100 dark:hover:bg-slate-700 cursor-pointer"
+              <button
+                type="button"
+                className="flex w-full items-center justify-between px-2 py-2 text-sm text-left text-gray-700 font-bold  dark:text-gray-300 rounded-lg hover:border-b hover:bg-gray-100 dark:hover:bg-slate-700 cursor-pointer"
                 key={index}
+                onMouseDown={() => setSearchOrCategoryValue(post.title)}
               >
-                <button
-                  type="button"
-                  className="px-2 py-2 text-sm text-left text-gray-700 font-bold  dark:text-gray-300 cursor-pointer"
-                  onMouseDown={() => setSearchOrCategoryValue(post.title)}
-                >
-                  {post.title.length < 35 ? post.title : post.title.slice(0, 35) + '...'}
-                </button>
-              </div>
+                {post.title.length < 35 ? post.title : post.title.slice(0, 35) + '...'}
+              </button>
             ))}
           </div>
         )}
