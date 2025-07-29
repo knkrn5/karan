@@ -255,16 +255,16 @@ const AffiliateProductsPage = () => {
                             <span className="flex-1 inline-flex items-center  font-extrabold gap-2 text-white ">
                               {affiliateLink.platform === 'amazon' ? (
                                 <FaAmazon size={16} />
-                              ) : affiliateLink.platform === 'flipkart' ? (
-                                <SiFlipkart size={16} />
                               ) : (
-                                <MdOutlineCreditCardOff size={16} />
+                                affiliateLink.platform === 'flipkart' && <SiFlipkart size={16} />
                               )}
                               {affiliateLink.platform.toUpperCase()}
                             </span>
-                            <span className="text-sm font-bold text-white">
-                              ₹{affiliateLink.price}
-                            </span>
+                            {affiliateLink.platform != 'not-available' && (
+                              <span className="text-sm font-bold text-white">
+                                ₹{affiliateLink.price}
+                              </span>
+                            )}
                           </a>
                         ))}
                       </div>
