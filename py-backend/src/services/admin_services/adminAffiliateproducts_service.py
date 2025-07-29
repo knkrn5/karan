@@ -63,7 +63,7 @@ class AdminAffiliateProductsService:
                             exclude={"price", "affiliateLink", "affiliateLinks"}
                         )
 
-                        # keys_to_remove = ["price", "affiliateLink"]
+                        # keys_to_remove = ["price", "affiliateLink", "affiliateLinks"]
                         # new_product = {
                         #     k: v
                         #     for k, v in product_data_dict.items()

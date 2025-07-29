@@ -8,10 +8,10 @@
     "name": "God of War 4",
     "id": "a851d136-71cf-4e72-88dc-ce15bb5fc764",
     "tags": ["gow", "gow4"],
-    "affiliateLinks": [
+    "affiliateDetails": [
       {
         "link": "https://amzn.to/3TFPnU8",
-        "price": 799,
+        "price": 799.0,
         "platform": "amazon"
       }
     ]
@@ -25,10 +25,10 @@
     "name": "Last of Us, Part 1",
     "id": "0b2ddbc8-7e58-4343-a53c-00cf7d678619",
     "tags": ["lou", "lou1"],
-    "affiliateLinks": [
+    "affiliateDetails": [
       {
         "link": "https://amzn.to/44e0MQ2",
-        "price": 799,
+        "price": 799.0,
         "platform": "amazon"
       }
     ]
@@ -42,10 +42,10 @@
     "name": "Resident Evil 4",
     "id": "5eabed52-edce-4c39-930d-b81ea67b0349",
     "tags": ["re", "re4"],
-    "affiliateLinks": [
+    "affiliateDetails": [
       {
         "link": "https://amzn.to/3GfPnHo",
-        "price": 399,
+        "price": 399.0,
         "platform": "amazon"
       }
     ]
@@ -59,10 +59,10 @@
     "name": "Uncharted 4",
     "id": "bf80016c-eb7e-4c17-8062-84b6cb185fcc",
     "tags": ["uc", "uc4"],
-    "affiliateLinks": [
+    "affiliateDetails": [
       {
         "link": "https://karan.email/affiliates/product-not-available",
-        "price": 0,
+        "price": 0.0,
         "platform": "not-available"
       }
     ]
@@ -76,10 +76,10 @@
     "name": "Red Dead Redemption 1",
     "id": "29af6a53-11b2-49a4-b3dc-12cfe9d2e2a9",
     "tags": ["rdr", "rdr1"],
-    "affiliateLinks": [
+    "affiliateDetails": [
       {
         "link": "https://karan.email/affiliates/product-not-available",
-        "price": 0,
+        "price": 0.0,
         "platform": "not-available"
       }
     ]
@@ -93,10 +93,10 @@
     "name": "Asassins Creed Odyssey",
     "id": "ea23efe4-1c0f-4936-ab31-704c90381f02",
     "tags": ["ac", "aco"],
-    "affiliateLinks": [
+    "affiliateDetails": [
       {
         "link": "https://amzn.to/4na77Vv",
-        "price": 599,
+        "price": 599.0,
         "platform": "amazon"
       }
     ]
@@ -110,10 +110,10 @@
     "name": "Far Cry 5",
     "id": "6b8742f6-9f5c-41dc-88e2-a2970a8a64d7",
     "tags": ["fc", "fc5"],
-    "affiliateLinks": [
+    "affiliateDetails": [
       {
         "link": "https://amzn.to/44esrAz",
-        "price": 599,
+        "price": 599.0,
         "platform": "amazon"
       }
     ]
@@ -127,10 +127,10 @@
     "name": "Marvel's Spider-Man Remastered",
     "id": "d8d6dc8f-cdbc-4322-b9ea-d30931aaaedd",
     "tags": ["spiderman", "spiderman remastered", "sm"],
-    "affiliateLinks": [
+    "affiliateDetails": [
       {
         "link": "https://karan.email/affiliates/product-not-available",
-        "price": 0,
+        "price": 0.0,
         "platform": "not-available"
       }
     ]
@@ -144,10 +144,10 @@
     "name": "Power",
     "id": "663b4cb1-c19e-4a44-a44c-2982bd7b3298",
     "tags": ["power book"],
-    "affiliateLinks": [
+    "affiliateDetails": [
       {
         "link": "https://amzn.to/44sGSCe",
-        "price": 588,
+        "price": 588.0,
         "platform": "amazon"
       }
     ]
@@ -161,10 +161,10 @@
     "name": "Tuesdays With Morrie",
     "id": "0af94490-29d1-4403-9f17-ea4d87d1eaab",
     "tags": ["Tuesdays With Morrie", "twm"],
-    "affiliateLinks": [
+    "affiliateDetails": [
       {
         "link": "https://amzn.in/d/igVdKbo",
-        "price": 208,
+        "price": 208.0,
         "platform": "amazon"
       }
     ]
@@ -178,10 +178,10 @@
     "name": "The Subtle Art Of Not Giving A F*ck",
     "id": "5c5f49e3-dd84-482b-a42a-78a0d9f4ba66",
     "tags": ["tsaongaf"],
-    "affiliateLinks": [
+    "affiliateDetails": [
       {
         "link": "https://amzn.to/3FZUE63",
-        "price": 339,
+        "price": 339.0,
         "platform": "amazon"
       }
     ]
@@ -195,10 +195,10 @@
     "name": "Rich Dad Poor Dad",
     "id": "1e54fbf1-abd7-46e7-bb76-08f4790d1396",
     "tags": ["rdpd"],
-    "affiliateLinks": [
+    "affiliateDetails": [
       {
         "link": "https://amzn.in/d/aCmQaMi",
-        "price": 374,
+        "price": 374.0,
         "platform": "amazon"
       }
     ]
@@ -212,10 +212,10 @@
     "name": "Think and Grow Rich",
     "id": "8394060c-b794-42f4-b681-d0d9955bacfd",
     "tags": ["Think and Grow Rich"],
-    "affiliateLinks": [
+    "affiliateDetails": [
       {
         "link": "https://amzn.to/43JKxdf",
-        "price": 183,
+        "price": 183.0,
         "platform": "amazon"
       }
     ]
