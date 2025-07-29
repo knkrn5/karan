@@ -14,13 +14,18 @@ import { useMainPopupStore } from '../../stores/popup/mainPopupStore';
 
 const PY_BACKEND_URL = import.meta.env.VITE_PY_BACKEND_URL;
 
+interface AffiliateLinkType {
+  platform: string;
+  price: number;
+  link: string;
+}
+
 export interface ProductPropsType {
   id: number;
   name: string;
   description: string;
   image: string;
-  price: number;
-  affiliateLinks: Array<{ [key: string]: string }>;
+  affiliateLinks: Array<AffiliateLinkType>;
   // affiliateLinks: Array<AffiliateLinkType>;
   category: string;
   subCategory?: string[];
@@ -136,7 +141,9 @@ const AffiliateProductsPage = () => {
     return products.filter(product => {
       const isCategoryMatch =
         category === '' || product.category.toLowerCase() === category.toLowerCase();
-      const isPriceMatch = price === 1000 || product.price <= price;
+      const isPriceMatch =
+        price === 1000 ||
+        product.affiliateLinks.some(affiliateLink => affiliateLink.price <= price);
       const isSearchMatch =
         searchedProduct === '' ||
         product.name.toLowerCase().includes(searchedProduct.toLowerCase()) ||
@@ -146,8 +153,11 @@ const AffiliateProductsPage = () => {
           subcat.toLowerCase().includes(searchedProduct.toLowerCase())
         ) ||
         product.tags.some(tag => tag.toLowerCase().includes(searchedProduct.toLowerCase()));
+      /* const isNotAvailable = product.affiliateLinks.some(
+        affiliateLink => affiliateLink.platform === 'not-available'
+      ); */
 
-      return isCategoryMatch && isPriceMatch && isSearchMatch;
+      return isCategoryMatch && isPriceMatch && isSearchMatch
     });
   }, [products, category, price, searchedProduct]);
 

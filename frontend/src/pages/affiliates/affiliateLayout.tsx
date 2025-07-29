@@ -3,10 +3,17 @@ import { RiMenuUnfold3Fill } from 'react-icons/ri';
 import { FaFilter } from 'react-icons/fa';
 import { Outlet } from 'react-router';
 import AffiliateSidebar from './affiliateSidebar';
+import Switch from '../../components/ui/switch';
 
 function AffiliateLayout() {
   const [openMenu, setOpenMenu] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
+
+  const [isOn, setIsOn] = useState(false);
+
+  const handleToggle = () => {
+    setIsOn(!isOn);
+  };
 
   const sidebarRef = useRef<HTMLDivElement>(null);
   const menuBarButtonRef = useRef<HTMLButtonElement>(null);
@@ -63,9 +70,16 @@ function AffiliateLayout() {
           </button>
         )}
         <div className="overflow-y-auto h-screen">
-          <div className="flex items-center space-x-1 px-4 border-b border-neutral-500 dark:border-gray-500">
-            <FaFilter />
-            <h3 className="font-extrabold text-2xl py-2 ">Filters</h3>
+          <div className="flex items-center justify-between space-x-1 px-4 border-b border-neutral-500 dark:border-gray-500">
+            <div className="flex items-center space-x-1">
+              <FaFilter />
+              <h3 className="font-extrabold text-2xl py-2 ">Filters</h3>
+            </div>
+
+            {/* ON / OFF Switch */}
+            <div className="h-8 bg-gradient-to-br from-orange-500 to-pink-500 rounded-full p-1">
+              <Switch isOn={isOn} handleToggle={handleToggle} />
+            </div>
           </div>
           <AffiliateSidebar />
         </div>
