@@ -14,7 +14,7 @@ import { useMainPopupStore } from '../../stores/popup/mainPopupStore';
 
 const PY_BACKEND_URL = import.meta.env.VITE_PY_BACKEND_URL;
 
-interface AffiliateLinkType {
+interface AffiliateInfoPropsType {
   platform: string;
   price: number;
   link: string;
@@ -25,8 +25,7 @@ export interface ProductPropsType {
   name: string;
   description: string;
   image: string;
-  affiliateLinks: Array<AffiliateLinkType>;
-  // affiliateLinks: Array<AffiliateLinkType>;
+  affiliateDetails: Array<AffiliateInfoPropsType>;
   category: string;
   subCategory?: string[];
   tags: string[];
@@ -143,7 +142,7 @@ const AffiliateProductsPage = () => {
         category === '' || product.category.toLowerCase() === category.toLowerCase();
       const isPriceMatch =
         price === 1000 ||
-        product.affiliateLinks.some(affiliateLink => affiliateLink.price <= price);
+        product.affiliateDetails.some(affiliateInfo => affiliateInfo.price <= price);
       const isSearchMatch =
         searchedProduct === '' ||
         product.name.toLowerCase().includes(searchedProduct.toLowerCase()) ||
@@ -153,11 +152,11 @@ const AffiliateProductsPage = () => {
           subcat.toLowerCase().includes(searchedProduct.toLowerCase())
         ) ||
         product.tags.some(tag => tag.toLowerCase().includes(searchedProduct.toLowerCase()));
-      /* const isNotAvailable = product.affiliateLinks.some(
-        affiliateLink => affiliateLink.platform === 'not-available'
+      /* const isNotAvailable = product.affiliateDetails.some(
+        affiliateInfo => affiliateInfo.platform === 'not-available'
       ); */
 
-      return isCategoryMatch && isPriceMatch && isSearchMatch
+      return isCategoryMatch && isPriceMatch && isSearchMatch;
     });
   }, [products, category, price, searchedProduct]);
 
@@ -224,8 +223,9 @@ const AffiliateProductsPage = () => {
                         setExpandedDescriptionId(prev => (prev === product.id ? null : product.id))
                       }
                     >
-                      {product.affiliateLinks.some(
-                        link => link.platform.trim().toLowerCase() === 'not-available'
+                      {product.affiliateDetails.some(
+                        affiliateInfo =>
+                          affiliateInfo.platform.trim().toLowerCase() === 'not-available'
                       ) ? (
                         <>
                           <MdOutlineCreditCardOff size={16} />
@@ -254,25 +254,25 @@ const AffiliateProductsPage = () => {
                           expandedDescriptionId === product.id ? 'scale-y-100' : 'scale-y-0'
                         }  origin-top duration-300 bg-neutral-300 dark:bg-gray-700 shadow-md rounded p-2 z-10`}
                       >
-                        {product.affiliateLinks.map((affiliateLink, index) => (
+                        {product.affiliateDetails.map((affiliateInfo, index) => (
                           <a
-                            href={affiliateLink.link}
+                            href={affiliateInfo.link}
                             target="_blank"
                             rel="noopener noreferrer"
                             className={`flex w-full justify-between gap-5 bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition `}
                             key={index}
                           >
                             <span className="flex-1 inline-flex items-center  font-extrabold gap-2 text-white ">
-                              {affiliateLink.platform === 'amazon' ? (
+                              {affiliateInfo.platform === 'amazon' ? (
                                 <FaAmazon size={16} />
                               ) : (
-                                affiliateLink.platform === 'flipkart' && <SiFlipkart size={16} />
+                                affiliateInfo.platform === 'flipkart' && <SiFlipkart size={16} />
                               )}
-                              {affiliateLink.platform.toUpperCase()}
+                              {affiliateInfo.platform.toUpperCase()}
                             </span>
-                            {affiliateLink.platform != 'not-available' && (
+                            {affiliateInfo.platform != 'not-available' && (
                               <span className="text-sm font-bold text-white">
-                                ₹{affiliateLink.price}
+                                ₹{affiliateInfo.price}
                               </span>
                             )}
                           </a>

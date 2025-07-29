@@ -264,25 +264,25 @@ export default function AffiliateSearchAndCart({
                             showPricesInCart === item.id ? 'scale-y-100' : 'scale-y-0'
                           }   origin-top duration-300 p-1 bg-neutral-50 dark:bg-gray-700 shadow-md rounded z-10`}
                         >
-                          {item.affiliateLinks.map((affiliateLink, index) => (
+                          {item.affiliateDetails.map((affiliateInfo, index) => (
                             <a
-                              href={affiliateLink.link}
+                              href={affiliateInfo.link}
                               target="_blank"
                               rel="noopener noreferrer"
                               className={`flex justify-between gap-5 bg-indigo-600 p-1 rounded hover:bg-indigo-700 transition `}
                               key={index}
                             >
                               <span className="flex-1 inline-flex text-xs items-center font-semibold gap-2 text-white ">
-                                {affiliateLink.platform === 'amazon' ? (
+                                {affiliateInfo.platform === 'amazon' ? (
                                   <FaAmazon />
-                                ) : affiliateLink.platform === 'flipkart' ? (
+                                ) : affiliateInfo.platform === 'flipkart' ? (
                                   <SiFlipkart />
                                 ) : (
                                   <>N/A</>
                                 )}
                               </span>
                               <span className="text-xs font-bold text-white">
-                                ₹{affiliateLink.price}
+                                ₹{affiliateInfo.price}
                               </span>
                             </a>
                           ))}
