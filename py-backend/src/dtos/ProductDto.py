@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class AffiliateLink(BaseModel):
+class AffiliateInfo(BaseModel):
     platform: str
     link: str
     price: float
@@ -15,4 +15,4 @@ class ProductDto(BaseModel):
     subCategory: list[str]
     description: str
     tags: list[str]
-    affiliateLinks: list[AffiliateLink]
+    affiliateDetails: list[AffiliateInfo]

@@ -20,7 +20,7 @@ class AdminAffiliateProductsService:
 
         try:
 
-            class AffiliateLink(BaseModel):
+            class AffiliateInfo(BaseModel):
                 platform: str
                 link: str
                 price: float
@@ -40,7 +40,7 @@ class AdminAffiliateProductsService:
                             continue
 
                     if product_data.affiliateLink and product_data.price:
-                        LinksDetails = AffiliateLink(
+                        LinksDetails = AffiliateInfo(
                             platform="amazon"
                             if "amzn" in product_data.affiliateLink
                             else "not-available",
@@ -53,13 +53,14 @@ class AdminAffiliateProductsService:
                         # product_dict = product_data.model_dump()
                         # del product_dict["price"]
                         # del product_dict["affiliateLink"]
+                        # del product_dict["affiliateLinks"]
 
                         # print(LinksDetails.model_dump())
                         # print(LinksDetails.model_dump_json())
                         affiliateLinks = LinksDetails.model_dump()
                         # print(affiliateLinks)
                         new_product_dict = product_data.model_dump(
-                            exclude={"price", "affiliateLink"}
+                            exclude={"price", "affiliateLink", "affiliateLinks"}
                         )
 
                         # keys_to_remove = ["price", "affiliateLink"]
@@ -68,7 +69,7 @@ class AdminAffiliateProductsService:
                         #     for k, v in product_data_dict.items()
                         #     if k not in keys_to_remove
                         # }
-                        new_product_dict["affiliateLinks"] = [affiliateLinks]
+                        new_product_dict["affiliateDetails"] = [affiliateLinks]
                         # print(new_product)
 
                         transformed_products.append(new_product_dict)
@@ -77,8 +78,8 @@ class AdminAffiliateProductsService:
                 for new_product_dict in transformed_products:
                     product = Product.model_validate(new_product_dict)
                     session.add(product)
-                    # print(product)
-                    # print("==============================================")
+                    print(product)
+                    print("==============================================")
 
                 session.commit()
                 return ApiResponse(

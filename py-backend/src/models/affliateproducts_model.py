@@ -19,7 +19,7 @@ class Product(SQLModel, table=True):
     )
     description: str = Field(sa_column=Column(Text))
     tags: list[str] = Field(default_factory=list, sa_column=Column(ARRAY(String(100))))
-    affiliateLinks: list[dict[str, object]] = Field(
+    affiliateDetails: list[dict[str, object]] = Field(
         sa_column=Column(JSONB, nullable=False)
     )
     # cart_items: List["CartItem"] = Relationship(back_populates="product")

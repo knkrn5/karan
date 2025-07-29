@@ -11,14 +11,7 @@ from .routes.admin_routes.adminAffiliateproducts_routes import (
     router as admin_affiliate_products_router,
 )
 
-
 is_production = os.getenv("ENV") == "PRODUCTION"
-
-app = FastAPI(
-    docs_url=None if is_production else "/docs",
-    redoc_url=None if is_production else "/redoc",
-    openapi_url=None if is_production else "/openapi.json",
-)
 
 origins: list[str] = (
     [
@@ -29,14 +22,6 @@ origins: list[str] = (
     else ["http://localhost:5173"]
 )
 
-app.add_middleware(
-    CORSMiddleware,  # pyrefly: ignore
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -45,6 +30,23 @@ async def lifespan(app: FastAPI):
     print(res)
     yield
     # --- shutdown ---
+
+
+app = FastAPI(
+    lifespan=lifespan,
+    docs_url=None if is_production else "/docs",
+    redoc_url=None if is_production else "/redoc",
+    openapi_url=None if is_production else "/openapi.json",
+)
+
+
+app.add_middleware(
+    CORSMiddleware,  # pyrefly: ignore
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
