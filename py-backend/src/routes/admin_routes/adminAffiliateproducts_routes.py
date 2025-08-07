@@ -9,7 +9,6 @@ from ...services.admin_services.adminAffiliateproducts_service import (
 from ...security.verify_admin import verify_api_key
 from ...utils.api_response import ApiResponse
 
-
 router = APIRouter()
 
 

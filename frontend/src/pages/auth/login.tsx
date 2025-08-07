@@ -16,7 +16,6 @@ interface LoginFeildDataProps {
   password: string;
 }
 
-
 const JAVA_BACKEND_URL = import.meta.env.VITE_JAVA_BACKEND_URL;
 
 export default function LoginPage() {
@@ -98,7 +97,6 @@ export default function LoginPage() {
       return;
     }
 
-    //check if user agreed to the data collection policy
     if (!agreed) {
       setICnotificationMsg({ info: 'Please agree to the data collection policy' });
       return;
@@ -117,8 +115,6 @@ export default function LoginPage() {
         { withCredentials: true }
       );
       const { data } = response;
-
-      console.log(data);
 
       setICnotificationMsg({ success: data.message });
       setTRpopupNotificationMsg({ success: data.message });

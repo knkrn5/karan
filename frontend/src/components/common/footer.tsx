@@ -1,4 +1,4 @@
-import socialLinks from '../partials/socialLinks';
+import SocialLinks from '../partials/socialLinks';
 import ThemeMode from '../partials/themeToggle';
 
 import { Link } from 'react-router';
@@ -32,7 +32,9 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div>{socialLinks()}</div>
+        <div>
+          <SocialLinks />
+        </div>
         <hr className="my-3 border-gray-700 sm:mx-auto lg:my-8" />
         <span className="block text-sm text-gray-900 -m-1 text-center dark:text-gray-400">
           © 2025 Karan.email . All Rights Reserved.
