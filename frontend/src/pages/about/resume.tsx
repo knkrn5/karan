@@ -52,15 +52,25 @@ export default function Resume() {
         name: 'Finance Educational Web App',
         link: 'https://wealthpsychology.karan.email/index.html',
         duration: 'May 2024',
-        description: 'Full-stack e-commerce solution with payment integration and admin dashboard',
         technologies: ['HTML5', 'CSS', 'JavaScript', 'Node.js', 'SQLite'],
+        description: [
+          'Built a full-stack financial education platform with calculators, quizzes, and blogs using Contentful CMS and an AI chatbot',
+          'Designed SQLite database for efficient content storage and integrated Auth0 for secure user authentication.',
+          'Implemented CI/CD pipeline with GitHub Actions and deployed on Render using Docker, reducing deployment time by 30%.',
+          'Impact: Supported 200+ users during beta testing with positive feedback on usability',
+        ],
       },
       {
         name: 'AI-Powered Chatbots',
         link: 'https://explanatorai.site/',
         duration: 'Nov 2024',
-        description: 'Real-time collaborative task management application with team features',
         technologies: ['HTML5', 'CSS', 'JavaScript', 'Python'],
+        description: [
+          'Developed an AI chatbot web app using Gemini and NVIDIA NIM APIs, supporting PDF, CSV, JSON, and TXT analysis.',
+          'Enabled real-time chat with SSE-based streaming and integrated CodeMirror/Marked.js for code and Markdown rendering.',
+          'Leveraged Hugging Face datasets for task-specific chatbot prompts, enhancing user interaction quality',
+          'Impact: Achieved 95% accuracy in document analysis during testing',
+        ],
       },
     ],
   };
@@ -71,34 +81,40 @@ export default function Resume() {
         <section className="text-center">
           <h1 className="text-2xl font-bold">{resumeData.personalInfo.name}</h1>
           <p className="text-sm">{resumeData.personalInfo.location}</p>
-          <div className="flex justify-center items-center text-xs space-x-1 underline underline-offset-2 max-sm:flex-col">
+          <div className="flex justify-center items-center text-xs space-x-1 underline underline-offset-2 max-sm:flex-col duration-300">
             {/* Phone */}
-            <a href={`tel:${resumeData.personalInfo.phone}`} className=" hover:underline">
+            <a
+              href={`tel:${resumeData.personalInfo.phone}`}
+              className="rounded hover:bg-neutral-200"
+            >
               <FaPhone className="inline-block mr-1" />
               {resumeData.personalInfo.phone}
             </a>
             {/* Email */}
-            <a href={`mailto:${resumeData.personalInfo.email}`} className=" hover:underline block">
+            <a
+              href={`mailto:${resumeData.personalInfo.email}`}
+              className=" rounded hover:bg-neutral-200 block"
+            >
               <IoIosMail className="inline-block mr-1" />
               {resumeData.personalInfo.email}
             </a>
             <a
               href={`https://${resumeData.personalInfo.linkedin}`}
-              className=" hover:underline block"
+              className=" rounded hover:bg-neutral-200 block"
             >
               <FaLinkedin className="inline-block mr-1" />
               {resumeData.personalInfo.linkedin}
             </a>
             <a
               href={`https://${resumeData.personalInfo.github}`}
-              className=" hover:underline block"
+              className=" rounded hover:bg-neutral-200 block"
             >
               <FaGithub className="inline-block mr-1" />
               {resumeData.personalInfo.github}
             </a>
             <a
               href={`https://${resumeData.personalInfo.website}`}
-              className=" hover:underline block"
+              className=" rounded hover:bg-neutral-200 block"
             >
               <FaGlobe className="inline-block mr-1" />
               {resumeData.personalInfo.website}
@@ -149,7 +165,7 @@ export default function Resume() {
               <div key={index} className="mb-2">
                 <div className="flex justify-between">
                   <div className="flex items-center">
-                    <strong>
+                    <strong className="hover:underline">
                       <a
                         href={project.link}
                         target="_blank"
@@ -164,7 +180,9 @@ export default function Resume() {
                   <p className="font-bold">{project.duration}</p>
                 </div>
                 <ul className="list-disc ml-5">
-                  <li>{project.description}</li>
+                  {project.description.map((desc, descIndex) => (
+                    <li key={descIndex}>{desc}</li>
+                  ))}
                 </ul>
               </div>
             ))}
