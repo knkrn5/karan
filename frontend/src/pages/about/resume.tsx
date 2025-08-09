@@ -1,6 +1,7 @@
 import { FaGlobe, FaPhone } from 'react-icons/fa6';
 import { IoIosMail } from 'react-icons/io';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
+import { FaArrowCircleDown } from 'react-icons/fa';
 
 export default function Resume() {
   const resumeData = {
@@ -56,7 +57,7 @@ export default function Resume() {
       Frontend: ['React', 'HTML5', 'CSS3', 'Tailwind CSS'],
       Backend: ['Node.js(Express)', 'Python(Fastapi)', 'REST APIs'],
       Database: ['SQLite', 'PostgreSQL', 'MongoDB', 'Redis'],
-      'Cloud & DevOps': ['AWS', 'Azure', 'Render', 'Docker',  'Git', 'CI/CD (GitHub Actions)'],
+      'Cloud & DevOps': ['AWS', 'Azure', 'Render', 'Docker', 'Git', 'CI/CD (GitHub Actions)'],
       Tools: ['VS Code', 'Postman', 'Auth0', 'Zustand', 'Nodemailer'],
     },
     projects: [
@@ -76,12 +77,12 @@ export default function Resume() {
   };
 
   return (
-    <div className="h-screen p-1 bg-gray-200 text-black dark:bg-slate-800 dark:text-white">
-      <div className="max-w-198 h-screen p-5 text-black font-serif bg-white mx-auto">
+    <div className="flex flex-col p-1 bg-gray-200 text-black dark:bg-slate-800 dark:text-white">
+      <div className="max-w-4xl h-screen p-5 text-black font-serif bg-white mx-auto">
         <section className="text-center">
           <h1 className="text-2xl font-bold">{resumeData.personalInfo.name}</h1>
           <p className="text-sm">{resumeData.personalInfo.location}</p>
-          <div className="flex justify-center items-center text-xs space-x-1 underline underline-offset-1 max-sm:flex-col">
+          <div className="flex justify-center items-center text-xs space-x-1 underline underline-offset-2 max-sm:flex-col">
             {/* Phone */}
             <a href={`tel:${resumeData.personalInfo.phone}`} className=" hover:underline">
               <FaPhone className="inline-block mr-1" />
@@ -152,6 +153,22 @@ export default function Resume() {
           </div>
         </section>
       </div>
+      <button
+        title="Print Resume"
+        type="button"
+        className="printButton w-fit mt-5 mx-auto p-2 rounded-full text-white bg-black hover:scale-105 duration-300 animate-bounce cursor-pointer"
+        onClick={() => {
+          const header = document.getElementsByTagName('header')[0];
+          const footer = document.getElementsByTagName('footer')[0];
+          const printButton = document.getElementsByClassName('printButton')[0];
+          if (header) header.remove();
+          if (footer) footer.remove();
+          if (printButton) printButton.remove();
+          window.print();
+        }}
+      >
+        <FaArrowCircleDown size={32} className="rounded-full text-white bg-black" />
+      </button>
     </div>
   );
 }
