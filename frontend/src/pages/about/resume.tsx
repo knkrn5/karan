@@ -41,18 +41,6 @@ export default function Resume() {
           'Maintained 99.9% uptime for production applications',
         ],
       },
-      {
-        title: 'Frontend Developer',
-        company: 'WebSolutions LLC',
-        location: 'New York, NY',
-        duration: 'Mar 2019 - May 2020',
-        achievements: [
-          'Developed interactive dashboards for data visualization',
-          'Optimized bundle size reducing load times by 30%',
-          'Implemented responsive design across multiple devices',
-          'Worked with cross-functional teams in Agile environment',
-        ],
-      },
     ],
     education: [
       {
@@ -63,13 +51,13 @@ export default function Resume() {
         cgpa: '7.5/10',
       },
     ],
-    skills: {
+    technicalSkills: {
       'Programming Languages': ['JavaScript', 'TypeScript', 'Python', 'Java'],
-      Frontend: ['React', 'Next.js', 'Vue.js', 'HTML5', 'CSS3', 'Tailwind CSS'],
-      Backend: ['Node.js', 'Express', 'Django', 'REST APIs', 'GraphQL'],
-      Database: ['PostgreSQL', 'MongoDB', 'Redis', 'MySQL'],
-      'Cloud & DevOps': ['AWS', 'Docker', 'Kubernetes', 'CI/CD', 'Git'],
-      Tools: ['VS Code', 'Figma', 'Postman', 'Jira', 'Slack'],
+      Frontend: ['React', 'HTML5', 'CSS3', 'Tailwind CSS'],
+      Backend: ['Node.js(Express)', 'Python(Fastapi)', 'REST APIs'],
+      Database: ['SQLite', 'PostgreSQL', 'MongoDB', 'Redis'],
+      'Cloud & DevOps': ['AWS', 'Azure', 'Render', 'Docker',  'Git', 'CI/CD (GitHub Actions)'],
+      Tools: ['VS Code', 'Postman', 'Auth0', 'Zustand', 'Nodemailer'],
     },
     projects: [
       {
@@ -144,7 +132,7 @@ export default function Resume() {
             </span>
             <span className="flex justify-between">
               <p>
-                {resumeData.education[0].degree} {`CGPA- ${resumeData.education[0].cgpa}`}
+                {resumeData.education[0].degree} <b>{`CGPA- ${resumeData.education[0].cgpa}`}</b>
               </p>{' '}
               <p>
                 <i>{resumeData.education[0].location}</i>
@@ -156,24 +144,11 @@ export default function Resume() {
           <h2 className="text-sm font-semibold">TECHNICAL SKILLS</h2>
           <hr />
           <div className="text-xs">
-            <p>
-              <strong>Programming Languages:</strong> JavaScript, TypeScript, Python, Java
-            </p>
-            <p>
-              <strong>Frontend:</strong> React.js, HTML5, CSS3, Tailwind CSS
-            </p>
-            <p>
-              <strong>Backend:</strong> Node.js (Express), Python (FastAPI)
-            </p>
-            <p>
-              <strong>Databases:</strong> SQLite, MongoDB, PostgreSQL, Redis
-            </p>
-            <p>
-              <strong>Cloud & DevOps:</strong> Render, Azure, Docker, Git, CI/CD (GitHub Actions)
-            </p>
-            <p>
-              <strong>Tools:</strong> VS Code, Postman, Auth0, Zustand, Nodemailer, CodeMirror
-            </p>
+            {Object.entries(resumeData.technicalSkills).map(([category, skills]) => (
+              <div key={category}>
+                <strong>{category}:</strong> {skills.join(', ')}
+              </div>
+            ))}
           </div>
         </section>
       </div>
