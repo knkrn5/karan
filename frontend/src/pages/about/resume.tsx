@@ -1,7 +1,6 @@
 import { FaGlobe, FaPhone } from 'react-icons/fa6';
 import { IoIosMail } from 'react-icons/io';
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
-import { FaArrowCircleDown } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaArrowCircleDown } from 'react-icons/fa';
 
 export default function Resume() {
   const resumeData = {
@@ -30,18 +29,6 @@ export default function Resume() {
           'Implemented CI/CD pipelines reducing deployment time by 60%',
         ],
       },
-      {
-        title: 'Full Stack Developer',
-        company: 'StartupXYZ',
-        location: 'Remote',
-        duration: 'Jun 2020 - Dec 2021',
-        achievements: [
-          'Built responsive web applications using React and Node.js',
-          'Integrated payment systems and third-party APIs',
-          'Collaborated with design team to implement pixel-perfect UIs',
-          'Maintained 99.9% uptime for production applications',
-        ],
-      },
     ],
     education: [
       {
@@ -63,12 +50,14 @@ export default function Resume() {
     projects: [
       {
         name: 'E-Commerce Platform',
+        duration: '2022 – 2023',
         description: 'Full-stack e-commerce solution with payment integration and admin dashboard',
         technologies: ['React', 'Node.js', 'PostgreSQL', 'Stripe API'],
         link: 'github.com/alexjohnson/ecommerce',
       },
       {
         name: 'Task Management App',
+        duration: '2022 – 2023',
         description: 'Real-time collaborative task management application with team features',
         technologies: ['React', 'Socket.io', 'MongoDB', 'Express'],
         link: 'github.com/alexjohnson/taskmanager',
@@ -154,17 +143,24 @@ export default function Resume() {
         </section>
       </div>
       <button
-        title="Print Resume"
+        title="Save Resume"
         type="button"
-        className="printButton w-fit mt-5 mx-auto p-2 rounded-full text-white bg-black hover:scale-105 duration-300 animate-bounce cursor-pointer"
+        className="printButton w-fit mt-5 mx-auto p-2 rounded-full text-white bg-black hover:scale-105 hover:shadow-lg duration-300 animate-bounce cursor-pointer"
         onClick={() => {
-          const header = document.getElementsByTagName('header')[0];
-          const footer = document.getElementsByTagName('footer')[0];
-          const printButton = document.getElementsByClassName('printButton')[0];
-          if (header) header.remove();
-          if (footer) footer.remove();
-          if (printButton) printButton.remove();
-          window.print();
+          const newWindow = window.open('/resume', '_blank');
+          if (newWindow) {
+            newWindow.onload = () => {
+              const header = newWindow.document.getElementsByTagName('header')[0];
+              const footer = newWindow.document.getElementsByTagName('footer')[0];
+              const printButton = newWindow.document.getElementsByClassName('printButton')[0];
+
+              if (header) header.remove();
+              if (footer) footer.remove();
+              if (printButton) printButton.remove();
+
+              newWindow.print();
+            };
+          }
         }}
       >
         <FaArrowCircleDown size={32} className="rounded-full text-white bg-black" />
