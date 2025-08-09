@@ -86,18 +86,28 @@ export default function Resume() {
           'PostgreSQL',
         ],
         description: [
-          'Architected a microservices-based portfolio with Node.js (contact/chatbot), Python (e-commerce), and Java (authentication).',
+          'Architected a <b>microservices-based portfolio</b> with Node.js (contact/chatbot), Python (e-commerce), and Java (authentication).',
           'Designed MongoDB/PostgreSQL schemas for data storage and Redis for OTP verification, ensuring scalability.',
-          'Integrated Zustand, Nodemailer, and JWT/Bcrypt for state management, notifications, and security.',
+          'Integrated Zustand, Nodemailer, and JWT/Bcrypt for state management, email notifications, and security.',
           'Impact: Reduced authentication latency by 25% using Redis caching.',
         ],
+      },
+    ],
+    languages: [
+      {
+        name: 'English',
+        proficiency: 'Proficient',
+      },
+      {
+        name: 'Hindi',
+        proficiency: 'Native',
       },
     ],
   };
 
   return (
     <div className="flex flex-col p-1 bg-gray-200 text-black dark:bg-slate-800 dark:text-white">
-      <div className="max-w-4xl h-screen p-5 text-black font-serif bg-white mx-auto">
+      <div className="max-w-4xl min-h-screen p-5 text-black font-serif bg-white mx-auto">
         <section className="text-center">
           <h1 className="text-2xl font-bold">{resumeData.personalInfo.name}</h1>
           <p className="text-sm">{resumeData.personalInfo.location}</p>
@@ -141,24 +151,23 @@ export default function Resume() {
             </a>
           </div>
         </section>
-        <section className="mt-1">
-          <h2 className="text-sm font-semibold">SUMMARY</h2>
+        <section className="mt-1 text-sm">
+          <h2 className="font-semibold">SUMMARY</h2>
           <hr />
-          <p className="text-xs">{resumeData.summary}</p>
+          <p>{resumeData.summary}</p>
         </section>
-        <section className="mt-1">
-          <h2 className="text-sm font-semibold">EDUCATION</h2>
+        <section className="mt-1 text-sm">
+          <h2 className="font-semibold">EDUCATION</h2>
           <hr />
-          <div className="text-xs">
+          <div>
             <span className="flex justify-between">
               <strong>{resumeData.education[0].school}</strong>{' '}
-              <p>
-                <b>{resumeData.education[0].duration}</b>
-              </p>
+              <p className="font-bold">{resumeData.education[0].duration}</p>
             </span>
             <span className="flex justify-between">
               <p>
-                {resumeData.education[0].degree} <b>{`CGPA- ${resumeData.education[0].cgpa}`}</b>
+                {resumeData.education[0].degree}
+                {','} <strong>{`CGPA- ${resumeData.education[0].cgpa}`}</strong>
               </p>{' '}
               <p>
                 <i>{resumeData.education[0].location}</i>
@@ -166,10 +175,10 @@ export default function Resume() {
             </span>
           </div>
         </section>
-        <section className="mt-1">
-          <h2 className="text-sm font-semibold">TECHNICAL SKILLS</h2>
+        <section className="mt-1 text-sm">
+          <h2 className="font-semibold">TECHNICAL SKILLS</h2>
           <hr />
-          <div className="text-xs">
+          <div>
             {Object.entries(resumeData.technicalSkills).map(([category, skills]) => (
               <div key={category}>
                 <strong>{category}:</strong> {skills.join(', ')}
@@ -177,10 +186,10 @@ export default function Resume() {
             ))}
           </div>
         </section>
-        <section className="mt-1">
+        <section className="mt-1 text-sm">
           <h2 className="text-sm font-semibold">PROJECTS</h2>
           <hr />
-          <div className="text-xs">
+          <div>
             {resumeData.projects.map((project, index) => (
               <div key={index} className="mb-2">
                 <div className="flex justify-between">
@@ -195,18 +204,29 @@ export default function Resume() {
                         {project.name} <FaExternalLinkAlt className="mx-1" /> |
                       </a>
                     </strong>
-                    <p className="text-xs ml-1">{project.technologies.join(', ')}</p>
+                    <p className=" ml-1">{project.technologies.join(', ')}</p>
                   </div>
                   <p className="font-bold">{project.duration}</p>
                 </div>
                 <ul className="list-disc ml-5">
                   {project.description.map((desc, descIndex) => (
-                    <li key={descIndex}>{desc}</li>
+                    <li key={descIndex} dangerouslySetInnerHTML={{ __html: desc }} />
                   ))}
                 </ul>
               </div>
             ))}
           </div>
+        </section>
+        <section>
+          <h2 className="text-sm font-semibold">LANGUAGES</h2>
+          <hr />
+          <ul className="list-disc ml-5">
+            {resumeData.languages.map((language, index) => (
+              <li key={index}>
+                <strong>{language.name}</strong> - {language.proficiency}
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
 
