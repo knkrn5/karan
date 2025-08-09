@@ -1,6 +1,6 @@
 import { FaGlobe, FaPhone } from 'react-icons/fa6';
 import { IoIosMail } from 'react-icons/io';
-import { FaGithub, FaLinkedin, FaArrowCircleDown } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaArrowCircleDown, FaExternalLinkAlt } from 'react-icons/fa';
 
 export default function Resume() {
   const resumeData = {
@@ -49,18 +49,18 @@ export default function Resume() {
     },
     projects: [
       {
-        name: 'E-Commerce Platform',
-        duration: '2022 – 2023',
+        name: 'Finance Educational Web App',
+        link: 'https://wealthpsychology.karan.email/index.html',
+        duration: 'May 2024',
         description: 'Full-stack e-commerce solution with payment integration and admin dashboard',
-        technologies: ['React', 'Node.js', 'PostgreSQL', 'Stripe API'],
-        link: 'github.com/alexjohnson/ecommerce',
+        technologies: ['HTML5', 'CSS', 'JavaScript', 'Node.js', 'SQLite'],
       },
       {
-        name: 'Task Management App',
-        duration: '2022 – 2023',
+        name: 'AI-Powered Chatbots',
+        link: 'https://explanatorai.site/',
+        duration: 'Nov 2024',
         description: 'Real-time collaborative task management application with team features',
-        technologies: ['React', 'Socket.io', 'MongoDB', 'Express'],
-        link: 'github.com/alexjohnson/taskmanager',
+        technologies: ['HTML5', 'CSS', 'JavaScript', 'Python'],
       },
     ],
   };
@@ -141,7 +141,38 @@ export default function Resume() {
             ))}
           </div>
         </section>
+        <section className="mt-1">
+          <h2 className="text-sm font-semibold">PROJECTS</h2>
+          <hr />
+          <div className="text-xs">
+            {resumeData.projects.map((project, index) => (
+              <div key={index} className="mb-2">
+                <div className="flex justify-between">
+                  <div className="flex items-center">
+                    <strong>
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center"
+                      >
+                        {project.name} <FaExternalLinkAlt className="mx-1" /> |
+                      </a>
+                    </strong>
+                    <p className="text-xs ml-1">{project.technologies.join(', ')}</p>
+                  </div>
+                  <p className="font-bold">{project.duration}</p>
+                </div>
+                <ul className="list-disc ml-5">
+                  <li>{project.description}</li>
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
+
+      {/* save button */}
       <button
         title="Save Resume"
         type="button"
