@@ -25,7 +25,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/resume" target="_blank" className="hover:underline">
+                <Link to="/resume" className="hover:underline">
                   Resume
                 </Link>
               </li>
