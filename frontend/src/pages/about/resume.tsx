@@ -7,8 +7,8 @@ export default function Resume() {
     personalInfo: {
       name: 'KARAN',
       title: 'Full Stack Developer',
-      email: 'karan@email.com',
-      phone: '+91 7428799482',
+      email: 'noreply@karan.email',
+      phone: '+91 7428XXXXXX',
       location: 'Delhi, India',
       linkedin: 'linkedin.com/in/knkrn5',
       github: 'github.com/knkrn5',
@@ -70,6 +70,26 @@ export default function Resume() {
           'Enabled real-time chat with SSE-based streaming and integrated CodeMirror/Marked.js for code and Markdown rendering.',
           'Leveraged Hugging Face datasets for task-specific chatbot prompts, enhancing user interaction quality',
           'Impact: Achieved 95% accuracy in document analysis during testing',
+        ],
+      },
+      {
+        name: 'Personal Website',
+        link: 'https://karan.email/',
+        duration: 'Feb 2025',
+        technologies: [
+          'React/ts',
+          'Tailwind CSS',
+          'Node.js',
+          'Python',
+          'Java',
+          'MongoDB',
+          'PostgreSQL',
+        ],
+        description: [
+          'Architected a microservices-based portfolio with Node.js (contact/chatbot), Python (e-commerce), and Java (authentication).',
+          'Designed MongoDB/PostgreSQL schemas for data storage and Redis for OTP verification, ensuring scalability.',
+          'Integrated Zustand, Nodemailer, and JWT/Bcrypt for state management, notifications, and security.',
+          'Impact: Reduced authentication latency by 25% using Redis caching.',
         ],
       },
     ],
@@ -194,7 +214,7 @@ export default function Resume() {
       <button
         title="Save Resume"
         type="button"
-        className="printButton w-fit mt-5 mx-auto p-2 rounded-full text-white bg-black hover:scale-105 hover:shadow-lg duration-300 animate-bounce cursor-pointer"
+        className="printButton w-fit mt-5 mx-auto p-2 rounded-full text-white bg-black hover:invert hover:shadow-lg duration-300 animate-bounce cursor-pointer"
         onClick={() => {
           const newWindow = window.open('/resume', '_blank');
           if (newWindow) {
