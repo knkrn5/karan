@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router';
 import { useEffect } from 'react';
+import "./app.css"
 
 import Home from './pages/home/home';
 import ErrorPage404 from './pages/errors/404-error-page';
