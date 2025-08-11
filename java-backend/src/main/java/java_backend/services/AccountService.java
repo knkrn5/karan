@@ -34,11 +34,11 @@ public class AccountService {
         ObjectMapper mapper = new ObjectMapper();
 
         try (Jedis jedis = RedisConfig.getJedis()) {
-            String cachedData = jedis.get(userid.toString());
+            String cachedUserData = jedis.get(userid.toString());
 
-            if (cachedData != null) {
+            if (cachedUserData != null) {
                 // Convert JSON string back to RequiredUserDataDto
-                RequiredUserDataDto requiredUserData = mapper.readValue(cachedData, RequiredUserDataDto.class);
+                RequiredUserDataDto requiredUserData = mapper.readValue(cachedUserData, RequiredUserDataDto.class);
                 return new ApiResponse(true, 200, "User data fetched from Redis", requiredUserData);
             }
 
@@ -51,8 +51,8 @@ public class AccountService {
             RequiredUserDataDto requiredUserData = new RequiredUserDataDto(userData.get());
 
             // Save to Redis as JSON for 1 hour
-            String jsonData = mapper.writeValueAsString(requiredUserData);
-            jedis.setex(userid.toString(), 3600, jsonData);
+            String jsonUserData = mapper.writeValueAsString(requiredUserData);
+            jedis.setex(userid.toString(), 3600, jsonUserData);
 
             return new ApiResponse(true, 200, "User data fetched successfully", requiredUserData);
         } catch (Exception e) {

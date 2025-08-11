@@ -1,5 +1,7 @@
 package java_backend.dtos;
 
+import lombok.Data;
+
 import java_backend.models.UserModel;
 
 public class AccountDtos {
@@ -8,15 +10,13 @@ public class AccountDtos {
         // Private constructor to prevent instantiation
     }
 
+    @Data
     public static class RequiredUserDataDto {
-        public final String firstName;
-        public final String lastName;
-        public final String email;
+        private String firstName;
+        private String lastName;
+        private String email;
 
-        public RequiredUserDataDto() { // default constructor for Jackson
-            this.firstName = null;
-            this.lastName = null;
-            this.email = null;
+        public RequiredUserDataDto() { // NO-ARG constructor for Jackson
         }
 
         public RequiredUserDataDto(UserModel userData) {
