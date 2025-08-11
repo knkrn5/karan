@@ -68,7 +68,7 @@ export default function Resume() {
         description: [
           'Developed an AI chatbot web app using Gemini and NVIDIA NIM APIs, supporting PDF, CSV, JSON, and TXT analysis.',
           'Enabled real-time chat with SSE-based streaming and integrated CodeMirror/Marked.js for code and Markdown rendering.',
-          'Leveraged Hugging Face datasets for task-specific chatbot prompts, enhancing user interaction quality',
+          'Leveraged Hugging Face datasets for task-specific chatbots.',
           'Impact: Achieved 95% accuracy in document analysis during testing',
         ],
       },
@@ -86,10 +86,10 @@ export default function Resume() {
           'PostgreSQL',
         ],
         description: [
-          'Architected a <b>microservices-based portfolio</b> with Node.js (contact/chatbot), Python (e-commerce), and Java (authentication).',
+          'Architected a microservices-based portfolio with Node.js (contact/chatbot), Python (e-commerce), and Java (authentication).',
           'Designed MongoDB/PostgreSQL schemas for data storage and Redis for OTP verification, ensuring scalability.',
           'Integrated Zustand, Nodemailer, and JWT/Bcrypt for state management, email notifications, and security.',
-          'Impact: Reduced authentication latency by 25% using Redis caching.',
+          'Impact: Reduced authentication latency and User Data retrieval time by 25% using Redis caching.',
         ],
       },
     ],
