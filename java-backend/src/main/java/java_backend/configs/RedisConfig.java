@@ -5,8 +5,6 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Jedis;
 
-// import static java_backend.configs.EnvConfig.dotenv;
-
 import java.net.URI;
 
 public class RedisConfig {

@@ -7,6 +7,8 @@ import java.util.UUID;
 import java.util.Map;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.exceptions.JedisConnectionException;
+
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -62,6 +64,10 @@ public class AuthService {
         try (Jedis jedis = RedisConfig.getJedis()) {
             jedis.setex(email, 300, hashedOtp);
             otpTtl = jedis.ttl(email);
+        } catch (JedisConnectionException e) {
+            return new ApiResponse(false, 500, "Redis Connection Error: " + e.getMessage(), null);
+        } catch (Exception e) {
+            return new ApiResponse(false, 500, "An error occurred while sending OTP: " + e.getMessage(), null);
         }
 
         String otpSubject = otp + " is your " + subject + " OTP code";
