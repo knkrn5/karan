@@ -13,6 +13,12 @@ public class AccountDtos {
         public final String lastName;
         public final String email;
 
+        public RequiredUserDataDto() { // default constructor for Jackson
+            this.firstName = null;
+            this.lastName = null;
+            this.email = null;
+        }
+
         public RequiredUserDataDto(UserModel userData) {
             this.firstName = userData.getFirstName();
             this.lastName = userData.getLastName();
