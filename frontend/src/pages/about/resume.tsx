@@ -3,6 +3,7 @@ import { IoIosMail } from 'react-icons/io';
 import { FaGithub, FaLinkedin, FaArrowCircleDown, FaExternalLinkAlt } from 'react-icons/fa';
 
 export default function Resume() {
+  // missing data Experience/Internship/Open-source contributions/freelance, Certifications, Achievements
   const resumeData = {
     personalInfo: {
       name: 'KARAN',
@@ -50,31 +51,34 @@ export default function Resume() {
     projects: [
       {
         name: 'Finance Educational Web App',
-        link: 'https://wealthpsychology.karan.email/index.html',
+        liveLink: 'https://wealthpsychology.karan.email/index.html',
+        githubLink: 'https://github.com/knkrn5/WealthPsychology-app',
         duration: 'May 2024',
         technologies: ['HTML5', 'CSS', 'JavaScript', 'Node.js', 'SQLite'],
         description: [
-          'Built a full-stack financial education platform with calculators, quizzes, and blogs using Contentful CMS and an AI chatbot',
+          'Built a full-stack financial education platform with calculators, quizzes, and blogs using Contentful CMS.',
           'Designed SQLite database for efficient content storage and integrated Auth0 for secure user authentication.',
           'Implemented CI/CD pipeline with GitHub Actions and deployed on Render using Docker, reducing deployment time by 30%.',
-          'Impact: Supported 200+ users during beta testing with positive feedback on usability',
+          'Impact: Supported 200+ users during beta testing with positive feedback on usability.',
         ],
       },
       {
         name: 'AI-Powered Chatbots',
-        link: 'https://explanatorai.site/',
+        liveLink: 'https://explanatorai.site/',
+        githubLink: 'https://github.com/knkrn5/explanator-ai',
         duration: 'Nov 2024',
         technologies: ['HTML5', 'CSS', 'JavaScript', 'Python'],
         description: [
           'Developed an AI chatbot web app using Gemini and NVIDIA NIM APIs, supporting PDF, CSV, JSON, and TXT analysis.',
           'Enabled real-time chat with SSE-based streaming and integrated CodeMirror/Marked.js for code and Markdown rendering.',
           'Leveraged Hugging Face datasets for task-specific chatbots.',
-          'Impact: Achieved 95% accuracy in document analysis during testing',
+          'Impact: Achieved 95% correctness in chatbot-generated responses during document-based Q&A testing.',
         ],
       },
       {
         name: 'Personal Website',
-        link: 'https://karan.email/',
+        liveLink: 'https://karan.email/',
+        githubLink: 'https://github.com/knkrn5/karan',
         duration: 'Feb 2025',
         technologies: [
           'React/ts',
@@ -130,6 +134,8 @@ export default function Resume() {
             </a>
             <a
               href={`https://${resumeData.personalInfo.linkedin}`}
+              target="_blank"
+              rel="noopener noreferrer"
               className=" rounded hover:bg-neutral-200 block"
             >
               <FaLinkedin className="inline-block mr-1" />
@@ -137,6 +143,8 @@ export default function Resume() {
             </a>
             <a
               href={`https://${resumeData.personalInfo.github}`}
+              target="_blank"
+              rel="noopener noreferrer"
               className=" rounded hover:bg-neutral-200 block"
             >
               <FaGithub className="inline-block mr-1" />
@@ -144,6 +152,8 @@ export default function Resume() {
             </a>
             <a
               href={`https://${resumeData.personalInfo.website}`}
+              target="_blank"
+              rel="noopener noreferrer"
               className=" rounded hover:bg-neutral-200 block"
             >
               <FaGlobe className="inline-block mr-1" />
@@ -196,7 +206,8 @@ export default function Resume() {
                   <div className="flex items-center">
                     <strong className="hover:underline">
                       <a
-                        href={project.link}
+                        title="Web Live link"
+                        href={project.liveLink}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center"
@@ -204,6 +215,15 @@ export default function Resume() {
                         {project.name} <FaExternalLinkAlt className="mx-1" /> |
                       </a>
                     </strong>
+                    <a
+                      title="Source Code link"
+                      href={project.githubLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="ml-1 rounded hover:bg-neutral-200 block"
+                    >
+                      <FaGithub className="inline-block mr-1" /> {' | '}
+                    </a>
                     <p className=" ml-1">{project.technologies.join(', ')}</p>
                   </div>
                   <p className="font-bold">{project.duration}</p>
