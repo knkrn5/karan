@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router';
 import { useEffect } from 'react';
-import "./app.css"
+import './app.css';
 
 import Home from './pages/home/home';
 import ErrorPage404 from './pages/errors/404-error-page';
@@ -35,6 +35,8 @@ import AdminDashboard from './admin/adminDashboard';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const queryClient = new QueryClient();
 
+import AccessPassSetter from './utils/accessPassSetter';
+
 function AppContent() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -46,6 +48,8 @@ function AppContent() {
   }, [location.pathname, navigate]);
 
   const isAdminRoute = location.pathname.startsWith('/admin');
+
+  const hasPermission = localStorage.getItem('accessPass') === 'onlykaranhastheaccesspermission';
 
   return (
     <>
@@ -80,7 +84,7 @@ function AppContent() {
 
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/about" element={<About />} />
-          <Route path="/resume" element={<Resume />} />
+          <Route path="/resume" element={hasPermission ? <Resume /> : <AccessPassSetter />} />
           <Route path="/contact" element={<Contact />} />
 
           <Route element={<AdminLayout />}>

@@ -58,8 +58,8 @@ export default function Resume() {
         description: [
           'Built a full-stack financial education platform with calculators, quizzes, and blogs using Contentful CMS.',
           'Designed SQLite database for efficient content storage and integrated Auth0 for secure user authentication.',
-          'Implemented CI/CD pipeline with GitHub Actions and deployed on Render using Docker, reducing deployment time by 30%.',
-          'Impact: Supported 200+ users during beta testing with positive feedback on usability.',
+          'Implemented CI/CD pipeline with GitHub Actions and Configured Docker containerization.',
+          'Impact: Deployed on Render using Docker, reducing deployment time by 30%.',
         ],
       },
       {

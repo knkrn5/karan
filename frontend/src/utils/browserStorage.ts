@@ -1,6 +1,6 @@
 // const localStorageItems = ['session', 'currentTheme']
 
-function clearBrowserStorage(exceptions: string[] = ['session', 'currentTheme']) {
+function clearBrowserStorage(exceptions: string[] = ['session', 'currentTheme', 'accessPass']): void {
   const savedItems: Record<string, string | null> = {};
 
   exceptions.forEach(key => {
