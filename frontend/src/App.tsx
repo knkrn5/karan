@@ -49,7 +49,7 @@ function AppContent() {
 
   const isAdminRoute = location.pathname.startsWith('/admin');
 
-  const hasPermission = localStorage.getItem('accessPass') === 'onlykaranhastheaccesspermission';
+  const hasPermission = localStorage.getItem('accessPass') === 'iKnowThisPassCanBeSeenViaDevTool';
 
   return (
     <>
