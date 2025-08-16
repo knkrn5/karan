@@ -26,7 +26,7 @@ export default function BlogSearchAndCategory({
     setSearchOrCategoryValue(e.target.value);
   }
 
-  const matchingblogPosts = blogPosts.filter(post => {
+  const matchingBlogPosts = blogPosts.filter(post => {
     const titleMatch = post.title.toLowerCase().includes(searchOrCategoryValue.toLowerCase());
     const catMatch = post.category?.toLowerCase().includes(searchOrCategoryValue.toLowerCase());
     const tagMatch = post.tags.toLowerCase().includes(searchOrCategoryValue.toLowerCase());
@@ -75,9 +75,9 @@ export default function BlogSearchAndCategory({
         </div>
 
         {/* blogs Search Suggestions */}
-        {showBlogsSearchSuggestions && (
+        {showBlogsSearchSuggestions && matchingBlogPosts.length > 0 && (
           <div className="absolute z-10 p-2  w-full bg-white dark:bg-slate-800 rounded-lg shadow shadow-neutral-300 dark:shadow-gray-900 max-h-60 overflow-y-auto">
-            {matchingblogPosts.map((post, index) => (
+            {matchingBlogPosts.map((post, index) => (
               <button
                 type="button"
                 className="flex w-full items-center justify-between px-2 py-2 text-sm text-left text-gray-700 font-bold  dark:text-gray-300 rounded-lg hover:border-b hover:bg-gray-100 dark:hover:bg-slate-700 cursor-pointer"

@@ -1,12 +1,10 @@
 import { Response } from 'express';
 import OpenAI from 'openai';
-import dotenv from 'dotenv';
 import { readFileSync } from 'fs';
 import { ApiResponse } from '../utils/apiResponse.js';
 import { ChatbotModel } from '../models/chatbot.model.js';
 
 
-dotenv.config();
 
 const openai = new OpenAI({
   baseURL: 'https://integrate.api.nvidia.com/v1',
