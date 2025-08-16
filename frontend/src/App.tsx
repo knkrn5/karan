@@ -54,20 +54,17 @@ function AppContent() {
 
   const isAdminRoute = location.pathname.startsWith('/admin');
 
-  const roleCheck = async () => {
-    await axios
-      .get(`${BACKEND_URL}/api/v1/auth/authenticateUser`, {
-        withCredentials: true,
-      })
-      .then(res => {
-        setIsAdmin(res.data.data.role.toLowerCase() === 'admin');
-      })
-      .catch(err => {
-        console.error('Error fetching user role:', err);
-        return null;
-      });
-  };
-  roleCheck();
+  axios
+    .get(`${BACKEND_URL}/api/v1/auth/authenticateUser`, {
+      withCredentials: true,
+    })
+    .then(res => {
+      setIsAdmin(res.data.data.role.toLowerCase() === 'admin');
+    })
+    .catch(err => {
+      console.error('Error fetching user role:', err);
+      return null;
+    });
 
   const hasPermission = localStorage.getItem('accessPass') === 'iKnowThisPassCanBeSeenViaDevTool';
 
