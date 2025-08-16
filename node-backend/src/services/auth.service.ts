@@ -1,9 +1,6 @@
 import { ApiResponse } from '../utils/apiResponse.js';
 import { JWTPayload } from '../middlewares/auth.middleware.js';
 
-import jwt from 'jsonwebtoken';
-import { OTPEmailTemplate } from '../mail/templates/otpEmailTemplate.js';
-import { emailTransporter } from '../utils/emailTransporter.js';
 
 export class AuthService {
 

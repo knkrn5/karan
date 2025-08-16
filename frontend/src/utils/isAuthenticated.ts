@@ -109,6 +109,8 @@ async function isAuthenticated(): Promise<boolean> {
 
     const { data } = response;
 
+    console.log(data.data.role.toLowerCase());
+
     localStorage.setItem('session', JSON.stringify(data.data.exp));
 
     scheduleTokenRefresh();

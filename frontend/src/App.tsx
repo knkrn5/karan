@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './app.css';
 
 import Home from './pages/home/home';
@@ -36,8 +36,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const queryClient = new QueryClient();
 
 import AccessPassSetter from './utils/accessPassSetter';
+import axios from 'axios';
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 function AppContent() {
+  const [isAdmin, setIsAdmin] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -48,6 +53,21 @@ function AppContent() {
   }, [location.pathname, navigate]);
 
   const isAdminRoute = location.pathname.startsWith('/admin');
+
+  const roleCheck = async () => {
+    await axios
+      .get(`${BACKEND_URL}/api/v1/auth/authenticateUser`, {
+        withCredentials: true,
+      })
+      .then(res => {
+        setIsAdmin(res.data.data.role.toLowerCase() === 'admin');
+      })
+      .catch(err => {
+        console.error('Error fetching user role:', err);
+        return null;
+      });
+  };
+  roleCheck();
 
   const hasPermission = localStorage.getItem('accessPass') === 'iKnowThisPassCanBeSeenViaDevTool';
 
@@ -87,9 +107,11 @@ function AppContent() {
           <Route path="/resume" element={hasPermission ? <Resume /> : <AccessPassSetter />} />
           <Route path="/contact" element={<Contact />} />
 
-          <Route element={<AdminLayout />}>
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          </Route>
+          {isAdmin && (
+            <Route element={<AdminLayout />}>
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            </Route>
+          )}
         </Routes>
       </main>
       {!isAdminRoute && <Footer />}

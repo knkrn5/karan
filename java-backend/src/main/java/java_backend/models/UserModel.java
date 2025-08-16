@@ -32,7 +32,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 public class UserModel {
 
     public enum Role {
-        USER
+        USER,
+        ADMIN
     }
 
     @Id
