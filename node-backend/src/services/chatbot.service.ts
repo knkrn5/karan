@@ -89,7 +89,14 @@ export class ChatbotService {
     return new ApiResponse(200, true, 'Chat history retrieved successfully', chatbotMsgs);
   }
 
+  static async deleteChatbotMsgsFromDb(userId: string) {
+    if (!userId) throw new ApiResponse(400, false, 'User ID is required', null);
 
+    const deletedChatbotMsgs = await ChatbotModel.findOneAndDelete({ user: userId });
+    if (!deletedChatbotMsgs) throw new ApiResponse(404, false, 'Chat history not found', null);
+
+    return new ApiResponse(200, true, 'Chat history deleted successfully', null);
+  }
 }
 
 

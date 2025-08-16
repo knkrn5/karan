@@ -2,17 +2,39 @@ import { FaPlus } from 'react-icons/fa6';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { IoChevronUp } from 'react-icons/io5';
 import { useAuthCheck } from '../../hooks/authCheckHook';
+import axios from 'axios';
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function CbShowMore() {
   //authentication check
   const isAuthenticated = useAuthCheck();
 
-  const handleClearChat = () => {
+  const handleDeleteChat = async () => {
     if (!isAuthenticated) {
       alert('Login required');
       return;
     }
 
+    try {
+      const response = await axios.delete(`${BACKEND_URL}/api/chatbot/delete-msgs-from-db`, {
+        withCredentials: true,
+      });
+      console.log('Chat deleted successfully', response);
+      // You can also clear frontend state here if needed
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error deleting chat:', error);
+        alert(error.response?.data?.message || 'Failed to delete chat');
+      }
+    }
+  };
+
+  const handleNewChat = () => {
+    if (!isAuthenticated) {
+      alert('Login required');
+      return;
+    }
     alert('Coming soon');
   };
 
@@ -27,7 +49,7 @@ export default function CbShowMore() {
         <button
           type="button"
           className="flex items-center gap-2 w-full px-3 py-2 text-sm text-dark dark:text-slate-200 hover:bg-neutral-300 dark:hover:bg-slate-800 rounded-md transition-colors cursor-pointer"
-          onClick={handleClearChat}
+          onClick={handleNewChat}
         >
           <FaPlus size={16} className="text-emerald-400" />
           <span>New Chat</span>
@@ -36,7 +58,7 @@ export default function CbShowMore() {
         <button
           type="button"
           className="flex items-center gap-2 w-full px-3 py-2 text-sm text-dark dark:text-slate-200 hover:bg-neutral-300 dark:hover:bg-slate-800 rounded-md transition-colors cursor-pointer"
-          onClick={handleClearChat}
+          onClick={handleDeleteChat}
         >
           <FaRegTrashAlt size={16} className="text-red-400" />
           <span>Delete Chat</span>

@@ -42,6 +42,19 @@ export class ChatbotController {
       res.status(500).send({ error: error });
     }
   }
+
+  static async deleteChatbotMsgsFromDb(req: Request, res: Response) {
+    try {
+      const userId = req.payload.id;
+      console.log(userId)
+      const response = await ChatbotService.deleteChatbotMsgsFromDb(userId);
+      res.status(response.statusCode).json(response);
+    } catch (error) {
+      if (error instanceof ApiResponse) {
+        res.status(error.statusCode).json(error);
+        return;
+      }
+      res.status(500).send({ error: error });
+    }
+  }
 }
-
-

@@ -9,5 +9,6 @@ const router = Router();
 
 router.post('/send-msg-to-chatbot', cbMsgLimiter, ChatbotController.getChatbotResponse);
 router.get('/get-msgs-from-db', isAccessTokenValid, ChatbotController.getChatbotMsgsFromDb);
+router.delete('/delete-msgs-from-db', isAccessTokenValid, ChatbotController.deleteChatbotMsgsFromDb);
 
 export default router;
