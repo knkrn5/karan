@@ -10,9 +10,10 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 interface CbShowMoreProps {
   setMessages: React.Dispatch<React.SetStateAction<{ role: 'user' | 'system'; content: string }[]>>;
+  setShowMore: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function CbShowMore({ setMessages }: CbShowMoreProps) {
+export default function CbShowMore({ setMessages, setShowMore }: CbShowMoreProps) {
   //authentication check
   const isAuthenticated = useAuthCheck();
 
@@ -41,6 +42,8 @@ export default function CbShowMore({ setMessages }: CbShowMoreProps) {
           error: error.response?.data?.message || 'Failed to delete chat',
         });
       }
+    } finally {
+      setShowMore(false);
     }
   };
 
