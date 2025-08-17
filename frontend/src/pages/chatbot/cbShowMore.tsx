@@ -3,7 +3,8 @@ import { FaRegTrashAlt } from 'react-icons/fa';
 import { IoChevronUp } from 'react-icons/io5';
 import { useAuthCheck } from '../../hooks/authCheckHook';
 import axios from 'axios';
-
+import { useMainPopupStore } from '../../stores/popup/mainPopupStore';
+import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificationStore';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -15,9 +16,12 @@ export default function CbShowMore({ setMessages }: CbShowMoreProps) {
   //authentication check
   const isAuthenticated = useAuthCheck();
 
+  const { setMainPopupMsg } = useMainPopupStore();
+  const { setTRpopupNotificationMsg } = useTRpopupNotificationStore();
+
   const handleDeleteChat = async () => {
     if (!isAuthenticated) {
-      alert('Login required');
+      setMainPopupMsg('Please login to delete the message');
       return;
     }
 
@@ -25,21 +29,24 @@ export default function CbShowMore({ setMessages }: CbShowMoreProps) {
       const response = await axios.delete(`${BACKEND_URL}/api/chatbot/delete-msgs-from-db`, {
         withCredentials: true,
       });
-      if (response.status === 200) {
+      const data = response.data;
+      if (data.success === true) {
         setMessages([]);
-
+        setTRpopupNotificationMsg({ success: data.message });
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error('Error deleting chat:', error);
-        alert(error.response?.data?.message || 'Failed to delete chat');
+        setTRpopupNotificationMsg({
+          error: error.response?.data?.message || 'Failed to delete chat',
+        });
       }
     }
   };
 
   const handleNewChat = () => {
     if (!isAuthenticated) {
-      alert('Login required');
+      setMainPopupMsg('Please login to start a new chat');
       return;
     }
     alert('Coming soon');
