@@ -49,7 +49,8 @@ export default function CbShowMore({ setMessages }: CbShowMoreProps) {
       setMainPopupMsg('Please login to start a new chat');
       return;
     }
-    alert('Coming soon');
+
+    setTRpopupNotificationMsg({ info: 'Coming Soon' });
   };
 
   return (
