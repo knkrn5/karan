@@ -395,7 +395,7 @@ export default function Chatbot() {
                   showMore ? 'scale-x-100' : 'scale-x-0'
                 } duration-300 transition-transform`}
               >
-                <CbShowMore />
+                <CbShowMore setMessages={setMessages} />
               </div>
             </div>
             <button

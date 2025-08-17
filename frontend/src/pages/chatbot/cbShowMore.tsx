@@ -4,9 +4,14 @@ import { IoChevronUp } from 'react-icons/io5';
 import { useAuthCheck } from '../../hooks/authCheckHook';
 import axios from 'axios';
 
+
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-export default function CbShowMore() {
+interface CbShowMoreProps {
+  setMessages: React.Dispatch<React.SetStateAction<{ role: 'user' | 'system'; content: string }[]>>;
+}
+
+export default function CbShowMore({ setMessages }: CbShowMoreProps) {
   //authentication check
   const isAuthenticated = useAuthCheck();
 
@@ -20,8 +25,10 @@ export default function CbShowMore() {
       const response = await axios.delete(`${BACKEND_URL}/api/chatbot/delete-msgs-from-db`, {
         withCredentials: true,
       });
-      console.log('Chat deleted successfully', response);
-      // You can also clear frontend state here if needed
+      if (response.status === 200) {
+        setMessages([]);
+
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error('Error deleting chat:', error);

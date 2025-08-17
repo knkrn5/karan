@@ -19,7 +19,7 @@ export class ChatbotService {
 
     let karanData = '';
     try {
-      karanData = readFileSync('./src/db/data/karanData.json', 'utf8');
+      karanData = readFileSync('./src/data/karanData.json', 'utf8');
     } catch (err) {
       console.error('Error reading file:', err);
       process.exit(1);

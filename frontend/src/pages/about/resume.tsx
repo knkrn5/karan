@@ -7,13 +7,22 @@ export default function Resume() {
   const resumeData = {
     personalInfo: {
       name: 'KARAN',
+      age: 24,
       title: 'Full Stack Developer',
       email: 'noreply@karan.email',
       phone: '+91 7428XXXXXX',
-      location: 'Delhi, India',
-      linkedin: 'linkedin.com/in/knkrn5',
-      github: 'github.com/knkrn5',
-      website: 'karan.email',
+      address: {
+        country: 'India',
+        city: 'Delhi',
+        region: 'Delhi NCR',
+      },
+      contact: {
+        email: 'mail@karan.email',
+        phone: 'N/A',
+        linkedin: 'linkedin.com/in/knkrn5',
+        github: 'github.com/knkrn5',
+        website: 'karan.email',
+      },
     },
     summary:
       'Full-stack web developer specializing in the MERN stack with experience delivering scalable, containerized, and cloud-deployed applications. Skilled in integrating AI-powered features, optimizing backend performance, and implementing microservices architecture. Committed to building accessible, user-friendly solutions.',
@@ -107,6 +116,8 @@ export default function Resume() {
         proficiency: 'Native',
       },
     ],
+    interests: ['Reading', 'Traveling', 'Gaming', 'Learning', 'Open Source Contribution'],
+    availability: 'Open to remote opportunities and relocation.',
   };
 
   return (
@@ -114,7 +125,9 @@ export default function Resume() {
       <div className="max-w-4xl min-h-screen p-5 text-black font-serif bg-white mx-auto">
         <section className="text-center">
           <h1 className="text-2xl font-bold">{resumeData.personalInfo.name}</h1>
-          <p className="text-sm">{resumeData.personalInfo.location}</p>
+          <p className="text-sm">
+            {resumeData.personalInfo.address.city}, {resumeData.personalInfo.address.country}
+          </p>
           <div className="flex justify-center items-center text-xs space-x-1 underline underline-offset-2 max-sm:flex-col duration-300">
             {/* Phone */}
             <a
@@ -133,31 +146,31 @@ export default function Resume() {
               {resumeData.personalInfo.email}
             </a>
             <a
-              href={`https://${resumeData.personalInfo.linkedin}`}
+              href={`https://${resumeData.personalInfo.contact.linkedin}`}
               target="_blank"
               rel="noopener noreferrer"
               className=" rounded hover:bg-neutral-200 block"
             >
               <FaLinkedin className="inline-block mr-1" />
-              {resumeData.personalInfo.linkedin}
+              {resumeData.personalInfo.contact.linkedin}
             </a>
             <a
-              href={`https://${resumeData.personalInfo.github}`}
+              href={`https://${resumeData.personalInfo.contact.github}`}
               target="_blank"
               rel="noopener noreferrer"
               className=" rounded hover:bg-neutral-200 block"
             >
               <FaGithub className="inline-block mr-1" />
-              {resumeData.personalInfo.github}
+              {resumeData.personalInfo.contact.github}
             </a>
             <a
-              href={`https://${resumeData.personalInfo.website}`}
+              href={`https://${resumeData.personalInfo.contact.website}`}
               target="_blank"
               rel="noopener noreferrer"
               className=" rounded hover:bg-neutral-200 block"
             >
               <FaGlobe className="inline-block mr-1" />
-              {resumeData.personalInfo.website}
+              {resumeData.personalInfo.contact.website}
             </a>
           </div>
         </section>
