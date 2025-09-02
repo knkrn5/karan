@@ -35,7 +35,6 @@ import AdminDashboard from './admin/adminDashboard';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const queryClient = new QueryClient();
 
-import AccessPassSetter from './utils/accessPassSetter';
 import axios from 'axios';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -65,8 +64,6 @@ function AppContent() {
       console.error('Error fetching user role:', err);
       return null;
     });
-
-  const hasPermission = localStorage.getItem('accessPass') === 'iKnowThisPassCanBeSeenViaDevTool';
 
   return (
     <>
@@ -101,7 +98,7 @@ function AppContent() {
 
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/about" element={<About />} />
-          <Route path="/resume" element={hasPermission ? <Resume /> : <AccessPassSetter />} />
+          <Route path="/resume" element={<Resume />} />
           <Route path="/contact" element={<Contact />} />
 
           {isAdmin && (
