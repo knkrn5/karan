@@ -13,8 +13,8 @@ export default function Resume() {
       name: 'KARAN',
       age: 24,
       title: 'Full Stack Developer',
-      email: 'noreply@karan.email',
-      phone: '+91 7428XXXXXX',
+      email: 'xkaranx5@gmail.com',
+      phone: '+91 7428799482',
       address: {
         country: 'India',
         city: 'Delhi',
@@ -124,7 +124,8 @@ export default function Resume() {
     availability: 'Open to remote opportunities and relocation.',
   };
 
-  const hasPermission = searchParams.get('pageAccessPass') === 'iKnowThisIsVisibleViaDevTool';
+  const pageAccessPassword = 'iKnowThisIsVisibleViaDevTool';
+  const hasPermission = searchParams.get('pageAccessPass') === pageAccessPassword;
 
   if (hasPermission) {
     return (
@@ -297,6 +298,6 @@ export default function Resume() {
       </div>
     );
   } else {
-    return <UrlAccessPassSetter />;
+    return <UrlAccessPassSetter pageAccessPassword={pageAccessPassword} />;
   }
 }

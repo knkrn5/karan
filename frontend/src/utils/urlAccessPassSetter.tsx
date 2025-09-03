@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { FaLock, FaUnlock } from 'react-icons/fa';
 
-export default function UrlAccessPassSetter() {
+export default function UrlAccessPassSetter({
+  pageAccessPassword,
+}: Readonly<{ pageAccessPassword: string }>) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [pageAccessPass, setPageAccessPass] = useState<string>(
     searchParams.get('pageAccessPass') || ''
@@ -27,7 +29,7 @@ export default function UrlAccessPassSetter() {
 
     setPageAccessPass('');
     setIsSubmitting(false);
-    if (pageAccessPass !== 'iKnowThisIsVisibleViaDevTool') {
+    if (pageAccessPass !== pageAccessPassword) {
       setPasswordError('Incorrect password, Try again');
     }
   };
