@@ -50,7 +50,7 @@ export default function Resume() {
         school: 'Galgotias University',
         location: 'Greater Noida, India',
         duration: '2021 – 2025',
-        cgpa: '7.5/10',
+        cgpa: '7.75/10',
       },
     ],
     technicalSkills: {
