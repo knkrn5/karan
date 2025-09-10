@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import './app.css';
 
 import Home from './pages/home/home';
@@ -19,9 +19,9 @@ import AuthLayout from './pages/auth/authLayout';
 import LoginPage from './pages/auth/login';
 import RegisterPage from './pages/auth/register';
 
-import About from './pages/about/aboutPage';
-import Resume from './pages/about/resume';
-import Contact from './pages/contact/contactPage';
+const About = lazy(() => import('./pages/about/aboutPage'));
+const Resume = lazy(() => import('./pages/about/resume'));
+const Contact = lazy(() => import('./pages/contact/contactPage'));
 import UserProfile from './pages/profile/userProfile';
 
 import SoloBlogPost from './pages/blog/soloBlogPostPage';
@@ -36,8 +36,15 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const queryClient = new QueryClient();
 
 import axios from 'axios';
+import BrandLoadingPage from './pages/brandLoadingPage';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+const LazyRoute = (Component: React.LazyExoticComponent<React.FC>) => (
+  <Suspense fallback={<BrandLoadingPage />}>
+    <Component />
+  </Suspense>
+);
 
 function AppContent() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -97,9 +104,9 @@ function AppContent() {
           </Route>
 
           <Route path="/profile" element={<UserProfile />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/resume" element={<Resume />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={LazyRoute(About)} />
+          <Route path="/resume" element={LazyRoute(Resume)} />
+          <Route path="/contact" element={LazyRoute(Contact)} />
 
           {isAdmin && (
             <Route element={<AdminLayout />}>
