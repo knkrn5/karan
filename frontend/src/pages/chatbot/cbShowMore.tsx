@@ -9,7 +9,7 @@ import { useTRpopupNotificationStore } from '../../stores/popup/TRpopupNotificat
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 interface CbShowMoreProps {
-  setMessages: React.Dispatch<React.SetStateAction<{ role: 'user' | 'system'; content: string }[]>>;
+  setMessages: React.Dispatch<React.SetStateAction<{ role: 'user' | 'assistant'; content: string }[]>>;
   setShowMore: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

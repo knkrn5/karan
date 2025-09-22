@@ -4,7 +4,7 @@ import { IoIosSend, IoMdArrowDropdownCircle } from 'react-icons/io';
 import { LuBot } from 'react-icons/lu';
 import { FaRobot } from 'react-icons/fa6';
 import { CiSquarePlus } from 'react-icons/ci';
-import { FaUser, FaRegCheckCircle } from 'react-icons/fa';
+import { FaUser, FaRegCheckCircle, FaRegStopCircle } from 'react-icons/fa';
 import { useAuthCheck } from '../../hooks/authCheckHook';
 import { useProfileStore } from '../../stores/profile/profileStore';
 import CBLoginMsg from './CBLoginMsg';
@@ -20,6 +20,7 @@ export default function Chatbot() {
   const [selectedLLM, setSelectedLLM] = useState<string>('meta/llama-3.1-70b-instruct');
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isGettingChatbotRes, setIsGettingChatbotRes] = useState<boolean>(false);
+  const [IsStreamingAiResponse, setIsStreamingAiResponse] = useState<boolean>(false);
   const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
   const [showMore, setShowMore] = useState<boolean>(false);
 
@@ -98,6 +99,8 @@ export default function Chatbot() {
   async function handleSend(userMsg: string) {
     if (!userMsg.trim()) return;
 
+    controllerRef.current = new AbortController();
+
     setIsGettingChatbotRes(true);
 
     // adding user msg
@@ -137,8 +140,10 @@ export default function Chatbot() {
         'ratelimit-reset': Number(response.headers.get('ratelimit-reset')),
       });
 
+      setIsStreamingAiResponse(true);
+
       // adding bot msg to be replaced
-      // setIsGettingChatbotRes(false);
+      setIsGettingChatbotRes(false);
       setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
 
       if (!response.body) throw new Error('No response body');
@@ -179,6 +184,9 @@ export default function Chatbot() {
         }
       }
     } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        return;
+      }
       setMessages(prev => [
         ...prev,
         {
@@ -190,6 +198,7 @@ export default function Chatbot() {
       ]);
     } finally {
       setIsGettingChatbotRes(false);
+      setIsStreamingAiResponse(false);
     }
   }
 
@@ -406,14 +415,27 @@ export default function Chatbot() {
               type="button"
               title="Send message"
               aria-label="Send message"
-              onClick={() => handleSend(inputMessage)}
+              onClick={e => {
+                if (IsStreamingAiResponse) {
+                  e.stopPropagation();
+                  controllerRef.current?.abort();
+                } else {
+                  handleSend(inputMessage);
+                }
+              }}
               disabled={
-                (!inputMessage.trim() && isGettingChatbotRes) ||
+                (!inputMessage.trim() && !IsStreamingAiResponse) ||
                 (!isAuthenticated && msgWithoutAuth >= MAX_MESSAGES_WITHOUT_AUTH + 1)
               }
-              className={` px-3 py-1 rounded-full transition-colors duration-200 ease-in-out cursor-pointer bg-blue-500 text-white disabled:bg-white disabled:text-black  disabled:opacity-50 disabled:cursor-not-allowed`}
+              className={` px-3 py-1 rounded-full transition-colors duration-200 ease-in-out cursor-pointer ${
+                IsStreamingAiResponse ? 'bg-red-500' : 'bg-blue-500'
+              } text-white disabled:bg-white disabled:text-black  disabled:opacity-50 disabled:cursor-not-allowed`}
             >
-              <IoIosSend size={20} className="w-6 h-6" />
+              {IsStreamingAiResponse ? (
+                <FaRegStopCircle size={20} className="w-6 h-6" />
+              ) : (
+                <IoIosSend size={20} className="w-6 h-6" />
+              )}
             </button>
           </div>
         </div>
