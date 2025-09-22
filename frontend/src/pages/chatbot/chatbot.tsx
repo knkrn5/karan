@@ -20,7 +20,7 @@ export default function Chatbot() {
   const [selectedLLM, setSelectedLLM] = useState<string>('meta/llama-3.1-70b-instruct');
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isGettingChatbotRes, setIsGettingChatbotRes] = useState<boolean>(false);
-  const [messages, setMessages] = useState<{ role: 'user' | 'system'; content: string }[]>([]);
+  const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
   const [showMore, setShowMore] = useState<boolean>(false);
 
   const [expressRateLimiterHeaderData, setExpressRateLimiterHeaderData] = useState<{
@@ -68,6 +68,7 @@ export default function Chatbot() {
     };
     document.addEventListener('click', handleOutsideClick);
     return () => {
+      if (controllerRef.current) controllerRef.current.abort();
       document.removeEventListener('click', handleOutsideClick);
     };
   }, [isAuthenticated, isDropdownOpen, showChatbot, showMore]);
@@ -91,6 +92,8 @@ export default function Chatbot() {
       }
     }
   }
+
+  const controllerRef = useRef<AbortController | null>(null);
 
   async function handleSend(userMsg: string) {
     if (!userMsg.trim()) return;
@@ -126,6 +129,7 @@ export default function Chatbot() {
           llmName: selectedLLM,
           historyMsgs: messages,
         }),
+        signal: controllerRef.current?.signal,
       });
 
       setExpressRateLimiterHeaderData({
@@ -134,8 +138,8 @@ export default function Chatbot() {
       });
 
       // adding bot msg to be replaced
-      setIsGettingChatbotRes(false);
-      setMessages(prev => [...prev, { role: 'system', content: '' }]);
+      // setIsGettingChatbotRes(false);
+      setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
 
       if (!response.body) throw new Error('No response body');
 
@@ -178,7 +182,7 @@ export default function Chatbot() {
       setMessages(prev => [
         ...prev,
         {
-          role: 'system',
+          role: 'assistant',
           content:
             'Error streaming message: ' +
             (error instanceof Error ? error.message : 'Unknown error'),
@@ -297,13 +301,13 @@ export default function Chatbot() {
                     }`}
                   >
                     <div className="flex items-start gap-2">
-                      {msg.role === 'system' && (
+                      {msg.role === 'assistant' && (
                         <FaRobot
                           size={18}
                           className="text-black dark:text-white mt-1 shrink-0 self-start"
                         />
                       )}
-                      {msg.role === 'system' ? (
+                      {msg.role === 'assistant' ? (
                         <div
                           className="break-words overflow-auto prose prose-code:inline-block prose-code:w-[50px] prose-a:text-blue-500 dark:prose-invert max-w-none"
                           dangerouslySetInnerHTML={{ __html: msg.content }}
@@ -404,8 +408,7 @@ export default function Chatbot() {
               aria-label="Send message"
               onClick={() => handleSend(inputMessage)}
               disabled={
-                !inputMessage.trim() ||
-                isGettingChatbotRes ||
+                (!inputMessage.trim() && isGettingChatbotRes) ||
                 (!isAuthenticated && msgWithoutAuth >= MAX_MESSAGES_WITHOUT_AUTH + 1)
               }
               className={` px-3 py-1 rounded-full transition-colors duration-200 ease-in-out cursor-pointer bg-blue-500 text-white disabled:bg-white disabled:text-black  disabled:opacity-50 disabled:cursor-not-allowed`}

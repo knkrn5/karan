@@ -53,6 +53,12 @@ export class ChatbotService {
 
     let assistantFullResponse = '';
     for await (const chunk of completion) {
+
+      if (res.destroyed) {
+        console.log('Client disconnected, stopping the response stream.');
+        break;
+      }
+
       const text = chunk.choices[0]?.delta?.content ?? '';
       if (text) {
         assistantFullResponse += text;
