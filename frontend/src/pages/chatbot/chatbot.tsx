@@ -11,6 +11,7 @@ import CBLoginMsg from './CBLoginMsg';
 import { useChatbotStore } from '../../stores/chatbot/chatbotStore';
 import axios from 'axios';
 import CbShowMore from './cbShowMore';
+import DOMPurify from 'dompurify';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -169,12 +170,13 @@ export default function Chatbot() {
             const parsed = JSON.parse(data);
             responseInChunk += parsed;
             const htmlText = await marked.parse(responseInChunk);
+            const sanitizedHtml = DOMPurify.sanitize(htmlText);
 
             setMessages(prev => {
               const updatedMsgsArray = [...prev];
               updatedMsgsArray[updatedMsgsArray.length - 1] = {
                 ...updatedMsgsArray[updatedMsgsArray.length - 1],
-                content: htmlText,
+                content: sanitizedHtml,
               };
               return updatedMsgsArray;
             });
