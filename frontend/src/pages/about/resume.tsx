@@ -191,19 +191,21 @@ export default function Resume() {
             <h2 className="font-semibold">EDUCATION</h2>
             <hr />
             <div>
-              <span className="flex justify-between">
+              <div className="flex justify-between">
                 <strong>{resumeData.education[0].school}</strong>{' '}
                 <p className="font-bold">{resumeData.education[0].duration}</p>
-              </span>
-              <span className="flex justify-between">
-                <p>
-                  {resumeData.education[0].degree}
-                  {','} <strong>{`CGPA- ${resumeData.education[0].cgpa}`}</strong>
-                </p>{' '}
+              </div>
+              <div className="flex justify-between">
+                <span className="flex flex-col">
+                  <p>{resumeData.education[0].degree}</p>
+                  <p className="font-serif">
+                    <i>{`CGPA- ${resumeData.education[0].cgpa}`}</i>
+                  </p>
+                </span>
                 <p>
                   <i>{resumeData.education[0].location}</i>
                 </p>
-              </span>
+              </div>
             </div>
           </section>
           <section className="mt-1 text-sm">
