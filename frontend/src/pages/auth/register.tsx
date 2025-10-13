@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router';
 import axios from 'axios';
-import { FaRegEye, FaRegEyeSlash, FaRegSave } from 'react-icons/fa';
+import { FaRegCheckCircle, FaRegEye, FaRegEyeSlash, FaRegSave } from 'react-icons/fa';
 import { FaRepeat } from 'react-icons/fa6';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { CiEdit } from 'react-icons/ci';
@@ -17,12 +17,12 @@ import {
 import PasswardRequirementToolTip from '../../components/ui/passwardRequirementToolTip.js';
 import { remainingTimeCounter } from '../../utils/remainingTimeCalculator.js';
 import { useRemainingTimeCalculatorStore } from '../../stores/others/remainingTimeCalculatorStore.js';
-
+import ToolTip from '../../components/ui/toolTip.js';
 
 const JAVA_BACKEND_URL = import.meta.env.VITE_JAVA_BACKEND_URL;
 
 interface UserDataProps {
-  firstName: string ;
+  firstName: string;
   lastName?: string;
   email: string;
   otp: string;
@@ -72,6 +72,8 @@ export default function Register() {
     confirmPassword: '',
   });
 
+  const [agreed, setAgreed] = useState<boolean>(false);
+
   // Reamainging time calculator store data
   const remainingSeconds = useRemainingTimeCalculatorStore(state => state.remainingSeconds);
   const formattedRemainingTime = useRemainingTimeCalculatorStore(
@@ -106,8 +108,8 @@ export default function Register() {
   const validateForm = useCallback(
     (data: UserDataProps): UserDataProps => {
       const errors: UserDataProps = {
-        firstName: "",
-        lastName: "",
+        firstName: '',
+        lastName: '',
         email: '',
         otp: '',
         password: '',
@@ -241,6 +243,11 @@ export default function Register() {
     //registering user
     if (registrationVerification.isOptVerified) {
       try {
+        if (!agreed) {
+          setICnotificationMsg({ info: 'Please agree to the data collection policy' });
+          return;
+        }
+
         const response = await axios.post(
           `${JAVA_BACKEND_URL}/auth/register`,
           {
@@ -668,6 +675,43 @@ export default function Register() {
           )}
         </button>
       </form>
+
+      {/* Data privacy tooltip */}
+      <label className="flex items-center mt-2 mb-4 text-sm font-bold text-black dark:text-neutral-300 relative">
+        <input
+          type="checkbox"
+          id="agree-checkbox"
+          className="mr-2"
+          checked={agreed}
+          onChange={() => setAgreed(!agreed)}
+        />
+        <span>I have read and agree to the data collection policy</span>
+        <ToolTip
+          tooltipIconStyling="w-5 mt-2 text-md text-black dark:text-white"
+          tooltipBoxStyling={`right-0 top-full mt-1 w-64 p-2 before:content-[''] before:absolute before:-top-1.5 before:right-0.5  before:border-l-8 before:border-r-8 before:border-b-8 before:border-l-transparent before:border-r-transparent before:border-b-gray-700`}
+        >
+          <div className=" p-3 rounded-lg shadow-md bg-gray-100 dark:bg-slate-800 border border-gray-200 max-w-md mx-auto">
+            <h3 className="font-extrabold text-lg text-gray-800 dark:text-neutral-100 mb-3 pb-2 border-b border-gray-500 dark:border-neutral-400">
+              Data Collection Policy:-
+            </h3>
+            <ul className="space-y-2 text-gray-700 dark:text-neutral-300">
+              {[
+                'Device and location information (e.g., platform, IP, and region)',
+                'User agent data (e.g., browser, operating system, and device type)',
+              ].map(requirement => (
+                <li key={requirement} className="flex items-start ">
+                  <FaRegCheckCircle className=" text-green-500 mr-2 mt-1 flex-shrink-0" />
+                  <span className="text-left font-semibold">{requirement}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 text-xm font-mono pt-2 border-t border-gray-500 dark:border-neutral-400 text-gray-600 dark:text-gray-400">
+              We collect this data to enhance security and user experience. This data is not shared
+              with any third parties.
+            </p>
+          </div>
+        </ToolTip>
+      </label>
 
       {/* Sign in Link */}
       <div className="text-center text-gray-500 dark:text-gray-400 mt-4">
