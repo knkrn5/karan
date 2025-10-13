@@ -26,11 +26,11 @@ public class JavaBackendApplication {
 				.load();
 
 		// System.out.println("====== Custom App ENV Properties ======");
-		// System.getenv().forEach((key, value) -> {
-		// if (key.matches("^[A-Z0-9_]+$")) {
-		// System.out.println(key + " = " + value);
-		// }
-		// });
+		System.getenv().forEach((key, value) -> {
+			if (key.matches("^[A-Z0-9_]+$")) {
+				System.out.println(key + " = " + value);
+			}
+		});
 
 		SpringApplication.run(JavaBackendApplication.class, args);
 	}

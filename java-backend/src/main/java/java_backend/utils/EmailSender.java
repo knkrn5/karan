@@ -1,43 +1,44 @@
 package java_backend.utils;
 
-import org.springframework.stereotype.Component;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import com.resend.*;
+import com.resend.core.exception.ResendException;
+import com.resend.services.emails.model.CreateEmailOptions;
+import com.resend.services.emails.model.CreateEmailResponse;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+import java_backend.configs.EnvConfig;
 
 @Component
 public class EmailSender {
 
-    private JavaMailSender mailSender;
+    private final Resend resend;
 
-    @Autowired
-    public EmailSender(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
+    @Value("${resend.api.key}")
+    private String resendApiKey;
 
-    @Value("${spring.mail.username}")
+    @Value("${resend.from.email}")
     private String fromEmail;
 
-    // Method for sending HTML emails
-    public void sendEmail(String toEmail, String subject, String htmlTextContent) {
+    public EmailSender() {
+        this.resend = new Resend(EnvConfig.getenvvar("RESEND_API_KEY"));
+        // this.resend = new Resend(resendApiKey);
+    }
+
+    public void sendEmail(String toEmail, String subject, String htmlContent) {
+        CreateEmailOptions params = CreateEmailOptions.builder()
+                .from("Karan.email <" + fromEmail + ">")
+                .to(toEmail)
+                .subject(subject)
+                .html(htmlContent)
+                .build();
+
         try {
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-
-            helper.setFrom(fromEmail);
-            helper.setTo(toEmail);
-            helper.setSubject(subject);
-            helper.setText(htmlTextContent, true);
-            mailSender.send(mimeMessage);
-        } catch (Exception e) {
-            // TODO: handle exception
-            throw new RuntimeException("Failed to send email: " + e.getMessage());
+            CreateEmailResponse data = resend.emails().send(params);
+            System.out.println(data.getId());
+        } catch (ResendException e) {
+            e.printStackTrace();
         }
-
     }
 }
