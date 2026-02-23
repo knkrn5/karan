@@ -13,15 +13,15 @@ export default function Resume() {
       name: 'KARAN',
       age: 24,
       title: 'Full Stack Developer',
-      email: 'xkaranx5@gmail.com',
-      phone: '+91 7428799482',
+      email: 'xxxxx@gmail.com',
+      phone: '+91 xxxxxxxxxx',
       address: {
         country: 'India',
         city: 'Delhi',
         region: 'Delhi NCR',
       },
       contact: {
-        email: 'mail@karan.email',
+        email: 'xxxxx@karan.email',
         phone: 'N/A',
         linkedin: 'linkedin.com/in/knkrn5',
         github: 'github.com/knkrn5',
