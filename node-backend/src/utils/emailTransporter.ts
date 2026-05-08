@@ -7,13 +7,7 @@ type EmailPropsTypes = {
   template: () => string;
 };
 
-export const emailTransporter = async ({
-  toEmail,
-  subject,
-  fallbackEmail,
-  template,
-}: EmailPropsTypes): Promise<void> => {
-  const transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
     port: Number(process.env.EMAIL_PORT),
     secure: false, // true for port 465 (SSL), false for port 587 (STARTTLS)
@@ -22,6 +16,14 @@ export const emailTransporter = async ({
       pass: process.env.EMAIL_PASS,
     },
   } as nodemailer.TransportOptions);
+
+export const emailTransporter = async ({
+  toEmail,
+  subject,
+  fallbackEmail,
+  template,
+}: EmailPropsTypes): Promise<void> => {
+  
 
   const mailOptions = {
     from: `"karan.email" <${process.env.EMAIL_FROM}>`,
