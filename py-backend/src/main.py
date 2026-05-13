@@ -13,8 +13,6 @@ from .routes.admin_routes.adminAffiliateproducts_routes import (
 
 is_production = os.getenv("ENV") == "PRODUCTION"
 
-origins: list[str] = ["*"]
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -34,9 +32,9 @@ app = FastAPI(
 
 
 app.add_middleware(
-    CORSMiddleware,  # pyrefly: ignore
-    allow_origins=origins,
-    allow_credentials=True,
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
