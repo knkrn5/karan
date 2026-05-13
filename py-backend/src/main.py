@@ -13,6 +13,8 @@ from .routes.admin_routes.adminAffiliateproducts_routes import (
 
 is_production = os.getenv("ENV") == "PRODUCTION"
 
+origins = ["https://ka-ran.me", "https://www.ka-ran.me"]
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -33,8 +35,8 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
+    allow_origins=origins,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
