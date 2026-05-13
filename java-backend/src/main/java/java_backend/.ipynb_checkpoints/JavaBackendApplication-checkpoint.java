@@ -41,7 +41,9 @@ public class JavaBackendApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOriginPatterns("*")
+						.allowedOrigins(
+								"PRODUCTION".equals(EnvConfig.getenvvar("ENV")) ? "https://karan.email"
+										: "http://localhost:5173")
 						.allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS")
 						.allowedHeaders("*")
 						.allowCredentials(true)
