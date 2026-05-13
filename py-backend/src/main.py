@@ -13,14 +13,7 @@ from .routes.admin_routes.adminAffiliateproducts_routes import (
 
 is_production = os.getenv("ENV") == "PRODUCTION"
 
-origins: list[str] = (
-    [
-        "https://karan.email",
-        "https://api.karan.email",
-    ]
-    if is_production
-    else ["http://localhost:5173"]
-)
+origins: list[str] = ["*"]
 
 
 @asynccontextmanager
